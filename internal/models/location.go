@@ -1,0 +1,19 @@
+package model
+
+type WeatherInfo struct {
+	Temp        float64 `json:"temp"`
+	Description string  `json:"description"`
+}
+
+type LocationResponse struct {
+	Destination    string      `json:"destination"`
+	FullAddress    string      `json:"full_address"`
+	Coords         Coordinate  `json:"coordinates"`
+	Weather        WeatherInfo `json:"weather"`
+	Recommendation string      `json:"recommendation"`
+}
+
+type Coordinate struct {
+	Lat string `json:"lat"`
+	Lon string `json:"lon"`
+}
