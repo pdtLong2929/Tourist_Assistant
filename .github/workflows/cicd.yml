@@ -1,0 +1,93 @@
+name: Frontend CI/CD to GCP
+
+on:
+  push:
+    branches: [ "main", "ux/ui" ]
+  # We usually only deploy on push to main, but you can keep pull_request for testing
+  pull_request:
+    branches: [ "main", "ux/ui" ]
+
+env:
+  PROJECT_ID: 'touristassistant-29-03-2026'
+  REGION: 'asia-southeast1'               
+  GAR_REPO: 'tourism-frontend'           
+  SERVICE_NAME: 'tourism-frontend-app' 
+  IMAGE_NAME: 'nextjs-app'
+
+# Required for Workload Identity Federation
+permissions:
+  contents: 'read'
+  id-token: 'write'
+
+jobs:
+  # Job 1: Quality Check (Linting)
+  # This runs fast and fails early if the code is messy
+  lint:
+    name: Lint Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'npm'
+          cache-dependency-path: frontend/aetherion/package-lock.json
+
+      - name: Install dependencies
+        working-directory: frontend/aetherion
+        run: npm ci
+
+      - name: Run ESLint
+        working-directory: frontend/aetherion
+        run: npm run lint
+
+  # Job 2: Build & Deploy
+  # This only runs if Lint succeeds. It builds the Docker image and pushes to GCP.
+  deploy:
+    name: Build & Deploy to Cloud Run
+    needs: lint
+    # Only deploy on pushes, not on Pull Request previews (unless you want to)
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 1. Authenticate to GCP via WIF
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: '${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}'
+          service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      # 2. Configure Docker to use GCP Artifact Registry
+      - name: Configure Docker Auth
+        run: |-
+          gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
+
+      # 3. Build & Push using your multi-stage Dockerfile
+      # Context is ./frontend because that's where the Dockerfile and 'aetherion' folder live
+      - name: Build and Push Docker Image
+        working-directory: ./frontend
+        run: |-
+          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPO }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
+          docker build -t $DOCKER_TAG .
+          docker push $DOCKER_TAG
+
+      # 4. Deploy to Cloud Run
+      - name: Deploy to Cloud Run
+        run: |-
+          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPO }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
+          gcloud run deploy ${{ env.SERVICE_NAME }} \
+            --image $DOCKER_TAG \
+            --region ${{ env.REGION }} \
+            --allow-unauthenticated \
+            --port 3000
