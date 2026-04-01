@@ -39,7 +39,7 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 # 2. (Optional) If you added a public folder earlier, uncomment this:
-# COPY --from=builder /app/public ./public
+COPY --from=builder /app/public ./public
 
 # 3. The Standalone Magic: We only copy the minimal traced files, NOT node_modules
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
