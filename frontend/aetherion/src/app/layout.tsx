@@ -344,7 +344,7 @@ export default function RootLayout({
     <html lang="en">
       <body style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', margin: 0 }}>
         <Header />
-        <div style={{ flex: 1, position: 'relative' }}>
+        <main style={{ flex: 1, position: "relative", zIndex: 1 }}>
           {children}
         </div>
 >>>>>>> fb98a63 (feat: basic ui)

@@ -62,7 +62,6 @@ export default function RentingSuggestion() {
 =======
   const handleSearch = () => {
     setLoading(true);
-    // Simulating deterministic rule evaluation
     setTimeout(() => {
       setResult({
         vehicle: 'Cyber SUV X',
@@ -342,21 +341,122 @@ export default function RentingSuggestion() {
           />
           <NeonButton onClick={handleSearch}>Analyze</NeonButton>
         </div>
-      </GlassCard>
 
-      {loading && (
-        <div style={{ marginTop: '3rem', textAlign: 'center', color: 'var(--accent-purple)' }}>
-          <p className="neon-text-blue">Analyzing terrain... Checking weather factors...</p>
-        </div>
-      )}
+        {loading && (
+          <div
+            className="edgerunner-card"
+            style={{
+              marginTop: "2.5rem",
+              textAlign: "center",
+              padding: "2rem",
+            }}
+          >
+            <Sparkles
+              size={28}
+              className="status-active"
+              style={{ marginBottom: "1rem" }}
+            />
+            <p
+              className="module-label"
+              style={{ fontSize: "1.1rem", marginBottom: "0.5rem" }}
+            >
+              AI MATCHING IN PROGRESS
+            </p>
+            <p style={{ color: "var(--text-secondary)" }}>
+              Analyzing terrain • Weather • Safety requirements • Vehicle
+              database...
+            </p>
+          </div>
+        )}
 
-      {result && !loading && (
-        <div style={{ marginTop: '3rem' }}>
-           <GlassCard style={{ borderTop: '4px solid var(--accent-blue)' }}>
-            <h2>Top Recommended: {result.vehicle}</h2>
-            <div style={{ padding: '1rem', background: 'rgba(0, 240, 255, 0.05)', borderLeft: '4px solid var(--accent-blue)', marginTop: '1rem' }}>
-              <strong>Why this vehicle?</strong><br />
-              <span style={{ color: 'var(--text-secondary)' }}>{result.reason}</span>
+        {result && !loading && (
+          <div
+            className="edgerunner-card"
+            style={{
+              marginTop: "2.5rem",
+              position: "relative",
+              overflow: "visible",
+            }}
+          >
+            <div
+              style={{
+                position: "absolute",
+                top: "-12px",
+                left: "2rem",
+                background: "var(--cyber-yellow)",
+                color: "var(--cyber-black)",
+                padding: "4px 20px",
+                borderRadius: "9999px",
+                fontFamily: "var(--font-header)",
+                fontSize: "0.95rem",
+                fontWeight: "700",
+                boxShadow: "0 0 25px var(--cyber-yellow-glow)",
+                zIndex: 2,
+              }}
+            >
+              TOP MATCH • {result.matchScore}%
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                gap: "2rem",
+                alignItems: "center",
+                marginTop: "1.5rem",
+              }}
+            >
+              <div
+                style={{
+                  width: 110,
+                  height: 110,
+                  background: "rgba(251,191,36,0.15)",
+                  borderRadius: "20px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  boxShadow: "0 0 40px var(--cyber-yellow-glow)",
+                  flexShrink: 0,
+                }}
+              >
+                <Car size={64} color="var(--cyber-yellow)" />
+              </div>
+
+              <div style={{ flex: 1 }}>
+                <h2
+                  style={{
+                    margin: 0,
+                    fontSize: "2rem",
+                    color: "var(--cyber-yellow)",
+                  }}
+                >
+                  {result.vehicle}
+                </h2>
+                <p className="module-label" style={{ marginTop: "4px" }}>
+                  RECOMMENDED BY AI CONCIERGE
+                </p>
+
+                <div
+                  style={{
+                    marginTop: "1.5rem",
+                    padding: "1.25rem",
+                    background: "rgba(52,229,235,0.08)",
+                    borderRadius: "12px",
+                    borderLeft: "4px solid var(--cyber-blue)",
+                  }}
+                >
+                  <div className="module-label" style={{ marginBottom: "8px" }}>
+                    WHY THIS VEHICLE?
+                  </div>
+                  <p
+                    style={{
+                      color: "var(--text-secondary)",
+                      lineHeight: 1.5,
+                    }}
+                  >
+                    {result.reason}
+                  </p>
+                </div>
+              </div>
             </div>
            </GlassCard>
         </div>
