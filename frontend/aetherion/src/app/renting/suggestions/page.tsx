@@ -209,18 +209,13 @@ export default function RentingSuggestion() {
         )}
 
         {result && !loading && (
-          <div
-            className="edgerunner-card"
-            style={{
-              marginTop: "2.5rem",
-              position: "relative",
-              overflow: "visible",
-            }}
-          >
+          /* Bọc toàn bộ vào một thẻ div có position relative để nhãn absolute không bị cắt */
+          <div style={{ position: "relative", marginTop: "2.5rem" }}>
+            {/* Nhãn đưa ra khỏi thẻ edgerunner-card */}
             <div
               style={{
                 position: "absolute",
-                top: "-12px",
+                top: "-14px",
                 left: "2rem",
                 background: "var(--cyber-yellow)",
                 color: "var(--cyber-black)",
@@ -230,80 +225,85 @@ export default function RentingSuggestion() {
                 fontSize: "0.95rem",
                 fontWeight: "700",
                 boxShadow: "0 0 25px var(--cyber-yellow-glow)",
-                zIndex: 2,
+                zIndex: 10,
               }}
             >
               TOP MATCH • {result.matchScore}%
             </div>
 
-            <div
-              style={{
-                display: "flex",
-                gap: "2rem",
-                alignItems: "center",
-                marginTop: "1.5rem",
-              }}
-            >
+            <div className="edgerunner-card">
               <div
                 style={{
-                  width: 110,
-                  height: 110,
-                  background: "rgba(251,191,36,0.15)",
-                  borderRadius: "20px",
                   display: "flex",
+                  gap: "2rem",
                   alignItems: "center",
-                  justifyContent: "center",
-                  boxShadow: "0 0 40px var(--cyber-yellow-glow)",
-                  flexShrink: 0,
                 }}
               >
-                <Car size={64} color="var(--cyber-yellow)" />
-              </div>
-
-              <div style={{ flex: 1 }}>
-                <h2
-                  style={{
-                    margin: 0,
-                    fontSize: "2rem",
-                    color: "var(--cyber-yellow)",
-                  }}
-                >
-                  {result.vehicle}
-                </h2>
-                <p className="module-label" style={{ marginTop: "4px" }}>
-                  RECOMMENDED BY AI CONCIERGE
-                </p>
-
                 <div
                   style={{
-                    marginTop: "1.5rem",
-                    padding: "1.25rem",
-                    background: "rgba(52,229,235,0.08)",
-                    borderRadius: "12px",
-                    borderLeft: "4px solid var(--cyber-blue)",
+                    width: 110,
+                    height: 110,
+                    background: "rgba(251,191,36,0.15)",
+                    borderRadius: "20px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    boxShadow: "0 0 40px var(--cyber-yellow-glow)",
+                    flexShrink: 0,
                   }}
                 >
-                  <div className="module-label" style={{ marginBottom: "8px" }}>
-                    WHY THIS VEHICLE?
-                  </div>
-                  <p
+                  <Car size={64} color="var(--cyber-yellow)" />
+                </div>
+
+                <div style={{ flex: 1 }}>
+                  <h2
                     style={{
-                      color: "var(--text-secondary)",
-                      lineHeight: 1.5,
+                      margin: 0,
+                      fontSize: "2rem",
+                      color: "var(--cyber-yellow)",
                     }}
                   >
-                    {result.reason}
+                    {result.vehicle}
+                  </h2>
+                  <p className="module-label" style={{ marginTop: "4px" }}>
+                    RECOMMENDED BY AI CONCIERGE
                   </p>
+
+                  <div
+                    style={{
+                      marginTop: "1.5rem",
+                      padding: "1.25rem",
+                      background: "rgba(52,229,235,0.08)",
+                      borderRadius: "12px",
+                      borderLeft: "4px solid var(--cyber-blue)",
+                    }}
+                  >
+                    <div
+                      className="module-label"
+                      style={{ marginBottom: "8px" }}
+                    >
+                      WHY THIS VEHICLE?
+                    </div>
+                    <p
+                      style={{
+                        color: "var(--text-secondary)",
+                        lineHeight: 1.5,
+                        margin: 0,
+                      }}
+                    >
+                      {result.reason}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <button
-              className="cyber-button"
-              style={{ width: "100%", marginTop: "2rem" }}
-            >
-              BOOK THIS VEHICLE NOW
-            </button>
+              <button
+                className="cyber-button"
+                style={{ width: "100%", marginTop: "2rem" }}
+              >
+                BOOK THIS VEHICLE NOW
+              </button>
+            </div>
           </div>
         )}
       </div>
