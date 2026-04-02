@@ -1,15 +1,52 @@
-const mongoose = require('mongoose');
+// Cấu trúc bảng User
 
-const userSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { 
-    type: String, 
-    required: true, 
-    unique: true,
-    lowercase: true 
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../config/db');
+
+// Định nghĩa cấu trúc bảng User
+const User = sequelize.define('User', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
   },
-  password: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now }
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: true, 
+  },
+  googleId: {
+    type: DataTypes.STRING,
+    unique: true,
+    allowNull: true,
+  },
+
+
+// lấy lại mật khẩu bằng gửi otp qua gmail
+  resetPasswordToken: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  resetPasswordExpires: {
+    type: DataTypes.DATE,
+    allowNull: true,
+  }
+ }, {
+  tableName: 'users',
+  timestamps: true, 
 });
 
-module.exports = mongoose.model('User', userSchema);
+// tự động tạo bảng trong DB nếu chưa tồn tại
+User.sync({ alter: true }) 
+  .then(() => console.log('User table created/updated'))
+  .catch(err => console.log('Error creating table:', err));
+
+module.exports = User;

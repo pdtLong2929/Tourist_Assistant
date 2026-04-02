@@ -1,13 +1,28 @@
-const mongoose = require('mongoose');
+//Tạo kết nối với database
+
+
+const { Sequelize } = require('sequelize');
+
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
+  {
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,       
+    dialect: process.env.DB_DIALECT, 
+    logging: false, 
+  }
+);
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log('MongoDB connected successfully');
+    await sequelize.authenticate();
+    console.log('PostgreSQL Database connected successfully');
   } catch (error) {
-    console.error('MongoDB connection failed:', error.message);
+    console.error('PostgreSQL connection failed:', error.message);
     process.exit(1);
   }
 };
 
-module.exports = connectDB;
+module.exports = { sequelize, connectDB };
