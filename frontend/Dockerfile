@@ -1,47 +1,53 @@
-# Stage 1: Install dependencies
+# =============================================================================
+#  Tourist Assistant — Next.js Multi-Stage Dockerfile
+# =============================================================================
+
+# ─── Stage 1 : Install dependencies ─────────────────────────────────────────
 FROM node:24-alpine AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Copy package files
 COPY aetherion/package.json aetherion/package-lock.json ./
 RUN npm ci
 
-# Stage 2: Rebuild the source code
+# ─── Stage 2 : Build the application ────────────────────────────────────────
 FROM node:24-alpine AS builder
 WORKDIR /app
 
-# Copy the dependencies from deps
 COPY --from=deps /app/node_modules ./node_modules
-# Copy the rest of the application code
 COPY aetherion/ ./
 
-# Disable telemetry during the build.
+# Disable Next.js telemetry during builds
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Build the Next.js application
+# Accept optional build-time args (for pages that need env at build time).
+# At runtime docker-compose passes the real values via `environment:`.
+ARG DATABASE_URL=""
+ARG MONGODB_URI=""
+ENV DATABASE_URL=${DATABASE_URL}
+ENV MONGODB_URI=${MONGODB_URI}
+
 RUN npm run build
 
-# Stage 3: Production server
+# ─── Stage 3 : Production server ────────────────────────────────────────────
 FROM node:24-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
-# Disable telemetry during runtime.
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# 1. Force Next.js to bind to all interfaces so Cloud Run can route traffic to it
+# Force Next.js to bind to all interfaces (required for Docker / Cloud Run)
 ENV HOSTNAME="0.0.0.0"
 ENV PORT=3000
 
-# Don't run production as root
+# Non-root user for security
 RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+RUN adduser  --system --uid 1001 nextjs
 
-# 2. (Optional) If you added a public folder earlier, uncomment this:
+# Public assets
 COPY --from=builder /app/public ./public
 
-# 3. The Standalone Magic: We only copy the minimal traced files, NOT node_modules
+# Standalone output — only the minimal traced files, no node_modules bulk
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
@@ -49,5 +55,5 @@ USER nextjs
 
 EXPOSE 3000
 
-# 4. Run the minimal server directly with Node, ditching the npm overhead
+# Run the minimal Node server directly
 CMD ["node", "server.js"]
