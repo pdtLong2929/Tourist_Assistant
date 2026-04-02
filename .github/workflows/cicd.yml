@@ -2,9 +2,9 @@ name: Frontend CI/CD to GCP
 
 on:
   push:
-    branches: [ "main", "ux/ui" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "main", "ux/ui" ]
+    branches: [ "main" ]
 
 env:
   PROJECT_ID: 'touristassistant-29-03-2026'
