@@ -2,9 +2,15 @@ name: Frontend CI/CD to GCP
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "ux/ui" ]
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/frontend-cicd.yml'
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "ux/ui" ]
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/frontend-cicd.yml'
 
 env:
   PROJECT_ID: 'touristassistant-29-03-2026'
@@ -75,12 +81,12 @@ jobs:
       - name: Verify PostgreSQL is healthy
         run: |
           docker compose exec -T postgres pg_isready -U tourist
-          echo "PostgreSQL is healthy ✅"
+          echo "PostgreSQL is healthy"
 
       - name: Verify MongoDB is healthy
         run: |
           docker compose exec -T mongodb mongosh --eval "db.adminCommand('ping')" -u tourist -p tourist_secret --authenticationDatabase admin
-          echo "MongoDB is healthy ✅"
+          echo "MongoDB is healthy"
 
       - name: Tear down
         if: always()
