@@ -29,7 +29,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-tourist}"]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-tourist}" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -50,10 +50,35 @@ services:
     volumes:
       - mongodata:/data/db
     healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      test: [ "CMD", "mongosh", "--eval", "db.adminCommand('ping')" ]
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - ta_network
+
+  # ─── Express Login API ────────────────────────────────────────────────
+  login:
+    build:
+      context: ./login
+      dockerfile: Dockerfile
+    container_name: ta_login
+    restart: unless-stopped
+    ports:
+      - "5036:5036"
+    env_file:
+      - ./login/.env
+    environment:
+      NODE_ENV: production
+      DB_HOST: postgres
+      DB_USER: ${POSTGRES_USER:-tourist}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-tourist_secret}
+      DB_NAME: ${POSTGRES_DB:-tourist_assistant}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
     networks:
       - ta_network
 
