@@ -6,11 +6,10 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
 const crypto = require('crypto');
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
+const resend = new Resend(process.env.RESEND_API_KEY || 're_dummy_key_for_booting');
+const { Op } = require('sequelize');
 
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-
-// Đăng ký người dùng
 exports.register = async (req, res) => {
   const { name, email, password } = req.body;
 
