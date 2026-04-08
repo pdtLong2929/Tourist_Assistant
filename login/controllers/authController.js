@@ -8,7 +8,7 @@ const client = new OAuth2Client(
   process.env.GOOGLE_REDIRECT_URI);
 const crypto = require('crypto');
 const { Resend } = require('resend');
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY || 're_dummy_key_for_booting');
 const { Op } = require('sequelize');
 
 exports.register = async (req, res) => {
