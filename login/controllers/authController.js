@@ -28,13 +28,30 @@ exports.register = async (req, res) => {
       password: hashedPassword
     });
 
-    const token = jwt.sign(
-      { userId: user.id }, // Lưu ý: RDBMS thường dùng 'id' thay vì '_id' như MongoDB
+    const accessToken = jwt.sign(
+      { userId: user.id },
       process.env.JWT_SECRET,
       { expiresIn: process.env.JWT_EXPIRES_IN }
     );
 
-    res.status(201).json({ token, message: 'User registered successfully' });
+    const refreshToken = jwt.sign(
+      { userId: user.id },
+      process.env.JWT_REFRESH_SECRET,
+      { expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d' }
+    );
+
+    user.refreshToken = refreshToken;
+    await user.save();
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: '/api/auth/refresh'
+    });
+
+    res.status(201).json({ accessToken, message: 'User registered successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
@@ -51,14 +68,31 @@ exports.login = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
-    const token = jwt.sign(
+    const accessToken = jwt.sign(
       { userId: user.id },
       process.env.JWT_SECRET,
       { expiresIn: process.env.JWT_EXPIRES_IN }
     );
 
+    const refreshToken = jwt.sign(
+      { userId: user.id },
+      process.env.JWT_REFRESH_SECRET,
+      { expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d' }
+    );
+
+    user.refreshToken = refreshToken;
+    await user.save();
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: '/api/auth/refresh'
+    });
+
     res.json({ 
-      token,
+      accessToken,
       user: { id: user.id, name: user.name, email: user.email }
     });
   } catch (error) {
@@ -87,14 +121,31 @@ exports.googleLogin = async (req, res) => {
       await user.save();
     }
 
-    const token = jwt.sign(
+    const accessToken = jwt.sign(
       { userId: user.id },
       process.env.JWT_SECRET,
       { expiresIn: process.env.JWT_EXPIRES_IN }
     );
 
+    const refreshToken = jwt.sign(
+      { userId: user.id },
+      process.env.JWT_REFRESH_SECRET,
+      { expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d' }
+    );
+
+    user.refreshToken = refreshToken;
+    await user.save();
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: '/api/auth/refresh'
+    });
+
     res.json({
-      token,
+      accessToken,
       user: { id: user.id, name: user.name, email: user.email }
     });
 
@@ -103,6 +154,57 @@ exports.googleLogin = async (req, res) => {
   }
 };
 
+exports.logout = async (req, res) => {
+  try {
+    const refreshToken = req.cookies.refreshToken;
+    if (refreshToken) {
+      const user = await User.findOne({ where: { refreshToken } });
+      if (user) {
+        user.refreshToken = null;
+        await user.save();
+      }
+    }
+  } catch (error) {
+    console.error('Logout error:', error);
+  }
+  
+  res.clearCookie('refreshToken', { path: '/api/auth/refresh' });
+  res.json({ message: 'Logged out successfully' });
+};
+
+exports.refresh = async (req, res) => {
+  const refreshToken = req.cookies.refreshToken;
+
+  if (!refreshToken) {
+    return res.status(401).json({ message: 'No refresh token provided' });
+  }
+
+  try {
+    const user = await User.findOne({ where: { refreshToken } });
+
+    if (!user) {
+      return res.status(403).json({ message: 'Invalid refresh token' });
+    }
+
+    jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET, (err, decoded) => {
+      if (err) {
+        return res.status(403).json({ message: 'Refresh token expired or invalid' });
+      }
+
+      const accessToken = jwt.sign(
+        { userId: user.id },
+        process.env.JWT_SECRET,
+        { expiresIn: process.env.JWT_EXPIRES_IN }
+      );
+
+      res.json({ accessToken });
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Send SMTP mail to reset password, meanwhile create a hashed token to temporarily grant access
 exports.forgotPassword = async (req, res) => {
   const { email } = req.body;
 

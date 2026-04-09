@@ -77,8 +77,6 @@ services:
       DB_NAME: ${POSTGRES_DB:-tourist_assistant}
       DB_DIALECT: postgres
       DB_PORT: 5432
-      JWT_SECRET: ${JWT_SECRET:-dev_secret}
-      JWT_EXPIRES_IN: 1h
     depends_on:
       postgres:
         condition: service_healthy
