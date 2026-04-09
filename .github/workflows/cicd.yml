@@ -64,8 +64,8 @@ jobs:
         run: |
           echo "Waiting for frontend to respond on port 3000..."
           for i in $(seq 1 30); do
-            if curl -sf http://localhost:3000 > /dev/null 2>&1; then
-              echo "Frontend is up!"
+            if curl -sf http://localhost:5036/api/health 2>&1; then
+              echo "Login API is up!"
               exit 0
             fi
             echo "  attempt $i/30 — not ready yet, retrying in 5s..."
