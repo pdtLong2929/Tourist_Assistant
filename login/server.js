@@ -8,17 +8,12 @@ const app = express();
 
 // Middleware
 app.use(cors({
-<<<<<<< HEAD
   origin: process.env.FRONTEND_URL,
-=======
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
->>>>>>> 6eac1b0 (refactor: single jwt to access refresh token, fix: local testing)
   credentials: true
 }));
 app.use(cookieParser());
 app.use(express.json());
 
-// Kết nối Database
 connectDB();
 
 // Routes
@@ -28,7 +23,7 @@ app.get('/api/health', (req, res) => {
   res.status(200).send('OK');
 });
 
-const PORT = process.env.PORT || 5036;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
