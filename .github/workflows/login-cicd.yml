@@ -70,7 +70,7 @@ jobs:
         run: |
           echo "Waiting for Login API to respond on port 5036..."
           for i in $(seq 1 30); do
-            if curl -sf http://localhost:5036/api/auth 2>&1; then
+            if curl -sf http://localhost:5036/api/health 2>&1; then
               echo "Login API is up!"
               exit 0
             fi
