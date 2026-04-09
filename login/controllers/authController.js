@@ -68,6 +68,7 @@ exports.login = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
+<<<<<<< HEAD
     if (!process.env.JWT_SECRET) {
       return res.status(500).json({ message: 'JWT secret not configured' });
     }
@@ -76,6 +77,8 @@ exports.login = async (req, res) => {
       return res.status(500).json({ message: 'JWT refresh secret not configured' });
     }
 
+=======
+>>>>>>> 6eac1b0 (refactor: single jwt to access refresh token, fix: local testing)
     const accessToken = jwt.sign(
       { userId: user.id },
       process.env.JWT_SECRET,

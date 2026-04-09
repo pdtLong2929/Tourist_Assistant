@@ -8,7 +8,11 @@ const app = express();
 
 // Middleware
 app.use(cors({
+<<<<<<< HEAD
   origin: process.env.FRONTEND_URL,
+=======
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+>>>>>>> 6eac1b0 (refactor: single jwt to access refresh token, fix: local testing)
   credentials: true
 }));
 app.use(cookieParser());
