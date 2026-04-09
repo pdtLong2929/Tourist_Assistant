@@ -1,12 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const { register, login, googleLogin, forgotPassword, resetPassword } = require('../controllers/authController');
+const { register, login, googleLogin, logout, refresh, forgotPassword, resetPassword } = require('../controllers/authController');
 const verifyToken = require('../middleware/authMiddleware');
 const User = require('../models/User');
 
 router.post('/register', register);
 router.post('/login', login);
 router.post('/google', googleLogin); 
+router.post('/logout', logout);
+router.post('/refresh', refresh);
 
 router.post('/forgot-password', forgotPassword);
 router.post('/reset-password/:token', resetPassword);
@@ -15,7 +17,7 @@ router.post('/reset-password/:token', resetPassword);
 router.get('/me', verifyToken, async (req, res) => {
   try {
     const user = await User.findByPk(req.user.userId, {
-      attributes: ['id', 'email', 'firstName', 'lastName', 'createdAt'] 
+      attributes: ['id', 'email', 'name', 'createdAt'] 
     });
     
     if (!user) {
