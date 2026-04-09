@@ -68,25 +68,25 @@ exports.login = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
+    if (!process.env.JWT_SECRET) {
+      return res.status(500).json({ message: 'JWT secret not configured' });
+    }
+
+    if (!process.env.JWT_REFRESH_SECRET) {
+      return res.status(500).json({ message: 'JWT refresh secret not configured' });
+    }
+
     const accessToken = jwt.sign(
       { userId: user.id },
       process.env.JWT_SECRET,
       { expiresIn: process.env.JWT_EXPIRES_IN || '15m'}
     );
 
-    if (!process.env.JWT_SECRET) {
-      return res.status(500).json({ message: 'JWT secret not configured' });
-    }
-
     const refreshToken = jwt.sign(
       { userId: user.id },
       process.env.JWT_REFRESH_SECRET,
       { expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d' }
     );
-
-    if (!process.env.JWT_REFRESH_SECRET) {
-      return res.status(500).json({ message: 'JWT refresh secret not configured' });
-    }
 
     user.refreshToken = refreshToken;
     await user.save();
