@@ -253,17 +253,19 @@ exports.forgotPassword = async (req, res) => {
       <p>If you did not request this, please ignore this email and your password will remain unchanged.</p>
     `
     });
+    });
 
     if (error) {
       console.error('Resend API Error:', error);
-      return res.status(400).json({ message: 'Failed to send recovery email' });
+      return res.status(400).json({ message: 'Failed to send recovery email', error: error });
     }
 
     res.status(200).json({ message: 'If that email address is in our database, we will send you an email to reset your password.' });
+    res.status(200).json({ message: 'If that email address is in our database, we will send you an email to reset your password.' });
 
   } catch (error) {
-    console.error('Server crash:', error);
-    res.status(500).json({ message: 'Server error' });
+    console.error(`[ERROR] forgotPassword failure for email ${email}:`, error);
+    res.status(500).json({ message: 'Server error', error: error.message || error });
   }
 };
 
@@ -297,7 +299,7 @@ exports.resetPassword = async (req, res) => {
 
     res.json({ message: 'Cập nhật mật khẩu thành công' });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error when resetting password' });
+    console.error(`[ERROR] resetPassword failure for token ${token}:`, error);
+    res.status(500).json({ message: 'Server error when resetting password', error: error.message || error });
   }
 };
