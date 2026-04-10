@@ -77,6 +77,7 @@ services:
       DB_NAME: ${POSTGRES_DB:-tourist_assistant}
       DB_DIALECT: postgres
       DB_PORT: 5432
+      POSTGRES_URL: postgresql://tourist:tourist_secret@postgres:5432/tourist_assistant
     depends_on:
       postgres:
         condition: service_healthy
