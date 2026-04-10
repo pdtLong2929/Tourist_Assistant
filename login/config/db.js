@@ -8,6 +8,10 @@ if (!process.env.POSTGRES_URL){
   throw new Error('FATAL: POSTGRES_URL is not defined in the environment variables.');
 }
 
+if (!process.env.POSTGRES_URL){
+  throw new Error('FATAL: POSTGRES_URL is not defined in the environment variables.');
+}
+
 const sequelize = process.env.POSTGRES_URL ? 
 new Sequelize(process.env.POSTGRES_URL, {
   dialect: 'postgres',
