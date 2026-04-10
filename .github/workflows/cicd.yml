@@ -133,4 +133,17 @@ jobs:
             --image $DOCKER_TAG \
             --region ${{ env.REGION }} \
             --allow-unauthenticated \
-            --port 3000
+            --port 5036 \
+            --set-env-vars="\
+          NODE_ENV=production,\
+          JWT_EXPIRES_IN=15m,\
+          JWT_REFRESH_EXPIRES_IN=7d,\
+          FRONTEND_URL=https://tourism-frontend-app-367022044809.asia-southeast1.run.app" \
+            --set-secrets="\
+          POSTGRES_URL=POSTGRES_URL:latest,\
+          JWT_SECRET=JWT_SECRET:latest,\
+          JWT_REFRESH_SECRET=JWT_REFRESH_SECRET:latest,\
+          GOOGLE_CLIENT_ID=GOOGLE_CLIENT_ID:latest,\
+          GOOGLE_CLIENT_SECRET=GOOGLE_CLIENT_SECRET:latest,\
+          GOOGLE_REDIRECT_URI=GOOGLE_REDIRECT_URI:latest,\
+          RESEND_API_KEY=RESEND_API_KEY:latest"
