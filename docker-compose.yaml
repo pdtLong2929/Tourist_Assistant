@@ -9,26 +9,18 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - REDIS_ADDR=redis_cache:6379
+      - PORT=8080
       - WEATHER_API_KEY=${WEATHER_API_KEY}
+      - LOCATION_API_KEY=${LOCATION_API_KEY}
+      - REDIS_ADDR=redis_cache:6379
     depends_on:
       - redis_cache
-
-  # auth-service:
-  #   build:
-  #     context: ./login          
-  #     dockerfile: Dockerfile
-  #   container_name: auth-java
-  #   ports:
-  #     - "8081:8081"
-  #   depends_on:
-  #     - mysql_db
 
   redis_cache:
     image: redis:alpine
   
-  mysql_db:
-    image: mysql:8.0
+  postgres_db:
+    image: postgres:latest
     environment:
       MYSQL_DATABASE: auth_db
       MYSQL_ROOT_PASSWORD: root
