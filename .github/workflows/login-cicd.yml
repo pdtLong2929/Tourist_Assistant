@@ -142,11 +142,14 @@ jobs:
             --port 5036 \
             --set-env-vars="\
           NODE_ENV=production,\
-          POSTGRES_URL=${{ secrets.POSTGRES_URL }},\
-          JWT_SECRET=${{ secrets.JWT_SECRET }},\
-          JWT_EXPIRES_IN=1d,\
-          GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }},\
-          GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }},\
-          GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_REDIRECT_URI }},\
-          RESEND_API_KEY=${{ secrets.RESEND_API_KEY }},\
-          FRONTEND_URL=https://tourism-frontend-app-367022044809.asia-southeast1.run.app"
+          JWT_EXPIRES_IN=15m,\
+          JWT_REFRESH_EXPIRES_IN=7d,\
+          FRONTEND_URL=https://tourism-frontend-app-367022044809.asia-southeast1.run.app" \
+            --set-secrets="\
+          POSTGRES_URL=POSTGRES_URL:latest,\
+          JWT_SECRET=JWT_SECRET:latest,\
+          JWT_REFRESH_SECRET=JWT_REFRESH_SECRET:latest,\
+          GOOGLE_CLIENT_ID=GOOGLE_CLIENT_ID:latest,\
+          GOOGLE_CLIENT_SECRET=GOOGLE_CLIENT_SECRET:latest,\
+          GOOGLE_REDIRECT_URI=GOOGLE_REDIRECT_URI:latest,\
+          RESEND_API_KEY=RESEND_API_KEY:latest"
