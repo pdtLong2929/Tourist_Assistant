@@ -1,4 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --cyber-yellow: #fbbf24;
@@ -491,4 +494,51 @@ a {
   50% {
     text-shadow: 0 0 30px var(--cyber-yellow-glow);
   }
+}
+
+/* =========================================
+   HIỆU ỨNG CUỘN TRANG (SCROLL REVEAL)
+   ========================================= */
+.reveal-wrapper {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.8s cubic-bezier(0.165, 0.84, 0.44, 1),
+              transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-wrapper.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =========================================
+   HIỆU ỨNG HERO SECTION (CYBER FOCUS)
+   ========================================= */
+@keyframes cyber-focus-in {
+  0% {
+    filter: blur(15px);
+    opacity: 0;
+    transform: translateY(-30px) scale(1.05);
+  }
+  100% {
+    filter: blur(0px);
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-focus-1 {
+  animation: cyber-focus-in 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  opacity: 0; /* Giữ trạng thái tàng hình trước khi animation chạy */
+}
+
+.animate-focus-2 {
+  animation: cyber-focus-in 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s forwards;
+  opacity: 0;
+}
+
+.animate-focus-3 {
+  animation: cyber-focus-in 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.4s forwards;
+  opacity: 0;
 }
