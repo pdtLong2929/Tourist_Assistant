@@ -5,8 +5,11 @@ on:
   push:
     branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
-
+    branches: [ "main", "ux/ui" ]
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/frontend-cicd.yml'
+      - 'docker-compose.yml'
 env:
   PROJECT_ID: 'touristassistant-29-03-2026'
   REGION: 'asia-southeast1'               
