@@ -23,7 +23,7 @@ app.get('/api/health', (req, res) => {
   res.status(200).send('OK');
 });
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5036;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
