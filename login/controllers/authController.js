@@ -242,20 +242,28 @@ exports.forgotPassword = async (req, res) => {
 
     const mailOptions = {
       to: user.email,
-      from: process.env.EMAIL_USER,
-      subject: 'Yêu cầu khôi phục mật khẩu',
-      text: `Bạn nhận được email này vì bạn (hoặc ai đó) đã yêu cầu đặt lại mật khẩu.\n\n
-      Vui lòng click vào đường link sau hoặc dán vào trình duyệt để hoàn tất quá trình:\n\n
-      ${resetUrl}\n\n
-      Nếu bạn không yêu cầu, vui lòng bỏ qua email này và mật khẩu của bạn sẽ giữ nguyên.\n`
-    };
+      subject: `Tourist Assistant's password restore`,
+      html: `
+      <p>You received this email because you (or someone) requested to reset your password.</p>
+      <p>Please click the link below to complete the process:</p>
+      <a href="${resetUrl}">Reset Password Here</a>
+      <br><br>
+      <p>Or paste this link into your browser:</p>
+      <p>${resetUrl}</p>
+      <p>If you did not request this, please ignore this email and your password will remain unchanged.</p>
+    `
+    });
 
-    await transporter.sendMail(mailOptions);
-    res.json({ message: 'Email khôi phục đã được gửi' });
+    if (error) {
+      console.error('Resend API Error:', error);
+      return res.status(400).json({ message: 'Failed to send recovery email', error: error });
+    }
+
+    res.status(200).json({ message: 'If that email address is in our database, we will send you an email to reset your password.' });
 
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Lỗi server khi gửi email' });
+    console.error(`[ERROR] forgotPassword failure for email ${email}:`, error);
+    res.status(500).json({ message: 'Server error', error: error.message || error });
   }
 };
 
@@ -289,7 +297,7 @@ exports.resetPassword = async (req, res) => {
 
     res.json({ message: 'Cập nhật mật khẩu thành công' });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Lỗi server khi đặt lại mật khẩu' });
+    console.error(`[ERROR] resetPassword failure for token ${token}:`, error);
+    res.status(500).json({ message: 'Server error when resetting password', error: error.message || error });
   }
 };
