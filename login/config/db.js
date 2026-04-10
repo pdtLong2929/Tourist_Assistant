@@ -3,7 +3,7 @@
 
 const { Sequelize } = require('sequelize');
 
-const isProduction = process.env.NODE_ENV === 'production' && !process.env.POSTGRES_URL?.includes('localhost') && !process.env.POSTGRES_URL?.includes('db');
+const isProduction = process.env.NODE_ENV === 'production' && !process.env.POSTGRES_URL?.includes('localhost') && !process.env.POSTGRES_URL?.includes('db') && !process.env.POSTGRES_URL?.includes('@postgres');
 if (!process.env.POSTGRES_URL){
   throw new Error('FATAL: POSTGRES_URL is not defined in the environment variables.');
 }
