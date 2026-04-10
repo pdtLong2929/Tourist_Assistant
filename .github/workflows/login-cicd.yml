@@ -139,7 +139,6 @@ jobs:
             --image $DOCKER_TAG \
             --region ${{ env.REGION }} \
             --allow-unauthenticated \
-            --port 5036 \
             --set-env-vars="\
           NODE_ENV=production,\
           JWT_EXPIRES_IN=15m,\
