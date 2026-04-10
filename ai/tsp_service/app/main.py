@@ -1,0 +1,143 @@
+import torch
+import math
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel, Field
+from typing import List
+import sys
+import os
+
+# Đảm bảo Python tìm thấy các module trong folder
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from utils.functions import load_model
+
+# Khởi tạo FastAPI
+app = FastAPI(
+    title="TSP Optimization API",
+    description="Hệ thống AI tối ưu hóa lộ trình giao hàng thực tế (Hỗ trợ GPS).",
+    version="1.0.0"
+)
+
+# Định nghĩa cấu trúc dữ liệu bằng pydantic
+class Location(BaseModel):
+    id: int
+    x: float = Field(..., description="Tọa độ X hoặc Kinh độ thực tế")
+    y: float = Field(..., description="Tọa độ Y hoặc Vĩ độ thực tế")
+
+class PredictRequest(BaseModel):
+    start_location: Location = Field(..., description="Vị trí bắt đầu của User")
+    destinations: List[Location] = Field(..., min_items=1, description="Các điểm cần đi")
+
+# Tiền xử lý và hậu xử lý tọa độ - Chuẩn hóa về 0.0 - 1.0 và tính tỷ lệ bản đồ
+def normalize_coordinates(points):
+    """Chuẩn hóa GPS thực tế về khoảng 0.0 - 1.0 nhưng GIỮ NGUYÊN TỶ LỆ BẢN ĐỒ (Uniform Scaling)"""
+    xs = [p.x for p in points]
+    ys = [p.y for p in points]
+    min_x, max_x = min(xs), max(xs)
+    min_y, max_y = min(ys), max(ys)
+    
+    range_x = max_x - min_x
+    range_y = max_y - min_y
+    
+    # Khoảng cách lớn nhất để làm hệ số chia chung
+    max_range = max(range_x, range_y)
+    
+    # Tránh lỗi chia cho 0 nếu tất cả các điểm trùng nhau
+    if max_range == 0:
+        max_range = 1.0
+    
+    normalized_list = []
+    for p in points:
+        # Chia cả X và Y cho max_range
+        norm_x = (p.x - min_x) / max_range
+        norm_y = (p.y - min_y) / max_range
+        normalized_list.append([norm_x, norm_y])
+        
+    return normalized_list
+
+def calculate_open_path_distance(indices, points):
+    dist = 0.0
+    for i in range(len(indices) - 1):
+        p1 = points[indices[i]]
+        p2 = points[indices[i+1]]
+        dist += math.sqrt((p1.x - p2.x)**2 + (p1.y - p2.y)**2)
+    return dist
+
+# Nạp model AI từ epoch-99.pt
+MODEL_PATH = "pretrained/epoch-99.pt"
+try:
+    model, _ = load_model(MODEL_PATH)
+    model.eval()
+    MODEL_READY = True
+except Exception as e:
+    print(f"Lỗi khởi tạo model: {e}")
+    MODEL_READY = False
+
+# Endpoints
+
+@app.get("/")
+async def root():
+    """Trả về thông tin giới thiệu ngắn gọn về hệ thống"""
+    return {
+        "system_name": "AI Routing Optimization Service",
+        "description": "API nhận tọa độ GPS bất kỳ, sử dụng AI để tìm lộ trình giao hàng ngắn nhất không quay về điểm xuất phát.",
+        "author": "Nguyen Ha Minh Hien"
+    }
+
+@app.get("/health")
+async def health_check():
+    """Kiểm tra trạng thái hoạt động của hệ thống"""
+    if MODEL_READY:
+        return {"status": "ok", "model_state": "loaded and ready"}
+    else:
+        raise HTTPException(status_code=503, detail="Service Unavailable: Model chưa sẵn sàng.")
+
+@app.post("/predict")
+async def predict(request: PredictRequest):
+    """Nhận dữ liệu, tiền xử lý, gọi AI và trả kết quả JSON"""
+    if not MODEL_READY:
+        raise HTTPException(status_code=503, detail="Model chưa sẵn sàng")
+
+    # Hợp nhất dữ liệu
+    all_points = [request.start_location] + request.destinations
+    
+    # Tiền xử lý (Chuẩn hóa tọa độ) và ép kiểu Tensor
+    norm_coords = normalize_coordinates(all_points)
+    coords = torch.tensor([norm_coords], dtype=torch.float32)
+
+    try:
+        # Suy luận
+        with torch.no_grad():
+            model.set_decode_type("greedy")
+            _, _, pi = model(coords, return_pi=True)
+        
+        tour_indices = pi[0].cpu().numpy().tolist()
+
+        # Hậu xử lý (Xoay mảng & Tìm đường đi mở tốt nhất)
+        start_position_in_tour = tour_indices.index(0)
+        
+        forward_indices = tour_indices[start_position_in_tour:] + tour_indices[:start_position_in_tour]
+        reverse_indices = [forward_indices[0]] + forward_indices[1:][::-1]
+
+        # Tính khoảng cách dựa trên tọa độ  ban đầu
+        dist_forward = calculate_open_path_distance(forward_indices, all_points)
+        dist_reverse = calculate_open_path_distance(reverse_indices, all_points)
+
+        if dist_reverse < dist_forward:
+            final_indices = reverse_indices
+            final_distance = dist_reverse
+        else:
+            final_indices = forward_indices
+            final_distance = dist_forward
+
+        optimized_order = [all_points[i].model_dump() for i in final_indices]
+
+        # Trả về JSON 
+        return {
+            "status": "success",
+            "start_point_id": request.start_location.id,
+            "total_locations": len(all_points),
+            "total_distance": round(final_distance, 4),
+            "optimized_route": optimized_order
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Lỗi trong quá trình suy luận: {str(e)}")
