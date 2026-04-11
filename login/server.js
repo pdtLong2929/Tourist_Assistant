@@ -14,7 +14,6 @@ app.use(cors({
 app.use(cookieParser());
 app.use(express.json());
 
-// Kết nối Database
 connectDB();
 
 // Routes

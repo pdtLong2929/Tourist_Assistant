@@ -1,6 +1,3 @@
-//Tạo kết nối với database
-
-
 const { Sequelize } = require('sequelize');
 
 const isProduction = process.env.NODE_ENV === 'production' && !process.env.POSTGRES_URL?.includes('localhost') && !process.env.POSTGRES_URL?.includes('db') && !process.env.POSTGRES_URL?.includes('@postgres');
@@ -25,10 +22,10 @@ new Sequelize(
   process.env.DB_USER || 'tourist',
   process.env.DB_PASSWORD || 'tourist_secret',
   {
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,       
-    dialect: process.env.DB_DIALECT, 
-    logging: false, 
+    host: process.env.DB_HOST || 'localhost',
+    port: process.env.DB_PORT || 5036,
+    dialect: 'postgres',
+    logging: console.log,
   }
 );
 

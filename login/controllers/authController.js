@@ -1,10 +1,11 @@
-//Các chức năng
-
-
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  process.env.GOOGLE_REDIRECT_URI);
 const crypto = require('crypto');
 const { Resend } = require('resend');
 const resend = new Resend(process.env.RESEND_API_KEY || 're_dummy_key_for_booting');
@@ -14,14 +15,12 @@ exports.register = async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
-    // Thêm { where: ... } vào các hàm find
     let user = await User.findOne({ where: { email } });
     if (user) return res.status(400).json({ message: 'User already exists' });
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Tạo bản ghi mới trong bảng SQL
     user = await User.create({
       name,
       email,
@@ -31,7 +30,7 @@ exports.register = async (req, res) => {
     const accessToken = jwt.sign(
       { userId: user.id },
       process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES_IN }
+      { expiresIn: process.env.JWT_EXPIRES_IN || '15m'}
     );
 
     const refreshToken = jwt.sign(
@@ -57,13 +56,12 @@ exports.register = async (req, res) => {
   }
 };
 
-// Đăng nhập
 exports.login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await User.findOne({ where: { email } });
-    if (!user || !user.password) return res.status(400).json({ message: 'Invalid credentials' });
+    const user = await User.findOne({ where: { email: email } });
+    if (!user) return res.status(400).json({ message: 'Invalid credentials' });
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
@@ -108,7 +106,6 @@ exports.login = async (req, res) => {
   }
 };
 
-// Đăng nhập Google
 exports.googleLogin = async (req, res) => {
   const { tokenId } = req.body;
 
@@ -216,31 +213,29 @@ exports.refresh = async (req, res) => {
 exports.forgotPassword = async (req, res) => {
   const { email } = req.body;
 
+  if (!email || typeof email !== 'string' || !email.includes('@')) {
+    return res.status(400).json({ message: 'Please provide a valid email address.' });
+  }
+
   try {
     const user = await User.findOne({ where: { email } });
-    if (!user) return res.status(404).json({ message: 'Không tìm thấy người dùng với email này' });
+    
+    if (!user) {
+      return res.status(200).json({ message: 'If that email address is in our database, we will send you an email to reset your password.' });
+    }
 
-    // Tạo token ngẫu nhiên
     const resetToken = crypto.randomBytes(20).toString('hex');
     
-    // Lưu token và thời hạn (15 phút) vào Database
-    user.resetPasswordToken = resetToken;
+    const hashedToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+    user.resetPasswordToken = hashedToken;
     user.resetPasswordExpires = Date.now() + 15 * 60 * 1000;
     await user.save();
 
-    // Cấu hình gửi Email
-    const transporter = nodemailer.createTransport({
-      service: 'Gmail',
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
-    });
+    const baseUrl = process.env.FRONTEND_URL || 'https://tourism-frontend-app-367022044809.asia-southeast1.run.app';
+    const resetUrl = `${baseUrl}/reset-password/${resetToken}`;
 
-    // Link hướng người dùng tới trang Frontend (hiện tại mình để URL local của Frontend)
-    const resetUrl = `http://localhost:3000/reset-password/${resetToken}`;
-
-    const mailOptions = {
+    const { data, error } = await resend.emails.send({
+      from: 'Tourist Assistant <noreply@touristassistant.me>', 
       to: user.email,
       subject: `Tourist Assistant's password restore`,
       html: `
@@ -267,35 +262,40 @@ exports.forgotPassword = async (req, res) => {
   }
 };
 
-// Đặt lại mật khẩu mới
 exports.resetPassword = async (req, res) => {
-  const { token } = req.params; // Lấy token từ URL
-  const { newPassword } = req.body; // Mật khẩu mới người dùng nhập
+  const { token } = req.params;
+  const { newPassword } = req.body;
+
+  if (!newPassword || newPassword.length < 8 || newPassword.length > 100) {
+    return res.status(400).json({ message: 'Password must be between 8 and 100 characters' });
+  }
+
+  if (!token || token.length !== 40) {
+    return res.status(400).json({ message: 'Invalid token format' });
+  }
 
   try {
-    // Tìm user có token khớp và token chưa hết hạn (lớn hơn thời gian hiện tại)
-    const { Op } = require('sequelize');
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
     const user = await User.findOne({
       where: {
-        resetPasswordToken: token,
-        resetPasswordExpires: { [Op.gt]: Date.now() } // Lớn hơn (Greater Than) Date.now()
+        resetPasswordToken: hashedToken,
+        resetPasswordExpires: { [Op.gt]: new Date() } 
       }
     });
 
     if (!user) {
-      return res.status(400).json({ message: 'Token không hợp lệ hoặc đã hết hạn' });
+      return res.status(400).json({ message: 'Invalid or expired token' });
     }
 
-    // Mã hóa mật khẩu mới
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(newPassword, salt);
-
-    // Xóa token đi vì đã dùng xong
+    
     user.resetPasswordToken = null;
     user.resetPasswordExpires = null;
     await user.save();
 
-    res.json({ message: 'Cập nhật mật khẩu thành công' });
+    res.json({ message: 'Successfully updated password' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error when resetting password' });
