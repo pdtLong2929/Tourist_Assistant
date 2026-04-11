@@ -31,3 +31,6 @@ Thumbs.db
 
 # Project-specific temporary files
 *.txt
+
+# Agents
+/.agents

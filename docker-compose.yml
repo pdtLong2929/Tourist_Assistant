@@ -57,6 +57,35 @@ services:
     networks:
       - ta_network
 
+  # ─── Express Login API ────────────────────────────────────────────────
+  login:
+    build:
+      context: ./login
+      dockerfile: Dockerfile
+    container_name: ta_login
+    restart: unless-stopped
+    ports:
+      - "5036:5036"
+    env_file:
+      - ./login/.env
+    environment:
+      NODE_ENV: production
+      PORT: 5036
+      DB_HOST: postgres
+      DB_USER: ${POSTGRES_USER:-tourist}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-tourist_secret}
+      DB_NAME: ${POSTGRES_DB:-tourist_assistant}
+      DB_DIALECT: postgres
+      DB_PORT: 5432
+      POSTGRES_URL: postgresql://tourist:tourist_secret@postgres:5432/tourist_assistant
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+    networks:
+      - ta_network
+
   # ─── Next.js Frontend ─────────────────────────────────────────────────
   frontend:
     build:
