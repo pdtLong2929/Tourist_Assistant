@@ -1,10 +1,10 @@
-# Web Framework & API Validation
-fastapi
-pydantic
-uvicorn
+# Web Framework
+fastapi==0.110.0
+uvicorn==0.27.1
+pydantic==2.6.3
 
-# AI Model & Matrix Operations
-torch
+# Deep Learning (Core Model)
+torch==2.2.1
 
-# Client Testing (Dùng cho test_api.py)
-requests
+# Utils (Cho Colab / Pinggy)
+nest-asyncio==1.6.0

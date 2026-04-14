@@ -1,0 +1,17 @@
+# Web Framework
+fastapi==0.110.0
+uvicorn==0.27.1
+pydantic==2.6.3
+
+# AI Model & Data Processing
+cornac==2.0.0
+numpy==1.26.4
+pandas==2.2.1
+
+# Generative AI & Environment
+groq==0.5.0
+python-dotenv==1.0.1
+
+# Utils (Cần thiết cho việc test trên Colab)
+nest-asyncio==1.6.0
+tqdm==4.66.2

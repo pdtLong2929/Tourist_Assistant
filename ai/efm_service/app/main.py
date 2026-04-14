@@ -10,12 +10,10 @@ from groq import Groq
 # Khởi tạo FastAPI App
 app = FastAPI(title="Tourist Assistant AI - EFM Service", version="1.1")
 
-# ==========================================================
 # 1. CẤU HÌNH ĐƯỜNG DẪN (RELATIVE PATHS)
-# ==========================================================
-# Lấy đường dẫn thư mục chứa file app.py hiện tại
+# Lấy đường dẫn thư mục chứa file app.py 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-# Đi đến thư mục data (giả định cấu trúc: ai/efm_service/app.py và ai/efm_service/data/)
+# Đi đến thư mục data 
 DATA_DIR = os.path.join(os.path.dirname(BASE_DIR), "data")
 
 # Các biến toàn cục để lưu trữ Model và Mapping
@@ -38,9 +36,9 @@ async def load_resources():
         iid_map = mapping['iid_map']
         idx_to_iid = {v: k for k, v in iid_map.items()}
         
-        # 2. Nạp Mô hình EFM (Cornac sẽ tự tìm file .meta và .pkl)
+        # 2. Nạp Mô hình EFM 
         model_base_dir = os.path.join(DATA_DIR, 'efm_model_final')
-        # Tìm file .pkl mới nhất trong thư mục
+        # Tìm file .pkl 
         pkl_files = glob.glob(f"{model_base_dir}/**/*.pkl", recursive=True)
         if not pkl_files:
             raise FileNotFoundError("Không tìm thấy file model .pkl trong thư mục data!")
@@ -58,12 +56,10 @@ async def load_resources():
         print(f"LỖI KHỞI TẠO HỆ THỐNG: {str(e)}")
 
 # Khởi tạo Groq Client (Sử dụng biến môi trường để bảo mật)
-# Bạn cần chạy lệnh: export GROQ_API_KEY='key_cua_ban' trước khi khởi động server
+# Chạy lệnh: export GROQ_API_KEY='key' trước khi khởi động server
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
-# ==========================================================
 # 2. ĐỊNH NGHĨA SCHEMA DỮ LIỆU
-# ==========================================================
 class PredictionRequest(BaseModel):
     user_id: str
     item_ids: List[str]
@@ -72,9 +68,7 @@ class RecommendRequest(BaseModel):
     user_id: str
     top_k: int = 5
 
-# ==========================================================
 # 3. HÀM SINH LỜI GIẢI THÍCH (LLM)
-# ==========================================================
 def generate_ai_explanation(item_id: str, score: float):
     pros, cons = [], []
     prefix = f"{item_id}_"
@@ -107,9 +101,7 @@ def generate_ai_explanation(item_id: str, score: float):
     except:
         return "Hiện chưa có nhận xét chi tiết cho địa điểm này."
 
-# ==========================================================
 # 4. CÁC ENDPOINT API
-# ==========================================================
 
 @app.get("/")
 def health_check():
