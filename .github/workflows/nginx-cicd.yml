@@ -36,6 +36,7 @@ jobs:
       - name: Validate Nginx config syntax
         run: |
           docker run --rm \
+            -e PORT="80" \
             -e FRONTEND_URL="http://frontend:3000" \
             -e LOGIN_API_URL="http://login:5036" \
             -e SSL_TOGGLE="on" \
@@ -43,7 +44,7 @@ jobs:
             -e DNS_RESOLVER="8.8.8.8" \
             -v ${{ github.workspace }}/nginx/nginx.conf:/etc/nginx/nginx.conf:ro \
             -v ${{ github.workspace }}/nginx/conf.d/default.conf:/etc/nginx/default.conf.template:ro \
-            nginx:alpine sh -c "apk add --no-cache gettext && envsubst '\${LOGIN_API_URL} \${FRONTEND_URL} \${SSL_TOGGLE} \${HOST_HEADER} \${DNS_RESOLVER}' < /etc/nginx/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -t"
+            nginx:alpine sh -c "apk add --no-cache gettext && envsubst '\${PORT} \${LOGIN_API_URL} \${FRONTEND_URL} \${SSL_TOGGLE} \${HOST_HEADER} \${DNS_RESOLVER}' < /etc/nginx/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -t"
         continue-on-error: false
 
   # ── Job 2 : Docker Compose Integration Test ──────────────────────────────
