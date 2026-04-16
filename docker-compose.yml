@@ -122,7 +122,7 @@ services:
       LOGIN_API_URL: ${LOGIN_API_URL:-http://login:5036}
       SSL_TOGGLE: ${SSL_TOGGLE:-on}
       HOST_HEADER: ${HOST_HEADER:-localhost}
-      DNS_RESOLVER: ${DNS_RESOLVER:-8.8.8.8}
+      DNS_RESOLVER: ${DNS_RESOLVER:-127.0.0.11}
     depends_on:
       - frontend
       - login
