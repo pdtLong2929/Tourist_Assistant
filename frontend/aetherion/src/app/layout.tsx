@@ -11,10 +11,15 @@ function Footer() {
   return (
     <footer
       style={{
-        background: "var(--cyber-surface)",
-        borderTop: "1px solid var(--cyber-border)",
+        background: "rgba(15, 23, 42, 0.75)",
+        backdropFilter: "blur(24px)",
+        WebkitBackdropFilter: "blur(24px)",
+        borderTop: "1px solid rgba(52, 229, 235, 0.3)",
+        boxShadow: "0 -20px 50px rgba(0, 0, 0, 0.6), inset 0 20px 20px -20px rgba(52, 229, 235, 0.1)",
         padding: "3rem 2rem 2rem",
         marginTop: "auto",
+        position: "relative",
+        zIndex: 10,
       }}
     >
       <div
@@ -31,11 +36,9 @@ function Footer() {
         {/* Brand Info */}
         <div style={{ maxWidth: "300px" }}>
           <div
+            className="glitch-yellow"
             style={{
-              fontFamily: "var(--font-header)",
-              fontSize: "1.1rem",
-              fontWeight: "700",
-              color: "var(--cyber-yellow)",
+              fontSize: "1.5rem",
               marginBottom: "0.75rem",
             }}
           >
@@ -59,21 +62,18 @@ function Footer() {
               color: "var(--text-muted)",
             }}
           >
-            © 2024 Tourist AI. All rights reserved.
+            © 2026 Tourist AI. All rights reserved.
           </div>
         </div>
 
         {/* Quick Links */}
         <div>
           <h4
+            className="module-label"
             style={{
-              fontFamily: "var(--font-header)",
-              fontSize: "0.9rem",
-              fontWeight: "700",
-              color: "var(--text-main)",
+              color: "var(--cyber-blue)",
               marginBottom: "1rem",
-              textTransform: "uppercase",
-              letterSpacing: "0.05em",
+              fontSize: "0.9rem",
             }}
           >
             Quick Links
@@ -103,14 +103,11 @@ function Footer() {
         {/* Legal */}
         <div>
           <h4
+            className="module-label"
             style={{
-              fontFamily: "var(--font-header)",
-              fontSize: "0.9rem",
-              fontWeight: "700",
-              color: "var(--text-main)",
+              color: "var(--cyber-purple)",
               marginBottom: "1rem",
-              textTransform: "uppercase",
-              letterSpacing: "0.05em",
+              fontSize: "0.9rem",
             }}
           >
             Legal
@@ -137,14 +134,11 @@ function Footer() {
         {/* System Status */}
         <div>
           <h4
+            className="module-label"
             style={{
-              fontFamily: "var(--font-header)",
-              fontSize: "0.9rem",
-              fontWeight: "700",
-              color: "var(--text-main)",
+              color: "var(--cyber-yellow)",
               marginBottom: "1rem",
-              textTransform: "uppercase",
-              letterSpacing: "0.05em",
+              fontSize: "0.9rem",
             }}
           >
             Status
@@ -179,7 +173,7 @@ function Footer() {
       </div>
 
       {/* Accent Line */}
-      <div className="accent-line" style={{ margin: "2rem 0 1rem" }} />
+      <div className="cyber-bar" style={{ margin: "2rem auto 1rem", width: "100%" }} />
 
       <div
         style={{
