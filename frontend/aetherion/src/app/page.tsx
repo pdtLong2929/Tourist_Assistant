@@ -7,20 +7,92 @@ export default function LandingPage() {
   return (
     <main
       style={{
-        padding: "4rem 2rem",
-        maxWidth: "1400px",
-        margin: "0 auto",
+        position: "relative",
+        minHeight: "100vh",
+        background: "var(--cyber-black)",
+        overflowX: "hidden",
       }}
     >
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            /* BOOT SEQUENCE ANIMATIONS */
+            .map-fade-in {
+              animation: map-reveal 1.5s ease-out forwards;
+              opacity: 0;
+            }
+            @keyframes map-reveal { to { opacity: 1; } }
+
+            .card-drop-in {
+              animation: drop-bounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+              opacity: 0;
+              transform: translateY(-50px) scale(0.95);
+            }
+            @keyframes drop-bounce {
+              to { opacity: 1; transform: translateY(0) scale(1); }
+            }
+
+            @keyframes grid-pan {
+              from { background-position: 0 0; }
+              to { background-position: 0 80px; }
+            }
+
+            @keyframes scanning-laser {
+              0% { top: -10%; opacity: 0; }
+              10% { opacity: 1; }
+              90% { opacity: 1; }
+              100% { top: 110%; opacity: 0; }
+            }
+
+            .hud-glass-panel {
+              background: rgba(15, 23, 42, 0.65);
+              backdrop-filter: blur(24px);
+              -webkit-backdrop-filter: blur(24px);
+              border: 1px solid rgba(52, 229, 235, 0.3);
+              box-shadow: 0 0 50px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(52, 229, 235, 0.1);
+              border-radius: 16px;
+            }
+          `,
+        }}
+      />
+
+      {/* BACKGROUND 3D GRID & SCANNER */}
+      <div className="map-fade-in" style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none" }}>
+        {/* Sky / deep gradient */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, #0f172a 0%, #1e293b 100%)", opacity: 0.95 }} />
+
+        {/* Global Laser Scan Line */}
+        <div style={{ position: "absolute", left: 0, right: 0, height: "4px", background: "var(--cyber-blue)", boxShadow: "0 0 20px 5px var(--cyber-blue-glow)", animation: "scanning-laser 6s linear infinite", zIndex: 5 }} />
+
+        {/* Animated 3D Grid */}
+        <div style={{ position: "absolute", inset: "-50%", backgroundImage: "linear-gradient(rgba(52, 229, 235, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(52, 229, 235, 0.1) 1px, transparent 1px)", backgroundSize: "80px 80px", animation: "grid-pan 4s linear infinite", transform: "perspective(1000px) rotateX(65deg) scale(1.2)", transformOrigin: "center top", zIndex: 1 }} />
+
+        {/* Ambient Glows */}
+        <div style={{ position: "absolute", top: "25%", left: "-5rem", width: "30rem", height: "30rem", borderRadius: "50%", opacity: 0.2, filter: "blur(80px)", background: "radial-gradient(circle, var(--cyber-blue) 0%, transparent 70%)" }} />
+        <div style={{ position: "absolute", bottom: "10%", right: "-5rem", width: "30rem", height: "30rem", borderRadius: "50%", opacity: 0.2, filter: "blur(80px)", background: "radial-gradient(circle, var(--cyber-purple) 0%, transparent 70%)" }} />
+      </div>
+
+      {/* FOREGROUND CONTENT */}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 10,
+          padding: "4rem 2rem",
+          maxWidth: "1400px",
+          margin: "0 auto",
+        }}
+      >
       {/* Hero Section - Clear & Inviting */}
       <section
+        className="card-drop-in hud-glass-panel"
         style={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           textAlign: "center",
           marginBottom: "6rem",
-          paddingTop: "2rem",
+          padding: "3rem 2rem",
+          marginTop: "1rem",
         }}
       >
         {/* LỚP NGOÀI: Chỉ chịu trách nhiệm làm hiệu ứng rớt xuống và rõ dần */}
@@ -325,11 +397,9 @@ export default function LandingPage() {
       {/* How It Works - Simple Steps */}
       <RevealOnScroll delay={0}>
         <section
+          className="hud-glass-panel"
           style={{
             padding: "4rem 2rem",
-            background: "var(--cyber-surface)",
-            borderRadius: "20px",
-            border: "1px solid var(--cyber-border)",
             marginBottom: "5rem",
           }}
         >
@@ -423,13 +493,10 @@ export default function LandingPage() {
       {/* CTA Section */}
       <RevealOnScroll delay={100}>
         <section
+          className="hud-glass-panel"
           style={{
             textAlign: "center",
             padding: "4rem 2rem",
-            background:
-              "linear-gradient(135deg, var(--cyber-yellow-dim) 0%, var(--cyber-blue-dim) 100%)",
-            borderRadius: "20px",
-            border: "1px solid var(--cyber-border)",
           }}
         >
           <h2
@@ -464,6 +531,7 @@ export default function LandingPage() {
           </button>
         </section>
       </RevealOnScroll>
+      </div>
     </main>
   );
 }

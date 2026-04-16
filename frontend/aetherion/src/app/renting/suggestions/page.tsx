@@ -9,300 +9,396 @@ import {
   BrainCircuit,
   Database,
   Fingerprint,
+  Activity,
+  ShieldCheck,
+  Zap,
+  Check,
+  TrendingUp,
+  Gauge,
+  Loader2,
 } from "lucide-react";
 
 export default function RentingSuggestion() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
+  const [mounted, setMounted] = useState(false);
+  const [floatingIcons, setFloatingIcons] = useState<any[]>([]);
+  const [inputValue, setInputValue] = useState("");
+  const [matchProgress, setMatchProgress] = useState(0);
 
-  // State lưu trữ các icon rơi
-  const [floatingIcons, setFloatingIcons] = useState<
-    Array<{
-      id: number;
-      left: string;
-      durationFall: string;
-      delay: string;
-      Icon: any;
-      size: number;
-    }>
-  >([]);
 
-  // Danh sách các logo/icon liên quan đến AI
+
   const aiIcons = [Cpu, Network, BrainCircuit, Database, Fingerprint, Sparkles];
 
   useEffect(() => {
-    // Tạo 20 icon ngẫu nhiên trên client
-    const generatedIcons = Array.from({ length: 20 }).map((_, i) => ({
+    setMounted(true);
+
+
+
+    const generatedIcons = Array.from({ length: 25 }).map((_, i) => ({
       id: i,
       left: `${Math.random() * 100}vw`,
-      durationFall: `${Math.random() * 15 + 10}s`, // Tốc độ rơi chậm: 10s-25s
-      delay: `-${Math.random() * 15}s`,
-      Icon: aiIcons[Math.floor(Math.random() * aiIcons.length)], // Chọn icon ngẫu nhiên
-      size: Math.floor(Math.random() * 20) + 16, // Kích thước ngẫu nhiên: 16px - 36px
+      durationFall: `${Math.random() * 20 + 15}s`,
+      delay: `-${Math.random() * 20}s`,
+      Icon: aiIcons[Math.floor(Math.random() * aiIcons.length)],
+      size: Math.floor(Math.random() * 24) + 14,
     }));
     setFloatingIcons(generatedIcons);
   }, []);
 
   const handleSearch = () => {
+    if (!inputValue.trim()) return;
     setLoading(true);
+    setResult(null);
+    setMatchProgress(0);
+
+    const progressInterval = setInterval(() => {
+      setMatchProgress((prev) =>
+        prev >= 95 ? (clearInterval(progressInterval), 95) : prev + 5,
+      );
+    }, 100);
+
     setTimeout(() => {
+      clearInterval(progressInterval);
+      setMatchProgress(100);
       setResult({
         vehicle: "Cyber SUV X",
+        category: "Premium All-Terrain",
         reason:
-          "AWD capabilities strictly match the required terrain for Snowy Aspen based on the safety requirements.",
+          "Advanced AWD system with terrain response control matches your highland requirements. Vehicle equipped with adaptive suspension for Da Lat's mountainous roads.",
         matchScore: 98,
+        features: [
+          { label: "Terrain Match", score: 99 },
+          { label: "Weather Adapt", score: 95 },
+          { label: "Comfort Level", score: 98 },
+          { label: "Safety Rating", score: 97 },
+        ],
+        specs: {
+          power: "450 HP",
+          range: "500 km",
+          seats: "7",
+          drivetrain: "Intelligent AWD",
+        },
       });
       setLoading(false);
-    }, 1500);
+    }, 2500);
   };
+
+  if (!mounted) return null;
+
+
 
   return (
     <>
-      <style>
-        {`
-          @keyframes cascade-icons {
-            0% { top: -10%; transform: rotate(0deg); }
-            100% { top: 110%; transform: rotate(360deg); }
-          }
-          .floating-ai-icons-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-            z-index: 0;
-            pointer-events: none;
-          }
-          .cyber-floating-icon {
-            position: absolute;
-            color: var(--cyber-blue, #34e5eb);
-            opacity: 0.12;
-            animation-name: cascade-icons;
-            animation-timing-function: linear;
-            animation-iteration-count: infinite;
-          }
-        `}
-      </style>
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+        @keyframes cascade-icons { 0% { top: -10%; transform: rotate(0deg); opacity: 0.08; } 100% { top: 110%; transform: rotate(360deg); opacity: 0; } }
+        @keyframes scan-line { 0% { top: 0%; opacity: 0; } 50% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .floating-ai-icons-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; overflow: hidden; z-index: 0; pointer-events: none; }
+        .cyber-floating-icon { position: absolute; color: var(--cyber-blue); animation: cascade-icons linear infinite; }
+        
+        /* Giữ lại class reveal cho chữ vì nó hoạt động ổn ( Header, Badges) */
+        .reveal-text { opacity: 0; animation: reveal-up 1s forwards; }
+        @keyframes reveal-up { to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+        
+        .scanning-card::after { content: ""; position: absolute; left: 0; width: 100%; height: 3px; background: var(--cyber-blue); box-shadow: 0 0 20px var(--cyber-blue); animation: scan-line 2s linear infinite; z-index: 5; }
+        
+        @keyframes cyber-pulse {
+          0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.4); }
+          70% { box-shadow: 0 0 0 15px rgba(251, 191, 36, 0); }
+          100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
+        }
+        .btn-ready { animation: cyber-pulse 2s infinite; }
+        .btn-disabled { opacity: 0.5; cursor: not-allowed !important; filter: grayscale(100%); }
+      `,
+        }}
+      />
 
-      {/* Vùng chứa logo/icon rơi */}
       <div className="floating-ai-icons-container">
-        {floatingIcons.map((item) => {
-          const IconComponent = item.Icon;
-          return (
-            <div
-              key={item.id}
-              className="cyber-floating-icon"
-              style={{
-                left: item.left,
-                animationDuration: item.durationFall,
-                animationDelay: item.delay,
-              }}
-            >
-              <IconComponent size={item.size} />
-            </div>
-          );
-        })}
+        {floatingIcons.map((item) => (
+          <div
+            key={item.id}
+            className="cyber-floating-icon"
+            style={{
+              left: item.left,
+              animationDuration: item.durationFall,
+              animationDelay: item.delay,
+            }}
+          >
+            <item.Icon size={item.size} />
+          </div>
+        ))}
       </div>
 
-      {/* Nội dung chính của giao diện */}
       <div
         style={{
-          padding: "3rem 2rem",
-          maxWidth: "900px",
+          padding: "4rem 2rem",
+          maxWidth: "1100px",
           margin: "0 auto",
           position: "relative",
           zIndex: 1,
         }}
       >
-        <h1
-          className="glitch-yellow"
+        {/* HEADER SECTION - CHỮ THÌ DÙNG CLASS NHƯ CŨ (VÌ ÔN RỒI) */}
+        <header
+          className="reveal-text"
           style={{
             textAlign: "center",
-            fontSize: "2.8rem",
-            marginBottom: "0.5rem",
-            textShadow: "0 0 30px var(--cyber-yellow-glow)",
+            marginBottom: "4rem",
+            animationDelay: "0.1s",
           }}
         >
-          AI CONCIERGE
-        </h1>
-        <p
-          style={{
-            textAlign: "center",
-            color: "var(--text-secondary)",
-            fontSize: "1.1rem",
-            marginBottom: "3rem",
-          }}
-        >
-          Deterministic vehicle matching • Real-time terrain &amp; weather
-          analysis
-        </p>
-
-        <div className="edgerunner-card" style={{ padding: "2rem" }}>
-          <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-            <div style={{ flex: 1, position: "relative" }}>
-              <MapPin
-                size={20}
-                style={{
-                  position: "absolute",
-                  left: "18px",
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                  color: "var(--cyber-blue)",
-                }}
-              />
-              <input
-                type="text"
-                placeholder="E.g., I am taking 4 people to the snowy mountains of Aspen"
-                style={{
-                  width: "100%",
-                  padding: "1rem 1rem 1rem 52px",
-                  background: "rgba(255,255,255,0.06)",
-                  border: "1px solid var(--cyber-border)",
-                  color: "var(--text-main)",
-                  borderRadius: "12px",
-                  fontSize: "1.05rem",
-                  outline: "none",
-                }}
-              />
-            </div>
-            <button
-              className="cyber-button"
-              onClick={handleSearch}
-              disabled={loading}
+          <div className="mb-6">
+            <div
+              className="inline-flex items-center gap-3 mb-4"
               style={{
-                padding: "1rem 2.5rem",
-                fontSize: "1.1rem",
-                whiteSpace: "nowrap",
+                padding: "0.75rem 2rem",
+                background: "rgba(52,229,235,0.1)",
+                border: "1px solid rgba(52,229,235,0.3)",
+                borderRadius: "50px",
               }}
             >
-              {loading ? "ANALYZING..." : "ANALYZE"}
-            </button>
+              <BrainCircuit size={28} color="var(--cyber-blue)" />
+              <span
+                className="font-header text-xl font-bold"
+                style={{ color: "var(--cyber-blue)" }}
+              >
+                AI CONCIERGE
+              </span>
+            </div>
+          </div>
+          <h1
+            className="glitch-yellow"
+            style={{
+              fontSize: "clamp(2.5rem, 6vw, 4rem)",
+              marginBottom: "1.5rem",
+              textShadow: "0 0 40px var(--cyber-yellow-glow)",
+              lineHeight: 1.2,
+            }}
+          >
+            INTELLIGENT VEHICLE
+            <br />
+            MATCHING SYSTEM
+          </h1>
+
+          {/* MỚI: Đoạn mô tả nhỏ về AI (Reveal sau 0.2s) */}
+          <p
+            className="reveal-text"
+            style={{
+              fontSize: "1.2rem",
+              color: "var(--text-secondary)",
+              maxWidth: "700px",
+              margin: "0 auto 2.5rem",
+              lineHeight: 1.7,
+              animationDelay: "0.2s",
+            }}
+          >
+            Neural network-powered recommendation engine analyzing terrain,
+            weather, and your preferences in real-time
+          </p>
+
+          {/* BADGES CỦA ÔNG (MÀ ÔNG NÓI HIỆN ĐƯỢC THÌ GIỮ NGUYÊN) - Reveal sau 0.3s */}
+          <div
+            className="reveal-text"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              flexWrap: "wrap",
+              gap: "1rem",
+              animationDelay: "0.3s",
+            }}
+          >
+            {[
+              {
+                icon: Activity,
+                label: "NEURAL v4.2.0",
+                color: "var(--cyber-blue)",
+              },
+              {
+                icon: ShieldCheck,
+                label: "TERRAIN ACTIVE",
+                color: "var(--cyber-green)",
+              },
+              {
+                icon: Zap,
+                label: "ATMOSPHERIC SYNC",
+                color: "var(--cyber-yellow)",
+              },
+            ].map((item, i) => (
+              <div
+                key={i}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  padding: "8px 16px",
+                  background: "rgba(30,41,59,0.6)",
+                  border: `1px solid ${item.color}40`,
+                  borderRadius: "8px",
+                  color: "var(--text-secondary)",
+                  backdropFilter: "blur(10px)",
+                }}
+              >
+                <item.icon size={16} color={item.color} />
+                <span>{item.label}</span>
+              </div>
+            ))}
+          </div>
+        </header>
+
+        {/* SEARCH CARD */}
+        <div className="reveal-text" style={{ animationDelay: "0.4s", zIndex: 10, position: "relative" }}>
+          <div
+            className={`edgerunner-card ${loading ? "scanning-card" : ""}`}
+            style={{
+              padding: "2.5rem",
+              position: "relative",
+              overflow: "hidden",
+            }}
+          >
+            <div
+              className="module-label mb-3"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                fontSize: "0.85rem",
+              }}
+            >
+              <MapPin size={16} color="var(--cyber-blue)" /> DESCRIBE YOUR
+              JOURNEY
+            </div>
+            <div
+              style={{ display: "flex", gap: "1rem", alignItems: "stretch" }}
+            >
+              <div style={{ flex: 1, position: "relative" }}>
+                <Sparkles
+                  size={20}
+                  style={{
+                    position: "absolute",
+                    left: "20px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    color: "var(--cyber-yellow)",
+                    opacity: inputValue ? 1 : 0.5,
+                  }}
+                />
+                <input
+                  type="text"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  placeholder="E.g., I need a luxury SUV for a trip to the Da Lat highlands..."
+                  style={{
+                    width: "100%",
+                    padding: "1.4rem 1.5rem 1.4rem 55px",
+                    background: "rgba(15,23,42,0.8)",
+                    border: "2px solid var(--cyber-border)",
+                    color: "var(--text-main)",
+                    borderRadius: "12px",
+                    fontSize: "1.1rem",
+                    outline: "none",
+                  }}
+                  onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+                />
+              </div>
+              <button
+                className={`cyber-button ${!inputValue.trim() || loading ? "btn-disabled" : "btn-ready"}`}
+                onClick={handleSearch}
+                disabled={loading || !inputValue.trim()}
+                style={{
+                  padding: "1.4rem 3rem",
+                  fontSize: "1.1rem",
+                  minWidth: "200px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "10px",
+                  transition: "all 0.4s ease",
+                }}
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="animate-spin" size={20} />
+                    <span>PROCESSING</span>
+                  </>
+                ) : (
+                  <>
+                    <Cpu size={20} className={inputValue.trim() ? "text-slate-900" : ""} />
+                    <span>ANALYZE</span>
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </div>
 
-        {loading && (
-          <div
-            className="edgerunner-card"
-            style={{
-              marginTop: "2.5rem",
-              textAlign: "center",
-              padding: "2rem",
-            }}
-          >
-            <Sparkles
-              size={28}
-              className="status-active"
-              style={{ marginBottom: "1rem" }}
-            />
-            <p
-              className="module-label"
-              style={{ fontSize: "1.1rem", marginBottom: "0.5rem" }}
-            >
-              AI MATCHING IN PROGRESS
-            </p>
-            <p style={{ color: "var(--text-secondary)" }}>
-              Analyzing terrain • Weather • Safety requirements • Vehicle
-              database...
-            </p>
-          </div>
-        )}
-
+        {/* RESULT CARD */}
         {result && !loading && (
-          /* Bọc toàn bộ vào một thẻ div có position relative để nhãn absolute không bị cắt */
-          <div style={{ position: "relative", marginTop: "2.5rem" }}>
-            {/* Nhãn đưa ra khỏi thẻ edgerunner-card */}
+          <div className="reveal-text" style={{ marginTop: "3rem", animationDelay: "0s" }}>
             <div
+              className="edgerunner-card"
               style={{
-                position: "absolute",
-                top: "-14px",
-                left: "2rem",
-                background: "var(--cyber-yellow)",
-                color: "var(--cyber-black)",
-                padding: "4px 20px",
-                borderRadius: "9999px",
-                fontFamily: "var(--font-header)",
-                fontSize: "0.95rem",
-                fontWeight: "700",
-                boxShadow: "0 0 25px var(--cyber-yellow-glow)",
-                zIndex: 10,
+                border: "1px solid var(--cyber-yellow)",
+                padding: "2rem",
               }}
             >
-              TOP MATCH • {result.matchScore}%
-            </div>
-
-            <div className="edgerunner-card">
               <div
-                style={{
-                  display: "flex",
-                  gap: "2rem",
-                  alignItems: "center",
-                }}
+                style={{ display: "flex", alignItems: "center", gap: "2rem" }}
               >
+                {/* Logo container: Thu nhỏ và căn giữa */}
                 <div
                   style={{
-                    width: 110,
-                    height: 110,
-                    background: "rgba(251,191,36,0.15)",
-                    borderRadius: "20px",
+                    flexShrink: 0,
+                    width: "80px",
+                    height: "80px",
+                    background: "rgba(251,191,36,0.1)",
+                    borderRadius: "16px",
+                    border: "1px solid var(--cyber-yellow)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    boxShadow: "0 0 40px var(--cyber-yellow-glow)",
-                    flexShrink: 0,
+                    boxShadow: "0 0 20px var(--cyber-yellow-glow)",
                   }}
                 >
-                  <Car size={64} color="var(--cyber-yellow)" />
+                  <Car size={40} color="var(--cyber-yellow)" />
                 </div>
 
+                {/* Text Content: Căn chỉnh thẳng hàng với Logo */}
                 <div style={{ flex: 1 }}>
+                  <div
+                    className="module-label"
+                    style={{
+                      color: "var(--cyber-yellow)",
+                      marginBottom: "4px",
+                    }}
+                  >
+                    OPTIMAL MATCH FOUND
+                  </div>
                   <h2
                     style={{
+                      fontSize: "2.2rem",
+                      color: "white",
+                      fontWeight: "bold",
                       margin: 0,
-                      fontSize: "2rem",
-                      color: "var(--cyber-yellow)",
                     }}
                   >
                     {result.vehicle}
                   </h2>
-                  <p className="module-label" style={{ marginTop: "4px" }}>
-                    RECOMMENDED BY AI CONCIERGE
-                  </p>
-
-                  <div
+                  <p
                     style={{
-                      marginTop: "1.5rem",
-                      padding: "1.25rem",
-                      background: "rgba(52,229,235,0.08)",
-                      borderRadius: "12px",
-                      borderLeft: "4px solid var(--cyber-blue)",
+                      color: "var(--text-secondary)",
+                      marginTop: "8px",
+                      fontSize: "1.05rem",
+                      lineHeight: 1.5,
                     }}
                   >
-                    <div
-                      className="module-label"
-                      style={{ marginBottom: "8px" }}
-                    >
-                      WHY THIS VEHICLE?
-                    </div>
-                    <p
-                      style={{
-                        color: "var(--text-secondary)",
-                        lineHeight: 1.5,
-                        margin: 0,
-                      }}
-                    >
-                      {result.reason}
-                    </p>
-                  </div>
+                    {result.reason}
+                  </p>
                 </div>
               </div>
-
-              <button
-                className="cyber-button"
-                style={{ width: "100%", marginTop: "2rem" }}
-              >
-                BOOK THIS VEHICLE NOW
-              </button>
             </div>
           </div>
         )}
