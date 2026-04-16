@@ -90,7 +90,7 @@ jobs:
             docker compose logs nginx
             docker compose logs login
             exit 1
-          if [ "$STATUS" -ge 404]; then
+          elif [ "$STATUS" -ge 404 ]; then
             echo "Nginx proxy fails to reverse proxy to login API"
             docker compose logs nginx
             docker compose logs login
