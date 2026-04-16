@@ -105,25 +105,94 @@ export default function TourJudging() {
       {/* =========================================
           BACKGROUND 3D GRID & SCANNER
           ========================================= */}
-      <div className="map-fade-in" style={{ position: "absolute", inset: 0, zIndex: 0 }}>
+      <div
+        className="map-fade-in"
+        style={{ position: "absolute", inset: 0, zIndex: 0 }}
+      >
         {/* Sky / deep gradient */}
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, #0f172a 0%, #1e293b 100%)", opacity: 0.95 }} />
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "linear-gradient(180deg, #0f172a 0%, #1e293b 100%)",
+            opacity: 0.95,
+          }}
+        />
 
         {/* Global Laser Scan Line */}
-        <div style={{ position: "absolute", left: 0, right: 0, height: "4px", background: "var(--cyber-blue)", boxShadow: "0 0 20px 5px var(--cyber-blue-glow)", animation: "scanning-laser 6s linear infinite", zIndex: 5, pointerEvents: "none" }} />
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            height: "4px",
+            background: "var(--cyber-blue)",
+            boxShadow: "0 0 20px 5px var(--cyber-blue-glow)",
+            animation: "scanning-laser 6s linear infinite",
+            zIndex: 5,
+            pointerEvents: "none",
+          }}
+        />
 
         {/* Animated 3D Grid */}
-        <div style={{ position: "absolute", inset: "-50%", backgroundImage: "linear-gradient(rgba(52, 229, 235, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(52, 229, 235, 0.1) 1px, transparent 1px)", backgroundSize: "80px 80px", animation: "grid-pan 4s linear infinite", transform: "perspective(1000px) rotateX(65deg) scale(1.2)", transformOrigin: "center top", zIndex: 1, pointerEvents: "none" }} />
+        <div
+          style={{
+            position: "absolute",
+            inset: "-50%",
+            backgroundImage:
+              "linear-gradient(rgba(52, 229, 235, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(52, 229, 235, 0.1) 1px, transparent 1px)",
+            backgroundSize: "80px 80px",
+            animation: "grid-pan 4s linear infinite",
+            transform: "perspective(1000px) rotateX(65deg) scale(1.2)",
+            transformOrigin: "center top",
+            zIndex: 1,
+            pointerEvents: "none",
+          }}
+        />
 
         {/* Ambient Glows */}
-        <div style={{ position: "absolute", top: "25%", left: "-5rem", width: "30rem", height: "30rem", borderRadius: "50%", opacity: 0.2, filter: "blur(80px)", background: "radial-gradient(circle, var(--cyber-blue) 0%, transparent 70%)" }} />
-        <div style={{ position: "absolute", bottom: "10%", right: "-5rem", width: "30rem", height: "30rem", borderRadius: "50%", opacity: 0.2, filter: "blur(80px)", background: "radial-gradient(circle, var(--cyber-purple) 0%, transparent 70%)" }} />
+        <div
+          style={{
+            position: "absolute",
+            top: "25%",
+            left: "-5rem",
+            width: "30rem",
+            height: "30rem",
+            borderRadius: "50%",
+            opacity: 0.2,
+            filter: "blur(80px)",
+            background:
+              "radial-gradient(circle, var(--cyber-blue) 0%, transparent 70%)",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            bottom: "10%",
+            right: "-5rem",
+            width: "30rem",
+            height: "30rem",
+            borderRadius: "50%",
+            opacity: 0.2,
+            filter: "blur(80px)",
+            background:
+              "radial-gradient(circle, var(--cyber-purple) 0%, transparent 70%)",
+          }}
+        />
       </div>
 
       {/* =========================================
           ENVIRONMENTAL FALLING LEAVES LAYER
           ========================================= */}
-      <div className="falling-leaves-container map-fade-in" style={{ position: "absolute", inset: 0, zIndex: 8, pointerEvents: "none" }}>
+      <div
+        className="falling-leaves-container map-fade-in"
+        style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 8,
+          pointerEvents: "none",
+        }}
+      >
         {leaves.map((leaf) => (
           <div
             key={leaf.id}
@@ -153,13 +222,25 @@ export default function TourJudging() {
           margin: "2rem",
         }}
       >
-        <header className="reveal-text delay-1" style={{ textAlign: "center", marginBottom: "3.5rem" }}>
-          <h1 className="glitch-yellow" style={{ fontSize: "2.5rem", letterSpacing: "1px" }}>
+        <header
+          className="reveal-text delay-1"
+          style={{ textAlign: "center", marginBottom: "3.5rem" }}
+        >
+          <h1
+            className="glitch-yellow"
+            style={{ fontSize: "2.5rem", letterSpacing: "1px" }}
+          >
             ENVIRONMENTAL SCORING
           </h1>
           <div
             className="cyber-bar"
-            style={{ margin: "1rem auto", width: "40%", background: "var(--cyber-blue)", height: "2px", boxShadow: "0 0 10px var(--cyber-blue-glow)" }}
+            style={{
+              margin: "1rem auto",
+              width: "40%",
+              background: "var(--cyber-blue)",
+              height: "2px",
+              boxShadow: "0 0 10px var(--cyber-blue-glow)",
+            }}
           ></div>
 
           <div
@@ -170,13 +251,31 @@ export default function TourJudging() {
               marginTop: "1.5rem",
             }}
           >
-            <p className="data-display" style={{ fontFamily: "var(--font-mono)", fontSize: "1.1rem" }}>
-              <span style={{ color: "var(--cyber-yellow)", marginRight: "8px" }}>TARGET AREA:</span>
-              <span style={{ color: "var(--text-main)", fontWeight: "600" }}>ASPEN, COLORADO</span>
+            <p
+              className="data-display"
+              style={{ fontFamily: "var(--font-mono)", fontSize: "1.1rem" }}
+            >
+              <span
+                style={{ color: "var(--cyber-yellow)", marginRight: "8px" }}
+              >
+                TARGET AREA:
+              </span>
+              <span style={{ color: "var(--text-main)", fontWeight: "600" }}>
+                ASPEN, COLORADO
+              </span>
             </p>
-            <p className="data-display" style={{ fontFamily: "var(--font-mono)", fontSize: "1.1rem" }}>
-              <span style={{ color: "var(--cyber-yellow)", marginRight: "8px" }}>SYS_TIME:</span>
-              <span style={{ color: "var(--text-main)", fontWeight: "600" }}>14:00 UTC</span>
+            <p
+              className="data-display"
+              style={{ fontFamily: "var(--font-mono)", fontSize: "1.1rem" }}
+            >
+              <span
+                style={{ color: "var(--cyber-yellow)", marginRight: "8px" }}
+              >
+                SYS_TIME:
+              </span>
+              <span style={{ color: "var(--text-main)", fontWeight: "600" }}>
+                14:00 UTC
+              </span>
             </p>
           </div>
         </header>
@@ -190,7 +289,16 @@ export default function TourJudging() {
             marginBottom: "4rem",
           }}
         >
-          <div className="cyber-gauge-wrapper" style={{ padding: "1.5rem", borderRadius: "50%", background: "rgba(15, 23, 42, 0.5)", border: "1px solid rgba(52, 229, 235, 0.2)", boxShadow: "0 0 30px rgba(0,0,0,0.5)" }}>
+          <div
+            className="cyber-gauge-wrapper"
+            style={{
+              padding: "1.5rem",
+              borderRadius: "50%",
+              background: "rgba(15, 23, 42, 0.5)",
+              border: "1px solid rgba(52, 229, 235, 0.2)",
+              boxShadow: "0 0 30px rgba(0,0,0,0.5)",
+            }}
+          >
             <DataRing score={score} label="AGGREGATED TOUR SCORE" />
           </div>
         </div>
@@ -203,8 +311,17 @@ export default function TourJudging() {
           }}
         >
           {/* Card 1 */}
-          <div className="edgerunner-card reveal-text delay-3" style={{ background: "rgba(30, 41, 59, 0.5)", border: "1px solid rgba(255,255,255,0.1)", backdropFilter: "blur(4px)" }}>
-            <h3 className="module-label" style={{ color: "var(--cyber-blue)" }}>WEATHER_INDEX</h3>
+          <div
+            className="edgerunner-card reveal-text delay-3"
+            style={{
+              background: "rgba(30, 41, 59, 0.5)",
+              border: "1px solid rgba(255,255,255,0.1)",
+              backdropFilter: "blur(4px)",
+            }}
+          >
+            <h3 className="module-label" style={{ color: "var(--cyber-blue)" }}>
+              WEATHER_INDEX
+            </h3>
             <h2
               className="stat-number"
               style={{
@@ -214,18 +331,44 @@ export default function TourJudging() {
               }}
             >
               92
-              <span style={{ fontSize: "1.2rem", color: "var(--text-muted)", marginLeft: "4px" }}>
+              <span
+                style={{
+                  fontSize: "1.2rem",
+                  color: "var(--text-muted)",
+                  marginLeft: "4px",
+                }}
+              >
                 /100
               </span>
             </h2>
-            <p className="ready-label" style={{ margin: 0, fontFamily: "var(--font-mono)", fontSize: "0.85rem", opacity: 0.8 }}>
+            <p
+              className="ready-label"
+              style={{
+                margin: 0,
+                fontFamily: "var(--font-mono)",
+                fontSize: "0.85rem",
+                opacity: 0.8,
+              }}
+            >
               &gt; SRC: National Weather API [Clear Skies]
             </p>
           </div>
 
           {/* Card 2 */}
-          <div className="edgerunner-card reveal-text delay-4" style={{ background: "rgba(30, 41, 59, 0.5)", border: "1px solid rgba(255,255,255,0.1)", backdropFilter: "blur(4px)" }}>
-            <h3 className="module-label" style={{ color: "var(--cyber-purple)" }}>TRAFFIC_CONGESTION</h3>
+          <div
+            className="edgerunner-card reveal-text delay-4"
+            style={{
+              background: "rgba(30, 41, 59, 0.5)",
+              border: "1px solid rgba(255,255,255,0.1)",
+              backdropFilter: "blur(4px)",
+            }}
+          >
+            <h3
+              className="module-label"
+              style={{ color: "var(--cyber-purple)" }}
+            >
+              TRAFFIC_CONGESTION
+            </h3>
             <h2
               className="stat-number"
               style={{
@@ -235,18 +378,41 @@ export default function TourJudging() {
               }}
             >
               75
-              <span style={{ fontSize: "1.2rem", color: "var(--text-muted)", marginLeft: "4px" }}>
+              <span
+                style={{
+                  fontSize: "1.2rem",
+                  color: "var(--text-muted)",
+                  marginLeft: "4px",
+                }}
+              >
                 /100
               </span>
             </h2>
-            <p className="ready-label" style={{ margin: 0, fontFamily: "var(--font-mono)", fontSize: "0.85rem", opacity: 0.8 }}>
+            <p
+              className="ready-label"
+              style={{
+                margin: 0,
+                fontFamily: "var(--font-mono)",
+                fontSize: "0.85rem",
+                opacity: 0.8,
+              }}
+            >
               &gt; SRC: TomTom API [Light localized]
             </p>
           </div>
 
           {/* Card 3 */}
-          <div className="edgerunner-card reveal-text delay-5" style={{ background: "rgba(30, 41, 59, 0.5)", border: "1px solid rgba(255,255,255,0.1)", backdropFilter: "blur(4px)" }}>
-            <h3 className="module-label" style={{ color: "var(--cyber-blue)" }}>SAFETY_LOCAL_SCORE</h3>
+          <div
+            className="edgerunner-card reveal-text delay-5"
+            style={{
+              background: "rgba(30, 41, 59, 0.5)",
+              border: "1px solid rgba(255,255,255,0.1)",
+              backdropFilter: "blur(4px)",
+            }}
+          >
+            <h3 className="module-label" style={{ color: "var(--cyber-blue)" }}>
+              SAFETY_LOCAL_SCORE
+            </h3>
             <h2
               className="stat-number"
               style={{
@@ -256,11 +422,25 @@ export default function TourJudging() {
               }}
             >
               95
-              <span style={{ fontSize: "1.2rem", color: "var(--text-muted)", marginLeft: "4px" }}>
+              <span
+                style={{
+                  fontSize: "1.2rem",
+                  color: "var(--text-muted)",
+                  marginLeft: "4px",
+                }}
+              >
                 /100
               </span>
             </h2>
-            <p className="ready-label" style={{ margin: 0, fontFamily: "var(--font-mono)", fontSize: "0.85rem", opacity: 0.8 }}>
+            <p
+              className="ready-label"
+              style={{
+                margin: 0,
+                fontFamily: "var(--font-mono)",
+                fontSize: "0.85rem",
+                opacity: 0.8,
+              }}
+            >
               &gt; SRC: Regional Safety DB [High avg]
             </p>
           </div>
