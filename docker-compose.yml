@@ -29,7 +29,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-tourist}"]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-tourist}" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -50,7 +50,7 @@ services:
     volumes:
       - mongodata:/data/db
     healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      test: [ "CMD", "mongosh", "--eval", "db.adminCommand('ping')" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -118,6 +118,7 @@ services:
     ports:
       - "80:80"
     environment:
+      PORT: ${PORT:-80}
       FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
       LOGIN_API_URL: ${LOGIN_API_URL:-http://login:5036}
       SSL_TOGGLE: ${SSL_TOGGLE:-on}
