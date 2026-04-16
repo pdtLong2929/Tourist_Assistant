@@ -119,7 +119,7 @@ services:
       - "80:80"
     environment:
       FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
-      LOGIN_API_URL: ${LOGIN_API_URL:-http://localhost:5036}
+      LOGIN_API_URL: ${LOGIN_API_URL:-http://login:5036}
       SSL_TOGGLE: ${SSL_TOGGLE:-on}
       HOST_HEADER: ${HOST_HEADER:-localhost}
       DNS_RESOLVER: ${DNS_RESOLVER:-8.8.8.8}
