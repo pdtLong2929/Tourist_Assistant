@@ -6,6 +6,8 @@ RUN rm /etc/nginx/conf.d/default.conf
 
 COPY nginx.conf /etc/nginx/nginx.conf
 
+ENV PORT=80
+
 COPY conf.d/default.conf /etc/nginx/default.conf.template
 
 EXPOSE 80
