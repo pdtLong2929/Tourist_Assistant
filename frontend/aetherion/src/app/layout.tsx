@@ -89,7 +89,15 @@ function Header() {
 
         {/* User Section */}
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <div className="user-badge">
+          <a
+            href="/login"
+            className="user-badge"
+            style={{
+              textDecoration: "none",
+              cursor: "pointer",
+              transition: "all 0.3s ease",
+            }}
+          >
             <div style={{ textAlign: "right" }}>
               <div
                 style={{
@@ -102,8 +110,19 @@ function Header() {
               >
                 GUEST_MODE
               </div>
+              <div
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.6rem",
+                  color: "var(--text-muted)",
+                  letterSpacing: "0.1em",
+                  marginTop: "2px",
+                }}
+              >
+                CLICK TO LOGIN
+              </div>
             </div>
-          </div>
+          </a>
         </div>
       </div>
     </header>
