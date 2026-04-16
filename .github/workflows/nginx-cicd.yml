@@ -40,7 +40,7 @@ jobs:
             -e FRONTEND_URL="http://frontend:3000" \
             -e LOGIN_API_URL="http://login:5036" \
             -e SSL_TOGGLE="on" \
-            -e HOST_HEADER="tourism-login-api-367022044809.asia-southeast1.run.app" \
+            -e HOST_HEADER="\$proxy_host" \
             -e DNS_RESOLVER="8.8.8.8" \
             -v ${{ github.workspace }}/nginx/nginx.conf:/etc/nginx/nginx.conf:ro \
             -v ${{ github.workspace }}/nginx/conf.d/default.conf:/etc/nginx/default.conf.template:ro \
@@ -161,5 +161,5 @@ jobs:
           FRONTEND_URL=https://tourism-frontend-app-367022044809.asia-southeast1.run.app,\
           LOGIN_API_URL=https://tourism-login-api-367022044809.asia-southeast1.run.app,\
           SSL_TOGGLE=on,\
-          HOST_HEADER=tourism-login-api-367022044809.asia-southeast1.run.app,\
+          HOST_HEADER=\$proxy_host,\
           DNS_RESOLVER=8.8.8.8"
