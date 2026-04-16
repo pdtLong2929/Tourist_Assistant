@@ -156,7 +156,6 @@ jobs:
             --image $DOCKER_TAG \
             --region ${{ env.REGION }} \
             --allow-unauthenticated \
-            --port 80 \
             --set-env-vars="\
           FRONTEND_URL=https://tourism-frontend-app-367022044809.asia-southeast1.run.app,\
           LOGIN_API_URL=https://tourism-login-api-367022044809.asia-southeast1.run.app,\
