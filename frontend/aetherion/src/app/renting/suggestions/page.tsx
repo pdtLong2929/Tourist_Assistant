@@ -26,14 +26,10 @@ export default function RentingSuggestion() {
   const [inputValue, setInputValue] = useState("");
   const [matchProgress, setMatchProgress] = useState(0);
 
-
-
   const aiIcons = [Cpu, Network, BrainCircuit, Database, Fingerprint, Sparkles];
 
   useEffect(() => {
     setMounted(true);
-
-
 
     const generatedIcons = Array.from({ length: 25 }).map((_, i) => ({
       id: i,
@@ -85,8 +81,6 @@ export default function RentingSuggestion() {
   };
 
   if (!mounted) return null;
-
-
 
   return (
     <>
@@ -250,7 +244,10 @@ export default function RentingSuggestion() {
         </header>
 
         {/* SEARCH CARD */}
-        <div className="reveal-text" style={{ animationDelay: "0.4s", zIndex: 10, position: "relative" }}>
+        <div
+          className="reveal-text"
+          style={{ animationDelay: "0.4s", zIndex: 10, position: "relative" }}
+        >
           <div
             className={`edgerunner-card ${loading ? "scanning-card" : ""}`}
             style={{
@@ -326,7 +323,10 @@ export default function RentingSuggestion() {
                   </>
                 ) : (
                   <>
-                    <Cpu size={20} className={inputValue.trim() ? "text-slate-900" : ""} />
+                    <Cpu
+                      size={20}
+                      className={inputValue.trim() ? "text-slate-900" : ""}
+                    />
                     <span>ANALYZE</span>
                   </>
                 )}
@@ -337,7 +337,10 @@ export default function RentingSuggestion() {
 
         {/* RESULT CARD */}
         {result && !loading && (
-          <div className="reveal-text" style={{ marginTop: "3rem", animationDelay: "0s" }}>
+          <div
+            className="reveal-text"
+            style={{ marginTop: "3rem", animationDelay: "0s" }}
+          >
             <div
               className="edgerunner-card"
               style={{
