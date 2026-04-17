@@ -1,7 +1,3 @@
-# =============================================================================
-#  Tourist Assistant — Next.js Multi-Stage Dockerfile
-# =============================================================================
-
 # ─── Stage 1 : Install dependencies ─────────────────────────────────────────
 FROM node:24-alpine AS deps
 RUN apk add --no-cache libc6-compat
@@ -24,8 +20,10 @@ ENV NEXT_TELEMETRY_DISABLED=1
 # At runtime docker-compose passes the real values via `environment:`.
 ARG DATABASE_URL=""
 ARG MONGODB_URI=""
+ARG NEXT_PUBLIC_NGINX_URL=""
 ENV DATABASE_URL=${DATABASE_URL}
 ENV MONGODB_URI=${MONGODB_URI}
+ENV NEXT_PUBLIC_NGINX_URL=${NEXT_PUBLIC_NGINX_URL}
 
 RUN npm run build
 
