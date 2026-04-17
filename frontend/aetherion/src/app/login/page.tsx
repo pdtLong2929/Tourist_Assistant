@@ -14,7 +14,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const nginxURL = process.env.NGINX_URL || "http://localhost:80"
+      const nginxURL = process.env.NEXT_PUBLIC_NGINX_URL || "http://localhost:80"
       const res = await fetch(`${nginxURL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
