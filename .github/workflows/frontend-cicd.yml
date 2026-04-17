@@ -2,12 +2,12 @@ name: Frontend CI/CD to GCP
 
 on:
   push:
-    branches: [ "main", "ux/ui", "nginx" ]
+    branches: [ "main" ]
     paths:
       - 'frontend/**'
       - '.github/workflows/frontend-cicd.yml'
   pull_request:
-    branches: [ "main", "ux/ui", "nginx" ]
+    branches: [ "main" ]
     paths:
       - 'frontend/**'
       - '.github/workflows/frontend-cicd.yml'
