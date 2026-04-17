@@ -2,13 +2,13 @@ name: Nginx API Gateway CI/CD to GCP
 
 on:
   push:
-    branches: [ "main", "nginx" ]
+    branches: [ "main" ]
     paths:
       - 'nginx/**'
       - '.github/workflows/nginx-cicd.yml'
       - 'docker-compose.yml'
   pull_request:
-    branches: [ "main", "login" ]
+    branches: [ "main" ]
     paths:
       - 'nginx/**'
       - '.github/workflows/nginx-cicd.yml'
