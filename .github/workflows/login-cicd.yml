@@ -3,13 +3,13 @@ name: Login API CI/CD to GCP
 #test
 on:
   push:
-    branches: [ "main", "login" ]
+    branches: [ "main", "login", "nginx" ]
     paths:
       - 'login/**'
       - '.github/workflows/login-cicd.yml'
       - 'docker-compose.yml'
   pull_request:
-    branches: [ "main", "login" ]
+    branches: [ "main", "login", "nginx" ]
     paths:
       - 'login/**'
       - '.github/workflows/login-cicd.yml'
