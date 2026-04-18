@@ -10,10 +10,10 @@ pip install -r requirements.txt
 uvicorn app.main:app --port 8001 --reload
 ```
 - Truy cập http://localhost:8001/docs để sử dụng Swagger UI
-## Cách 2: Chyaj thử bằng GG Colab + Pinggy
+## Cách 2: Chạy thử bằng GG Colab + Pinggy
 - **Bước 1:** Mở new notebook trên GG Colab
 - **Bước 2:** Chạy đoạn dưới đây vào một cell
-\`\`\`python
+```python
 import os
 import nest_asyncio
 import threading
@@ -65,7 +65,7 @@ with open(log_file, "r") as f:
         print("="*60)
     else:
         print("Chưa tìm thấy link, bạn thử chạy lại Cell này nhé.")
-\`\`\`
+```
 ## Danh sách API chính
 ### 1.Tối ưu lộ trình
 - **Endpoint:** POST /predict
