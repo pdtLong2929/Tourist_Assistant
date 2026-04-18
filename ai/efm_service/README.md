@@ -18,11 +18,11 @@ export GROQ_API_KEY='gsk_your_key_here'
 uvicorn app.main:app --port 8000 --reload
 ```
 - Truy cập http://localhost:8000/docs để sử dụng Swagger UI
-## Cách 2: Chyaj thử bằng GG Colab + Pinggy
+## Cách 2: Chạy thử bằng GG Colab + Pinggy
 - **Bước 1:** Mở new notebook trên GG Colab
 - **Bước 2:** Thêm Key GROQ_API_KEY vào mục Secrets
 - **Bước 3:** Chạy đoạn dưới đây vào một cell
-\`\`\`python
+```python
 import os
 import nest_asyncio
 import threading
@@ -80,7 +80,7 @@ if "GROQ_API_KEY" in os.environ:
             print("TÌM THẤY LINK! BẤM VÀO ĐÂY ĐỂ TEST API:")
             print(f"{urls[0]}/docs")
             print("="*60)
-\`\`\`
+```
 ## Danh sách API chính
 ### 1.Gợi ý địa điểm
 - **Endpoint:** POST /api/recommend
@@ -103,8 +103,7 @@ if "GROQ_API_KEY" in os.environ:
 }
 ```
 ## Cách lấy User ID và Item ID để test API
-
-\`\`\`python
+```python
 import pickle
 
 with open('data/efm_mapping.pkl', 'rb') as f:
@@ -112,4 +111,4 @@ with open('data/efm_mapping.pkl', 'rb') as f:
 
 print("5 User ID hợp lệ:", list(mapping['uid_map'].keys())[:5])
 print("5 Item ID hợp lệ:", list(mapping['iid_map'].keys())[:5])
-\`\`\`
+```
