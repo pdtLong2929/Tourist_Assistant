@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:14-alpine
+    container_name: trip_database
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: trip_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      # Đường dẫn đã được sửa lại cho đúng với thư mục hiện tại
+      - ./trip_db_dump.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  pg_data:
