@@ -27,37 +27,34 @@ import os
 import nest_asyncio
 import threading
 import uvicorn
-import tixme
+import time
 import subprocess
 import re
 from google.colab import userdata
 
 # 1. Clone code từ Github
-!git clone [Link git](Link git)
-%cd /[Đường dẫn]/ai/efm_service
+!git clone [https://github.com/LuftNguyen/My_test_repo.git](https://github.com/LuftNguyen/My_test_repo.git)
+%cd /content/My_test_repo/ai/efm_service
 
-# 2. Tự động sắp xếp lại thư mục Data cho đúng chuẩn
-%cd data
-!mkdir -p efm_model_final
-!mv 20*.pkl efm_model_final/ 2>/dev/null || true
-!mv 20*.pkl.meta efm_model_final/ 2>/dev/null || true
-%cd ..
-
-# 3. Cài đặt thư viện
+# 2. Cài đặt thư viện
 !pip install -q -r requirements.txt
 
-# 4. Dọn dẹp mạng và nạp API Key
+# 3. Dọn dẹp mạng và nạp API Key
 !fuser -k 8000/tcp
 nest_asyncio.apply()
 
 try:
+    # Lấy Key từ Colab Secrets và đẩy vào môi trường hệ thống
     os.environ["GROQ_API_KEY"] = userdata.get('GROQ_API_KEY')
-    print(" Đã nạp API Key thành công!")
-except:
-    print(" LỖI: Chưa có GROQ_API_KEY trong mục Secrets!")
+    print("Đã nạp API Key thành công!")
+except userdata.SecretNotFoundError:
+    print("LỖI: Bạn chưa tạo Secret tên GROQ_API_KEY hoặc chưa bật quyền truy cập cho Notebook!")
+except Exception as e:
+    print(f"LỖI KHÁC: {e}")
 
-# 5. Khởi động Server và Pinggy
+# 4. Khởi động Server và Pinggy
 def run_app():
+    # Lệnh uvicorn trỏ vào file main.py trong thư mục app/
     uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=False)
 
 if "GROQ_API_KEY" in os.environ:
@@ -80,11 +77,15 @@ if "GROQ_API_KEY" in os.environ:
             print("TÌM THẤY LINK! BẤM VÀO ĐÂY ĐỂ TEST API:")
             print(f"{urls[0]}/docs")
             print("="*60)
+        else:
+            print("Chưa tìm thấy link, hãy thử chạy lại Cell này.")
+else:
+    print("Quá trình bị hủy vì không có API Key.")
 ```
 ## Danh sách API chính
 ### 1.Gợi ý địa điểm
 - **Endpoint:** POST /api/recommend
-- **Mô tả:** Nhập ID người dùng, AI sẽ trả về Top K địa điểm phù hợp nhất kèm theo lời giải thích ưu/nhược điểm được sinh ra bởi LLaMA 3.1.
+- **Mô tả:** Nhập ID người dùng, AI sẽ trả về Top K địa điểm phù hợp nhất kèm theo lời giải thích ưu/nhược điểm được sinh ra bởi LLaMA.
 - **Body:** 
 ``` json
 {
