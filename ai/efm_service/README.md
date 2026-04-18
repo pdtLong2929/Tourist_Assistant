@@ -21,66 +21,60 @@ uvicorn app.main:app --port 8000 --reload
 ## Cách 2: Chạy thử bằng GG Colab + Pinggy
 - **Bước 1:** Mở new notebook trên GG Colab
 - **Bước 2:** Thêm Key GROQ_API_KEY vào mục Secrets
-- **Bước 3:** Chạy đoạn dưới đây vào một cell
+- **Bước 3:** Chạy các đoạn dưới đây vào các cell
 ```python
-import os
-import nest_asyncio
-import threading
-import uvicorn
-import time
-import subprocess
-import re
-from google.colab import userdata
-
-# 1. Clone code từ Github
+# 1. Clone code và di chuyển vào thư mục
 !git clone [https://github.com/LuftNguyen/My_test_repo.git](https://github.com/LuftNguyen/My_test_repo.git)
 %cd /content/My_test_repo/ai/efm_service
 
-# 2. Cài đặt thư viện
+# 2. Sửa lỗi lệch phiên bản Numpy của Colab và cài thư viện
+!pip install -q "numpy<2.0.0"
 !pip install -q -r requirements.txt
 
-# 3. Dọn dẹp mạng và nạp API Key
-!fuser -k 8000/tcp
-nest_asyncio.apply()
+# 3. In ra danh sách ID hợp lệ để test
+import pickle
+with open('data/efm_mapping.pkl', 'rb') as f:
+    mapping = pickle.load(f)
 
+print("\n" + "="*50)
+print("🎯 BẠN HÃY COPY CÁC ID DƯỚI ĐÂY ĐỂ DÙNG LÚC TEST:")
+print("👤 5 User ID hợp lệ:", list(mapping['uid_map'].keys())[:5])
+print("📍 5 Item ID hợp lệ:", list(mapping['iid_map'].keys())[:5])
+print("="*50)
+```
+``` python
+import os
+import time
+
+%cd /content/My_test_repo/ai/efm_service
+
+print("Đang khởi tạo đường hầm Pinggy chạy ngầm...")
+# Chạy ssh ngầm bằng nohup
+os.system("nohup ssh -p 443 -o StrictHostKeyChecking=no -R0:localhost:8000 a.pinggy.io > pinggy.log 2>&1 &")
+time.sleep(5)
+
+if os.path.exists("pinggy.log"):
+    with open("pinggy.log", "r") as f:
+        print("\n" + "="*70)
+        print(f.read())
+        print("="*70)
+        print("👉 LƯU LẠI LINK CÓ ĐUÔI .a.pinggy.io VÀ CHUYỂN SANG CHẠY CELL 3!")
+```
+``` python
+import os
+from google.colab import userdata
+
+%cd /content/My_test_repo/ai/efm_service
+
+# Nạp chìa khóa vào môi trường
 try:
-    # Lấy Key từ Colab Secrets và đẩy vào môi trường hệ thống
     os.environ["GROQ_API_KEY"] = userdata.get('GROQ_API_KEY')
-    print("Đã nạp API Key thành công!")
-except userdata.SecretNotFoundError:
-    print("LỖI: Bạn chưa tạo Secret tên GROQ_API_KEY hoặc chưa bật quyền truy cập cho Notebook!")
-except Exception as e:
-    print(f"LỖI KHÁC: {e}")
+    print("✅ Đã nạp API Key thành công!")
+except:
+    print("❌ LỖI: Bạn chưa tạo Secret tên GROQ_API_KEY hoặc chưa bật quyền!")
 
-# 4. Khởi động Server và Pinggy
-def run_app():
-    # Lệnh uvicorn trỏ vào file main.py trong thư mục app/
-    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=False)
-
-if "GROQ_API_KEY" in os.environ:
-    print("Đang khởi động EFM Server...")
-    server_thread = threading.Thread(target=run_app)
-    server_thread.start()
-    time.sleep(5)
-
-    print("Đang bắt kết nối Pinggy...")
-    log_file = "pinggy.log"
-    cmd = "ssh -o StrictHostKeyChecking=no -p 443 -R0:localhost:8000 a.pinggy.io > pinggy.log 2>&1"
-    subprocess.Popen(cmd, shell=True)
-    time.sleep(3)
-
-    # Đọc và lấy link
-    with open(log_file, "r") as f:
-        urls = re.findall(r'https?://[a-zA-Z0-9-]+\.a\.pinggy\.io', f.read())
-        if urls:
-            print("\n" + "="*60)
-            print("TÌM THẤY LINK! BẤM VÀO ĐÂY ĐỂ TEST API:")
-            print(f"{urls[0]}/docs")
-            print("="*60)
-        else:
-            print("Chưa tìm thấy link, hãy thử chạy lại Cell này.")
-else:
-    print("Quá trình bị hủy vì không có API Key.")
+# Khởi động server trực tiếp ở Foreground (Luồng chính)
+!uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
 ## Danh sách API chính
 ### 1.Gợi ý địa điểm

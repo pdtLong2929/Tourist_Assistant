@@ -23,17 +23,13 @@ import subprocess
 import re
 
 # 1. Clone code từ Github
-!git clone [link git](link git)
-%cd /.../ai/tsp_service
+!git clone [https://github.com/LuftNguyen/My_test_repo.git](https://github.com/LuftNguyen/My_test_repo.git)
+%cd /content/My_test_repo/ai/tsp_service
 
 # 2. Cài đặt thư viện
 !pip install -q -r requirements.txt
 
-# Nếu file epoch-99.pt của bạn quá nặng không đẩy lên GitHub được,
-# bạn phải MỞ THANH BÊN TRÁI của Colab và UPLOAD THỦ CÔNG file epoch-99.pt 
-# vào thư mục /.../ai/tsp_service/pretrained/ trước khi server chạy.
 !mkdir -p pretrained
-# ------------------------
 
 # 3. Dọn dẹp mạng
 !fuser -k 8000/tcp
@@ -41,13 +37,13 @@ nest_asyncio.apply()
 
 # 4. Khởi động Server và Pinggy
 def run_app():
-    # Nhánh TSP dùng app:app thay vì app.main:app
-    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=False)
+    # Gọi chuẩn theo cấu trúc thư mục mới: app.main:app
+    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=False)
 
 print("Đang khởi động TSP Server...")
 server_thread = threading.Thread(target=run_app)
 server_thread.start()
-time.sleep(8) # Đợi lâu hơn một chút vì PyTorch load model khá nặng
+time.sleep(8) 
 
 print("Đang bắt kết nối Pinggy...")
 log_file = "pinggy.log"
