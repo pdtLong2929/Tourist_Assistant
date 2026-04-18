@@ -26,9 +26,15 @@ def load_resources():
         state["iid_map"] = mapping['iid_map']
         state["idx_to_iid"] = {v: k for k, v in mapping['iid_map'].items()}
         
-        # Nạp Model
-        pkl_files = glob.glob(f"{os.path.join(DATA_DIR, 'efm_model_final')}/**/*.pkl", recursive=True)
-        state["model_efm"] = cornac.models.EFM.load(sorted(pkl_files)[-1])
+        # Nạp Model 
+        pkl_files = glob.glob(os.path.join(DATA_DIR, '20*.pkl'))
+        pkl_files.extend(glob.glob(os.path.join(DATA_DIR, 'efm_model_final', '*.pkl')))
+        
+        if not pkl_files:
+            raise FileNotFoundError(f"Không tìm thấy file model AI (.pkl) nào trong thư mục {DATA_DIR}!")
+            
+        latest_model_file = sorted(pkl_files)[-1]
+        state["model_efm"] = cornac.models.EFM.load(latest_model_file)
         
         # Nạp DB
         with open(os.path.join(DATA_DIR, 'mock_database_triplets.pkl'), 'rb') as f:
