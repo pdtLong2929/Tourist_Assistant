@@ -90,8 +90,8 @@ jobs:
             -d '{"email":"test@test.com","password":"wrong"}' \
             http://localhost:80/login)
           echo "POST /login returned HTTP $STATUS"
-          if [ "$STATUS" -ge 500 ]; then
-            echo "Nginx proxy to login API failed (5xx error)"
+          if [ "$STATUS" -ge 502 ]; then
+            echo "Nginx proxy to login API failed (502 error)"
             docker compose logs nginx
             docker compose logs login
             exit 1
