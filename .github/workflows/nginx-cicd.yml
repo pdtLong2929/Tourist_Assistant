@@ -12,6 +12,10 @@ on:
     paths:
       - 'nginx/**'
       - '.github/workflows/nginx-cicd.yml'
+  workflow_run:
+    workflows: ["Login API CI/CD to GCP"]
+    types:
+      - completed
 
 env:
   PROJECT_ID: 'touristassistant-29-03-2026'
@@ -117,7 +121,9 @@ jobs:
   deploy:
     name: Build & Deploy to Cloud Run
     needs: integration-test
-    if: github.event_name == 'push'
+    if: >-
+      github.event_name == 'push' || 
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
     runs-on: ubuntu-latest
 
     steps:
