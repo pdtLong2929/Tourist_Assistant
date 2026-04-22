@@ -1,17 +1,25 @@
-name: Frontend CI/CD to GCP
+name: Login API CI/CD to GCP
 
+#test
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'login/**'
+      - '.github/workflows/login-cicd.yml'
+      - 'docker-compose.yml'
   pull_request:
     branches: [ "main" ]
+    paths:
+      - 'login/**'
+      - '.github/workflows/login-cicd.yml'
 
 env:
   PROJECT_ID: 'touristassistant-29-03-2026'
-  REGION: 'asia-southeast1'               
-  GAR_REPO: 'tourism-frontend'           
-  SERVICE_NAME: 'tourism-frontend-app' 
-  IMAGE_NAME: 'nextjs-app'
+  REGION: 'asia-southeast1'
+  GAR_REPO: 'tourism-frontend'
+  SERVICE_NAME: 'tourism-login-api'
+  IMAGE_NAME: 'login-api'
 
 # Required for Workload Identity Federation
 permissions:
@@ -19,9 +27,9 @@ permissions:
   id-token: 'write'
 
 jobs:
-  # ── Job 1 : Lint ─────────────────────────────────────────────────────────
-  lint:
-    name: Lint Check
+  # ── Job 1 : Dependency Audit ───────────────────────────────────────────
+  audit:
+    name: Dependency Audit
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -32,55 +40,57 @@ jobs:
         with:
           node-version: 24
           cache: 'npm'
-          cache-dependency-path: frontend/aetherion/package-lock.json
+          cache-dependency-path: login/package-lock.json
 
       - name: Install dependencies
-        working-directory: frontend/aetherion
+        working-directory: login
         run: npm ci
 
-      - name: Run ESLint
-        working-directory: frontend/aetherion
-        run: npm run lint
+      - name: Run npm audit
+        working-directory: login
+        run: npm audit --omit=dev || true
 
   # ── Job 2 : Docker Compose Integration Test ──────────────────────────────
   integration-test:
     name: Integration Test (Docker Compose)
-    needs: lint
+    needs: audit
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Create .env from defaults
-        run: cp .env.example .env
+        run: |
+          cp .env.example .env
+          cp login/.env.example login/.env
 
       - name: Start services via Docker Compose
         run: docker compose up -d --build --wait
 
-      - name: Wait for frontend to be ready
+      - name: Wait for Login API to be ready
         run: |
-          echo "Waiting for frontend to respond on port 3000..."
+          echo "Waiting for Login API to respond on port 5036..."
           for i in $(seq 1 30); do
-            if curl -sf http://localhost:3000 > /dev/null 2>&1; then
-              echo "Frontend is up!"
+            if curl -sf http://localhost:5036/api/health 2>&1; then
+              echo "Login API is up!"
               exit 0
             fi
             echo "  attempt $i/30 — not ready yet, retrying in 5s..."
             sleep 5
           done
-          echo "Frontend failed to start in time."
-          docker compose logs frontend
+          echo "Login API failed to start in time."
+          docker compose logs login
           exit 1
 
       - name: Verify PostgreSQL is healthy
         run: |
           docker compose exec -T postgres pg_isready -U tourist
-          echo "PostgreSQL is healthy ✅"
+          echo "PostgreSQL is healthy"
 
       - name: Verify MongoDB is healthy
         run: |
           docker compose exec -T mongodb mongosh --eval "db.adminCommand('ping')" -u tourist -p tourist_secret --authenticationDatabase admin
-          echo "MongoDB is healthy ✅"
+          echo "MongoDB is healthy"
 
       - name: Tear down
         if: always()
@@ -92,7 +102,7 @@ jobs:
     needs: integration-test
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -114,9 +124,9 @@ jobs:
         run: |-
           gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
 
-      # 3. Build & Push using the multi-stage Dockerfile
+      # 3. Build & Push using the Login Dockerfile
       - name: Build and Push Docker Image
-        working-directory: ./frontend
+        working-directory: ./login
         run: |-
           DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPO }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
           docker build -t $DOCKER_TAG .
@@ -130,4 +140,16 @@ jobs:
             --image $DOCKER_TAG \
             --region ${{ env.REGION }} \
             --allow-unauthenticated \
-            --port 3000
+            --set-env-vars="\
+          NODE_ENV=production,\
+          JWT_EXPIRES_IN=15m,\
+          JWT_REFRESH_EXPIRES_IN=7d,\
+          FRONTEND_URL=https://tourism-frontend-app-367022044809.asia-southeast1.run.app" \
+            --set-secrets="\
+          POSTGRES_URL=POSTGRES_URL:latest,\
+          JWT_SECRET=JWT_SECRET:latest,\
+          JWT_REFRESH_SECRET=JWT_REFRESH_SECRET:latest,\
+          GOOGLE_CLIENT_ID=GOOGLE_CLIENT_ID:latest,\
+          GOOGLE_CLIENT_SECRET=GOOGLE_CLIENT_SECRET:latest,\
+          GOOGLE_REDIRECT_URI=GOOGLE_REDIRECT_URI:latest,\
+          RESEND_API_KEY=RESEND_API_KEY:latest"

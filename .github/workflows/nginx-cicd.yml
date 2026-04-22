@@ -1,0 +1,171 @@
+name: Nginx API Gateway CI/CD to GCP
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'nginx/**'
+      - '.github/workflows/nginx-cicd.yml'
+      - 'docker-compose.yml'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'nginx/**'
+      - '.github/workflows/nginx-cicd.yml'
+  workflow_run:
+    workflows: ["Login API CI/CD to GCP"]
+    types:
+      - completed
+
+env:
+  PROJECT_ID: 'touristassistant-29-03-2026'
+  REGION: 'asia-southeast1'
+  GAR_REPO: 'tourism-frontend'
+  SERVICE_NAME: 'tourism-nginx-gateway'
+  IMAGE_NAME: 'nginx-gateway'
+
+permissions:
+  contents: 'read'
+  id-token: 'write'
+
+jobs:
+  # ── Job 1 : Config Validation ────────────────────────────────────────────
+  validate:
+    name: Nginx Config Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate Nginx config syntax
+        run: |
+          docker run --rm \
+            -e PORT="80" \
+            -e FRONTEND_URL="http://frontend:3000" \
+            -e LOGIN_API_URL="http://login:5036" \
+            -e SSL_TOGGLE="on" \
+            -e HOST_HEADER="\$proxy_host" \
+            -e DNS_RESOLVER="8.8.8.8" \
+            -v ${{ github.workspace }}/nginx/nginx.conf:/etc/nginx/nginx.conf:ro \
+            -v ${{ github.workspace }}/nginx/conf.d/default.conf:/etc/nginx/default.conf.template:ro \
+            nginx:alpine sh -c "apk add --no-cache gettext && envsubst '\${PORT} \${LOGIN_API_URL} \${FRONTEND_URL} \${SSL_TOGGLE} \${HOST_HEADER} \${DNS_RESOLVER}' < /etc/nginx/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -t"
+        continue-on-error: false
+
+  # ── Job 2 : Docker Compose Integration Test ──────────────────────────────
+  integration-test:
+    name: Integration Test (Docker Compose)
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create .env from defaults
+        run: |
+          cp .env.example .env
+          cp login/.env.example login/.env
+
+      - name: Start services via Docker Compose
+        run: docker compose up -d --build --wait
+
+      - name: Wait for Nginx to be ready
+        run: |
+          echo "Waiting for Nginx to respond on port 80..."
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:80/health > /dev/null 2>&1; then
+              echo "Nginx is up!"
+              exit 0
+            fi
+            echo "  attempt $i/30 — not ready yet, retrying in 5s..."
+            sleep 5
+          done
+          echo "Nginx failed to start in time."
+          docker compose logs nginx
+          exit 1
+
+      - name: Verify Nginx proxies to Login API
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
+            -H "Content-Type: application/json" \
+            -d '{"email":"test@test.com","password":"wrong"}' \
+            http://localhost:80/login)
+          echo "POST /login returned HTTP $STATUS"
+          if [ "$STATUS" -ge 500 ]; then
+            echo "Nginx proxy to login API failed (5xx error)"
+            docker compose logs nginx
+            docker compose logs login
+            exit 1
+          elif [ "$STATUS" -ge 404 ]; then
+            echo "Nginx proxy fails to reverse proxy to login API"
+            docker compose logs nginx
+            docker compose logs login
+            exit 1
+          fi
+          echo "Nginx is correctly proxying to the Login API"
+
+      - name: Verify PostgreSQL is healthy
+        run: |
+          docker compose exec -T postgres pg_isready -U tourist
+          echo "PostgreSQL is healthy"
+
+      - name: Verify MongoDB is healthy
+        run: |
+          docker compose exec -T mongodb mongosh --eval "db.adminCommand('ping')" -u tourist -p tourist_secret --authenticationDatabase admin
+          echo "MongoDB is healthy"
+
+      - name: Tear down
+        if: always()
+        run: docker compose down -v
+
+  # ── Job 3 : Build & Deploy ──────────────────────────────────────────────
+  deploy:
+    name: Build & Deploy to Cloud Run
+    needs: integration-test
+    if: >-
+      github.event_name == 'push' || 
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 1. Authenticate to GCP via WIF
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          token_format: 'access_token'
+          workload_identity_provider: '${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}'
+          service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      # 2. Configure Docker to use GCP Artifact Registry
+      - name: Configure Docker Auth
+        run: |-
+          gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
+
+      # 3. Build & Push using the Nginx Dockerfile
+      - name: Build and Push Docker Image
+        working-directory: ./nginx
+        run: |-
+          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPO }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
+          docker build -t $DOCKER_TAG .
+          docker push $DOCKER_TAG
+
+      # 4. Deploy to Cloud Run
+      - name: Deploy to Cloud Run
+        run: |-
+          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPO }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
+          gcloud run deploy ${{ env.SERVICE_NAME }} \
+            --image $DOCKER_TAG \
+            --region ${{ env.REGION }} \
+            --allow-unauthenticated \
+            --set-env-vars="\
+          FRONTEND_URL=https://tourism-frontend-app-367022044809.asia-southeast1.run.app,\
+          LOGIN_API_URL=https://tourism-login-api-367022044809.asia-southeast1.run.app,\
+          SSL_TOGGLE=on,\
+          HOST_HEADER=\$proxy_host,\
+          DNS_RESOLVER=8.8.8.8"
