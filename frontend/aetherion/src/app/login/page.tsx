@@ -13,6 +13,8 @@ export default function LoginPage() {
   // 1. Thêm State để lưu dữ liệu nhập từ bàn phím
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   // Kích hoạt hiệu ứng boot-up
   useEffect(() => {
@@ -23,6 +25,8 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setErrorMessage("");
+    setSuccessMessage("");
 
     try {
       // Gọi tới link Nginx Gateway + /login
@@ -43,17 +47,20 @@ export default function LoginPage() {
         localStorage.setItem("accessToken", data.accessToken);
         localStorage.setItem("cyber_user", JSON.stringify(data.user));
 
-        alert("TRUY CẬP ĐƯỢC CHẤP NHẬN. Đang chuyển hướng...");
-        router.push("/");
-        setTimeout(() => window.location.reload(), 100);
+        setSuccessMessage("ACCESS GRANTED. INITIALIZING REDIRECT...");
+        setTimeout(() => {
+          router.push("/");
+          // Reload nhẹ để cập nhật Header mà không làm gián đoạn người dùng
+          setTimeout(() => window.location.reload(), 500);
+        }, 800);
       } else {
-        alert(
-          "TRUY CẬP BỊ TỪ CHỐI: " +
-            (data.message || "Thông tin không chính xác"),
-        );
+        // CHỈNH SỬA: Hiển thị lỗi từ Backend (Invalid credentials)
+        setErrorMessage(data.message || "AUTHENTICATION FAILED");
+        // Tự động xóa thông báo lỗi sau 3 giây cho giống web thật
+        setTimeout(() => setErrorMessage(""), 3000);
       }
     } catch (error) {
-      alert("LỖI KẾT NỐI HỆ THỐNG. Kiểm tra lại Gateway.");
+      setErrorMessage("SYSTEM OFFLINE: CHECK GATEWAY CONNECTION");
     } finally {
       setIsLoading(false);
     }
@@ -236,6 +243,43 @@ export default function LoginPage() {
               border-right: 2px solid var(--cyber-blue);
               box-shadow: 0 0 40px rgba(52, 229, 235, 0.3);
             }
+            /* NOTIFICATION SYSTEM */
+            .message-box {
+              width: 100%;
+              padding: 1rem;
+              margin-bottom: 1.5rem;
+              border-radius: 4px;
+              font-family: var(--font-mono);
+              font-size: 0.85rem;
+              text-transform: uppercase;
+              letter-spacing: 2px;
+              display: flex;
+              align-items: center;
+              gap: 10px;
+              /* Hiệu ứng rung nhẹ khi xuất hiện */
+              animation: glitch-skew 0.3s ease-out;
+            }
+
+            .message-error {
+              background: rgba(255, 0, 60, 0.1);
+              border-left: 4px solid #ff003c;
+              color: #ff003c;
+              box-shadow: 0 0 15px rgba(255, 0, 60, 0.2);
+            }
+
+            .message-success {
+              background: rgba(0, 255, 170, 0.1);
+              border-left: 4px solid #00ffaa;
+              color: #00ffaa;
+              box-shadow: 0 0 15px rgba(0, 255, 170, 0.2);
+            }
+
+            @keyframes glitch-skew {
+              0% { transform: skew(0deg); }
+              20% { transform: skew(3deg); }
+              40% { transform: skew(-3deg); }
+              100% { transform: skew(0deg); }
+            }
           `,
         }}
       />
@@ -394,7 +438,21 @@ export default function LoginPage() {
               REGISTER
             </h2>
           </div>
-
+{/* CHÈN VÀO ĐÂY: Thông báo lỗi/thành công cho Register */}
+  <div style={{ width: '100%' }}>
+    {errorMessage && (
+      <div className="message-box message-error">
+        <Fingerprint size={18} />
+        <span>{errorMessage} !! ACCESS DENIED!!</span>
+      </div>
+    )}
+    {successMessage && (
+      <div className="message-box message-success">
+        <ShieldCheck size={18} />
+        <span>{successMessage}</span>
+      </div>
+    )}
+  </div>
           <form
             style={{
               width: "100%",
@@ -487,6 +545,22 @@ export default function LoginPage() {
               LOGIN
             </h2>
           </div>
+
+          {/* CHÈN VÀO ĐÂY: Thông báo lỗi/thành công cho Login */}
+  <div style={{ width: '100%' }}>
+    {errorMessage && (
+      <div className="message-box message-error">
+        <Fingerprint size={18} />
+        <span>{errorMessage} !! ACCESS DENIED !!</span>
+      </div>
+    )}
+    {successMessage && (
+      <div className="message-box message-success">
+        <ShieldCheck size={18} />
+        <span>{successMessage}</span>
+      </div>
+    )}
+  </div>
 
           <form
             style={{
