@@ -1,0 +1,12 @@
+# Chặn các thư mục môi trường ảo
+venv/
+.venv/
+env/
+
+# Chặn file tạm Python
+__pycache__/
+*.pyc
+
+# Chặn file cấu hình cá nhân
+.env
+.vscode/
