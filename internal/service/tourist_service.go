@@ -6,7 +6,7 @@ import (
 )
 
 type TouristService interface {
-	GetLocationDetail(name string) (*model.LocationResponse, error)
+	GetLocationDetail(detail string) (*model.LocationResponse, error)
 }
 
 type touristService struct {
@@ -15,17 +15,19 @@ type touristService struct {
 	aiClt      *client.AIClient
 }
 
-func NewTouristService(m *client.MapClient, w *client.WeatherClient, a *client.AIClient) TouristService {
-	return &touristService{mapClt: m, weatherClt: w, aiClt: a}
+func NewTouristService(m *client.MapClient, w *client.WeatherClient, a *client.AIClient) touristService {
+	return touristService{mapClt: m, weatherClt: w, aiClt: a}
 }
 
-func (s *touristService) GetLocationDetail(name string) (*model.LocationResponse, error) {
-	mapData, err := s.mapClt.GetLocationCoords(name)
+func (s *touristService) GetLocationDetail(detail string) (*model.LocationResponse, error) {
+	mapData, err := s.mapClt.GetLocation(detail)
 	if err != nil {
 		return nil, err
 	}
 
-	lat, lon := mapData["lat"].(string), mapData["lon"].(string)
+	lat := mapData.Results[0].Geometry.Location.Lat
+	lon := mapData.Results[0].Geometry.Location.Lng
+	displayName := mapData.Results[0].FormattedAddress
 
 	wData, err := s.weatherClt.GetWeatherByCoords(lat, lon)
 	if err != nil {
@@ -35,11 +37,11 @@ func (s *touristService) GetLocationDetail(name string) (*model.LocationResponse
 	temp := wData["main"].(map[string]interface{})["temp"].(float64)
 	desc := wData["weather"].([]interface{})[0].(map[string]interface{})["description"].(string)
 
-	advice := s.aiClt.GetTravelAdvice(name, temp, desc)
+	advice := s.aiClt.GetTravelAdvice(detail, temp, desc)
 
 	return &model.LocationResponse{
-		Destination:    name,
-		FullAddress:    mapData["display_name"].(string),
+		Destination:    detail,
+		FullAddress:    displayName,
 		Coords:         model.Coordinate{Lat: lat, Lon: lon},
 		Weather:        model.WeatherInfo{Temp: temp, Description: desc},
 		Recommendation: advice,

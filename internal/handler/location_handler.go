@@ -16,9 +16,9 @@ func NewLocationHandler(s service.TouristService) *LocationHandler {
 }
 
 func (h *LocationHandler) HandleGetLocation(c *gin.Context) {
-	name := c.Param("name")
+	detail := c.Param("name")
 
-	result, err := h.svc.GetLocationDetail(name)
+	result, err := h.svc.GetLocationDetail(detail)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error(), "code": 404})
 		return

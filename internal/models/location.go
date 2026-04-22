@@ -14,6 +14,6 @@ type LocationResponse struct {
 }
 
 type Coordinate struct {
-	Lat string `json:"lat"`
-	Lon string `json:"lon"`
+	Lat float64 `json:"lat"`
+	Lon float64 `json:"lon"`
 }

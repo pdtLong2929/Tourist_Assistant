@@ -1,6 +1,9 @@
 package main
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/gin-gonic/gin"
 	"github.com/pdtLong2929/Tourist_Assistant/internal/client"
 	"github.com/pdtLong2929/Tourist_Assistant/internal/handler"
@@ -11,13 +14,13 @@ import (
 func main() {
 	cfg := config.LoadConfig()
 
-	mClient := client.NewMapClient()
+	mClient := client.NewMapClient(cfg.Location_API_Key)
 	wClient := client.NewWeatherClient(cfg.Weather_API_Key)
 	aClient := client.NewAIClient("http://ai-model-service:5000") //Mocking AI
 
 	tService := service.NewTouristService(mClient, wClient, aClient)
 
-	lHandler := handler.NewLocationHandler(tService)
+	lHandler := handler.NewLocationHandler(&tService)
 
 	r := gin.Default()
 
@@ -25,6 +28,13 @@ func main() {
 	{
 		v1.GET("/location/:name", lHandler.HandleGetLocation)
 	}
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
 
-	r.Run(":" + cfg.Server_Port)
+	fmt.Println("Đang dùng Port:", port)
+	fmt.Println("Đang dùng Weather API Key:", cfg.Weather_API_Key)
+	fmt.Println("Đang dùng Location API Key:", cfg.Location_API_Key)
+	r.Run(":" + port)
 }
