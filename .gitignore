@@ -34,3 +34,7 @@ Thumbs.db
 
 # Agents
 /.agents
+.env
+/vendor/
+*.exe
+*.log
