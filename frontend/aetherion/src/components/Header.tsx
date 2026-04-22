@@ -2,22 +2,42 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
   const [user, setUser] = useState<{ name: string } | null>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const router = useRouter();
 
   // Kiểm tra xem có dữ liệu user trong trình duyệt không
   useEffect(() => {
-    const loggedInUser = localStorage.getItem("cyber_user");
-    if (loggedInUser) {
-      setUser(JSON.parse(loggedInUser));
-    }
+    const checkLoginStatus = () => {
+      const loggedInUser = localStorage.getItem("cyber_user");
+      if (loggedInUser) {
+        setUser(JSON.parse(loggedInUser));
+      } else {
+        setUser(null);
+      }
+    };
+
+    // Chạy lần đầu khi load trang
+    checkLoginStatus();
+
+    // Lắng nghe tín hiệu từ trang Login
+    window.addEventListener("userAuthChanged", checkLoginStatus);
+
+    // Dọn dẹp sự kiện khi component bị hủy
+    return () =>
+      window.removeEventListener("userAuthChanged", checkLoginStatus);
   }, []);
 
-  // Hàm Đăng xuất (Bấm vào avatar để đăng xuất)
+  // Hàm Đăng xuất
   const handleLogout = () => {
     localStorage.removeItem("cyber_user");
+    localStorage.removeItem("accessToken");
     setUser(null);
+    setIsDropdownOpen(false);
+    window.location.reload();
   };
 
   return (
@@ -100,52 +120,135 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* User Section (ĐÃ CẬP NHẬT LOGIC) */}
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        {/* User Section */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            position: "relative",
+          }}
+        >
           {user ? (
-            /* ĐÃ ĐĂNG NHẬP: Hiện Avatar và Tên */
-            <div
-              className="user-badge"
-              onClick={handleLogout}
-              title="Click to Logout"
-              style={{
-                cursor: "pointer",
-                border: "1px solid var(--cyber-blue)",
-                background: "rgba(52, 229, 235, 0.1)",
-              }}
-            >
+            /* ĐÃ ĐĂNG NHẬP */
+            <div style={{ position: "relative" }}>
               <div
+                className="user-badge"
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 style={{
-                  width: "28px",
-                  height: "28px",
-                  borderRadius: "50%",
-                  background: "var(--cyber-blue)",
+                  cursor: "pointer",
+                  border: "1px solid var(--cyber-blue)",
+                  background: "rgba(52, 229, 235, 0.1)",
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "center",
-                  color: "var(--cyber-black)",
-                  fontWeight: "bold",
-                  fontFamily: "var(--font-header)",
+                  gap: "10px",
                 }}
               >
-                {user.name.charAt(0)} {/* Lấy chữ cái đầu làm Avatar */}
-              </div>
-              <div style={{ textAlign: "right" }}>
                 <div
                   style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "0.95rem",
-                    color: "var(--cyber-blue)",
-                    fontWeight: "700",
-                    letterSpacing: "0.05em",
+                    width: "28px",
+                    height: "28px",
+                    borderRadius: "50%",
+                    background: "var(--cyber-blue)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "var(--cyber-black)",
+                    fontWeight: "bold",
+                    fontFamily: "var(--font-header)",
                   }}
                 >
-                  {user.name}
+                  {user.name.charAt(0).toUpperCase()}
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <div
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "0.95rem",
+                      color: "var(--cyber-blue)",
+                      fontWeight: "700",
+                      letterSpacing: "0.05em",
+                    }}
+                  >
+                    {user.name} ▼
+                  </div>
                 </div>
               </div>
+
+              {/* Menu thả xuống */}
+              {isDropdownOpen && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "130%" /* Đẩy xuống thấp một chút cho đỡ dính */,
+                    right: 0,
+                    background: "#0f172a",
+                    border: "1px solid rgba(52, 229, 235, 0.3)",
+                    borderRadius: "12px" /* Bo góc to hơn */,
+                    overflow: "hidden",
+                    display: "flex",
+                    flexDirection: "column",
+                    minWidth:
+                      "220px" /* CHỈNH Ở ĐÂY: Chiều rộng menu to ra (cũ là 160px) */,
+                    boxShadow: "0 10px 25px rgba(0, 0, 0, 0.5)",
+                    zIndex: 200,
+                  }}
+                >
+                  <button
+                    onClick={() => {
+                      setIsDropdownOpen(false);
+                      router.push("/profile");
+                    }}
+                    style={{
+                      padding:
+                        "16px 20px" /* CHỈNH Ở ĐÂY: Đệm dày hơn (cũ là 12px 16px) */,
+                      fontSize: "1.05rem" /* CHỈNH Ở ĐÂY: Chữ to hơn */,
+                      textAlign: "left",
+                      background: "transparent",
+                      color: "white",
+                      border: "none",
+                      borderBottom: "1px solid rgba(255,255,255,0.05)",
+                      cursor: "pointer",
+                      fontFamily: "system-ui, sans-serif",
+                      transition: "all 0.2s ease",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.background =
+                        "rgba(255,255,255,0.05)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.background = "transparent")
+                    }
+                  >
+                    PROFILE
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    style={{
+                      padding: "16px 20px" /* Đệm dày hơn */,
+                      fontSize: "1.05rem" /* Chữ to hơn */,
+                      textAlign: "left",
+                      background: "transparent",
+                      color: "#ef4444",
+                      border: "none",
+                      cursor: "pointer",
+                      fontFamily: "system-ui, sans-serif",
+                      transition: "all 0.2s ease",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.background =
+                        "rgba(239, 68, 68, 0.1)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.background = "transparent")
+                    }
+                  >
+                    LOG OUT
+                  </button>
+                </div>
+              )}
             </div>
           ) : (
-            /* CHƯA ĐĂNG NHẬP: GUEST_MODE click chuyển sang trang /login */
+            /* CHƯA ĐĂNG NHẬP */
             <a href="/login" style={{ textDecoration: "none" }}>
               <div
                 className="user-badge cursor-hover"

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Fingerprint, Scan, ShieldCheck, UserPlus, LogIn } from "lucide-react";
+import { Fingerprint, Scan, ShieldCheck, UserPlus, LogIn, ShieldAlert, CheckCircle } from "lucide-react";
 
 export default function LoginPage() {
   const [mounted, setMounted] = useState(false);
@@ -43,20 +43,19 @@ export default function LoginPage() {
 
       const data = await response.json();
       if (response.ok) {
-        // Lưu accessToken vào máy để "giữ phiên đăng nhập"
         localStorage.setItem("accessToken", data.accessToken);
         localStorage.setItem("cyber_user", JSON.stringify(data.user));
 
-        setSuccessMessage("ACCESS GRANTED. INITIALIZING REDIRECT...");
+        //Phát tín hiệu báo đã đăng nhập thành công
+        window.dispatchEvent(new Event("userAuthChanged"));
+
+        setSuccessMessage("Login successful. Returning to homepage...");
         setTimeout(() => {
           router.push("/");
-          // Reload nhẹ để cập nhật Header mà không làm gián đoạn người dùng
-          setTimeout(() => window.location.reload(), 500);
         }, 800);
       } else {
-        // CHỈNH SỬA: Hiển thị lỗi từ Backend (Invalid credentials)
-        setErrorMessage(data.message || "AUTHENTICATION FAILED");
-        // Tự động xóa thông báo lỗi sau 3 giây cho giống web thật
+        setErrorMessage("Authentication Failed - Wrong username or password!");
+        // Tự động xóa thông báo lỗi sau 3 giây
         setTimeout(() => setErrorMessage(""), 3000);
       }
     } catch (error) {
@@ -243,42 +242,40 @@ export default function LoginPage() {
               border-right: 2px solid var(--cyber-blue);
               box-shadow: 0 0 40px rgba(52, 229, 235, 0.3);
             }
-            /* NOTIFICATION SYSTEM */
+            /* NOTIFICATION SYSTEM - CYBERPUNK STYLE */
             .message-box {
               width: 100%;
-              padding: 1rem;
-              margin-bottom: 1.5rem;
-              border-radius: 4px;
+              padding: 12px 16px;
+              margin-bottom: 1.6rem;
+              border-radius: 8px;
               font-family: var(--font-mono);
-              font-size: 0.85rem;
-              text-transform: uppercase;
-              letter-spacing: 2px;
+              font-size: 0.95rem;
               display: flex;
               align-items: center;
-              gap: 10px;
-              /* Hiệu ứng rung nhẹ khi xuất hiện */
-              animation: glitch-skew 0.3s ease-out;
+              gap: 12px;
+              animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+              backdrop-filter: blur(10px);
+            }
+
+            @keyframes slideDown {
+              from { opacity: 0; transform: translateY(-10px); }
+              to { opacity: 1; transform: translateY(0); }
             }
 
             .message-error {
-              background: rgba(255, 0, 60, 0.1);
-              border-left: 4px solid #ff003c;
-              color: #ff003c;
-              box-shadow: 0 0 15px rgba(255, 0, 60, 0.2);
+              background: rgba(15, 23, 42, 0.8);
+              border: 1px solid rgba(248, 113, 113, 0.2);
+              border-left: 4px solid var(--cyber-red);
+              color: var(--text-main);
+              box-shadow: 0 0 15px rgba(248, 113, 113, 0.15);
             }
 
             .message-success {
-              background: rgba(0, 255, 170, 0.1);
-              border-left: 4px solid #00ffaa;
-              color: #00ffaa;
-              box-shadow: 0 0 15px rgba(0, 255, 170, 0.2);
-            }
-
-            @keyframes glitch-skew {
-              0% { transform: skew(0deg); }
-              20% { transform: skew(3deg); }
-              40% { transform: skew(-3deg); }
-              100% { transform: skew(0deg); }
+              background: rgba(15, 23, 42, 0.8);
+              border: 1px solid rgba(52, 229, 235, 0.2);
+              border-left: 4px solid var(--cyber-blue);
+              color: var(--text-main);
+              box-shadow: 0 0 15px rgba(52, 229, 235, 0.15);
             }
           `,
         }}
@@ -438,21 +435,20 @@ export default function LoginPage() {
               REGISTER
             </h2>
           </div>
-{/* CHÈN VÀO ĐÂY: Thông báo lỗi/thành công cho Register */}
-  <div style={{ width: '100%' }}>
-    {errorMessage && (
-      <div className="message-box message-error">
-        <Fingerprint size={18} />
-        <span>{errorMessage} !! ACCESS DENIED!!</span>
-      </div>
-    )}
-    {successMessage && (
-      <div className="message-box message-success">
-        <ShieldCheck size={18} />
-        <span>{successMessage}</span>
-      </div>
-    )}
-  </div>
+          <div style={{ width: "100%" }}>
+            {errorMessage && (
+              <div className="message-box message-error">
+                <ShieldAlert size={20} color="var(--cyber-red)" style={{ flexShrink: 0 }} />
+                <span>{errorMessage}</span>
+              </div>
+            )}
+            {successMessage && (
+              <div className="message-box message-success">
+                <CheckCircle size={20} color="var(--cyber-blue)" style={{ flexShrink: 0 }} />
+                <span>{successMessage}</span>
+              </div>
+            )}
+          </div>
           <form
             style={{
               width: "100%",
@@ -546,21 +542,20 @@ export default function LoginPage() {
             </h2>
           </div>
 
-          {/* CHÈN VÀO ĐÂY: Thông báo lỗi/thành công cho Login */}
-  <div style={{ width: '100%' }}>
-    {errorMessage && (
-      <div className="message-box message-error">
-        <Fingerprint size={18} />
-        <span>{errorMessage} !! ACCESS DENIED !!</span>
-      </div>
-    )}
-    {successMessage && (
-      <div className="message-box message-success">
-        <ShieldCheck size={18} />
-        <span>{successMessage}</span>
-      </div>
-    )}
-  </div>
+          <div style={{ width: "100%" }}>
+            {errorMessage && (
+              <div className="message-box message-error">
+                <ShieldAlert size={20} color="var(--cyber-red)" style={{ flexShrink: 0 }} />
+                <span>{errorMessage}</span>
+              </div>
+            )}
+            {successMessage && (
+              <div className="message-box message-success">
+                <CheckCircle size={20} color="var(--cyber-blue)" style={{ flexShrink: 0 }} />
+                <span>{successMessage}</span>
+              </div>
+            )}
+          </div>
 
           <form
             style={{
