@@ -90,14 +90,17 @@ jobs:
             -d '{"email":"test@test.com","password":"wrong"}' \
             http://localhost:80/login)
           echo "POST /login returned HTTP $STATUS"
-          if [ "$STATUS" -ge 502 ]; then
-            echo "Nginx proxy to login API failed (502 error)"
-            docker compose logs nginx
-            docker compose logs login
+          if [ "$STATUS" -eq 401 ] || [ "$STATUS" -eq 400 ]; then
+            echo "Success: Nginx reached the API and received a valid client error ($STATUS)"
+            exit 0
+          elif [ "$STATUS" -eq 502 ]; then
+            echo "Error: Bad Gateway. Nginx cannot see the Login API container."
             exit 1
-          elif [ "$STATUS" -ge 404 ]; then
-            echo "Nginx proxy fails to reverse proxy to login API"
-            docker compose logs nginx
+          elif [ "$STATUS" -eq 500 ]; then
+            echo "Error: API Crash. The proxy works, but the Login API returned a 500."
+            exit 1
+          else
+            echo "Unexpected Status: $STATUS. Checking logs..."
             docker compose logs login
             exit 1
           fi
