@@ -26,7 +26,6 @@ SET row_security = off;
 CREATE SCHEMA trip_db;
 
 
-ALTER SCHEMA trip_db OWNER TO postgres;
 
 SET default_tablespace = '';
 
@@ -52,7 +51,6 @@ CREATE TABLE trip_db.destinations (
 );
 
 
-ALTER TABLE trip_db.destinations OWNER TO postgres;
 
 --
 -- Name: reviews; Type: TABLE; Schema: trip_db; Owner: postgres
@@ -69,7 +67,6 @@ CREATE TABLE trip_db.reviews (
 );
 
 
-ALTER TABLE trip_db.reviews OWNER TO postgres;
 
 --
 -- Name: route_comparisons; Type: TABLE; Schema: trip_db; Owner: postgres
@@ -90,7 +87,6 @@ CREATE TABLE trip_db.route_comparisons (
 );
 
 
-ALTER TABLE trip_db.route_comparisons OWNER TO postgres;
 
 --
 -- Name: route_options; Type: TABLE; Schema: trip_db; Owner: postgres
@@ -116,7 +112,6 @@ CREATE TABLE trip_db.route_options (
 );
 
 
-ALTER TABLE trip_db.route_options OWNER TO postgres;
 
 --
 -- Name: transport_modes; Type: TABLE; Schema: trip_db; Owner: postgres
@@ -132,7 +127,6 @@ CREATE TABLE trip_db.transport_modes (
 );
 
 
-ALTER TABLE trip_db.transport_modes OWNER TO postgres;
 
 --
 -- Name: transport_providers; Type: TABLE; Schema: trip_db; Owner: postgres
@@ -151,7 +145,6 @@ CREATE TABLE trip_db.transport_providers (
 );
 
 
-ALTER TABLE trip_db.transport_providers OWNER TO postgres;
 
 --
 -- Name: trip_destinations; Type: TABLE; Schema: trip_db; Owner: postgres
@@ -169,7 +162,6 @@ CREATE TABLE trip_db.trip_destinations (
 );
 
 
-ALTER TABLE trip_db.trip_destinations OWNER TO postgres;
 
 --
 -- Name: trips; Type: TABLE; Schema: trip_db; Owner: postgres
@@ -191,7 +183,6 @@ CREATE TABLE trip_db.trips (
 );
 
 
-ALTER TABLE trip_db.trips OWNER TO postgres;
 
 --
 -- Name: user_preferences; Type: TABLE; Schema: trip_db; Owner: postgres
@@ -213,7 +204,6 @@ CREATE TABLE trip_db.user_preferences (
 );
 
 
-ALTER TABLE trip_db.user_preferences OWNER TO postgres;
 
 --
 -- Name: users; Type: TABLE; Schema: trip_db; Owner: postgres
@@ -231,7 +221,6 @@ CREATE TABLE trip_db.users (
 );
 
 
-ALTER TABLE trip_db.users OWNER TO postgres;
 
 --
 -- Name: destinations destinations_pkey; Type: CONSTRAINT; Schema: trip_db; Owner: postgres

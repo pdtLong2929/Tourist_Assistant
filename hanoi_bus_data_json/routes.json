@@ -1,0 +1,1346 @@
+[
+  {
+    "route_id": "01_1",
+    "route_short_name": "n/a-01_1",
+    "route_long_name": "Route_01_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "01_2",
+    "route_short_name": "n/a-01_2",
+    "route_long_name": "Route_01_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "02_1",
+    "route_short_name": "n/a-02_1",
+    "route_long_name": "Route_02_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "02_2",
+    "route_short_name": "n/a-02_2",
+    "route_long_name": "Route_02_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "03A_1",
+    "route_short_name": "n/a-03A_1",
+    "route_long_name": "Route_03A_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "03A_2",
+    "route_short_name": "n/a-03A_2",
+    "route_long_name": "Route_03A_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "03B_1",
+    "route_short_name": "n/a-03B_1",
+    "route_long_name": "Route_03B_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "03B_2",
+    "route_short_name": "n/a-03B_2",
+    "route_long_name": "Route_03B_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "04_1",
+    "route_short_name": "n/a-04_1",
+    "route_long_name": "Route_04_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "04_2",
+    "route_short_name": "n/a-04_2",
+    "route_long_name": "Route_04_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "05_1",
+    "route_short_name": "n/a-05_1",
+    "route_long_name": "Route_05_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "05_2",
+    "route_short_name": "n/a-05_2",
+    "route_long_name": "Route_05_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "06A_1",
+    "route_short_name": "n/a-06A_1",
+    "route_long_name": "Route_06A_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "06A_2",
+    "route_short_name": "n/a-06A_2",
+    "route_long_name": "Route_06A_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "06B_1",
+    "route_short_name": "n/a-06B_1",
+    "route_long_name": "Route_06B_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "06B_2",
+    "route_short_name": "n/a-06B_2",
+    "route_long_name": "Route_06B_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "06C_1",
+    "route_short_name": "n/a-06C_1",
+    "route_long_name": "Route_06C_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "06C_2",
+    "route_short_name": "n/a-06C_2",
+    "route_long_name": "Route_06C_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "06D_1",
+    "route_short_name": "n/a-06D_1",
+    "route_long_name": "Route_06D_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "06D_2",
+    "route_short_name": "n/a-06D_2",
+    "route_long_name": "Route_06D_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "06E_1",
+    "route_short_name": "n/a-06E_1",
+    "route_long_name": "Route_06E_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "06E_2",
+    "route_short_name": "n/a-06E_2",
+    "route_long_name": "Route_06E_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "07_1",
+    "route_short_name": "n/a-07_1",
+    "route_long_name": "Route_07_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "07_2",
+    "route_short_name": "n/a-07_2",
+    "route_long_name": "Route_07_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "08A_1",
+    "route_short_name": "n/a-08A_1",
+    "route_long_name": "Route_08A_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "08A_2",
+    "route_short_name": "n/a-08A_2",
+    "route_long_name": "Route_08A_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "08B_1",
+    "route_short_name": "n/a-08B_1",
+    "route_long_name": "Route_08B_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "08B_2",
+    "route_short_name": "n/a-08B_2",
+    "route_long_name": "Route_08B_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "09_1",
+    "route_short_name": "n/a-09_1",
+    "route_long_name": "Route_09_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "09_2",
+    "route_short_name": "n/a-09_2",
+    "route_long_name": "Route_09_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "10A_1",
+    "route_short_name": "n/a-10A_1",
+    "route_long_name": "Route_10A_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "10A_2",
+    "route_short_name": "n/a-10A_2",
+    "route_long_name": "Route_10A_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "10B_1",
+    "route_short_name": "n/a-10B_1",
+    "route_long_name": "Route_10B_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "10B_2",
+    "route_short_name": "n/a-10B_2",
+    "route_long_name": "Route_10B_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "11_1",
+    "route_short_name": "n/a-11_1",
+    "route_long_name": "Route_11_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "11_2",
+    "route_short_name": "n/a-11_2",
+    "route_long_name": "Route_11_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "12_1",
+    "route_short_name": "n/a-12_1",
+    "route_long_name": "Route_12_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "12_2",
+    "route_short_name": "n/a-12_2",
+    "route_long_name": "Route_12_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "13_1",
+    "route_short_name": "n/a-13_1",
+    "route_long_name": "Route_13_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "13_2",
+    "route_short_name": "n/a-13_2",
+    "route_long_name": "Route_13_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "14_1",
+    "route_short_name": "n/a-14_1",
+    "route_long_name": "Route_14_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "14_2",
+    "route_short_name": "n/a-14_2",
+    "route_long_name": "Route_14_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "15_1",
+    "route_short_name": "n/a-15_1",
+    "route_long_name": "Route_15_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "15_2",
+    "route_short_name": "n/a-15_2",
+    "route_long_name": "Route_15_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "16_1",
+    "route_short_name": "n/a-16_1",
+    "route_long_name": "Route_16_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "16_2",
+    "route_short_name": "n/a-16_2",
+    "route_long_name": "Route_16_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "17_1",
+    "route_short_name": "n/a-17_1",
+    "route_long_name": "Route_17_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "17_2",
+    "route_short_name": "n/a-17_2",
+    "route_long_name": "Route_17_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "18_1",
+    "route_short_name": "n/a-18_1",
+    "route_long_name": "Route_18_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "18_2",
+    "route_short_name": "n/a-18_2",
+    "route_long_name": "Route_18_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "19_1",
+    "route_short_name": "n/a-19_1",
+    "route_long_name": "Route_19_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "19_2",
+    "route_short_name": "n/a-19_2",
+    "route_long_name": "Route_19_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "20A_1",
+    "route_short_name": "n/a-20A_1",
+    "route_long_name": "Route_20A_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "20A_2",
+    "route_short_name": "n/a-20A_2",
+    "route_long_name": "Route_20A_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "20B_1",
+    "route_short_name": "n/a-20B_1",
+    "route_long_name": "Route_20B_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "20B_2",
+    "route_short_name": "n/a-20B_2",
+    "route_long_name": "Route_20B_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "20C_1",
+    "route_short_name": "n/a-20C_1",
+    "route_long_name": "Route_20C_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "20C_2",
+    "route_short_name": "n/a-20C_2",
+    "route_long_name": "Route_20C_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "21A_1",
+    "route_short_name": "n/a-21A_1",
+    "route_long_name": "Route_21A_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "21A_2",
+    "route_short_name": "n/a-21A_2",
+    "route_long_name": "Route_21A_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "21B_1",
+    "route_short_name": "n/a-21B_1",
+    "route_long_name": "Route_21B_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "21B_2",
+    "route_short_name": "n/a-21B_2",
+    "route_long_name": "Route_21B_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "22A_1",
+    "route_short_name": "n/a-22A_1",
+    "route_long_name": "Route_22A_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "22A_2",
+    "route_short_name": "n/a-22A_2",
+    "route_long_name": "Route_22A_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "22B_1",
+    "route_short_name": "n/a-22B_1",
+    "route_long_name": "Route_22B_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "22B_2",
+    "route_short_name": "n/a-22B_2",
+    "route_long_name": "Route_22B_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "22C_1",
+    "route_short_name": "n/a-22C_1",
+    "route_long_name": "Route_22C_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "22C_2",
+    "route_short_name": "n/a-22C_2",
+    "route_long_name": "Route_22C_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "23_1",
+    "route_short_name": "n/a-23_1",
+    "route_long_name": "Route_23_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "23_2",
+    "route_short_name": "n/a-23_2",
+    "route_long_name": "Route_23_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "24_1",
+    "route_short_name": "n/a-24_1",
+    "route_long_name": "Route_24_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "24_2",
+    "route_short_name": "n/a-24_2",
+    "route_long_name": "Route_24_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "25_1",
+    "route_short_name": "n/a-25_1",
+    "route_long_name": "Route_25_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "25_2",
+    "route_short_name": "n/a-25_2",
+    "route_long_name": "Route_25_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "26_1",
+    "route_short_name": "n/a-26_1",
+    "route_long_name": "Route_26_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "26_2",
+    "route_short_name": "n/a-26_2",
+    "route_long_name": "Route_26_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "27_1",
+    "route_short_name": "n/a-27_1",
+    "route_long_name": "Route_27_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "27_2",
+    "route_short_name": "n/a-27_2",
+    "route_long_name": "Route_27_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "28_1",
+    "route_short_name": "n/a-28_1",
+    "route_long_name": "Route_28_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "28_2",
+    "route_short_name": "n/a-28_2",
+    "route_long_name": "Route_28_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "29_1",
+    "route_short_name": "n/a-29_1",
+    "route_long_name": "Route_29_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "29_2",
+    "route_short_name": "n/a-29_2",
+    "route_long_name": "Route_29_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "30_1",
+    "route_short_name": "n/a-30_1",
+    "route_long_name": "Route_30_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "30_2",
+    "route_short_name": "n/a-30_2",
+    "route_long_name": "Route_30_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "31_1",
+    "route_short_name": "n/a-31_1",
+    "route_long_name": "Route_31_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "31_2",
+    "route_short_name": "n/a-31_2",
+    "route_long_name": "Route_31_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "32_1",
+    "route_short_name": "n/a-32_1",
+    "route_long_name": "Route_32_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "32_2",
+    "route_short_name": "n/a-32_2",
+    "route_long_name": "Route_32_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "33_1",
+    "route_short_name": "n/a-33_1",
+    "route_long_name": "Route_33_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "33_2",
+    "route_short_name": "n/a-33_2",
+    "route_long_name": "Route_33_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "34_1",
+    "route_short_name": "n/a-34_1",
+    "route_long_name": "Route_34_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "34_2",
+    "route_short_name": "n/a-34_2",
+    "route_long_name": "Route_34_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "35A_1",
+    "route_short_name": "n/a-35A_1",
+    "route_long_name": "Route_35A_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "35A_2",
+    "route_short_name": "n/a-35A_2",
+    "route_long_name": "Route_35A_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "35B_1",
+    "route_short_name": "n/a-35B_1",
+    "route_long_name": "Route_35B_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "35B_2",
+    "route_short_name": "n/a-35B_2",
+    "route_long_name": "Route_35B_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "36_1",
+    "route_short_name": "n/a-36_1",
+    "route_long_name": "Route_36_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "36_2",
+    "route_short_name": "n/a-36_2",
+    "route_long_name": "Route_36_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "37_1",
+    "route_short_name": "n/a-37_1",
+    "route_long_name": "Route_37_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "37_2",
+    "route_short_name": "n/a-37_2",
+    "route_long_name": "Route_37_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "38_1",
+    "route_short_name": "n/a-38_1",
+    "route_long_name": "Route_38_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "38_2",
+    "route_short_name": "n/a-38_2",
+    "route_long_name": "Route_38_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "39_1",
+    "route_short_name": "n/a-39_1",
+    "route_long_name": "Route_39_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "39_2",
+    "route_short_name": "n/a-39_2",
+    "route_long_name": "Route_39_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "40_1",
+    "route_short_name": "n/a-40_1",
+    "route_long_name": "Route_40_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "40_2",
+    "route_short_name": "n/a-40_2",
+    "route_long_name": "Route_40_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "41_1",
+    "route_short_name": "n/a-41_1",
+    "route_long_name": "Route_41_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "41_2",
+    "route_short_name": "n/a-41_2",
+    "route_long_name": "Route_41_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "42_1",
+    "route_short_name": "n/a-42_1",
+    "route_long_name": "Route_42_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "42_2",
+    "route_short_name": "n/a-42_2",
+    "route_long_name": "Route_42_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "43_1",
+    "route_short_name": "n/a-43_1",
+    "route_long_name": "Route_43_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "43_2",
+    "route_short_name": "n/a-43_2",
+    "route_long_name": "Route_43_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "44_1",
+    "route_short_name": "n/a-44_1",
+    "route_long_name": "Route_44_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "44_2",
+    "route_short_name": "n/a-44_2",
+    "route_long_name": "Route_44_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "45_1",
+    "route_short_name": "n/a-45_1",
+    "route_long_name": "Route_45_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "45_2",
+    "route_short_name": "n/a-45_2",
+    "route_long_name": "Route_45_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "46_1",
+    "route_short_name": "n/a-46_1",
+    "route_long_name": "Route_46_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "46_2",
+    "route_short_name": "n/a-46_2",
+    "route_long_name": "Route_46_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "47A_1",
+    "route_short_name": "n/a-47A_1",
+    "route_long_name": "Route_47A_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "47A_2",
+    "route_short_name": "n/a-47A_2",
+    "route_long_name": "Route_47A_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "47B_1",
+    "route_short_name": "n/a-47B_1",
+    "route_long_name": "Route_47B_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "47B_2",
+    "route_short_name": "n/a-47B_2",
+    "route_long_name": "Route_47B_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "48_1",
+    "route_short_name": "n/a-48_1",
+    "route_long_name": "Route_48_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "48_2",
+    "route_short_name": "n/a-48_2",
+    "route_long_name": "Route_48_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "49_1",
+    "route_short_name": "n/a-49_1",
+    "route_long_name": "Route_49_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "49_2",
+    "route_short_name": "n/a-49_2",
+    "route_long_name": "Route_49_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "50_1",
+    "route_short_name": "n/a-50_1",
+    "route_long_name": "Route_50_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "50_2",
+    "route_short_name": "n/a-50_2",
+    "route_long_name": "Route_50_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "51_1",
+    "route_short_name": "n/a-51_1",
+    "route_long_name": "Route_51_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "51_2",
+    "route_short_name": "n/a-51_2",
+    "route_long_name": "Route_51_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "52A_1",
+    "route_short_name": "n/a-52A_1",
+    "route_long_name": "Route_52A_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "52A_2",
+    "route_short_name": "n/a-52A_2",
+    "route_long_name": "Route_52A_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "52B_1",
+    "route_short_name": "n/a-52B_1",
+    "route_long_name": "Route_52B_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "52B_2",
+    "route_short_name": "n/a-52B_2",
+    "route_long_name": "Route_52B_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "53A_1",
+    "route_short_name": "n/a-53A_1",
+    "route_long_name": "Route_53A_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "53A_2",
+    "route_short_name": "n/a-53A_2",
+    "route_long_name": "Route_53A_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "53B_1",
+    "route_short_name": "n/a-53B_1",
+    "route_long_name": "Route_53B_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "53B_2",
+    "route_short_name": "n/a-53B_2",
+    "route_long_name": "Route_53B_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "54_1",
+    "route_short_name": "n/a-54_1",
+    "route_long_name": "Route_54_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "54_2",
+    "route_short_name": "n/a-54_2",
+    "route_long_name": "Route_54_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "55_1",
+    "route_short_name": "n/a-55_1",
+    "route_long_name": "Route_55_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "55_2",
+    "route_short_name": "n/a-55_2",
+    "route_long_name": "Route_55_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "55B_1",
+    "route_short_name": "n/a-55B_1",
+    "route_long_name": "Route_55B_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "55B_2",
+    "route_short_name": "n/a-55B_2",
+    "route_long_name": "Route_55B_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "56A_1",
+    "route_short_name": "n/a-56A_1",
+    "route_long_name": "Route_56A_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "56A_2",
+    "route_short_name": "n/a-56A_2",
+    "route_long_name": "Route_56A_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "56B_1",
+    "route_short_name": "n/a-56B_1",
+    "route_long_name": "Route_56B_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "56B_2",
+    "route_short_name": "n/a-56B_2",
+    "route_long_name": "Route_56B_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "57_1",
+    "route_short_name": "n/a-57_1",
+    "route_long_name": "Route_57_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "57_2",
+    "route_short_name": "n/a-57_2",
+    "route_long_name": "Route_57_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "58_1",
+    "route_short_name": "n/a-58_1",
+    "route_long_name": "Route_58_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "58_2",
+    "route_short_name": "n/a-58_2",
+    "route_long_name": "Route_58_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "59_1",
+    "route_short_name": "n/a-59_1",
+    "route_long_name": "Route_59_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "59_2",
+    "route_short_name": "n/a-59_2",
+    "route_long_name": "Route_59_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "60A_1",
+    "route_short_name": "n/a-60A_1",
+    "route_long_name": "Route_60A_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "60A_2",
+    "route_short_name": "n/a-60A_2",
+    "route_long_name": "Route_60A_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "60B_1",
+    "route_short_name": "n/a-60B_1",
+    "route_long_name": "Route_60B_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "60B_2",
+    "route_short_name": "n/a-60B_2",
+    "route_long_name": "Route_60B_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "61_1",
+    "route_short_name": "n/a-61_1",
+    "route_long_name": "Route_61_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "61_2",
+    "route_short_name": "n/a-61_2",
+    "route_long_name": "Route_61_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "62_1",
+    "route_short_name": "n/a-62_1",
+    "route_long_name": "Route_62_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "62_2",
+    "route_short_name": "n/a-62_2",
+    "route_long_name": "Route_62_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "63_1",
+    "route_short_name": "n/a-63_1",
+    "route_long_name": "Route_63_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "63_2",
+    "route_short_name": "n/a-63_2",
+    "route_long_name": "Route_63_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "64_1",
+    "route_short_name": "n/a-64_1",
+    "route_long_name": "Route_64_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "64_2",
+    "route_short_name": "n/a-64_2",
+    "route_long_name": "Route_64_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "65_1",
+    "route_short_name": "n/a-65_1",
+    "route_long_name": "Route_65_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "65_2",
+    "route_short_name": "n/a-65_2",
+    "route_long_name": "Route_65_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "72_1",
+    "route_short_name": "n/a-72_1",
+    "route_long_name": "Route_72_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "72_2",
+    "route_short_name": "n/a-72_2",
+    "route_long_name": "Route_72_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "74_1",
+    "route_short_name": "n/a-74_1",
+    "route_long_name": "Route_74_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "74_2",
+    "route_short_name": "n/a-74_2",
+    "route_long_name": "Route_74_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "84_1",
+    "route_short_name": "n/a-84_1",
+    "route_long_name": "Route_84_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "84_2",
+    "route_short_name": "n/a-84_2",
+    "route_long_name": "Route_84_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "85_1",
+    "route_short_name": "n/a-85_1",
+    "route_long_name": "Route_85_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "85_2",
+    "route_short_name": "n/a-85_2",
+    "route_long_name": "Route_85_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "86_1",
+    "route_short_name": "n/a-86_1",
+    "route_long_name": "Route_86_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "86_2",
+    "route_short_name": "n/a-86_2",
+    "route_long_name": "Route_86_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "87_1",
+    "route_short_name": "n/a-87_1",
+    "route_long_name": "Route_87_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "87_2",
+    "route_short_name": "n/a-87_2",
+    "route_long_name": "Route_87_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "88_1",
+    "route_short_name": "n/a-88_1",
+    "route_long_name": "Route_88_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "88_2",
+    "route_short_name": "n/a-88_2",
+    "route_long_name": "Route_88_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "89_1",
+    "route_short_name": "n/a-89_1",
+    "route_long_name": "Route_89_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "89_2",
+    "route_short_name": "n/a-89_2",
+    "route_long_name": "Route_89_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "90_1",
+    "route_short_name": "n/a-90_1",
+    "route_long_name": "Route_90_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "90_2",
+    "route_short_name": "n/a-90_2",
+    "route_long_name": "Route_90_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "91_1",
+    "route_short_name": "n/a-91_1",
+    "route_long_name": "Route_91_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "91_2",
+    "route_short_name": "n/a-91_2",
+    "route_long_name": "Route_91_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "92_1",
+    "route_short_name": "n/a-92_1",
+    "route_long_name": "Route_92_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "92_2",
+    "route_short_name": "n/a-92_2",
+    "route_long_name": "Route_92_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "93_1",
+    "route_short_name": "n/a-93_1",
+    "route_long_name": "Route_93_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "93_2",
+    "route_short_name": "n/a-93_2",
+    "route_long_name": "Route_93_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "94_1",
+    "route_short_name": "n/a-94_1",
+    "route_long_name": "Route_94_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "94_2",
+    "route_short_name": "n/a-94_2",
+    "route_long_name": "Route_94_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "95_1",
+    "route_short_name": "n/a-95_1",
+    "route_long_name": "Route_95_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "95_2",
+    "route_short_name": "n/a-95_2",
+    "route_long_name": "Route_95_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "96_1",
+    "route_short_name": "n/a-96_1",
+    "route_long_name": "Route_96_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "96_2",
+    "route_short_name": "n/a-96_2",
+    "route_long_name": "Route_96_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "97_1",
+    "route_short_name": "n/a-97_1",
+    "route_long_name": "Route_97_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "97_2",
+    "route_short_name": "n/a-97_2",
+    "route_long_name": "Route_97_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "98_1",
+    "route_short_name": "n/a-98_1",
+    "route_long_name": "Route_98_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "98_2",
+    "route_short_name": "n/a-98_2",
+    "route_long_name": "Route_98_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "99_1",
+    "route_short_name": "n/a-99_1",
+    "route_long_name": "Route_99_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "99_2",
+    "route_short_name": "n/a-99_2",
+    "route_long_name": "Route_99_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "100_1",
+    "route_short_name": "n/a-100_1",
+    "route_long_name": "Route_100_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "100_2",
+    "route_short_name": "n/a-100_2",
+    "route_long_name": "Route_100_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "101_1",
+    "route_short_name": "n/a-101_1",
+    "route_long_name": "Route_101_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "101_2",
+    "route_short_name": "n/a-101_2",
+    "route_long_name": "Route_101_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "102_1",
+    "route_short_name": "n/a-102_1",
+    "route_long_name": "Route_102_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "102_2",
+    "route_short_name": "n/a-102_2",
+    "route_long_name": "Route_102_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "103_1",
+    "route_short_name": "n/a-103_1",
+    "route_long_name": "Route_103_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "103_2",
+    "route_short_name": "n/a-103_2",
+    "route_long_name": "Route_103_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "104_1",
+    "route_short_name": "n/a-104_1",
+    "route_long_name": "Route_104_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "104_2",
+    "route_short_name": "n/a-104_2",
+    "route_long_name": "Route_104_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "105_1",
+    "route_short_name": "n/a-105_1",
+    "route_long_name": "Route_105_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "105_2",
+    "route_short_name": "n/a-105_2",
+    "route_long_name": "Route_105_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "106_1",
+    "route_short_name": "n/a-106_1",
+    "route_long_name": "Route_106_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "106_2",
+    "route_short_name": "n/a-106_2",
+    "route_long_name": "Route_106_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "107_1",
+    "route_short_name": "n/a-107_1",
+    "route_long_name": "Route_107_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "107_2",
+    "route_short_name": "n/a-107_2",
+    "route_long_name": "Route_107_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "108_1",
+    "route_short_name": "n/a-108_1",
+    "route_long_name": "Route_108_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "108_2",
+    "route_short_name": "n/a-108_2",
+    "route_long_name": "Route_108_2",
+    "route_type": "3"
+  },
+  {
+    "route_id": "BRT01_1",
+    "route_short_name": "n/a-BRT01_1",
+    "route_long_name": "Route_BRT01_1",
+    "route_type": "3"
+  },
+  {
+    "route_id": "BRT01_2",
+    "route_short_name": "n/a-BRT01_2",
+    "route_long_name": "Route_BRT01_2",
+    "route_type": "3"
+  }
+]
