@@ -1,8 +1,10 @@
 "use client";
 import { DataRing } from "@/components/ui/DataRing";
 import React, { useState, useEffect } from "react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function TourJudging() {
+  const { t } = useLanguage();
   const [mounted, setMounted] = useState(false);
   const [score, setScore] = useState(87);
   const [leaves, setLeaves] = useState<
@@ -230,7 +232,7 @@ export default function TourJudging() {
             className="glitch-yellow"
             style={{ fontSize: "2.5rem", letterSpacing: "1px" }}
           >
-            ENVIRONMENTAL SCORING
+            {t("tourJudging.title") as any}
           </h1>
           <div
             className="cyber-bar"
@@ -258,7 +260,7 @@ export default function TourJudging() {
               <span
                 style={{ color: "var(--cyber-yellow)", marginRight: "8px" }}
               >
-                TARGET AREA:
+                {t("tourJudging.targetArea") as any}
               </span>
               <span style={{ color: "var(--text-main)", fontWeight: "600" }}>
                 ASPEN, COLORADO
@@ -271,7 +273,7 @@ export default function TourJudging() {
               <span
                 style={{ color: "var(--cyber-yellow)", marginRight: "8px" }}
               >
-                SYS_TIME:
+                {t("tourJudging.sysTime") as any}
               </span>
               <span style={{ color: "var(--text-main)", fontWeight: "600" }}>
                 14:00 UTC
@@ -299,7 +301,10 @@ export default function TourJudging() {
               boxShadow: "0 0 30px rgba(0,0,0,0.5)",
             }}
           >
-            <DataRing score={score} label="AGGREGATED TOUR SCORE" />
+            <DataRing
+              score={score}
+              label={t("tourJudging.aggregatedScore") as any}
+            />
           </div>
         </div>
 
@@ -320,7 +325,7 @@ export default function TourJudging() {
             }}
           >
             <h3 className="module-label" style={{ color: "var(--cyber-blue)" }}>
-              WEATHER_INDEX
+              {t("tourJudging.weatherIndex") as any}
             </h3>
             <h2
               className="stat-number"
@@ -350,7 +355,7 @@ export default function TourJudging() {
                 opacity: 0.8,
               }}
             >
-              &gt; SRC: National Weather API [Clear Skies]
+              &gt; {t("tourJudging.weatherSrc")}
             </p>
           </div>
 
@@ -367,7 +372,7 @@ export default function TourJudging() {
               className="module-label"
               style={{ color: "var(--cyber-purple)" }}
             >
-              TRAFFIC_CONGESTION
+              {t("tourJudging.trafficCongestion") as any}
             </h3>
             <h2
               className="stat-number"
@@ -397,7 +402,7 @@ export default function TourJudging() {
                 opacity: 0.8,
               }}
             >
-              &gt; SRC: TomTom API [Light localized]
+              &gt; {t("tourJudging.trafficSrc") as any}
             </p>
           </div>
 
@@ -411,7 +416,7 @@ export default function TourJudging() {
             }}
           >
             <h3 className="module-label" style={{ color: "var(--cyber-blue)" }}>
-              SAFETY_LOCAL_SCORE
+              {t("tourJudging.safetyScore") as any}
             </h3>
             <h2
               className="stat-number"
@@ -441,7 +446,7 @@ export default function TourJudging() {
                 opacity: 0.8,
               }}
             >
-              &gt; SRC: Regional Safety DB [High avg]
+              &gt; {t("tourJudging.safetySrc") as any}
             </p>
           </div>
         </div>

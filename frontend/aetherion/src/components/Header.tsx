@@ -3,11 +3,14 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Header() {
   const [user, setUser] = useState<{ name: string } | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
   const router = useRouter();
+  const { t, language, setLanguage } = useLanguage();
 
   // Kiểm tra xem có dữ liệu user trong trình duyệt không
   useEffect(() => {
@@ -110,9 +113,9 @@ export default function Header() {
         {/* Navigation (Giữ nguyên) */}
         <nav className="nav-container">
           {[
-            { name: "Explore", href: "/tour-judging" },
-            { name: "Ask AI", href: "/renting/suggestions" },
-            { name: "Book Ride", href: "/booking" },
+            { name: t("header.explore" as any), href: "/tour-judging" },
+            { name: t("header.askAi" as any), href: "/renting/suggestions" },
+            { name: t("header.bookRide" as any), href: "/booking" },
           ].map((link) => (
             <a key={link.name} href={link.href} className="nav-link">
               {link.name}
@@ -120,14 +123,104 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* User Section */}
+        {/* Right Section: Language & User */}
         <div
           style={{
             display: "flex",
             justifyContent: "flex-end",
-            position: "relative",
+            alignItems: "center",
+            gap: "1.5rem",
           }}
         >
+          {/* Language Selector */}
+          <div style={{ position: "relative" }}>
+            <div
+              className="user-badge"
+              onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
+              style={{
+                cursor: "pointer",
+                border: "1px solid var(--cyber-purple)",
+                background: "rgba(168, 85, 247, 0.1)",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                padding: "6px 12px",
+                borderRadius: "8px",
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.9rem",
+                  color: "var(--cyber-purple)",
+                  fontWeight: "700",
+                }}
+              >
+                {language === "en" ? "EN" : "VI"} ▼
+              </div>
+            </div>
+
+            {isLangDropdownOpen && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "130%",
+                  right: 0,
+                  background: "#0f172a",
+                  border: "1px solid rgba(168, 85, 247, 0.3)",
+                  borderRadius: "8px",
+                  overflow: "hidden",
+                  display: "flex",
+                  flexDirection: "column",
+                  minWidth: "120px",
+                  boxShadow: "0 10px 25px rgba(0, 0, 0, 0.5)",
+                  zIndex: 200,
+                }}
+              >
+                <button
+                  onClick={() => {
+                    setLanguage("en");
+                    setIsLangDropdownOpen(false);
+                  }}
+                  style={{
+                    padding: "12px 16px",
+                    textAlign: "left",
+                    background: language === "en" ? "rgba(168, 85, 247, 0.2)" : "transparent",
+                    color: "white",
+                    border: "none",
+                    borderBottom: "1px solid rgba(255,255,255,0.05)",
+                    cursor: "pointer",
+                    fontFamily: "var(--font-mono)",
+                    transition: "all 0.2s ease",
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = language === "en" ? "rgba(168, 85, 247, 0.2)" : "transparent")}
+                >
+                  English
+                </button>
+                <button
+                  onClick={() => {
+                    setLanguage("vi");
+                    setIsLangDropdownOpen(false);
+                  }}
+                  style={{
+                    padding: "12px 16px",
+                    textAlign: "left",
+                    background: language === "vi" ? "rgba(168, 85, 247, 0.2)" : "transparent",
+                    color: "white",
+                    border: "none",
+                    cursor: "pointer",
+                    fontFamily: "var(--font-mono)",
+                    transition: "all 0.2s ease",
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = language === "vi" ? "rgba(168, 85, 247, 0.2)" : "transparent")}
+                >
+                  Tiếng Việt
+                </button>
+              </div>
+            )}
+          </div>
           {user ? (
             /* ĐÃ ĐĂNG NHẬP */
             <div style={{ position: "relative" }}>
@@ -199,9 +292,8 @@ export default function Header() {
                       router.push("/profile");
                     }}
                     style={{
-                      padding:
-                        "16px 20px" /* CHỈNH Ở ĐÂY: Đệm dày hơn (cũ là 12px 16px) */,
-                      fontSize: "1.05rem" /* CHỈNH Ở ĐÂY: Chữ to hơn */,
+                      padding: "16px 20px",
+                      fontSize: "1.05rem",
                       textAlign: "left",
                       background: "transparent",
                       color: "white",
@@ -211,21 +303,16 @@ export default function Header() {
                       fontFamily: "system-ui, sans-serif",
                       transition: "all 0.2s ease",
                     }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.background =
-                        "rgba(255,255,255,0.05)")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.background = "transparent")
-                    }
+                    onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}
+                    onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
                   >
-                    PROFILE
+                    {t("header.profile" as any)}
                   </button>
                   <button
                     onClick={handleLogout}
                     style={{
-                      padding: "16px 20px" /* Đệm dày hơn */,
-                      fontSize: "1.05rem" /* Chữ to hơn */,
+                      padding: "16px 20px",
+                      fontSize: "1.05rem",
                       textAlign: "left",
                       background: "transparent",
                       color: "#ef4444",
@@ -234,15 +321,10 @@ export default function Header() {
                       fontFamily: "system-ui, sans-serif",
                       transition: "all 0.2s ease",
                     }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.background =
-                        "rgba(239, 68, 68, 0.1)")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.background = "transparent")
-                    }
+                    onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(239, 68, 68, 0.1)")}
+                    onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
                   >
-                    LOG OUT
+                    {t("header.logout" as any)}
                   </button>
                 </div>
               )}
@@ -264,7 +346,7 @@ export default function Header() {
                       letterSpacing: "0.05em",
                     }}
                   >
-                    GUEST_MODE
+                    {t("header.guestMode" as any)}
                   </div>
                 </div>
               </div>

@@ -17,8 +17,10 @@ import {
   Gauge,
   Loader2,
 } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function RentingSuggestion() {
+  const { t } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [mounted, setMounted] = useState(false);
@@ -160,7 +162,7 @@ export default function RentingSuggestion() {
                 className="font-header text-xl font-bold"
                 style={{ color: "var(--cyber-blue)" }}
               >
-                AI CONCIERGE
+                {t("renting.aiConcierge") as any}
               </span>
             </div>
           </div>
@@ -173,9 +175,9 @@ export default function RentingSuggestion() {
               lineHeight: 1.2,
             }}
           >
-            INTELLIGENT VEHICLE
+            {t("renting.titleLine1") as any}
             <br />
-            MATCHING SYSTEM
+            {t("renting.titleLine2") as any}
           </h1>
 
           {/* MỚI: Đoạn mô tả nhỏ về AI (Reveal sau 0.2s) */}
@@ -190,8 +192,7 @@ export default function RentingSuggestion() {
               animationDelay: "0.2s",
             }}
           >
-            Neural network-powered recommendation engine analyzing terrain,
-            weather, and your preferences in real-time
+            {t("renting.subtitle") as any}
           </p>
 
           {/* BADGES CỦA ÔNG (MÀ ÔNG NÓI HIỆN ĐƯỢC THÌ GIỮ NGUYÊN) - Reveal sau 0.3s */}
@@ -213,12 +214,12 @@ export default function RentingSuggestion() {
               },
               {
                 icon: ShieldCheck,
-                label: "TERRAIN ACTIVE",
+                label: t("renting.badge2") as any,
                 color: "var(--cyber-green)",
               },
               {
                 icon: Zap,
-                label: "ATMOSPHERIC SYNC",
+                label: t("renting.badge3") as any,
                 color: "var(--cyber-yellow)",
               },
             ].map((item, i) => (
@@ -265,8 +266,8 @@ export default function RentingSuggestion() {
                 fontSize: "0.85rem",
               }}
             >
-              <MapPin size={16} color="var(--cyber-blue)" /> DESCRIBE YOUR
-              JOURNEY
+              <MapPin size={16} color="var(--cyber-blue)" />{" "}
+              {t("renting.describeJourney") as any}
             </div>
             <div
               style={{ display: "flex", gap: "1rem", alignItems: "stretch" }}
@@ -287,7 +288,7 @@ export default function RentingSuggestion() {
                   type="text"
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
-                  placeholder="E.g., I need a luxury SUV for a trip to the Da Lat highlands..."
+                  placeholder={t("renting.inputPlaceholder") as any}
                   style={{
                     width: "100%",
                     padding: "1.4rem 1.5rem 1.4rem 55px",
@@ -319,7 +320,7 @@ export default function RentingSuggestion() {
                 {loading ? (
                   <>
                     <Loader2 className="animate-spin" size={20} />
-                    <span>PROCESSING</span>
+                    <span>{t("renting.btnProcessing") as any}</span>
                   </>
                 ) : (
                   <>
@@ -327,7 +328,7 @@ export default function RentingSuggestion() {
                       size={20}
                       className={inputValue.trim() ? "text-slate-900" : ""}
                     />
-                    <span>ANALYZE</span>
+                    <span>{t("renting.btnAnalyze") as any}</span>
                   </>
                 )}
               </button>
@@ -378,7 +379,7 @@ export default function RentingSuggestion() {
                       marginBottom: "4px",
                     }}
                   >
-                    OPTIMAL MATCH FOUND
+                    {t("renting.optimalMatch") as any}
                   </div>
                   <h2
                     style={{

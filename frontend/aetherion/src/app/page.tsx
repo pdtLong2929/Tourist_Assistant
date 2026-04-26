@@ -2,8 +2,10 @@
 
 import CountUp from "@/components/CountUp";
 import RevealOnScroll from "@/components/RevealOnScroll";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function LandingPage() {
+  const { t } = useLanguage();
   return (
     <main
       style={{
@@ -170,9 +172,9 @@ export default function LandingPage() {
                 lineHeight: 1.1,
               }}
             >
-              Your AI Travel
+              {t("landing.heroTitleLine1" as any)}
               <br />
-              Companion
+              {t("landing.heroTitleLine2" as any)}
             </div>
           </div>
           <p
@@ -185,8 +187,7 @@ export default function LandingPage() {
               marginBottom: "2.5rem",
             }}
           >
-            Discover hidden gems, get instant recommendations, and navigate like
-            a local. Powered by advanced AI to make every journey effortless.
+            {t("landing.heroDesc" as any)}
           </p>
 
           <div
@@ -202,7 +203,7 @@ export default function LandingPage() {
               className="cyber-button"
               onClick={() => (window.location.href = "/renting/suggestions")}
             >
-              Try AI Assistant
+              {t("landing.tryAi" as any)}
             </button>
             <button
               style={{
@@ -227,7 +228,7 @@ export default function LandingPage() {
                 e.currentTarget.style.color = "var(--text-main)";
               }}
             >
-              Explore Destinations
+              {t("landing.exploreDest" as any)}
             </button>
           </div>
 
@@ -260,7 +261,7 @@ export default function LandingPage() {
                   letterSpacing: "0.05em",
                 }}
               >
-                Happy Travelers
+                {t("landing.statHappy" as any)}
               </div>
             </div>
 
@@ -283,7 +284,7 @@ export default function LandingPage() {
                   letterSpacing: "0.05em",
                 }}
               >
-                Satisfaction Rate
+                {t("landing.statSatisfaction" as any)}
               </div>
             </div>
 
@@ -306,7 +307,7 @@ export default function LandingPage() {
                   letterSpacing: "0.05em",
                 }}
               >
-                AI Support
+                {t("landing.statSupport" as any)}
               </div>
             </div>
           </div>
@@ -324,7 +325,7 @@ export default function LandingPage() {
               color: "var(--text-main)",
             }}
           >
-            How Tourist AI Helps You
+            {t("landing.featuresTitle" as any)}
           </h2>
           <p
             style={{
@@ -336,7 +337,7 @@ export default function LandingPage() {
               margin: "0 auto 3rem",
             }}
           >
-            Everything you need for seamless travel planning and navigation
+            {t("landing.featuresSubtitle" as any)}
           </p>
 
           <div
@@ -354,7 +355,7 @@ export default function LandingPage() {
                     className="module-label"
                     style={{ marginBottom: "1rem" }}
                   >
-                    AI-Powered
+                    {t("landing.feat1Tag" as any)}
                   </div>
 
                   <h3
@@ -366,7 +367,7 @@ export default function LandingPage() {
                       color: "var(--cyber-yellow)",
                     }}
                   >
-                    Smart Recommendations
+                    {t("landing.feat1Title" as any)}
                   </h3>
 
                   <p
@@ -377,12 +378,10 @@ export default function LandingPage() {
                       marginBottom: "1.5rem",
                     }}
                   >
-                    Ask anything about your destination. Get personalized
-                    suggestions for restaurants, attractions, and hidden gems
-                    based on your preferences.
+                    {t("landing.feat1Desc" as any)}
                   </p>
 
-                  <div className="ready-label">✓ Always Learning</div>
+                  <div className="ready-label">{t("landing.feat1Check" as any)}</div>
                 </div>
               </a>
             </RevealOnScroll>
@@ -394,7 +393,7 @@ export default function LandingPage() {
                     className="module-label"
                     style={{ marginBottom: "1rem" }}
                   >
-                    Real-Time
+                    {t("landing.feat2Tag" as any)}
                   </div>
 
                   <h3
@@ -406,7 +405,7 @@ export default function LandingPage() {
                       color: "var(--cyber-blue)",
                     }}
                   >
-                    Instant Transportation
+                    {t("landing.feat2Title" as any)}
                   </h3>
 
                   <p
@@ -417,11 +416,10 @@ export default function LandingPage() {
                       marginBottom: "1.5rem",
                     }}
                   >
-                    Book rides with live tracking, estimated arrival times, and
-                    multiple vehicle options. Your journey, your way.
+                    {t("landing.feat2Desc" as any)}
                   </p>
 
-                  <div className="ready-label">✓ Live GPS Tracking</div>
+                  <div className="ready-label">{t("landing.feat2Check" as any)}</div>
                 </div>
               </a>
             </RevealOnScroll>
@@ -433,7 +431,7 @@ export default function LandingPage() {
                     className="module-label"
                     style={{ marginBottom: "1rem" }}
                   >
-                    Data-Driven
+                    {t("landing.feat3Tag" as any)}
                   </div>
 
                   <h3
@@ -445,7 +443,7 @@ export default function LandingPage() {
                       color: "var(--cyber-purple)",
                     }}
                   >
-                    Smart Route Planning
+                    {t("landing.feat3Title" as any)}
                   </h3>
 
                   <p
@@ -456,11 +454,10 @@ export default function LandingPage() {
                       marginBottom: "1.5rem",
                     }}
                   >
-                    Analyze weather, safety, and traffic patterns to suggest the
-                    best times and routes for your adventures.
+                    {t("landing.feat3Desc" as any)}
                   </p>
 
-                  <div className="ready-label">✓ Predictive Analytics</div>
+                  <div className="ready-label">{t("landing.feat3Check" as any)}</div>
                 </div>
               </a>
             </RevealOnScroll>
@@ -486,7 +483,7 @@ export default function LandingPage() {
                 color: "var(--text-main)",
               }}
             >
-              Getting Started is Easy
+              {t("landing.stepsTitle" as any)}
             </h2>
 
             <div
@@ -501,18 +498,18 @@ export default function LandingPage() {
               {[
                 {
                   step: "1",
-                  title: "Tell Us Your Plans",
-                  desc: "Share your destination, dates, and interests",
+                  title: t("landing.step1Title" as any),
+                  desc: t("landing.step1Desc" as any),
                 },
                 {
                   step: "2",
-                  title: "Get AI Recommendations",
-                  desc: "Receive personalized suggestions instantly",
+                  title: t("landing.step2Title" as any),
+                  desc: t("landing.step2Desc" as any),
                 },
                 {
                   step: "3",
-                  title: "Book & Navigate",
-                  desc: "Reserve rides and explore with confidence",
+                  title: t("landing.step3Title" as any),
+                  desc: t("landing.step3Desc" as any),
                 },
               ].map((item, i) => (
                 <RevealOnScroll key={i} delay={i * 200}>
@@ -581,7 +578,7 @@ export default function LandingPage() {
                 color: "var(--cyber-yellow)",
               }}
             >
-              Ready to Transform Your Travel?
+              {t("landing.ctaTitle" as any)}
             </h2>
             <p
               style={{
@@ -592,15 +589,14 @@ export default function LandingPage() {
                 margin: "0 auto 2rem",
               }}
             >
-              Join thousands of travelers who trust Tourist AI for smarter
-              journeys
+              {t("landing.ctaDesc" as any)}
             </p>
             <button
               className="cyber-button"
               onClick={() => (window.location.href = "/renting/suggestions")}
               style={{ fontSize: "1.1rem", padding: "1.25rem 2.5rem" }}
             >
-              Start Your Journey
+              {t("landing.startJourney" as any)}
             </button>
           </section>
         </RevealOnScroll>

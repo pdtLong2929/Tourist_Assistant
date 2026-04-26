@@ -2,9 +2,19 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Fingerprint, Scan, ShieldCheck, UserPlus, LogIn, ShieldAlert, CheckCircle } from "lucide-react";
+import {
+  Fingerprint,
+  Scan,
+  ShieldCheck,
+  UserPlus,
+  LogIn,
+  ShieldAlert,
+  CheckCircle,
+} from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function LoginPage() {
+  const { t } = useLanguage();
   const [mounted, setMounted] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -93,7 +103,7 @@ export default function LoginPage() {
             background: "transparent",
           }}
         >
-          OR CONTINUE WITH
+          {t("login.orContinueWith" as any)}
         </span>
         <div
           style={{
@@ -432,19 +442,27 @@ export default function LoginPage() {
                 textShadow: "0 0 20px rgba(167, 139, 250, 0.5)",
               }}
             >
-              REGISTER
+              {t("login.registerTitle") as any}
             </h2>
           </div>
           <div style={{ width: "100%" }}>
             {errorMessage && (
               <div className="message-box message-error">
-                <ShieldAlert size={20} color="var(--cyber-red)" style={{ flexShrink: 0 }} />
+                <ShieldAlert
+                  size={20}
+                  color="var(--cyber-red)"
+                  style={{ flexShrink: 0 }}
+                />
                 <span>{errorMessage}</span>
               </div>
             )}
             {successMessage && (
               <div className="message-box message-success">
-                <CheckCircle size={20} color="var(--cyber-blue)" style={{ flexShrink: 0 }} />
+                <CheckCircle
+                  size={20}
+                  color="var(--cyber-blue)"
+                  style={{ flexShrink: 0 }}
+                />
                 <span>{successMessage}</span>
               </div>
             )}
@@ -460,7 +478,7 @@ export default function LoginPage() {
           >
             <input
               type="text"
-              placeholder="Username"
+              placeholder={t("login.usernamePlaceholder") as any}
               className="cyber-input"
               required
             />
@@ -472,7 +490,7 @@ export default function LoginPage() {
             />
             <input
               type="password"
-              placeholder="Password"
+              placeholder={t("login.passwordPlaceholder") as any}
               className="cyber-input"
               required
             />
@@ -494,7 +512,9 @@ export default function LoginPage() {
               }}
             >
               {isLoading ? <Scan className="animate-spin" /> : <UserPlus />}
-              {isLoading ? "CREATING ACCOUNT..." : "CREATE ACCOUNT"}
+              {isLoading
+                ? (t("login.creatingAcc") as any)
+                : (t("login.createAccountBtn") as any)}
             </button>
           </form>
           <SocialButtons />
@@ -538,20 +558,28 @@ export default function LoginPage() {
                 textShadow: "0 0 20px rgba(52, 229, 235, 0.5)",
               }}
             >
-              LOGIN
+              {t("login.loginTitle") as any}
             </h2>
           </div>
 
           <div style={{ width: "100%" }}>
             {errorMessage && (
               <div className="message-box message-error">
-                <ShieldAlert size={20} color="var(--cyber-red)" style={{ flexShrink: 0 }} />
+                <ShieldAlert
+                  size={20}
+                  color="var(--cyber-red)"
+                  style={{ flexShrink: 0 }}
+                />
                 <span>{errorMessage}</span>
               </div>
             )}
             {successMessage && (
               <div className="message-box message-success">
-                <CheckCircle size={20} color="var(--cyber-blue)" style={{ flexShrink: 0 }} />
+                <CheckCircle
+                  size={20}
+                  color="var(--cyber-blue)"
+                  style={{ flexShrink: 0 }}
+                />
                 <span>{successMessage}</span>
               </div>
             )}
@@ -568,7 +596,7 @@ export default function LoginPage() {
           >
             <input
               type="text"
-              placeholder="Username"
+              placeholder={t("login.usernamePlaceholder") as any}
               className="cyber-input"
               required
               value={email}
@@ -576,7 +604,7 @@ export default function LoginPage() {
             />
             <input
               type="password"
-              placeholder="Password"
+              placeholder={t("login.passwordPlaceholder") as any}
               className="cyber-input"
               required
               value={password}
@@ -600,7 +628,9 @@ export default function LoginPage() {
               }}
             >
               {isLoading ? <Scan className="animate-spin" /> : <LogIn />}
-              {isLoading ? "SIGNING IN..." : "SIGN IN"}
+              {isLoading
+                ? (t("login.signingIn") as any)
+                : (t("login.signInBtn") as any)}
             </button>
           </form>
           <SocialButtons />
@@ -658,7 +688,7 @@ export default function LoginPage() {
                 marginBottom: "1rem",
               }}
             >
-              Welcome Back!
+              {t("login.welcomeBack") as any}
             </h2>
             <p
               style={{
@@ -667,11 +697,10 @@ export default function LoginPage() {
                 fontSize: "1.3rem",
                 fontWeight: "500",
                 lineHeight: 1.6,
+                whiteSpace: "pre-line",
               }}
             >
-              Already registered in the network?
-              <br />
-              Access your data center now.
+              {t("login.welcomeDesc")}
             </p>
             <button
               onClick={() => setIsSignUp(false)}
@@ -697,7 +726,7 @@ export default function LoginPage() {
                 e.currentTarget.style.color = "white";
               }}
             >
-              SWITCH TO LOGIN
+              {t("login.switchToLogin") as any}
             </button>
           </div>
 
@@ -728,7 +757,7 @@ export default function LoginPage() {
                 marginBottom: "1rem",
               }}
             >
-              Hello Traveler!
+              {t("login.helloTraveler") as any}
             </h2>
             <p
               style={{
@@ -737,11 +766,10 @@ export default function LoginPage() {
                 fontSize: "1.3rem",
                 fontWeight: "500",
                 lineHeight: 1.6,
+                whiteSpace: "pre-line",
               }}
             >
-              New to the ecosystem?
-              <br />
-              Create a profile to unlock premium routes.
+              {t("login.helloDesc") as any}
             </p>
             <button
               onClick={() => setIsSignUp(true)}
@@ -767,7 +795,7 @@ export default function LoginPage() {
                 e.currentTarget.style.color = "white";
               }}
             >
-              SWITCH TO REGISTER
+              {t("login.switchToRegister") as any}
             </button>
           </div>
         </div>
