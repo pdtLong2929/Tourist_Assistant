@@ -36,7 +36,7 @@ def predict(req: PredictionRequest):
             "predicted_rating": round(score, 1),
             "explanation": explanation
         })
-        
+    results.sort(key=lambda x: x["predicted_rating"], reverse=True)
     return {"data": results}
 
 @router.post("/api/recommend")
@@ -78,5 +78,5 @@ def recommend(req: RecommendRequest):
             "predicted_rating": round(score, 1),
             "explanation": explanation
         })
-        
+    results.sort(key=lambda x: x["predicted_rating"], reverse=True)  
     return {"data": results}

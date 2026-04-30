@@ -122,8 +122,13 @@ def generate_ai_explanation(item_id: str, score: float, user_interests: list) ->
     - User's preference match: {matched_str}
     - Other strengths: {", ".join(other_pros[:2])}
     - Note: {", ".join(cons[:1])}
-    
-    TASK: Write 2 natural English sentences for a review. If there's a 'Preference match', emphasize that this place is perfect for their specific taste.
+
+    TASK: Write a single, cohesive review paragraph consisting of exactly 2 sentences. If there's a 'Preference match', emphasize that this place is perfect for their specific taste.
+
+    STRICT RULES:
+    - Output ONLY the review text. 
+    - DO NOT use introductory phrases like "Here is...", "Based on...", or "Here are two possible...".
+    - DO NOT use numbering (1., 2.), bullet points, or options.
     """
 
     try:
