@@ -1,0 +1,370 @@
+[
+  {
+    "id": "3690",
+    "code": null,
+    "name": "Village Parking Lot",
+    "lat": 42.724316,
+    "lon": -77.873132,
+    "zone_id": null
+  },
+  {
+    "id": "3691",
+    "code": null,
+    "name": "Corner Rte 36 @ Stoner Hill Rd",
+    "lat": 42.595631,
+    "lon": -77.746195,
+    "zone_id": null
+  },
+  {
+    "id": "3695",
+    "code": null,
+    "name": "Airport Plaza",
+    "lat": 42.569142,
+    "lon": -77.717799,
+    "zone_id": null
+  },
+  {
+    "id": "3696",
+    "code": null,
+    "name": "North Dansville Town Hall",
+    "lat": 42.559256,
+    "lon": -77.695621,
+    "zone_id": null
+  },
+  {
+    "id": "3697",
+    "code": null,
+    "name": "Corner Rte 436 @ Valley Rd",
+    "lat": 42.55813,
+    "lon": -77.76086,
+    "zone_id": null
+  },
+  {
+    "id": "3698",
+    "code": null,
+    "name": "M & T Bank",
+    "lat": 42.579645,
+    "lon": -77.94256,
+    "zone_id": null
+  },
+  {
+    "id": "3699",
+    "code": null,
+    "name": "Livingston County CNR",
+    "lat": 42.731425,
+    "lon": -77.88258,
+    "zone_id": null
+  },
+  {
+    "id": "3700",
+    "code": null,
+    "name": "7-Eleven Leicester",
+    "lat": 42.77232,
+    "lon": -77.894131,
+    "zone_id": null
+  },
+  {
+    "id": "3701",
+    "code": null,
+    "name": "Cornerstone",
+    "lat": 42.727303,
+    "lon": -77.991811,
+    "zone_id": null
+  },
+  {
+    "id": "3705",
+    "code": null,
+    "name": "7-Eleven Geneseo",
+    "lat": 42.793529,
+    "lon": -77.817098,
+    "zone_id": null
+  },
+  {
+    "id": "3707",
+    "code": null,
+    "name": "Avon Mini Mart",
+    "lat": 42.911635,
+    "lon": -77.744958,
+    "zone_id": null
+  },
+  {
+    "id": "3708",
+    "code": null,
+    "name": "Caledonia Town Hall",
+    "lat": 42.973251,
+    "lon": -77.854206,
+    "zone_id": null
+  },
+  {
+    "id": "3709",
+    "code": null,
+    "name": "Corner Rte 36 & York",
+    "lat": 42.87107,
+    "lon": -77.885621,
+    "zone_id": null
+  },
+  {
+    "id": "3713",
+    "code": null,
+    "name": "Westin Mini Mart",
+    "lat": 42.833225,
+    "lon": -77.696251,
+    "zone_id": null
+  },
+  {
+    "id": "3714",
+    "code": null,
+    "name": "Shur Fine",
+    "lat": 42.821951,
+    "lon": -77.672296,
+    "zone_id": null
+  },
+  {
+    "id": "3715",
+    "code": null,
+    "name": "Lima Parking Lot",
+    "lat": 42.904768,
+    "lon": -77.613159,
+    "zone_id": null
+  },
+  {
+    "id": "3752",
+    "code": null,
+    "name": "Marketplace Mall Food Court",
+    "lat": 43.084729,
+    "lon": -77.634377,
+    "zone_id": null
+  },
+  {
+    "id": "3753",
+    "code": null,
+    "name": "RIT @ Park Point Barnes & Noble",
+    "lat": 43.092026,
+    "lon": -77.655164,
+    "zone_id": null
+  },
+  {
+    "id": "3754",
+    "code": null,
+    "name": "UR Library",
+    "lat": 43.128485,
+    "lon": -77.627754,
+    "zone_id": null
+  },
+  {
+    "id": "3755",
+    "code": null,
+    "name": "Trailways / Amtrak",
+    "lat": 43.162713,
+    "lon": -77.608,
+    "zone_id": null
+  },
+  {
+    "id": "3756",
+    "code": null,
+    "name": "Rochester Airport",
+    "lat": 43.128068,
+    "lon": -77.665878,
+    "zone_id": null
+  },
+  {
+    "id": "3757",
+    "code": null,
+    "name": "Eastview Mall",
+    "lat": 43.027014,
+    "lon": -77.442345,
+    "zone_id": null
+  },
+  {
+    "id": "3759",
+    "code": null,
+    "name": "MacVittie Union",
+    "lat": 42.796733,
+    "lon": -77.822346,
+    "zone_id": null
+  },
+  {
+    "id": "3760",
+    "code": null,
+    "name": "Parking Lot Q",
+    "lat": 42.803151,
+    "lon": -77.826448,
+    "zone_id": null
+  },
+  {
+    "id": "3761",
+    "code": null,
+    "name": "Parking Lot H",
+    "lat": 42.802144,
+    "lon": -77.823908,
+    "zone_id": null
+  },
+  {
+    "id": "3762",
+    "code": null,
+    "name": "Erie Hall",
+    "lat": 42.799925,
+    "lon": -77.82102,
+    "zone_id": null
+  },
+  {
+    "id": "3763",
+    "code": null,
+    "name": "Milne Library & Newton Hall",
+    "lat": 42.797864,
+    "lon": -77.819327,
+    "zone_id": null
+  },
+  {
+    "id": "3764",
+    "code": null,
+    "name": "North St @ Highland Rd",
+    "lat": 42.799001,
+    "lon": -77.806763,
+    "zone_id": null
+  },
+  {
+    "id": "3765",
+    "code": null,
+    "name": "Center St @ Main St",
+    "lat": 42.796282,
+    "lon": -77.816687,
+    "zone_id": null
+  },
+  {
+    "id": "3766",
+    "code": null,
+    "name": "Lakeville Rd @ Geneseo Sq Plaza",
+    "lat": 42.796131,
+    "lon": -77.792758,
+    "zone_id": null
+  },
+  {
+    "id": "3767",
+    "code": null,
+    "name": "Wegmans",
+    "lat": 42.797045,
+    "lon": -77.784704,
+    "zone_id": null
+  },
+  {
+    "id": "3768",
+    "code": null,
+    "name": "Walmart",
+    "lat": 42.801971,
+    "lon": -77.789023,
+    "zone_id": null
+  },
+  {
+    "id": "3769",
+    "code": null,
+    "name": "Megan Dr / Fit Club",
+    "lat": 42.79593,
+    "lon": -77.796675,
+    "zone_id": null
+  },
+  {
+    "id": "3770",
+    "code": null,
+    "name": "Park St / Brodie Hall",
+    "lat": 42.794713,
+    "lon": -77.818532,
+    "zone_id": null
+  },
+  {
+    "id": "3771",
+    "code": null,
+    "name": "10 MJ Drive",
+    "lat": 42.792977,
+    "lon": -77.824152,
+    "zone_id": null
+  },
+  {
+    "id": "3772",
+    "code": null,
+    "name": "Bus Shelter / Wayne Hall",
+    "lat": 42.790899,
+    "lon": -77.823495,
+    "zone_id": null
+  },
+  {
+    "id": "3773",
+    "code": null,
+    "name": "Center St after Highland",
+    "lat": 42.795234,
+    "lon": -77.807577,
+    "zone_id": null
+  },
+  {
+    "id": "3774",
+    "code": null,
+    "name": "Main St @ Park St",
+    "lat": 42.794563,
+    "lon": -77.817227,
+    "zone_id": null
+  },
+  {
+    "id": "3794",
+    "code": null,
+    "name": "2nd St @ Center St",
+    "lat": 42.795941,
+    "lon": -77.814558,
+    "zone_id": null
+  },
+  {
+    "id": "3795",
+    "code": null,
+    "name": "Highland St @ Oak St",
+    "lat": 42.79709,
+    "lon": -77.807028,
+    "zone_id": null
+  },
+  {
+    "id": "3796",
+    "code": null,
+    "name": "Highland St @ North St",
+    "lat": 42.79899,
+    "lon": -77.806752,
+    "zone_id": null
+  },
+  {
+    "id": "3797",
+    "code": null,
+    "name": "North St @ 2nd St",
+    "lat": 42.799862,
+    "lon": -77.813644,
+    "zone_id": null
+  },
+  {
+    "id": "3798",
+    "code": null,
+    "name": "Court St @ Wadsworth St",
+    "lat": 42.800803,
+    "lon": -77.818102,
+    "zone_id": null
+  },
+  {
+    "id": "3801",
+    "code": null,
+    "name": "Alleghany Hall",
+    "lat": 42.798834,
+    "lon": -77.822205,
+    "zone_id": null
+  },
+  {
+    "id": "3816",
+    "code": null,
+    "name": "Aldis",
+    "lat": 42.798953,
+    "lon": -77.780164,
+    "zone_id": null
+  },
+  {
+    "id": "3817",
+    "code": null,
+    "name": "4600 Millennium Dr",
+    "lat": 42.798122,
+    "lon": -77.79097,
+    "zone_id": null
+  }
+]

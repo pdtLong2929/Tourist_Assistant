@@ -1,0 +1,88 @@
+route_id,service_id,trip_id,trip_headsign,trip_short_name,direction_id,block_id,shape_id
+1042,service-2214,2214,Campus Shuttle,CS M-F 8:26AM,,,shape-2214
+1042,service-2215,2215,Campus Shuttle,CS M-F 9:38AM,,,shape-2215
+1042,service-2216,2216,Campus Shuttle,CS M-F 10:35AM,,,shape-2216
+1042,service-2230,2230,Campus Shuttle,CS M-F 6:35PM,,,shape-2230
+1042,service-2217,2217,Campus Shuttle,CS M-F 11AM,,,shape-2217
+1042,service-2232,2232,Campus Shuttle,CS M-F 8:05PM,,,shape-2232
+1042,service-2224,2224,Campus Shuttle,CS M-F 3PM,,,shape-2224
+1042,service-2221,2221,Campus Shuttle,CS M-F 1:25PM,,,shape-2221
+1042,service-2218,2218,Campus Shuttle,CS M-F 11:25AM,,,shape-2218
+1042,service-2234,2234,Campus Shuttle,CS Sun 1PM,,,shape-2234
+1042,service-2223,2223,Campus Shuttle,CS M-F 2:20PM,,,shape-2223
+1042,service-2219,2219,Campus Shuttle,CS M-F 11:50AM,,,shape-2219
+1042,service-2207,2207,Campus Shuttle,CS Sat 1:45PM,,,shape-2207
+1042,service-2235,2235,Campus Shuttle,CS Sun 1:45PM,,,shape-2235
+1042,service-2208,2208,Campus Shuttle,CS Sat 1PM,,,shape-2208
+1042,service-3031,3031,Campus Shuttle,CS Sat 7:50PM,,,shape-3031
+1042,service-3037,3037,Campus Shuttle,CS Sat 1:10AM,,,shape-3037
+1042,service-3042,3042,Campus Shuttle,CS Sun 5PM,,,shape-3042
+1042,service-2239,2239,Campus Shuttle,CS Fri 10:10PM,,,shape-2239
+1042,service-2233,2233,Campus Shuttle,CS M-F 9:20PM,,,shape-2233
+1042,service-2220,2220,Campus Shuttle,CS M-F 1PM,,,shape-2220
+1042,service-2323,2323,Campus Shuttle,ES 1:00PM,,,shape-2323
+1042,service-2236,2236,Campus Shuttle,CS Sun 2:50PM,,,shape-2236
+1042,service-2209,2209,Campus Shuttle,CS Sat 2:45PM,,,shape-2209
+1042,service-2226,2226,Campus Shuttle,CS M-F 3:55PM,,,shape-2226
+1042,service-2222,2222,Campus Shuttle,CS M-F 1:50PM,,,shape-2222
+1042,service-3043,3043,Campus Shuttle,CS Sun 7:50PM,,,shape-3043
+1042,service-2210,2210,Campus Shuttle,CS Sat 3:35PM,,,shape-2210
+1042,service-2253,2253,Campus Shuttle,CS Fri 12AM,,,shape-2253
+1042,service-3038,3038,Campus Shuttle,CS Sat 1:40AM,,,shape-3038
+1042,service-2231,2231,Campus Shuttle,CS M-F 7:25PM,,,shape-2231
+1042,service-2238,2238,Campus Shuttle,CS Sun 5PM,,,shape-2238
+1042,service-2227,2227,Campus Shuttle,CS M-F 4:20PM,,,shape-2227
+1042,service-2211,2211,Campus Shuttle,CS Sat 5PM,,,shape-2211
+1042,service-2256,2256,Campus Shuttle,CS Fri 1AM,,,shape-2256
+1042,service-2255,2255,Campus Shuttle,CS Fri 12:30AM,,,shape-2255
+1042,service-2240,2240,Campus Shuttle,CS Fri 10:50PM,,,shape-2240
+1042,service-2228,2228,Campus Shuttle,CS M-F 5PM,,,shape-2228
+1042,service-2212,2212,Campus Shuttle,CS Sat 5:45PM,,,shape-2212
+1042,service-2327,2327,Campus Shuttle,ES 3:40PM,,,shape-2327
+1042,service-2326,2326,Campus Shuttle,ES 3PM,,,shape-2326
+1042,service-2324,2324,Campus Shuttle,ES 1:35PM,,,shape-2324
+1042,service-2321,2321,Campus Shuttle,ES 11:05AM,,,shape-2321
+1042,service-2257,2257,Campus Shuttle,CS Fri 1:30AM,,,shape-2257
+1042,service-2213,2213,Campus Shuttle,CS M-F 8AM,,,shape-2213
+1042,service-2241,2241,Campus Shuttle,CS Fri 11:30PM,,,shape-2241
+1042,service-2229,2229,Campus Shuttle,CS M-F 5:45PM,,,shape-2229
+1042,service-2325,2325,Campus Shuttle,ES 2:25PM,,,shape-2325
+1042,service-2322,2322,Campus Shuttle,ES 11:40AM,,,shape-2322
+1042,service-2319,2319,Campus Shuttle,ES 10:30AM,,,shape-2319
+1042,service-3032,3032,Campus Shuttle,CS Sat 9:20PM,,,shape-3032
+1042,service-3044,3044,Campus Shuttle,CS Sun 8:35PM,,,shape-3044
+1042,service-3033,3033,Campus Shuttle,CS Sat 8:35PM,,,shape-3033
+1042,service-3034,3034,Campus Shuttle,CS Sat 10:35PM,,,shape-3034
+1042,service-3036,3036,Campus Shuttle,CS Sat 12:40AM,,,shape-3036
+1042,service-3039,3039,Campus Shuttle,CS Sat 2:10AM,,,shape-3039
+1042,service-2237,2237,Campus Shuttle,CS Sun 3:35PM,,,shape-2237
+1042,service-3045,3045,Campus Shuttle,CS Sun 9:40PM,,,shape-3045
+1042,service-2258,2258,Campus Shuttle,CS Fri 2:00AM,,,shape-2258
+1042,service-3030,3030,Campus Shuttle,CS Sat 7PM,,,shape-3030
+1042,service-3041,3041,Campus Shuttle,CS Sun 5:45PM,,,shape-3041
+1042,service-3035,3035,Campus Shuttle,CS Sat 11:15PM,,,shape-3035
+1042,service-2225,2225,Campus Shuttle,CS M-F 3:25PM,,,shape-2225
+1046,service-2273,2273,Knight Express,KE Fri - Sat 2:30AM,,,shape-2273
+1046,service-2264,2264,Knight Express,KE Fri - Sat 10:21PM,,,shape-2264
+1046,service-2274,2274,Knight Express,KE Fri - Sat 2:55AM,,,shape-2274
+1046,service-2272,2272,Knight Express,KE Fri - Sat 2:07AM,,,shape-2272
+1046,service-2259,2259,Knight Express,KE Fri - Sat 10:02PM,,,shape-2259
+1046,service-2265,2265,Knight Express,KE Fri - Sat 11:01PM,,,shape-2265
+1046,service-2271,2271,Knight Express,KE Fri - Sat 1:47AM,,,shape-2271
+1046,service-2266,2266,Knight Express,KE Fri - Sat 11:22PM,,,shape-2266
+1046,service-2269,2269,Knight Express,KE Fri - Sat 12:21AM,,,shape-2269
+1046,service-2267,2267,Knight Express,KE Fri - Sat 11:41PM,,,shape-2267
+1046,service-2268,2268,Knight Express,KE Fri - Sat 12:01AM,,,shape-2268
+1046,service-2270,2270,Knight Express,KE Fri - Sat 1:26AM,,,shape-2270
+1028,service-2101,2101,232,232,,,shape-2101
+1029,service-2102,2102,231 / 243,231,,,shape-2102
+1029,service-2103,2103,231 / 243,243 AM,,,shape-2103
+1029,service-2104,2104,231 / 243,243 PM,,,shape-2104
+1039,service-2200,2200,Rochester Shuttle,RS Sun 4PM,,,shape-2200
+1039,service-2205,2205,Rochester Shuttle,RS Sat 4:30PM,,,shape-2205
+1039,service-2204,2204,Rochester Shuttle,RS Sat 2PM,,,shape-2204
+1039,service-2206,2206,Rochester Shuttle,RS Sat 7:45PM,,,shape-2206
+1039,service-2203,2203,Rochester Shuttle,RS Fri 7PM,,,shape-2203
+1039,service-2195,2195,Rochester Shuttle,RS Sun 12:30PM,,,shape-2195
+1039,service-2201,2201,Rochester Shuttle,RS Sun 7PM,,,shape-2201
+1039,service-2202,2202,Rochester Shuttle,RS Fri 4PM,,,shape-2202

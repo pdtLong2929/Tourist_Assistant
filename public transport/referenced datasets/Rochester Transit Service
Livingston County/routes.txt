@@ -1,0 +1,6 @@
+route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,route_text_color
+1046,56d7f77c-bbc9-499b-8fcd-9ca98e419a2b,Knight Express,Geneseo/Knight Express,,3,,173A79,FFFFFF
+1029,56d7f77c-bbc9-499b-8fcd-9ca98e419a2b,231 / 243,Mt. Morris/Geneseo/Avon,,3,,77BC1F,FFFFFF
+1039,56d7f77c-bbc9-499b-8fcd-9ca98e419a2b,Rochester Shuttle,Geneseo/Rochester,,3,,173A79,FFFFFF
+1028,56d7f77c-bbc9-499b-8fcd-9ca98e419a2b,232,Mt M/Dansv/Nunda/Perry,,3,,77BC1F,FFFFFF
+1042,56d7f77c-bbc9-499b-8fcd-9ca98e419a2b,Campus Shuttle,Geneseo/Campus Shuttle,,3,,173A79,FFFFFF
