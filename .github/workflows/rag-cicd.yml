@@ -1,0 +1,128 @@
+name: RAG Service CI/CD to GCP
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'rag/**'
+      - '.github/workflows/rag-cicd.yml'
+      - 'docker-compose.yml'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'rag/**'
+      - '.github/workflows/rag-cicd.yml'
+
+env:
+  PROJECT_ID: 'touristassistant-29-03-2026'
+  REGION: 'asia-southeast1'
+  GAR_REPO: 'tourism-frontend'
+  SERVICE_NAME: 'tourism-rag-service'
+  IMAGE_NAME: 'rag-service'
+
+permissions:
+  contents: 'read'
+  id-token: 'write'
+
+jobs:
+  # ── Job 1 : Test & Validation ──────────────────────────────────────────────
+  test:
+    name: Config & Code Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        working-directory: ./rag
+        run: pip install -r requirements.txt
+        
+  # ── Job 2 : Docker Compose Integration Test ──────────────────────────────
+  integration-test:
+    name: Integration Test (Docker Compose)
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create .env from defaults
+        run: |
+          cp .env.example .env || true
+          cp login/.env.example login/.env || true
+          echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" > rag/.env
+
+      - name: Start services via Docker Compose
+        run: docker compose up -d --build --wait rag postgres
+
+      - name: Wait for RAG service to be ready
+        run: |
+          echo "Waiting for RAG service to respond on port 8000..."
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:8000/docs > /dev/null 2>&1; then
+              echo "RAG service is up!"
+              exit 0
+            fi
+            echo "  attempt $i/30 — not ready yet, retrying in 5s..."
+            sleep 5
+          done
+          echo "RAG service failed to start in time."
+          docker compose logs rag
+          exit 1
+
+      - name: Tear down
+        if: always()
+        run: docker compose down -v
+
+  # ── Job 3 : Build & Deploy ──────────────────────────────────────────────
+  deploy:
+    name: Build & Deploy to Cloud Run
+    needs: integration-test
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 1. Authenticate to GCP via WIF
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          token_format: 'access_token'
+          workload_identity_provider: '${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}'
+          service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      # 2. Configure Docker to use GCP Artifact Registry
+      - name: Configure Docker Auth
+        run: |-
+          gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
+
+      # 3. Build & Push using the RAG Dockerfile
+      - name: Build and Push Docker Image
+        working-directory: ./rag
+        run: |-
+          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPO }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
+          docker build -t $DOCKER_TAG .
+          docker push $DOCKER_TAG
+
+      # 4. Deploy to Cloud Run
+      - name: Deploy to Cloud Run
+        run: |-
+          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPO }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
+          gcloud run deploy ${{ env.SERVICE_NAME }} \
+            --image $DOCKER_TAG \
+            --region ${{ env.REGION }} \
+            --allow-unauthenticated \
+            --set-secrets="GEMINI_API_KEY=GEMINI_API_KEY:latest" \
+            --set-env-vars="\
+          DATABASE_URL=postgresql://tourist:tourist_secret@postgres:5432/tourist_assistant"

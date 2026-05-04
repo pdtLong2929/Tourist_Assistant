@@ -17,7 +17,7 @@
 services:
   # ─── PostgreSQL ────────────────────────────────────────────────────────
   postgres:
-    image: postgres:16-alpine
+    image: pgvector/pgvector:pg16
     container_name: ta_postgres
     restart: unless-stopped
     environment:
@@ -29,7 +29,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-tourist}" ]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-tourist} -d ${POSTGRES_DB:-tourist_assistant}" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -108,6 +108,25 @@ services:
     networks:
       - ta_network
 
+  # ─── Python RAG Service ───────────────────────────────────────────────
+  rag:
+    build:
+      context: ./rag
+      dockerfile: Dockerfile
+    container_name: ta_rag
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./rag/.env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-tourist}:${POSTGRES_PASSWORD:-tourist_secret}@postgres:5432/${POSTGRES_DB:-tourist_assistant}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - ta_network
+
   # ─── Nginx API Gateway ────────────────────────────────────────────────
   nginx:
     build:
@@ -127,43 +146,6 @@ services:
     depends_on:
       - frontend
       - login
-    networks:
-      - ta_network
-
-  # ─── pgAdmin (Postgres Web UI) ────────────────────────────────────────
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    container_name: ta_pgadmin
-    restart: unless-stopped
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@tourist.dev}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
-      PGADMIN_LISTEN_PORT: 80
-    ports:
-      - "${PGADMIN_PORT:-5050}:80"
-    depends_on:
-      postgres:
-        condition: service_healthy
-    volumes:
-      - pgadmin_data:/var/lib/pgadmin
-    networks:
-      - ta_network
-
-  # ─── Mongo Express (MongoDB Web UI) ───────────────────────────────────
-  mongo-express:
-    image: mongo-express:1-20
-    container_name: ta_mongo_express
-    restart: unless-stopped
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_USER:-tourist}
-      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_PASSWORD:-tourist_secret}
-      ME_CONFIG_MONGODB_URL: mongodb://${MONGO_USER:-tourist}:${MONGO_PASSWORD:-tourist_secret}@mongodb:27017/
-      ME_CONFIG_BASICAUTH: "false"
-    ports:
-      - "${MONGO_EXPRESS_PORT:-8081}:8081"
-    depends_on:
-      mongodb:
-        condition: service_healthy
     networks:
       - ta_network
 
