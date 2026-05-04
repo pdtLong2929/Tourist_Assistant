@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vehicle Preference</title>
+</head>
+<body>
+
+  <h1>Chọn sở thích phương tiện</h1>
+
+  <!-- User ID -->
+  <div>
+    <label>User ID:</label>
+    <input type="text" id="userId" placeholder="Nhập user id">
+  </div>
+
+  <hr>
+
+  <!-- Car Checkbox -->
+  <h2>Hãng xe hơi</h2>
+  <div id="carList"></div>
+
+  <hr>
+
+  <!-- Motorbike Checkbox -->
+  <h2>Hãng xe máy</h2>
+  <div id="motorbikeList"></div>
+
+  <hr>
+
+  <button id="submitBtn">Gửi dữ liệu</button>
+
+  <script>
+    // Danh sách xe hơi
+    const cars = [
+      "MERCEDES",
+      "BMW",
+      "AUDI",
+      "HYUNDAI",
+      "KIA"
+    ];
+
+    // Danh sách xe máy
+    const motorbikes = [
+      "HONDA",
+      "YAMAHA",
+      "SUZUKI",
+      "KAWASAKI",
+      "VESPA",
+      "DUCATI",
+      "VINFAST",
+      "DAT BIKE",
+      "VICTORY",
+      "ALPHA",
+      "VOLVO",
+      "LIFAN"
+    ];
+
+    // Render checkbox xe hơi
+    const carList = document.getElementById("carList");
+
+    cars.forEach((car) => {
+      carList.innerHTML += `
+        <div>
+          <input 
+            type="checkbox" 
+            value="${car}" 
+            class="car-checkbox"
+          >
+          <label>${car}</label>
+        </div>
+      `;
+    });
+
+    // Render checkbox xe máy
+    const motorbikeList = document.getElementById("motorbikeList");
+
+    motorbikes.forEach((bike) => {
+      motorbikeList.innerHTML += `
+        <div>
+          <input 
+            type="checkbox" 
+            value="${bike}" 
+            class="motorbike-checkbox"
+          >
+          <label>${bike}</label>
+        </div>
+      `;
+    });
+
+    // Submit dữ liệu
+    document.getElementById("submitBtn").addEventListener("click", async () => {
+      // lấy user id
+      const userId = document.getElementById("userId").value;
+
+      // lấy danh sách car được chọn
+      const selectedCars = Array.from(
+        document.querySelectorAll(".car-checkbox:checked")
+      ).map(item => item.value);
+
+      // lấy danh sách motorbike được chọn
+      const selectedMotorbikes = Array.from(
+        document.querySelectorAll(".motorbike-checkbox:checked")
+      ).map(item => item.value);
+
+      // payload gửi backend
+      const payload = {
+        user_id: userId,
+        car: selectedCars,
+        motorbike: selectedMotorbikes
+      };
+
+      console.log(payload);
+
+      // gọi API backend
+      const response = await fetch("http://localhost:3000/api/vehiclePreferences", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await response.json();
+
+      console.log(result);
+      alert("Gửi thành công");
+    });
+  </script>
+
+</body>
+</html>
