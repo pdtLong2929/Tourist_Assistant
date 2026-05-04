@@ -1,0 +1,375 @@
+route_id,service_id,trip_id,trip_headsign,direction_id,shape_id
+hanoi_23,service_daily,trip_hanoi_23_0_1,Nguyễn Công Trứ - Nguyễn Công Trứ (Chiều đi),0,shape_hanoi_23_out
+hanoi_BRT01,service_daily,trip_hanoi_BRT01_0_2,Bến xe Yên Nghĩa - Kim Mã,0,shape_hanoi_BRT01_out
+hanoi_BRT01,service_daily,trip_hanoi_BRT01_0_3,Kim Mã - Bến xe Yên Nghĩa,0,shape_hanoi_BRT01_out
+hanoi_11,service_daily,trip_hanoi_11_0_4,Công viên Thống Nhất - Học viện Nông nghiệp Việt Nam,0,shape_hanoi_11_out
+hanoi_11,service_daily,trip_hanoi_11_0_5,Học viện Nông nghiệp Việt Nam - Công viên Thống Nhất,0,shape_hanoi_11_out
+hanoi_04,service_daily,trip_hanoi_04_0_6,Long Biên - Bệnh viện Nội tiết Trung ương cơ sở 2,0,shape_hanoi_04_out
+hanoi_04,service_daily,trip_hanoi_04_0_7,Bệnh viện Nội tiết Trung ương cơ sở 2 - Long Biên,0,shape_hanoi_04_out
+hanoi_09A,service_daily,trip_hanoi_09A_0_8,Trần Khánh Dư - Cầu Giấy - Đại học Mỏ,0,shape_hanoi_09A_out
+hanoi_09A,service_daily,trip_hanoi_09A_0_9,Đại học Mỏ - Cầu Giấy - Trần Khánh Dư,0,shape_hanoi_09A_out
+hanoi_99,service_daily,trip_hanoi_99_0_10,Kim Mã - Ngũ Hiệp,0,shape_hanoi_99_out
+hanoi_99,service_daily,trip_hanoi_99_0_11,Ngũ Hiệp - Kim Mã,0,shape_hanoi_99_out
+hanoi_05,service_daily,trip_hanoi_05_0_12,Mai Động - Đại học Tài nguyên và Môi trường Hà Nội,0,shape_hanoi_05_out
+hanoi_05,service_daily,trip_hanoi_05_0_13,Đại học Tài nguyên và Môi trường Hà Nội - Mai Động,0,shape_hanoi_05_out
+hanoi_26,service_daily,trip_hanoi_26_0_14,Mai Động - Sân vận động Quốc gia,0,shape_hanoi_26_out
+hanoi_26,service_daily,trip_hanoi_26_0_15,Sân vận động Quốc gia - Mai Động,0,shape_hanoi_26_out
+hanoi_42,service_daily,trip_hanoi_42_0_16,Bến xe Giáp Bát - Trung Mầu (Gia Lâm),0,shape_hanoi_42_out
+hanoi_42,service_daily,trip_hanoi_42_0_17,Trung Mầu (Gia Lâm) - Bến xe Giáp Bát,0,shape_hanoi_42_out
+hanoi_159,service_daily,trip_hanoi_159_0_18,Bệnh viện Bệnh nhiệt đới Trung ương cơ sở 2 - Khu đô thị Times City,0,shape_hanoi_159_out
+hanoi_159,service_daily,trip_hanoi_159_0_19,Khu đô thị Times City - Bệnh viện Bệnh nhiệt đới Trung ương cơ sở 2,0,shape_hanoi_159_out
+hanoi_157,service_daily,trip_hanoi_157_0_20,Bến xe Mỹ Đình - Bến xe Sơn Tây,0,shape_hanoi_157_out
+hanoi_157,service_daily,trip_hanoi_157_0_21,Bến xe Sơn Tây - Bến xe Mỹ Đình,0,shape_hanoi_157_out
+hanoi_16,service_daily,trip_hanoi_16_0_22,Bến xe Mỹ Đình - Bến xe Nước Ngầm,0,shape_hanoi_16_out
+hanoi_16,service_daily,trip_hanoi_16_0_23,Bến xe Nước Ngầm - Bến xe Mỹ Đình,0,shape_hanoi_16_out
+hanoi_60B,service_daily,trip_hanoi_60B_0_24,Bến xe Nước Ngầm - Đại học Tài chính - Ngân hàng Hà Nội (CS1),0,shape_hanoi_60B_out
+hanoi_31,service_daily,trip_hanoi_31_0_25,Bách Khoa - Chèm (Đại học Mỏ),0,shape_hanoi_31_out
+hanoi_31,service_daily,trip_hanoi_31_0_26,Chèm (Đại học Mỏ) - Bách Khoa,0,shape_hanoi_31_out
+hanoi_60B,service_daily,trip_hanoi_60B_0_27,Đại học Tài chính - Ngân hàng Hà Nội (CS1) - Bến xe Nước Ngầm,0,shape_hanoi_60B_out
+hanoi_07,service_daily,trip_hanoi_07_0_28,Cầu Giấy - Sân bay Nội Bài (điểm đỗ T1),0,shape_hanoi_07_out
+hanoi_07,service_daily,trip_hanoi_07_0_29,Sân bay Nội Bài (điểm đỗ T1) - Cầu Giấy,0,shape_hanoi_07_out
+hanoi_01,service_daily,trip_hanoi_01_0_30,Bến xe Gia Lâm - Bến xe Yên Nghĩa,0,shape_hanoi_01_out
+hanoi_24,service_daily,trip_hanoi_24_0_31,Long Biên - Ngã Tư Sở - Cầu Giấy,0,shape_hanoi_24_out
+hanoi_24,service_daily,trip_hanoi_24_0_32,Cầu Giấy - Ngã Tư Sở - Long Biên,0,shape_hanoi_24_out
+hanoi_01,service_daily,trip_hanoi_01_0_33,Bến xe Yên Nghĩa - Bến xe Gia Lâm,0,shape_hanoi_01_out
+hanoi_02,service_daily,trip_hanoi_02_0_34,Bác Cổ - Bến xe Yên Nghĩa,0,shape_hanoi_02_out
+hanoi_02,service_daily,trip_hanoi_02_0_35,Bến xe Yên Nghĩa - Bác Cổ,0,shape_hanoi_02_out
+hanoi_104,service_daily,trip_hanoi_104_0_36,Bến xe Nước Ngầm - Mỹ Đình,0,shape_hanoi_104_out
+hanoi_104,service_daily,trip_hanoi_104_0_37,Mỹ Đình - Bến xe Nước Ngầm,0,shape_hanoi_104_out
+hanoi_106,service_daily,trip_hanoi_106_0_38,Khu đô thị Mỗ Lao - Trung tâm thương mại AEON Mall Long Biên,0,shape_hanoi_106_out
+hanoi_106,service_daily,trip_hanoi_106_0_39,Trung tâm thương mại AEON Mall Long Biên - Khu đô thị Mỗ Lao,0,shape_hanoi_106_out
+hanoi_60A,service_daily,trip_hanoi_60A_0_40,"KĐT Pháp Vân, Tứ Hiệp - Công Viên Nước Hồ Tây",0,shape_hanoi_60A_out
+hanoi_60A,service_daily,trip_hanoi_60A_0_41,"Công Viên Nước Hồ Tây - KĐT Pháp Vân, Tứ Hiệp",0,shape_hanoi_60A_out
+hanoi_12,service_daily,trip_hanoi_12_0_42,Công viên Nghĩa Đô - Khánh Hà (Thường Tín),0,shape_hanoi_12_out
+hanoi_12,service_daily,trip_hanoi_12_0_43,Khánh Hà (Thường Tín) - Công viên Nghĩa Đô,0,shape_hanoi_12_out
+hanoi_97,service_daily,trip_hanoi_97_0_44,Hoài Đức - Công viên Nghĩa Đô,0,shape_hanoi_97_out
+hanoi_97,service_daily,trip_hanoi_97_0_45,Công viên Nghĩa Đô - Hoài Đức,0,shape_hanoi_97_out
+hanoi_09B,service_daily,trip_hanoi_09B_0_46,Trần Khánh Dư - Công viên Thống Nhất - Bến xe Mỹ Đình,0,shape_hanoi_09B_out
+hanoi_03A,service_daily,trip_hanoi_03A_0_47,Bến xe Giáp Bát - Bến xe Gia Lâm,0,shape_hanoi_03A_out
+hanoi_03A,service_daily,trip_hanoi_03A_0_48,Bến xe Gia Lâm - Bến xe Giáp Bát,0,shape_hanoi_03A_out
+hanoi_03B,service_daily,trip_hanoi_03B_0_49,Bến xe Nước Ngầm - Giang Biên (Long Biên),0,shape_hanoi_03B_out
+hanoi_03B,service_daily,trip_hanoi_03B_0_50,Giang Biên (Long Biên) - Bến xe Nước Ngầm,0,shape_hanoi_03B_out
+hanoi_09B,service_daily,trip_hanoi_09B_0_51,Bến xe Mỹ Đình - Công viên Thống Nhất - Trần Khánh Dư,0,shape_hanoi_09B_out
+hanoi_161,service_daily,trip_hanoi_161_0_52,Cầu Giấy - Tam Hiệp,0,shape_hanoi_161_out
+hanoi_161,service_daily,trip_hanoi_161_0_53,Tam Hiệp - Cầu Giấy,0,shape_hanoi_161_out
+hanoi_27,service_daily,trip_hanoi_27_0_54,Bến xe Yên Nghĩa - Bến xe Nam Thăng Long,0,shape_hanoi_27_out
+hanoi_47A,service_daily,trip_hanoi_47A_0_55,Long Biên - Bát Tràng,0,shape_hanoi_47A_out
+hanoi_47A,service_daily,trip_hanoi_47A_0_56,Bát Tràng - Long Biên,0,shape_hanoi_47A_out
+hanoi_25,service_daily,trip_hanoi_25_0_57,Bệnh viện Nhiệt đới Trung ương cơ sở 2 - Bến xe Giáp Bát,0,shape_hanoi_25_out
+hanoi_25,service_daily,trip_hanoi_25_0_58,Bến xe Giáp Bát - Bệnh viện Nhiệt đới Trung ương cơ sở 2,0,shape_hanoi_25_out
+hanoi_27,service_daily,trip_hanoi_27_0_59,Bến xe Nam Thăng Long - Bến xe Yên Nghĩa,0,shape_hanoi_27_out
+hanoi_29,service_daily,trip_hanoi_29_0_60,Bến xe Giáp Bát - Tân Lập,0,shape_hanoi_29_out
+hanoi_50,service_daily,trip_hanoi_50_0_61,Long Biên - Khu đô thị An Lạc (Hoài Đức),0,shape_hanoi_50_out
+hanoi_50,service_daily,trip_hanoi_50_0_62,Khu đô thị An Lạc (Hoài Đức) - Long Biên,0,shape_hanoi_50_out
+hanoi_29,service_daily,trip_hanoi_29_0_63,Tân Lập - Bến xe Giáp Bát,0,shape_hanoi_29_out
+hanoi_47B,service_daily,trip_hanoi_47B_0_64,Đại học Kinh tế Quốc dân - Kiêu Kỵ,0,shape_hanoi_47B_out
+hanoi_47B,service_daily,trip_hanoi_47B_0_65,Kiêu Kỵ - Đại học Kinh tế Quốc dân,0,shape_hanoi_47B_out
+hanoi_49,service_daily,trip_hanoi_49_0_66,Trần Khánh Dư - Nhổn,0,shape_hanoi_49_out
+hanoi_49,service_daily,trip_hanoi_49_0_67,Nhổn - Trần Khánh Dư,0,shape_hanoi_49_out
+hanoi_100,service_daily,trip_hanoi_100_0_68,Long Biên - Đặng Xá (Gia Lâm),0,shape_hanoi_100_out
+hanoi_100,service_daily,trip_hanoi_100_0_69,Đặng Xá (Gia Lâm) - Long Biên,0,shape_hanoi_100_out
+hanoi_86,service_daily,trip_hanoi_86_0_70,Ga Hà Nội - Sân bay Nội Bài,0,shape_hanoi_86_out
+hanoi_86,service_daily,trip_hanoi_86_0_71,Sân bay Nội Bài - Ga Hà Nội,0,shape_hanoi_86_out
+hanoi_08A,service_daily,trip_hanoi_08A_0_72,Long Biên - Đông Mỹ,0,shape_hanoi_08A_out
+hanoi_68,service_daily,trip_hanoi_68_0_73,Hà Đông (Bến xe Yên Nghĩa)  - Sân bay Nội Bài,0,shape_hanoi_68_out
+hanoi_68,service_daily,trip_hanoi_68_0_74,Sân bay Nội Bài - Hà Đông (Bến xe Yên Nghĩa),0,shape_hanoi_68_out
+hanoi_08A,service_daily,trip_hanoi_08A_0_75,Đông Mỹ - Long Biên,0,shape_hanoi_08A_out
+hanoi_08B,service_daily,trip_hanoi_08B_0_76,Long Biên - Vạn Phúc,0,shape_hanoi_08B_out
+hanoi_122,service_daily,trip_hanoi_122_0_77,Bến xe Gia Lâm - Khu công nghiệp Bắc Thăng Long,0,shape_hanoi_122_out
+hanoi_122,service_daily,trip_hanoi_122_0_78,Khu công nghiệp Bắc Thăng Long - Bến xe Gia Lâm,0,shape_hanoi_122_out
+hanoi_109,service_daily,trip_hanoi_109_0_79,Mỹ Đình - Nội Bài,0,shape_hanoi_109_out
+hanoi_109,service_daily,trip_hanoi_109_0_80,Nội Bài - Mỹ Đình,0,shape_hanoi_109_out
+hanoi_08B,service_daily,trip_hanoi_08B_0_81,Vạn Phúc - Long Biên,0,shape_hanoi_08B_out
+hanoi_13,service_daily,trip_hanoi_13_0_82,Công viên Nước Hồ Tây - Cổ Nhuế (Học viện Cảnh sát),0,shape_hanoi_13_out
+hanoi_90,service_daily,trip_hanoi_90_0_83,Hào Nam - Cầu Nhật Tân - Sân bay Nội Bài,0,shape_hanoi_90_out
+hanoi_90,service_daily,trip_hanoi_90_0_84,Sân bay Nội Bài - Cầu Nhật Tân - Hào Nam,0,shape_hanoi_90_out
+hanoi_21A,service_daily,trip_hanoi_21A_0_85,Bến xe Giáp Bát - Bến xe Yên Nghĩa,0,shape_hanoi_21A_out
+hanoi_21A,service_daily,trip_hanoi_21A_0_86,Bến xe Yên Nghĩa - Bến xe Giáp Bát,0,shape_hanoi_21A_out
+hanoi_21B,service_daily,trip_hanoi_21B_0_87,Duyên Thái - Bến xe Mỹ Đình,0,shape_hanoi_21B_out
+hanoi_21B,service_daily,trip_hanoi_21B_0_88,Bến xe Mỹ Đình - Duyên Thái,0,shape_hanoi_21B_out
+hanoi_22A,service_daily,trip_hanoi_22A_0_89,Bến xe Gia Lâm - Khu đô thị Kiến Hưng,0,shape_hanoi_22A_out
+hanoi_22A,service_daily,trip_hanoi_22A_0_90,Khu đô thị Kiến Hưng - Bến xe Gia Lâm,0,shape_hanoi_22A_out
+hanoi_22B,service_daily,trip_hanoi_22B_0_91,Bến xe Giáp Bát - Đô Nghĩa (Hà Đông),0,shape_hanoi_22B_out
+hanoi_22B,service_daily,trip_hanoi_22B_0_92,Đô Nghĩa (Hà Đông) - Bến xe Giáp Bát,0,shape_hanoi_22B_out
+hanoi_88,service_daily,trip_hanoi_88_0_93,Bến xe Mỹ Đình - Hòa Lạc - Xuân Mai,0,shape_hanoi_88_out
+hanoi_88,service_daily,trip_hanoi_88_0_94,Xuân Mai - Hòa Lạc - Bến xe Mỹ Đình,0,shape_hanoi_88_out
+hanoi_72,service_daily,trip_hanoi_72_0_95,Bến xe Yên Nghĩa - Xuân Mai,0,shape_hanoi_72_out
+hanoi_72,service_daily,trip_hanoi_72_0_96,Xuân Mai - Bến xe Yên Nghĩa,0,shape_hanoi_72_out
+hanoi_28,service_daily,trip_hanoi_28_0_97,Bến xe Nước Ngầm - Đông Ngạc - Đại học Mỏ,0,shape_hanoi_28_out
+hanoi_28,service_daily,trip_hanoi_28_0_98,Đại học Mỏ - Đông Ngạc - Bến xe Nước Ngầm,0,shape_hanoi_28_out
+hanoi_163,service_daily,trip_hanoi_163_0_99,Bến xe Yên Nghĩa - Nhổn,0,shape_hanoi_163_out
+hanoi_163,service_daily,trip_hanoi_163_0_100,Nhổn - Bến xe Yên Nghĩa,0,shape_hanoi_163_out
+hanoi_20A,service_daily,trip_hanoi_20A_0_101,Nhổn - Quốc lộ 32 - Bến xe Sơn Tây,0,shape_hanoi_20A_out
+hanoi_20A,service_daily,trip_hanoi_20A_0_102,Bến xe Sơn Tây - Quốc lộ 32 - Nhổn,0,shape_hanoi_20A_out
+hanoi_52,service_daily,trip_hanoi_52_0_103,Công viên Thống Nhất - Lệ Chi (Gia Lâm),0,shape_hanoi_52_out
+hanoi_69,service_daily,trip_hanoi_69_0_104,Long Biên - Dương Quang (Gia Lâm),0,shape_hanoi_69_out
+hanoi_69,service_daily,trip_hanoi_69_0_105,Dương Quang (Gia Lâm) - Long Biên,0,shape_hanoi_69_out
+hanoi_20B,service_daily,trip_hanoi_20B_0_106,Nhổn - Bến xe Sơn Tây,0,shape_hanoi_20B_out
+hanoi_20B,service_daily,trip_hanoi_20B_0_107,Bến xe Sơn Tây - Nhổn,0,shape_hanoi_20B_out
+hanoi_98,service_daily,trip_hanoi_98_0_108,Yên Phụ - Gia Thụy - AEON Mall Long Biên,0,shape_hanoi_98_out
+hanoi_98,service_daily,trip_hanoi_98_0_109,AEON Mall Long Biên - Gia Thụy - Yên Phụ,0,shape_hanoi_98_out
+hanoi_89,service_daily,trip_hanoi_89_0_110,Bến xe Yên Nghĩa - Bến xe Sơn Tây,0,shape_hanoi_89_out
+hanoi_89,service_daily,trip_hanoi_89_0_111,Bến xe Sơn Tây - Bến xe Yên Nghĩa,0,shape_hanoi_89_out
+hanoi_105,service_daily,trip_hanoi_105_0_112,Đô Nghĩa - Cầu Giấy,0,shape_hanoi_105_out
+hanoi_115,service_daily,trip_hanoi_115_0_113,Vân Đình - Đại học Lâm nghiệp,0,shape_hanoi_115_out
+hanoi_115,service_daily,trip_hanoi_115_0_114,Đại học Lâm nghiệp - Vân Đình,0,shape_hanoi_115_out
+hanoi_114,service_daily,trip_hanoi_114_0_115,Bến xe Yên Nghĩa - Miếu Môn,0,shape_hanoi_114_out
+hanoi_114,service_daily,trip_hanoi_114_0_116,Miếu Môn - Bến xe Yên Nghĩa,0,shape_hanoi_114_out
+hanoi_35B,service_daily,trip_hanoi_35B_0_117,Nam Thăng Long - Thanh Lâm,0,shape_hanoi_35B_out
+hanoi_35B,service_daily,trip_hanoi_35B_0_118,Thanh Lâm - Nam Thăng Long,0,shape_hanoi_35B_out
+hanoi_91,service_daily,trip_hanoi_91_0_119,Bến xe Yên Nghĩa - Kim Bài - Phú Túc,0,shape_hanoi_91_out
+hanoi_91,service_daily,trip_hanoi_91_0_120,Phú Túc - Kim Bài - Bến xe Yên Nghĩa,0,shape_hanoi_91_out
+hanoi_105,service_daily,trip_hanoi_105_0_121,Cầu Giấy - Đô Nghĩa,0,shape_hanoi_105_out
+hanoi_112,service_daily,trip_hanoi_112_0_122,Nam Thăng Long - Thạch Đà (Mê Linh),0,shape_hanoi_112_out
+hanoi_112,service_daily,trip_hanoi_112_0_123,Thạch Đà (Mê Linh) - Nam Thăng Long,0,shape_hanoi_112_out
+hanoi_119,service_daily,trip_hanoi_119_0_124,Hòa Lạc - Bất Bạt (Ba Vì),0,shape_hanoi_119_out
+hanoi_119,service_daily,trip_hanoi_119_0_125,Bất Bạt (Ba Vì) - Hòa Lạc,0,shape_hanoi_119_out
+hanoi_107,service_daily,trip_hanoi_107_0_126,Kim Mã - Làng văn hóa du lịch các dân tộc Việt Nam,0,shape_hanoi_107_out
+hanoi_107,service_daily,trip_hanoi_107_0_127,Làng văn hóa du lịch các dân tộc Việt Nam - Kim Mã,0,shape_hanoi_107_out
+hanoi_66,service_daily,trip_hanoi_66_0_128,Bến xe Yên Nghĩa - Đan Phượng,0,shape_hanoi_66_out
+hanoi_66,service_daily,trip_hanoi_66_0_129,Đan Phượng - Bến xe Yên Nghĩa,0,shape_hanoi_66_out
+hanoi_92,service_daily,trip_hanoi_92_0_130,Nhổn - Phú Sơn (Ba Vì),0,shape_hanoi_92_out
+hanoi_92,service_daily,trip_hanoi_92_0_131,Phú Sơn (Ba Vì) - Nhổn,0,shape_hanoi_92_out
+hanoi_103A,service_daily,trip_hanoi_103A_0_132,Bến xe Mỹ Đình - Hương Sơn,0,shape_hanoi_103A_out
+hanoi_103A,service_daily,trip_hanoi_103A_0_133,Hương Sơn - Bến xe Mỹ Đình,0,shape_hanoi_103A_out
+hanoi_06A,service_daily,trip_hanoi_06A_0_134,Bến xe Giáp Bát - Cầu Giẽ,0,shape_hanoi_06A_out
+hanoi_06A,service_daily,trip_hanoi_06A_0_135,Cầu Giẽ - Bến xe Giáp Bát,0,shape_hanoi_06A_out
+hanoi_56A,service_daily,trip_hanoi_56A_0_136,Mỹ Đình - Núi Đôi,0,shape_hanoi_56A_out
+hanoi_56A,service_daily,trip_hanoi_56A_0_137,Núi Đôi - Mỹ Đình,0,shape_hanoi_56A_out
+hanoi_74,service_daily,trip_hanoi_74_0_138,Bến xe Mỹ Đình - Xuân Khanh,0,shape_hanoi_74_out
+hanoi_74,service_daily,trip_hanoi_74_0_139,Xuân Khanh - Bến xe Mỹ Đình,0,shape_hanoi_74_out
+hanoi_56B,service_daily,trip_hanoi_56B_0_140,Học viện Phật giáo Việt Nam - Xuân Giang - Bắc Phú - Học viện Phật giáo Việt Nam,0,shape_hanoi_56B_out
+hanoi_56B,service_daily,trip_hanoi_56B_0_141,Học viện Phật giáo Việt Nam - Bắc Phú - Xuân Giang - Học viện Phật giáo Việt Nam,0,shape_hanoi_56B_out
+hanoi_06B,service_daily,trip_hanoi_06B_0_142,Bến xe Giáp Bát - Hồng Vân,0,shape_hanoi_06B_out
+hanoi_06B,service_daily,trip_hanoi_06B_0_143,Hồng Vân - Bến xe Giáp Bát,0,shape_hanoi_06B_out
+hanoi_06C,service_daily,trip_hanoi_06C_0_144,Bến xe Giáp Bát - Phú Minh,0,shape_hanoi_06C_out
+hanoi_06C,service_daily,trip_hanoi_06C_0_145,Phú Minh - Bến xe Giáp Bát,0,shape_hanoi_06C_out
+hanoi_06D,service_daily,trip_hanoi_06D_0_146,Bến xe Giáp Bát - Tân Dân,0,shape_hanoi_06D_out
+hanoi_06D,service_daily,trip_hanoi_06D_0_147,Tân Dân - Bến xe Giáp Bát,0,shape_hanoi_06D_out
+hanoi_06E,service_daily,trip_hanoi_06E_0_148,Bến xe Giáp Bát - Phú Túc,0,shape_hanoi_06E_out
+hanoi_06E,service_daily,trip_hanoi_06E_0_149,Phú Túc - Bến xe Giáp Bát,0,shape_hanoi_06E_out
+hanoi_E03,service_daily,trip_hanoi_E03_0_150,Mỹ Đình (Hàm Nghi) - Khu đô thị Ocean Park,0,shape_hanoi_E03_out
+hanoi_E03,service_daily,trip_hanoi_E03_0_151,Khu đô thị Ocean Park - Mỹ Đình (Hàm Nghi),0,shape_hanoi_E03_out
+hanoi_102,service_daily,trip_hanoi_102_0_152,Bến xe Yên Nghĩa - Vân Đình,0,shape_hanoi_102_out
+hanoi_102,service_daily,trip_hanoi_102_0_153,Vân Đình - Bến xe Yên Nghĩa,0,shape_hanoi_102_out
+hanoi_E05,service_daily,trip_hanoi_E05_0_154,Long Biên - Cầu Giấy - Khu đô thị Smart City,0,shape_hanoi_E05_out
+hanoi_E05,service_daily,trip_hanoi_E05_0_155,Khu đô thị Smart City - Cầu Giấy - Long Biên,0,shape_hanoi_E05_out
+hanoi_84,service_daily,trip_hanoi_84_0_156,Cầu Diễn - Khu đô thị Linh Đàm,0,shape_hanoi_84_out
+hanoi_84,service_daily,trip_hanoi_84_0_157,Khu đô thị Linh Đàm - Cầu Diễn,0,shape_hanoi_84_out
+hanoi_E01,service_daily,trip_hanoi_E01_0_158,Bến xe Mỹ Đình - Khu đô thị Ocean Park,0,shape_hanoi_E01_out
+hanoi_E01,service_daily,trip_hanoi_E01_0_159,Khu đô thị Ocean Park - Bến xe Mỹ Đình,0,shape_hanoi_E01_out
+hanoi_E02,service_daily,trip_hanoi_E02_0_160,Hào Nam - Khu đô thị Ocean Park,0,shape_hanoi_E02_out
+hanoi_E02,service_daily,trip_hanoi_E02_0_161,Khu đô thị Ocean Park - Hào Nam,0,shape_hanoi_E02_out
+hanoi_E06,service_daily,trip_hanoi_E06_0_162,Bến xe Giáp Bát - Khu đô thị Smart City,0,shape_hanoi_E06_out
+hanoi_E06,service_daily,trip_hanoi_E06_0_163,Khu đô thị Smart City - Bến xe Giáp Bát,0,shape_hanoi_E06_out
+hanoi_E07,service_daily,trip_hanoi_E07_0_164,Long Biên - Bờ Hồ - Khu đô thị Smart City,0,shape_hanoi_E07_out
+hanoi_E07,service_daily,trip_hanoi_E07_0_165,Khu đô thị Smart City - Bờ Hồ - Long Biên,0,shape_hanoi_E07_out
+hanoi_E08,service_daily,trip_hanoi_E08_0_166,Nam Thăng Long - Khu đô thị Times City,0,shape_hanoi_E08_out
+hanoi_E08,service_daily,trip_hanoi_E08_0_167,Khu đô thị Times City - Nam Thăng Long,0,shape_hanoi_E08_out
+hanoi_E09,service_daily,trip_hanoi_E09_0_168,Khu đô thị Smart City - Khu liên cơ quan sở ngành Hà Nội,0,shape_hanoi_E09_out
+hanoi_E09,service_daily,trip_hanoi_E09_0_169,Khu liên cơ quan sở ngành Hà Nội - Khu đô thị Smart City,0,shape_hanoi_E09_out
+hanoi_146,service_daily,trip_hanoi_146_0_170,Hào Nam - Phù Đổng,0,shape_hanoi_146_out
+hanoi_143,service_daily,trip_hanoi_143_0_171,Hào Nam - Thị trấn Đông Anh,0,shape_hanoi_143_out
+hanoi_37,service_daily,trip_hanoi_37_0_172,Bến xe Giáp Bát - Chương Mỹ,0,shape_hanoi_37_out
+hanoi_37,service_daily,trip_hanoi_37_0_173,Chương Mỹ - Bến xe Giáp Bát,0,shape_hanoi_37_out
+hanoi_E04,service_daily,trip_hanoi_E04_0_174,Khu đô thị Smart City - Vincom Long Biên,0,shape_hanoi_E04_out
+hanoi_E04,service_daily,trip_hanoi_E04_0_175,Vincom Long Biên - Khu đô thị Smart City,0,shape_hanoi_E04_out
+hanoi_19,service_daily,trip_hanoi_19_0_176,Trần Khánh Dư - Học viện chính sách và phát triển,0,shape_hanoi_19_out
+hanoi_19,service_daily,trip_hanoi_19_0_177,Học viện chính sách và phát triển - Trần Khánh Dư,0,shape_hanoi_19_out
+hanoi_41,service_daily,trip_hanoi_41_0_178,Bến Xe Giáp Bát - Nam Thăng Long,0,shape_hanoi_41_out
+hanoi_41,service_daily,trip_hanoi_41_0_179,Nam Thăng Long - Bến Xe Giáp Bát,0,shape_hanoi_41_out
+hanoi_32,service_daily,trip_hanoi_32_0_180,Bến xe Giáp Bát - Nhổn,0,shape_hanoi_32_out
+hanoi_32,service_daily,trip_hanoi_32_0_181,Nhổn - Bến xe Giáp Bát,0,shape_hanoi_32_out
+hanoi_162,service_daily,trip_hanoi_162_0_182,Nhổn - Thọ An (Đan Phượng),0,shape_hanoi_162_out
+hanoi_162,service_daily,trip_hanoi_162_0_183,Thọ An (Đan Phượng) - Nhổn,0,shape_hanoi_162_out
+hanoi_160,service_daily,trip_hanoi_160_0_184,Kim Lũ (Sóc Sơn) - Nam Thăng Long,0,shape_hanoi_160_out
+hanoi_160,service_daily,trip_hanoi_160_0_185,Nam Thăng Long - Kim Lũ (Sóc Sơn),0,shape_hanoi_160_out
+hanoi_158,service_daily,trip_hanoi_158_0_186,Bến xe Yên Nghĩa - Khu đô thị Đặng Xá (Gia Lâm),0,shape_hanoi_158_out
+hanoi_158,service_daily,trip_hanoi_158_0_187,Khu đô thị Đặng Xá (Gia Lâm) - Bến xe Yên Nghĩa,0,shape_hanoi_158_out
+hanoi_103B,service_daily,trip_hanoi_103B_0_188,Bến xe Mỹ Đình - Hồng Quang - Hương Sơn,0,shape_hanoi_103B_out
+hanoi_59,service_daily,trip_hanoi_59_0_189,Thư Lâm - Yên Sở,0,shape_hanoi_59_out
+hanoi_110,service_daily,trip_hanoi_110_0_190,Bến xe Sơn Tây - Minh Quang (Ba Vì),0,shape_hanoi_110_out
+hanoi_110,service_daily,trip_hanoi_110_0_191,Minh Quang (Ba Vì) - Bến xe Sơn Tây,0,shape_hanoi_110_out
+hanoi_36,service_daily,trip_hanoi_36_0_192,Yên Xá - Long Biên,0,shape_hanoi_36_out
+hanoi_36,service_daily,trip_hanoi_36_0_193,Long Biên - Yên Xá,0,shape_hanoi_36_out
+hanoi_13,service_daily,trip_hanoi_13_0_194,Cổ Nhuế (Học viện Cảnh sát) - Công viên nước Hồ Tây,0,shape_hanoi_13_out
+hanoi_15,service_daily,trip_hanoi_15_0_195,Bến xe Gia Lâm - Phố Nỉ,0,shape_hanoi_15_out
+hanoi_15,service_daily,trip_hanoi_15_0_196,Phố Nỉ - Bến xe Gia Lâm,0,shape_hanoi_15_out
+hanoi_17,service_daily,trip_hanoi_17_0_197,Long Biên - Nội Bài,0,shape_hanoi_17_out
+hanoi_17,service_daily,trip_hanoi_17_0_198,Nội Bài - Long Biên,0,shape_hanoi_17_out
+hanoi_23,service_daily,trip_hanoi_23_0_199,Nguyễn Công Trứ - Nguyễn Công Trứ (Chiều về),0,shape_hanoi_23_out
+hanoi_30,service_daily,trip_hanoi_30_0_200,Khu đô thị Gamuda - Bến xe Mỹ Đình,0,shape_hanoi_30_out
+hanoi_30,service_daily,trip_hanoi_30_0_201,Bến xe Mỹ Đình - Khu đô thị Gamuda,0,shape_hanoi_30_out
+hanoi_33,service_daily,trip_hanoi_33_0_202,Cụm Công nghiệp Thanh Oai - Xuân Đỉnh,0,shape_hanoi_33_out
+hanoi_33,service_daily,trip_hanoi_33_0_203,Xuân Đỉnh - Cụm công nghiệp Thanh Oai,0,shape_hanoi_33_out
+hanoi_34,service_daily,trip_hanoi_34_0_204,Bến xe Mỹ Đình - Bến xe Gia Lâm,0,shape_hanoi_34_out
+hanoi_34,service_daily,trip_hanoi_34_0_205,Bến xe Gia Lâm - Bến xe Mỹ Đình,0,shape_hanoi_34_out
+hanoi_35A,service_daily,trip_hanoi_35A_0_206,Trần Khánh Dư - Nam Thăng Long,0,shape_hanoi_35A_out
+hanoi_35A,service_daily,trip_hanoi_35A_0_207,Nam Thăng Long - Trần Khánh Dư,0,shape_hanoi_35A_out
+hanoi_38,service_daily,trip_hanoi_38_0_208,Tân Xuân - Mai Động,0,shape_hanoi_38_out
+hanoi_38,service_daily,trip_hanoi_38_0_209,Mai Động - Tân Xuân,0,shape_hanoi_38_out
+hanoi_39,service_daily,trip_hanoi_39_0_210,Công viên Nghĩa Đô - Mai Động,0,shape_hanoi_39_out
+hanoi_39,service_daily,trip_hanoi_39_0_211,Mai Động - Công viên Nghĩa Đô,0,shape_hanoi_39_out
+hanoi_40,service_daily,trip_hanoi_40_0_212,Công viên Thống Nhất - Văn Lâm,0,shape_hanoi_40_out
+hanoi_40,service_daily,trip_hanoi_40_0_213,Văn Lâm - Công viên Thống Nhất,0,shape_hanoi_40_out
+hanoi_46,service_daily,trip_hanoi_46_0_214,Bến xe Mỹ Đình - Thị trấn Đông Anh,0,shape_hanoi_46_out
+hanoi_46,service_daily,trip_hanoi_46_0_215,Thị trấn Đông Anh - Bến xe Mỹ Đình,0,shape_hanoi_46_out
+hanoi_48,service_daily,trip_hanoi_48_0_216,Bến xe Nước Ngầm - Chương Dương - Phúc Lợi (Chung cư Ruby City),0,shape_hanoi_48_out
+hanoi_48,service_daily,trip_hanoi_48_0_217,Phúc Lợi (Chung cư Ruby City) - Chương Dương - Bến xe Nước Ngầm,0,shape_hanoi_48_out
+hanoi_51,service_daily,trip_hanoi_51_0_218,Bến Xe Gia Lâm - Trần Vỹ (Học viện Tư Pháp),0,shape_hanoi_51_out
+hanoi_51,service_daily,trip_hanoi_51_0_219,Trần Vỹ (Học viện Tư pháp) - Bến xe Gia Lâm,0,shape_hanoi_51_out
+hanoi_52,service_daily,trip_hanoi_52_0_220,Lệ Chi (Gia Lâm) - Công viên Thống Nhất,0,shape_hanoi_52_out
+hanoi_53A,service_daily,trip_hanoi_53A_0_221,Hoàng Quốc Việt - Đông Anh,0,shape_hanoi_53A_out
+hanoi_53A,service_daily,trip_hanoi_53A_0_222,Đông Anh - Hoàng Quốc Việt,0,shape_hanoi_53A_out
+hanoi_53B,service_daily,trip_hanoi_53B_0_223,Bến xe Mỹ Đình - Kim Hoa (Mê Linh),0,shape_hanoi_53B_out
+hanoi_53B,service_daily,trip_hanoi_53B_0_224,Kim Hoa (Mê Linh) - Bến xe Mỹ Đình,0,shape_hanoi_53B_out
+hanoi_54,service_daily,trip_hanoi_54_0_225,Long Biên - Bắc Ninh,0,shape_hanoi_54_out
+hanoi_54,service_daily,trip_hanoi_54_0_226,Bắc Ninh - Long Biên,0,shape_hanoi_54_out
+hanoi_55,service_daily,trip_hanoi_55_0_227,Trung tâm thương mại AEON Mall Long Biên - Cầu Giấy,0,shape_hanoi_55_out
+hanoi_55,service_daily,trip_hanoi_55_0_228,Cầu Giấy - Trung tâm thương mại AEON Mall Long Biên,0,shape_hanoi_55_out
+hanoi_57,service_daily,trip_hanoi_57_0_229,Nam Thăng Long - Khu công nghiệp Phú Nghĩa,0,shape_hanoi_57_out
+hanoi_57,service_daily,trip_hanoi_57_0_230,Khu công nghiệp Phú Nghĩa - Nam Thăng Long,0,shape_hanoi_57_out
+hanoi_58,service_daily,trip_hanoi_58_0_231,Long Biên - Thạch Đà,0,shape_hanoi_58_out
+hanoi_58,service_daily,trip_hanoi_58_0_232,Thạch Đà - Long Biên,0,shape_hanoi_58_out
+hanoi_59,service_daily,trip_hanoi_59_0_233,Yên Sở - Thư Lâm,0,shape_hanoi_59_out
+hanoi_61,service_daily,trip_hanoi_61_0_234,Công viên Cầu Giấy - Dục Tú (Đông Anh),0,shape_hanoi_61_out
+hanoi_61,service_daily,trip_hanoi_61_0_235,Dục Tú (Đông Anh) - Công viên Cầu Giấy,0,shape_hanoi_61_out
+hanoi_62,service_daily,trip_hanoi_62_0_236,Bến xe Yên Nghĩa - Bến xe Thường Tín,0,shape_hanoi_62_out
+hanoi_62,service_daily,trip_hanoi_62_0_237,Bến xe Thường Tín - Bến xe Yên Nghĩa,0,shape_hanoi_62_out
+hanoi_63,service_daily,trip_hanoi_63_0_238,Khu công nghiệp Bắc Thăng Long - Tiến Thịnh (Mê Linh),0,shape_hanoi_63_out
+hanoi_63,service_daily,trip_hanoi_63_0_239,Tiến Thịnh (Mê Linh) - Khu công nghiệp Bắc Thăng Long,0,shape_hanoi_63_out
+hanoi_64,service_daily,trip_hanoi_64_0_240,Bến xe Mỹ Đình - Phố Nỉ,0,shape_hanoi_64_out
+hanoi_64,service_daily,trip_hanoi_64_0_241,Phố Nỉ - Bến Xe Mỹ Đình,0,shape_hanoi_64_out
+hanoi_65,service_daily,trip_hanoi_65_0_242,Long Biên - Thụy Lâm (Đông Anh),0,shape_hanoi_65_out
+hanoi_65,service_daily,trip_hanoi_65_0_243,Thụy Lâm (Đông Anh) - Long Biên,0,shape_hanoi_65_out
+hanoi_67,service_daily,trip_hanoi_67_0_244,Đan Phượng - Đoài Phương,0,shape_hanoi_67_out
+hanoi_67,service_daily,trip_hanoi_67_0_245,Đoài Phương - Đan Phượng,0,shape_hanoi_67_out
+hanoi_85,service_daily,trip_hanoi_85_0_246,Công viên Nghĩa Đô - Khu đô thị Thanh Hà,0,shape_hanoi_85_out
+hanoi_85,service_daily,trip_hanoi_85_0_247,Khu đô thị Thanh Hà - Công viện Nghĩa Đô,0,shape_hanoi_85_out
+hanoi_87,service_daily,trip_hanoi_87_0_248,Bến xe Mỹ Đình - Quốc Oai - Xuân Mai,0,shape_hanoi_87_out
+hanoi_87,service_daily,trip_hanoi_87_0_249,Xuân Mai - Quốc Oai - Bến xe Mỹ Đình,0,shape_hanoi_87_out
+hanoi_93,service_daily,trip_hanoi_93_0_250,Nam Thăng Long - Bắc Sơn (Sóc Sơn),0,shape_hanoi_93_out
+hanoi_93,service_daily,trip_hanoi_93_0_251,Bắc Sơn (Sóc Sơn) - Nam Thăng Long,0,shape_hanoi_93_out
+hanoi_94,service_daily,trip_hanoi_94_0_252,Bến xe Giáp Bát - Kim Bài,0,shape_hanoi_94_out
+hanoi_94,service_daily,trip_hanoi_94_0_253,Kim Bài - Bến xe Giáp Bát,0,shape_hanoi_94_out
+hanoi_95,service_daily,trip_hanoi_95_0_254,Nam Thăng Long - Xuân Hòa,0,shape_hanoi_95_out
+hanoi_95,service_daily,trip_hanoi_95_0_255,Xuân Hòa - Nam Thăng Long,0,shape_hanoi_95_out
+hanoi_96,service_daily,trip_hanoi_96_0_256,Cầu Giấy - Đông Anh,0,shape_hanoi_96_out
+hanoi_96,service_daily,trip_hanoi_96_0_257,Đông Anh - Cầu Giấy,0,shape_hanoi_96_out
+hanoi_101A,service_daily,trip_hanoi_101A_0_258,Bến xe Giáp Bát - Vân Đình,0,shape_hanoi_101A_out
+hanoi_101A,service_daily,trip_hanoi_101A_0_259,Vân Đình - Bến xe Giáp Bát,0,shape_hanoi_101A_out
+hanoi_101B,service_daily,trip_hanoi_101B_0_260,Bến xe Giáp Bát - Đại Cường (Ứng Hòa),0,shape_hanoi_101B_out
+hanoi_101B,service_daily,trip_hanoi_101B_0_261,Đại Cường (Ứng Hòa) - Bến xe Giáp Bát,0,shape_hanoi_101B_out
+hanoi_103B,service_daily,trip_hanoi_103B_0_262,Hương Sơn - Hồng Quang - Bến xe Mỹ Đình,0,shape_hanoi_103B_out
+hanoi_108,service_daily,trip_hanoi_108_0_263,Bến xe Thường Tín - Minh Tân,0,shape_hanoi_108_out
+hanoi_108,service_daily,trip_hanoi_108_0_264,Minh Tân - Bến xe Thường Tín,0,shape_hanoi_108_out
+hanoi_111,service_daily,trip_hanoi_111_0_265,Bến xe Sơn Tây - Bất Bạt,0,shape_hanoi_111_out
+hanoi_111,service_daily,trip_hanoi_111_0_266,Bất Bạt - Bến xe Sơn Tây,0,shape_hanoi_111_out
+hanoi_113,service_daily,trip_hanoi_113_0_267,Bến xe Thường Tín - Bến đò Vườn Chuối,0,shape_hanoi_113_out
+hanoi_113,service_daily,trip_hanoi_113_0_268,Bến đò Vườn Chuối - Bến xe Thường Tín,0,shape_hanoi_113_out
+hanoi_116,service_daily,trip_hanoi_116_0_269,Yên Xuân - Bến xe Yên Nghĩa,0,shape_hanoi_116_out
+hanoi_116,service_daily,trip_hanoi_116_0_270,Bến xe Yên Nghĩa - Yên Xuân,0,shape_hanoi_116_out
+hanoi_117,service_daily,trip_hanoi_117_0_271,Hòa Lạc - Nhổn,0,shape_hanoi_117_out
+hanoi_117,service_daily,trip_hanoi_117_0_272,Nhổn - Hòa Lạc,0,shape_hanoi_117_out
+hanoi_118,service_daily,trip_hanoi_118_0_273,Bến xe Sơn Tây - Quốc lộ 32 - Bất Bạt,0,shape_hanoi_118_out
+hanoi_118,service_daily,trip_hanoi_118_0_274,Bất Bạt - Quốc lộ 32 - Bến xe Sơn Tây,0,shape_hanoi_118_out
+hanoi_123,service_daily,trip_hanoi_123_0_275,Bến xe Yên Nghĩa - Hồng Dương (Thanh Oai),0,shape_hanoi_123_out
+hanoi_123,service_daily,trip_hanoi_123_0_276,Hồng Dương (Thanh Oai) - Bến xe Yên Nghĩa,0,shape_hanoi_123_out
+hanoi_124,service_daily,trip_hanoi_124_0_277,Bến xe Yên Nghĩa - Hồng Sơn,0,shape_hanoi_124_out
+hanoi_124,service_daily,trip_hanoi_124_0_278,Hồng Sơn - Bến xe Yên Nghĩa,0,shape_hanoi_124_out
+hanoi_125,service_daily,trip_hanoi_125_0_279,Bến xe Giáp Bát - Tỉnh lộ 427B - Vân Đình,0,shape_hanoi_125_out
+hanoi_125,service_daily,trip_hanoi_125_0_280,Vân Đình - Tỉnh lộ 427B - Bến xe Giáp Bát,0,shape_hanoi_125_out
+hanoi_126,service_daily,trip_hanoi_126_0_281,Bến xe Sơn Tây - Trung Hà (Ba Vì),0,shape_hanoi_126_out
+hanoi_126,service_daily,trip_hanoi_126_0_282,Trung Hà (Ba Vì) - Bến xe Sơn Tây,0,shape_hanoi_126_out
+hanoi_142,service_daily,trip_hanoi_142_0_283,KĐT Vincom Long Biên,0,shape_hanoi_142_out
+hanoi_142,service_daily,trip_hanoi_142_0_284,KĐT Vincom Long Biên - Nam Thăng Long,0,shape_hanoi_142_out
+hanoi_143,service_daily,trip_hanoi_143_0_285,Thị trấn Đông Anh - Hào Nam,0,shape_hanoi_143_out
+hanoi_144,service_daily,trip_hanoi_144_0_286,Đại học Mỏ - Trần Khánh Dư,0,shape_hanoi_144_out
+hanoi_144,service_daily,trip_hanoi_144_0_287,Trần Khánh Dư - Đại học Mỏ,0,shape_hanoi_144_out
+hanoi_146,service_daily,trip_hanoi_146_0_288,Phù Đổng - Hào Nam,0,shape_hanoi_146_out
+hanoi_E10,service_daily,trip_hanoi_E10_0_289,Khu đô thị Ocean Park - Sân bay Nội Bài,0,shape_hanoi_E10_out
+hanoi_E10,service_daily,trip_hanoi_E10_0_290,Sân bay Nội Bài - Khu đô thị Ocean Park,0,shape_hanoi_E10_out
+hanoi_OCT1,service_daily,trip_hanoi_OCT1_0_291,Royal City R1 - Công viên Vin Wonders - Water Park,0,shape_hanoi_OCT1_out
+hanoi_OCT2,service_daily,trip_hanoi_OCT2_0_292,Nhà hát Lớn - Công viên VinWonders - Water Park,0,shape_hanoi_OCT2_out
+hanoi_OCT1,service_daily,trip_hanoi_OCT1_0_293,Công viên Vin Wonders - Water Park - Royal City R1,0,shape_hanoi_OCT1_out
+hanoi_OCT2,service_daily,trip_hanoi_OCT2_0_294,Công viên VinWonders - Water Park - Nhà hát Lớn,0,shape_hanoi_OCT2_out
+hanoi_SMC1,service_daily,trip_hanoi_SMC1_0_295,Smart City 1,0,shape_hanoi_SMC1_out
+hanoi_08ACT,service_daily,trip_hanoi_08ACT_0_296,Long Biên - Đông Mỹ (cuối tuần),0,shape_hanoi_08ACT_out
+hanoi_08ACT,service_daily,trip_hanoi_08ACT_0_297,Đông Mỹ - Long Biên (cuối tuần),0,shape_hanoi_08ACT_out
+hanoi_08BCT,service_daily,trip_hanoi_08BCT_0_298,Long Biên - Vạn Phúc (cuối tuần),0,shape_hanoi_08BCT_out
+hanoi_08BCT,service_daily,trip_hanoi_08BCT_0_299,Vạn Phúc - Long Biên (cuối tuần),0,shape_hanoi_08BCT_out
+hanoi_11CT,service_daily,trip_hanoi_11CT_0_300,Công viên Thống Nhất - Học viện Nông Nghiệp Việt Nam (cuối tuần),0,shape_hanoi_11CT_out
+hanoi_11CT,service_daily,trip_hanoi_11CT_0_301,Học viện Nông nghiệp Việt Nam - Công viên Thống Nhất (cuối tuần),0,shape_hanoi_11CT_out
+hanoi_30CT,service_daily,trip_hanoi_30CT_0_302,Khu đô thị Gamuda - Bến xe Mỹ Đình (cuối tuần),0,shape_hanoi_30CT_out
+hanoi_30CT,service_daily,trip_hanoi_30CT_0_303,Bến xe Mỹ Đình - Khu đô thị Gamuda (cuối tuần),0,shape_hanoi_30CT_out
+hanoi_36CT,service_daily,trip_hanoi_36CT_0_304,Long Biên - Yên Xá (cuối tuần),0,shape_hanoi_36CT_out
+hanoi_36CT,service_daily,trip_hanoi_36CT_0_305,Yên Xá - Long Biên (cuối tuần),0,shape_hanoi_36CT_out
+hanoi_40CT,service_daily,trip_hanoi_40CT_0_306,Công viên Thống Nhất - Văn Lâm (cuối tuần),0,shape_hanoi_40CT_out
+hanoi_40CT,service_daily,trip_hanoi_40CT_0_307,Văn Lâm - Công viên Thống Nhất (cuối tuần),0,shape_hanoi_40CT_out
+hanoi_86CT,service_daily,trip_hanoi_86CT_0_308,Ga Hà Nội - Sân bay Nội Bài (cuối tuần),0,shape_hanoi_86CT_out
+hanoi_86CT,service_daily,trip_hanoi_86CT_0_309,Sân bay Nội Bài - Ga Hà Nội (cuối tuần),0,shape_hanoi_86CT_out
+hanoi_OCP1,service_daily,trip_hanoi_OCP1_0_310,"Nội liên khu Ocean Park 1,2,3",0,shape_hanoi_OCP1_out
+hanoi_OCP2,service_daily,trip_hanoi_OCP2_0_311,"Nội khu Ocean Park 2,3",0,shape_hanoi_OCP2_out
+hanoi_70A,service_daily,trip_hanoi_70A_0_312,Bến xe Mỹ Đình - Trung Hà,0,shape_hanoi_70A_out
+hanoi_70A,service_daily,trip_hanoi_70A_0_313,Trung Hà - Bến xe Mỹ Đình,0,shape_hanoi_70A_out
+hanoi_70B,service_daily,trip_hanoi_70B_0_314,Bến xe Mỹ Đình - Phú Cường,0,shape_hanoi_70B_out
+hanoi_70B,service_daily,trip_hanoi_70B_0_315,Phú Cường - Bến xe Mỹ Đình,0,shape_hanoi_70B_out
+hanoi_71,service_daily,trip_hanoi_71_0_316,Công viên Nghĩa Đô - Đại học Quốc gia Hà Nội (Hòa Lạc),0,shape_hanoi_71_out
+hanoi_71,service_daily,trip_hanoi_71_0_317,Đại học Quốc gia Hà Nội (Hòa Lạc) - Công viên Nghĩa Đô,0,shape_hanoi_71_out
+hanoi_78,service_daily,trip_hanoi_78_0_318,Bến xe Mỹ Đình - Tế Tiêu,0,shape_hanoi_78_out
+hanoi_78,service_daily,trip_hanoi_78_0_319,Tế Tiêu - Bến xe Mỹ Đình,0,shape_hanoi_78_out
+hanoi_203,service_daily,trip_hanoi_203_0_320,Bến xe Giáp Bát - Bến xe Bắc Giang,0,shape_hanoi_203_out
+hanoi_203,service_daily,trip_hanoi_203_0_321,Bến xe Bắc Giang - Bến xe Giáp Bát,0,shape_hanoi_203_out
+hanoi_204,service_daily,trip_hanoi_204_0_322,Long Biên - Thuận Thành,0,shape_hanoi_204_out
+hanoi_204,service_daily,trip_hanoi_204_0_323,Thuận Thành - Long Biên,0,shape_hanoi_204_out
+hanoi_207,service_daily,trip_hanoi_207_0_324,Bến xe Gia Lâm - Bến xe Triều Dương,0,shape_hanoi_207_out
+hanoi_210,service_daily,trip_hanoi_210_0_325,Bến xe Gia Lâm - Bến xe Hiệp Hòa,0,shape_hanoi_210_out
+hanoi_210,service_daily,trip_hanoi_210_0_326,Bến xe Hiệp Hòa - Bến xe Gia Lâm,0,shape_hanoi_210_out
+hanoi_212,service_daily,trip_hanoi_212_0_327,Bến xe Mỹ Đình - Bến xe Quế Võ,0,shape_hanoi_212_out
+hanoi_212,service_daily,trip_hanoi_212_0_328,Bến xe Quế Võ - Bến xe Mỹ Đình,0,shape_hanoi_212_out
+hanoi_BN08,service_daily,trip_hanoi_BN08_0_329,Kênh Vàng - Bắc Ninh,0,shape_hanoi_BN08_out
+hanoi_BN08,service_daily,trip_hanoi_BN08_0_330,Bắc Ninh - Kênh Vàng,0,shape_hanoi_BN08_out
+hanoi_BN86A,service_daily,trip_hanoi_BN86A_0_331,Bắc Ninh - Minh Tân,0,shape_hanoi_BN86A_out
+hanoi_BN86A,service_daily,trip_hanoi_BN86A_0_332,Minh Tân - Bắc Ninh,0,shape_hanoi_BN86A_out
+hanoi_BN86B,service_daily,trip_hanoi_BN86B_0_333,Bắc Ninh - Đại Lai,0,shape_hanoi_BN86B_out
+hanoi_BN86B,service_daily,trip_hanoi_BN86B_0_334,Đại Lai - Bắc Ninh,0,shape_hanoi_BN86B_out
+hanoi_BN68,service_daily,trip_hanoi_BN68_0_335,Chi Lăng - KCN VSIP,0,shape_hanoi_BN68_out
+hanoi_BN68,service_daily,trip_hanoi_BN68_0_336,KCN VSIP - Chi Lăng,0,shape_hanoi_BN68_out
+hanoi_BN27,service_daily,trip_hanoi_BN27_0_337,Kênh Vàng - Xuân Lâm,0,shape_hanoi_BN27_out
+hanoi_BN27,service_daily,trip_hanoi_BN27_0_338,Xuân Lâm - Kênh Vàng,0,shape_hanoi_BN27_out
+hanoi_BN03,service_daily,trip_hanoi_BN03_0_339,Bến xe Bắc Ninh - Cầu Đò Lo,0,shape_hanoi_BN03_out
+hanoi_BN03,service_daily,trip_hanoi_BN03_0_340,Cầu Đò Lo - Bến xe Bắc Ninh,0,shape_hanoi_BN03_out
+hanoi_BN01,service_daily,trip_hanoi_BN01_0_341,Bến xe Bắc Ninh - Lương Tài,0,shape_hanoi_BN01_out
+hanoi_BN01,service_daily,trip_hanoi_BN01_0_342,Lương Tài - Bến xe Bắc Ninh,0,shape_hanoi_BN01_out
+hanoi_52CT,service_daily,trip_hanoi_52CT_0_343,Công viên Thống Nhất - Lệ Chi (Gia Lâm) (cuối tuần),0,shape_hanoi_52CT_out
+hanoi_52CT,service_daily,trip_hanoi_52CT_0_344,Lệ Chi (Gia Lâm) - Công viên Thống Nhất (cuối tuần),0,shape_hanoi_52CT_out
+hanoi_VP08,service_daily,trip_hanoi_VP08_0_345,Tuyến buýt VP08: Phúc Yên - Vĩnh Tường (BX TT Vĩnh Tường),0,shape_hanoi_VP08_out
+hanoi_VP08,service_daily,trip_hanoi_VP08_0_346,Tuyến buýt VP08: Vĩnh Tường (BX TT Vĩnh Tường) - Phúc Yên,0,shape_hanoi_VP08_out
+hanoi_43,service_daily,trip_hanoi_43_0_347,Kim Mã - Thị trấn Đông Anh,0,shape_hanoi_43_out
+hanoi_43,service_daily,trip_hanoi_43_0_348,Thị trấn Đông Anh - Kim Mã,0,shape_hanoi_43_out
+hanoi_22,service_daily,trip_hanoi_22_0_349,Xã Vĩnh Hải - Cầu Đăng - KCN VSIP Thủy Nguyên,0,shape_hanoi_22_out
+hanoi_22,service_daily,trip_hanoi_22_0_350,KCN VSIP Thủy Nguyên - Cầu Đăng - Xã Vĩnh Hải,0,shape_hanoi_22_out
+hanoi_E11,service_daily,trip_hanoi_E11_0_351,Yên Phụ - Yên Phụ (chiều đi),0,shape_hanoi_E11_out
+hanoi_E11,service_daily,trip_hanoi_E11_0_352,Yên Phụ - Yên Phụ (chiều về),0,shape_hanoi_E11_out
+hanoi_BN-E18,service_daily,trip_hanoi_BN-E18_0_353,Vũ Ninh - Bắc Giang,0,shape_hanoi_BN-E18_out
+hanoi_BN-E18,service_daily,trip_hanoi_BN-E18_0_354,Bắc Giang - Vũ Ninh,0,shape_hanoi_BN-E18_out
+hanoi_VP09,service_daily,trip_hanoi_VP09_0_355,Tuyến buýt VP09: Phúc Yên - Vĩnh Tường,0,shape_hanoi_VP09_out
+hanoi_VP09,service_daily,trip_hanoi_VP09_0_356,Tuyến buýt VP09: Vĩnh Tường - Phúc Yên,0,shape_hanoi_VP09_out
+hanoi_20ATC,service_daily,trip_hanoi_20ATC_0_357,Nhổn - Quốc lộ 32 - Minh Châu,0,shape_hanoi_20ATC_out
+hanoi_20ATC,service_daily,trip_hanoi_20ATC_0_358,Minh Châu - Quốc lộ 32 - Nhổn,0,shape_hanoi_20ATC_out
+hanoi_212,service_daily,trip_hanoi_212_0_359,Bến xe Quế Võ - UBND phường Cảnh Thụy,0,shape_hanoi_212_out
+hanoi_212,service_daily,trip_hanoi_212_0_360,UBND phường Cảnh Thụy - Bến xe Quế Võ,0,shape_hanoi_212_out
+hanoi_212,service_daily,trip_hanoi_212_0_361,UBND xã Phu Lang - Bến xe Quế Võ,0,shape_hanoi_212_out
+hanoi_212,service_daily,trip_hanoi_212_0_362,Bến xe Quế Võ - UBND xã Phù Lãng,0,shape_hanoi_212_out
+hanoi_146CT,service_daily,trip_hanoi_146CT_0_363,Hào Nam - Phù Đổng (cuối tuần),0,shape_hanoi_146CT_out
+hanoi_146CT,service_daily,trip_hanoi_146CT_0_364,Phù Đổng - Hào Nam (cuối tuần),0,shape_hanoi_146CT_out
+hanoi_02-1,service_daily,trip_hanoi_02-1_0_365,Bến xe buýt An Lão - Bến xe Vĩnh Bảo,0,shape_hanoi_02-1_out
+hanoi_02-1,service_daily,trip_hanoi_02-1_0_366,Bến xe Vĩnh Bảo - Bến xe buýt An Lão,0,shape_hanoi_02-1_out
+hanoi_108TC,service_daily,trip_hanoi_108TC_0_367,Bến xe Thường Tín - Quang Lãng (Đại Xuyên),0,shape_hanoi_108TC_out
+hanoi_108TC,service_daily,trip_hanoi_108TC_0_368,Quang Lãng (Đại Xuyên) - Bến xe Thường Tín,0,shape_hanoi_108TC_out
+hanoi_E06TC,service_daily,trip_hanoi_E06TC_0_369,Bến xe Giáp Bát - Hòa Lạc,0,shape_hanoi_E06TC_out
+hanoi_E06TC,service_daily,trip_hanoi_E06TC_0_370,Hòa Lạc - Bến xe Giáp Bát,0,shape_hanoi_E06TC_out
+hanoi_E07TC,service_daily,trip_hanoi_E07TC_0_371,Long Biên - Hòa Lạc,0,shape_hanoi_E07TC_out
+hanoi_E07TC,service_daily,trip_hanoi_E07TC_0_372,Hòa Lạc - Long Biên,0,shape_hanoi_E07TC_out
+hanoi_157TC,service_daily,trip_hanoi_157TC_0_373,Bến xe Mỹ Đình - Bến xe Sơn Tây,0,shape_hanoi_157TC_out
+hanoi_157TC,service_daily,trip_hanoi_157TC_0_374,Bến xe Sơn Tây - Bến xe Mỹ Đình,0,shape_hanoi_157TC_out

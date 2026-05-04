@@ -1,0 +1,320 @@
+route_id,agency_id,route_short_name,route_long_name,route_type,route_color,route_text_color,route_url,route_desc
+ho chi minh city_109,hcmc_transport,109,Bến xe Sài Gòn - Sân bay Tân Sơn Nhất,3,E53935,FFFFFF,,Distance: 11.5 km | Fare: 0 VND
+ho chi minh city_01,hcmc_transport,01,Ga Ba Son - Bến xe Chợ Lớn,3,E53935,FFFFFF,,Distance: 7.3 km | Fare: 0 VND
+ho chi minh city_01,hcmc_transport,01,Bến xe Chợ Lớn - Ga Ba Son,3,E53935,FFFFFF,,Distance: 17.7 km | Fare: 0 VND
+ho chi minh city_D2,hcmc_transport,D2,Sky Garden - Crescent Mall,3,E53935,FFFFFF,,Distance: 1.9 km | Fare: 0 VND
+ho chi minh city_D2,hcmc_transport,D2,Crescent Mall - Sky Garden,3,E53935,FFFFFF,,Distance: 2.2 km | Fare: 0 VND
+ho chi minh city_01,hcmc_transport,01,Trường Đại học Công nghệ Đồng Nai - Bến xe Ngã tư Vũng Tàu,3,E53935,FFFFFF,,Distance: 22.1 km | Fare: 0 VND
+ho chi minh city_02,hcmc_transport,02,Bến xe Biên Hòa - Trạm xe Nhơn Trạch,3,E53935,FFFFFF,,Distance: 236.3 km | Fare: 0 VND
+ho chi minh city_01,hcmc_transport,01,Bến xe Ngã tư Vũng Tàu - Trường Đại học Công nghệ Đồng Nai,3,E53935,FFFFFF,,Distance: 29.0 km | Fare: 0 VND
+ho chi minh city_03,hcmc_transport,03,Bến xe Hố Nai - Trạm xe Hóa An,3,E53935,FFFFFF,,Distance: 28.8 km | Fare: 0 VND
+ho chi minh city_02,hcmc_transport,02,Trạm xe Nhơn Trạch - Bến xe Biên Hòa,3,E53935,FFFFFF,,Distance: 155.9 km | Fare: 0 VND
+ho chi minh city_03,hcmc_transport,03,Trạm xe Hóa An - Bến xe Hố Nai,3,E53935,FFFFFF,,Distance: 21.6 km | Fare: 0 VND
+ho chi minh city_08,hcmc_transport,08,Trạm xe Big C - Bến xe Thạnh Phú,3,E53935,FFFFFF,,Distance: 18.8 km | Fare: 0 VND
+ho chi minh city_11,hcmc_transport,11,Bến xe Ngã tư Vũng Tàu - Trạm xe Gò Dầu,3,E53935,FFFFFF,,Distance: 83.9 km | Fare: 0 VND
+ho chi minh city_08,hcmc_transport,08,Bến xe Thạnh Phú - Trạm xe Big C,3,E53935,FFFFFF,,Distance: 26.1 km | Fare: 0 VND
+ho chi minh city_60-18,hcmc_transport,60-18,Khu du lịch sinh thái Vườn Xoài - Khu du lịch Đại Nam,3,E53935,FFFFFF,,Distance: 104.7 km | Fare: 0 VND
+ho chi minh city_16,hcmc_transport,16,Bến xe Biên Hòa - Bến xe Phương Lâm,3,E53935,FFFFFF,,Distance: 165.7 km | Fare: 0 VND
+ho chi minh city_03,hcmc_transport,03,Bến Thành - Thạnh Xuân,3,E53935,FFFFFF,,Distance: 17.9 km | Fare: 0 VND
+ho chi minh city_03,hcmc_transport,03,Thạnh Xuân - Bến Thành,3,E53935,FFFFFF,,Distance: 28.5 km | Fare: 0 VND
+ho chi minh city_04,hcmc_transport,04,Bến Thành - Cộng Hòa - Bến xe An Sương,3,E53935,FFFFFF,,Distance: 25.5 km | Fare: 0 VND
+ho chi minh city_04,hcmc_transport,04,Bến xe An Sương - Cộng Hòa - Bến Thành,3,E53935,FFFFFF,,Distance: 14.0 km | Fare: 0 VND
+ho chi minh city_05,hcmc_transport,05,Bến xe Chợ Lớn - Bến xe Biên Hòa,3,E53935,FFFFFF,,Distance: 39.2 km | Fare: 0 VND
+ho chi minh city_05,hcmc_transport,05,Bến xe Biên Hòa - Bến xe Chợ Lớn,3,E53935,FFFFFF,,Distance: 29.8 km | Fare: 0 VND
+ho chi minh city_06,hcmc_transport,06,Bến xe Chợ Lớn – Đại học Nông Lâm,3,E53935,FFFFFF,,Distance: 28.0 km | Fare: 0 VND
+ho chi minh city_06,hcmc_transport,06,Đại học Nông Lâm - Bến xe Chợ Lớn,3,E53935,FFFFFF,,Distance: 43.5 km | Fare: 0 VND
+ho chi minh city_07,hcmc_transport,07,Bến xe Chợ Lớn - Gò Vấp,3,E53935,FFFFFF,,Distance: 18.9 km | Fare: 0 VND
+ho chi minh city_07,hcmc_transport,07,Gò Vấp - Bên xe Chợ Lớn,3,E53935,FFFFFF,,Distance: 13.3 km | Fare: 0 VND
+ho chi minh city_08,hcmc_transport,08,Bến xe Quận 8 - Đại học Quốc gia,3,E53935,FFFFFF,,Distance: 30.6 km | Fare: 0 VND
+ho chi minh city_08,hcmc_transport,08,Đại học Quốc gia - Bến xe Quận 8,3,E53935,FFFFFF,,Distance: 51.0 km | Fare: 0 VND
+ho chi minh city_09,hcmc_transport,09,Bến xe Chợ Lớn - Bình Chánh - Hưng Long,3,E53935,FFFFFF,,Distance: 23.6 km | Fare: 0 VND
+ho chi minh city_09,hcmc_transport,09,Hưng Long - Bình Chánh - Bến xe Chợ Lớn,3,E53935,FFFFFF,,Distance: 23.7 km | Fare: 0 VND
+ho chi minh city_10,hcmc_transport,10,Đại học Quốc gia - Bến xe Miền Tây,3,E53935,FFFFFF,,Distance: 62.6 km | Fare: 0 VND
+ho chi minh city_10,hcmc_transport,10,Bến xe Miền Tây - Đại học Quốc gia,3,E53935,FFFFFF,,Distance: 39.0 km | Fare: 0 VND
+ho chi minh city_13,hcmc_transport,13,Bến xe Sài Gòn - Bến xe Củ Chi,3,E53935,FFFFFF,,Distance: 34.0 km | Fare: 0 VND
+ho chi minh city_13,hcmc_transport,13,Bến xe Củ Chi - Bến xe Sài Gòn,3,E53935,FFFFFF,,Distance: 33.6 km | Fare: 0 VND
+ho chi minh city_14,hcmc_transport,14,Bến xe Miền Đông - Bến xe Miền Tây,3,E53935,FFFFFF,,Distance: 14.8 km | Fare: 0 VND
+ho chi minh city_14,hcmc_transport,14,Bến xe Miền Tây - Bến xe Miền Đông,3,E53935,FFFFFF,,Distance: 14.7 km | Fare: 0 VND
+ho chi minh city_15,hcmc_transport,15,Chợ Phú Định - Đầm Sen,3,E53935,FFFFFF,,Distance: 14.9 km | Fare: 0 VND
+ho chi minh city_15,hcmc_transport,15,Đầm Sen - Chợ Phú Định,3,E53935,FFFFFF,,Distance: 15.5 km | Fare: 0 VND
+ho chi minh city_16,hcmc_transport,16,Bến xe Chợ Lớn - Bến xe Tân Phú,3,E53935,FFFFFF,,Distance: 13.9 km | Fare: 0 VND
+ho chi minh city_16,hcmc_transport,16,Bến xe Tân Phú - Bến xe Chợ Lớn,3,E53935,FFFFFF,,Distance: 14.4 km | Fare: 0 VND
+ho chi minh city_18,hcmc_transport,18,Bến Thành - Chợ Hiệp Thành,3,E53935,FFFFFF,,Distance: 34.8 km | Fare: 0 VND
+ho chi minh city_18,hcmc_transport,18,Chợ Hiệp Thành - Bến Thành,3,E53935,FFFFFF,,Distance: 21.1 km | Fare: 0 VND
+ho chi minh city_19,hcmc_transport,19,Bến xe Sài Gòn - Khu chế xuất Linh Trung - Đại học Quốc gia,3,E53935,FFFFFF,,Distance: 34.0 km | Fare: 0 VND
+ho chi minh city_19,hcmc_transport,19,Đại học Quốc gia - Khu chế xuất Linh Trung - Bến xe Sài Gòn,3,E53935,FFFFFF,,Distance: 41.2 km | Fare: 0 VND
+ho chi minh city_20,hcmc_transport,20,Bến Thành - Nhà Bè,3,E53935,FFFFFF,,Distance: 28.5 km | Fare: 0 VND
+ho chi minh city_20,hcmc_transport,20,Nhà Bè - Bến Thành,3,E53935,FFFFFF,,Distance: 15.7 km | Fare: 0 VND
+ho chi minh city_22,hcmc_transport,22,Bến xe Quận 8 - Bến xe buýt Lê Minh Xuân,3,E53935,FFFFFF,,Distance: 22.6 km | Fare: 0 VND
+ho chi minh city_22,hcmc_transport,22,Bến xe buýt Lê Minh Xuân - Bến xe Quận 8,3,E53935,FFFFFF,,Distance: 35.3 km | Fare: 0 VND
+ho chi minh city_23,hcmc_transport,23,Bến xe Chợ Lớn - Ngã ba Giồng - Cầu Lớn,3,E53935,FFFFFF,,Distance: 39.0 km | Fare: 0 VND
+ho chi minh city_23,hcmc_transport,23,Cầu Lớn - Ngã ba Giồng - Bến xe Chợ Lớn,3,E53935,FFFFFF,,Distance: 21.3 km | Fare: 0 VND
+ho chi minh city_24,hcmc_transport,24,Bến xe Miền Đông - Hóc Môn,3,E53935,FFFFFF,,Distance: 36.4 km | Fare: 0 VND
+ho chi minh city_24,hcmc_transport,24,Hóc Môn - Bến xe Miền Đông,3,E53935,FFFFFF,,Distance: 45.6 km | Fare: 0 VND
+ho chi minh city_25,hcmc_transport,25,Bến xe Quận 8 - Khu dân cư Vĩnh Lộc A,3,E53935,FFFFFF,,Distance: 18.0 km | Fare: 0 VND
+ho chi minh city_25,hcmc_transport,25,Khu dân cư Vĩnh Lộc A - Bến xe Quận 8,3,E53935,FFFFFF,,Distance: 17.9 km | Fare: 0 VND
+ho chi minh city_27,hcmc_transport,27,Bến xe Sài Gòn - Âu Cơ - Bến xe An Sương,3,E53935,FFFFFF,,Distance: 14.2 km | Fare: 0 VND
+ho chi minh city_27,hcmc_transport,27,Bến xe An Sương - Âu Cơ - Bến xe Sài Gòn,3,E53935,FFFFFF,,Distance: 13.2 km | Fare: 0 VND
+ho chi minh city_28,hcmc_transport,28,Bến xe Sài Gòn - Chợ Xuân Thới Thượng,3,E53935,FFFFFF,,Distance: 23.6 km | Fare: 0 VND
+ho chi minh city_28,hcmc_transport,28,Chợ Xuân Thới Thượng - Bến xe Sài Gòn,3,E53935,FFFFFF,,Distance: 22.8 km | Fare: 0 VND
+ho chi minh city_29,hcmc_transport,29,Phà Cát Lái - Chợ Nông sản Thủ Đức,3,E53935,FFFFFF,,Distance: 21.6 km | Fare: 0 VND
+ho chi minh city_29,hcmc_transport,29,Chợ Nông sản Thủ Đức - Phà Cát Lái,3,E53935,FFFFFF,,Distance: 28.1 km | Fare: 0 VND
+ho chi minh city_30,hcmc_transport,30,Chợ Tân Hương - Bến xe buýt Văn Thánh,3,E53935,FFFFFF,,Distance: 14.9 km | Fare: 0 VND
+ho chi minh city_30,hcmc_transport,30,Bến xe buýt Văn Thánh - Chợ Tân Hương,3,E53935,FFFFFF,,Distance: 16.4 km | Fare: 0 VND
+ho chi minh city_31,hcmc_transport,31,Đại học Tôn Đức Thắng - Bến Thành - Đại học Văn Lang,3,E53935,FFFFFF,,Distance: 25.6 km | Fare: 0 VND
+ho chi minh city_31,hcmc_transport,31,Đại học Văn Lang - Bến Thành - Đại học Tôn Đức Thắng,3,E53935,FFFFFF,,Distance: 17.9 km | Fare: 0 VND
+ho chi minh city_32,hcmc_transport,32,Bến xe Miền Tây - Bến xe Ngã tư Ga,3,E53935,FFFFFF,,Distance: 21.6 km | Fare: 0 VND
+ho chi minh city_32,hcmc_transport,32,Bến xe Ngã tư Ga - Bến xe Miền Tây,3,E53935,FFFFFF,,Distance: 22.9 km | Fare: 0 VND
+ho chi minh city_33,hcmc_transport,33,Bến xe An Sương - Suối Tiên - Đại học Quốc gia,3,E53935,FFFFFF,,Distance: 55.7 km | Fare: 0 VND
+ho chi minh city_33,hcmc_transport,33,Đại học Quốc gia - Suối Tiên - Bến xe An Sương,3,E53935,FFFFFF,,Distance: 60.6 km | Fare: 0 VND
+ho chi minh city_34,hcmc_transport,34,Bến xe Sài Gòn - Bến xe Quận 8,3,E53935,FFFFFF,,Distance: 16.9 km | Fare: 0 VND
+ho chi minh city_34,hcmc_transport,34,Bến xe Quận 8 - Bến xe Sài Gòn,3,E53935,FFFFFF,,Distance: 26.2 km | Fare: 0 VND
+ho chi minh city_36,hcmc_transport,36,Bến Thành - Thới An,3,E53935,FFFFFF,,Distance: 41.6 km | Fare: 0 VND
+ho chi minh city_36,hcmc_transport,36,Thới An - Bến Thành,3,E53935,FFFFFF,,Distance: 30.5 km | Fare: 0 VND
+ho chi minh city_38,hcmc_transport,38,Khu dân cư Tân Quy - Bến Thành - Đầm Sen,3,E53935,FFFFFF,,Distance: 20.2 km | Fare: 0 VND
+ho chi minh city_38,hcmc_transport,38,Đầm Sen - Bến Thành - Khu dân cư Tân Quy,3,E53935,FFFFFF,,Distance: 20.7 km | Fare: 0 VND
+ho chi minh city_39,hcmc_transport,39,Bến Thành - Võ Văn Kiệt - Bến xe Miền Tây,3,E53935,FFFFFF,,Distance: 17.2 km | Fare: 0 VND
+ho chi minh city_39,hcmc_transport,39,Bến xe Miền Tây - Võ Văn Kiệt - Bến Thành,3,E53935,FFFFFF,,Distance: 15.7 km | Fare: 0 VND
+ho chi minh city_41,hcmc_transport,41,Bến xe Miền Tây - Ngã tư Bốn xã - Bến xe An Sương,3,E53935,FFFFFF,,Distance: 41.2 km | Fare: 0 VND
+ho chi minh city_41,hcmc_transport,41,Bến xe An Sương - Ngã tư Bốn xã - Bến xe Miền Tây,3,E53935,FFFFFF,,Distance: 18.9 km | Fare: 0 VND
+ho chi minh city_43,hcmc_transport,43,Bến xe Miền Đông - Phà Cát Lái,3,E53935,FFFFFF,,Distance: 42.2 km | Fare: 0 VND
+ho chi minh city_43,hcmc_transport,43,Phà Cát Lái - Bến xe Miền Đông,3,E53935,FFFFFF,,Distance: 27.1 km | Fare: 0 VND
+ho chi minh city_44,hcmc_transport,44,Cảng Quận 4 - Bình Quới,3,E53935,FFFFFF,,Distance: 20.9 km | Fare: 0 VND
+ho chi minh city_44,hcmc_transport,44,Bình Quới - Cảng Quận 4,3,E53935,FFFFFF,,Distance: 13.5 km | Fare: 0 VND
+ho chi minh city_45,hcmc_transport,45,Đại học Kinh tế - Bến Thành - Bến xe Miền Đông,3,E53935,FFFFFF,,Distance: 36.4 km | Fare: 0 VND
+ho chi minh city_45,hcmc_transport,45,Bến xe Miền Đông - Bến Thành - Đại học Kinh tế,3,E53935,FFFFFF,,Distance: 45.2 km | Fare: 0 VND
+ho chi minh city_46,hcmc_transport,46,Công viên Tôn Thất Thuyết - Bến Mễ Cốc,3,E53935,FFFFFF,,Distance: 25.5 km | Fare: 0 VND
+ho chi minh city_46,hcmc_transport,46,Bến Mễ Cốc - Công viên Tôn Thất Thuyết,3,E53935,FFFFFF,,Distance: 33.8 km | Fare: 0 VND
+ho chi minh city_47,hcmc_transport,47,Bến xe Chợ Lớn - Quốc lộ 50 - Hưng Long,3,E53935,FFFFFF,,Distance: 14.7 km | Fare: 0 VND
+ho chi minh city_47,hcmc_transport,47,Hưng Long - Quốc lộ 50 - Bến xe Chợ Lớn,3,E53935,FFFFFF,,Distance: 15.1 km | Fare: 0 VND
+ho chi minh city_48,hcmc_transport,48,Bến xe Tân Phú - Chợ Hiệp Thành,3,E53935,FFFFFF,,Distance: 28.3 km | Fare: 0 VND
+ho chi minh city_48,hcmc_transport,48,Chợ Hiệp Thành - Bến xe Tân Phú,3,E53935,FFFFFF,,Distance: 28.6 km | Fare: 0 VND
+ho chi minh city_50,hcmc_transport,50,Đại học Bách khoa - Đại học Quốc gia,3,E53935,FFFFFF,,Distance: 24.8 km | Fare: 0 VND
+ho chi minh city_50,hcmc_transport,50,Đại học Quốc gia - Đại học Bách khoa,3,E53935,FFFFFF,,Distance: 46.6 km | Fare: 0 VND
+ho chi minh city_52,hcmc_transport,52,Bến Thành - Đại học Quốc gia,3,E53935,FFFFFF,,Distance: 58.2 km | Fare: 0 VND
+ho chi minh city_52,hcmc_transport,52,Đại học Quốc gia - Bến Thành,3,E53935,FFFFFF,,Distance: 75.2 km | Fare: 0 VND
+ho chi minh city_53,hcmc_transport,53,Lê Hồng Phong - Đại học Quốc gia,3,E53935,FFFFFF,,Distance: 99.6 km | Fare: 0 VND
+ho chi minh city_53,hcmc_transport,53,Đại học Quốc gia - Lê Hồng Phong,3,E53935,FFFFFF,,Distance: 82.8 km | Fare: 0 VND
+ho chi minh city_55,hcmc_transport,55,Công viên Phần mềm Quang Trung - Bến xe buýt Văn Thánh,3,E53935,FFFFFF,,Distance: 16.5 km | Fare: 0 VND
+ho chi minh city_55,hcmc_transport,55,Bến xe buýt Văn Thánh - Công viên Phần mềm Quang Trung,3,E53935,FFFFFF,,Distance: 13.4 km | Fare: 0 VND
+ho chi minh city_56,hcmc_transport,56,Bến xe Chợ Lớn - Bến xe Miền Đông mới,3,E53935,FFFFFF,,Distance: 105.7 km | Fare: 0 VND
+ho chi minh city_56,hcmc_transport,56,Bến xe Miền Đông mới - Bến xe Chợ Lớn,3,E53935,FFFFFF,,Distance: 67.2 km | Fare: 0 VND
+ho chi minh city_57,hcmc_transport,57,Chợ Phước Bình - Trường Trung học phổ thông Hiệp Bình,3,E53935,FFFFFF,,Distance: 24.9 km | Fare: 0 VND
+ho chi minh city_57,hcmc_transport,57,Trường Trung học phổ thông Hiệp Bình - Chợ Phước Bình,3,E53935,FFFFFF,,Distance: 13.3 km | Fare: 0 VND
+ho chi minh city_58,hcmc_transport,58,Bến xe Ngã tư Ga - Khu công nghiệp Đông Nam,3,E53935,FFFFFF,,Distance: 27.8 km | Fare: 0 VND
+ho chi minh city_58,hcmc_transport,58,Khu công nghiệp Đông Nam - Bến xe Ngã tư Ga,3,E53935,FFFFFF,,Distance: 40.7 km | Fare: 0 VND
+ho chi minh city_59,hcmc_transport,59,Bến xe Quận 8 - Bến xe Ngã tư Ga,3,E53935,FFFFFF,,Distance: 19.2 km | Fare: 0 VND
+ho chi minh city_59,hcmc_transport,59,Bến xe Ngã tư Ga - Bến xe Quận 8,3,E53935,FFFFFF,,Distance: 34.3 km | Fare: 0 VND
+ho chi minh city_60-1,hcmc_transport,60-1,Bến xe Miền Tây - Bến xe Biên Hòa,3,E53935,FFFFFF,,Distance: 184.1 km | Fare: 0 VND
+ho chi minh city_60-1,hcmc_transport,60-1,Bến xe Biên Hòa - Bến xe Miền Tây,3,E53935,FFFFFF,,Distance: 141.3 km | Fare: 0 VND
+ho chi minh city_60-2,hcmc_transport,60-2,Đại học Nông Lâm - Bến xe Phú Túc,3,E53935,FFFFFF,,Distance: 67.7 km | Fare: 0 VND
+ho chi minh city_60-2,hcmc_transport,60-2,Bến xe Phú Túc - Đại học Nông Lâm,3,E53935,FFFFFF,,Distance: 127.7 km | Fare: 0 VND
+ho chi minh city_60-3,hcmc_transport,60-3,Bến xe Miền Đông - Khu công nghiệp Nhơn Trạch,3,E53935,FFFFFF,,Distance: 115.9 km | Fare: 0 VND
+ho chi minh city_60-3,hcmc_transport,60-3,Khu công nghiệp Nhơn Trạch - Bến xe Miền Đông,3,E53935,FFFFFF,,Distance: 108.1 km | Fare: 0 VND
+ho chi minh city_61,hcmc_transport,61,Bến xe Chợ Lớn - Bến xe buýt Lê Minh Xuân,3,E53935,FFFFFF,,Distance: 17.1 km | Fare: 0 VND
+ho chi minh city_61,hcmc_transport,61,Bến xe buýt Lê Minh Xuân - Bến xe Chợ Lớn,3,E53935,FFFFFF,,Distance: 35.0 km | Fare: 0 VND
+ho chi minh city_61-3,hcmc_transport,61-3,Bến xe An Sương - Bến xe Thủ Dầu Một,3,E53935,FFFFFF,,Distance: 49.5 km | Fare: 0 VND
+ho chi minh city_61-3,hcmc_transport,61-3,Bến xe Thủ Dầu Một - Bến xe An Sương,3,E53935,FFFFFF,,Distance: 58.0 km | Fare: 0 VND
+ho chi minh city_61-8,hcmc_transport,61-8,Bến xe Thủ Dầu Một - Bến xe Miền Đông,3,E53935,FFFFFF,,Distance: 36.0 km | Fare: 0 VND
+ho chi minh city_61-8,hcmc_transport,61-8,Bến xe Miền Đông - Bến xe Thủ Dầu Một,3,E53935,FFFFFF,,Distance: 22.2 km | Fare: 0 VND
+ho chi minh city_62,hcmc_transport,62,Bến xe Quận 8 - Thới An,3,E53935,FFFFFF,,Distance: 30.4 km | Fare: 0 VND
+ho chi minh city_62,hcmc_transport,62,Thới An - Bến xe Quận 8,3,E53935,FFFFFF,,Distance: 54.3 km | Fare: 0 VND
+ho chi minh city_62-1,hcmc_transport,62-1,Bến xe Chợ Lớn - Bến xe Tân Trụ,3,E53935,FFFFFF,,Distance: 16.3 km | Fare: 0 VND
+ho chi minh city_62-1,hcmc_transport,62-1,Bến xe Tân Trụ - Bến xe Chợ Lớn,3,E53935,FFFFFF,,Distance: 16.4 km | Fare: 0 VND
+ho chi minh city_62-2,hcmc_transport,62-2,Bến xe Chợ Lớn - Ngã ba Tân Lân,3,E53935,FFFFFF,,Distance: 16.9 km | Fare: 0 VND
+ho chi minh city_62-2,hcmc_transport,62-2,Ngã ba Tân Lân - Bến xe Chợ Lớn,3,E53935,FFFFFF,,Distance: 16.6 km | Fare: 0 VND
+ho chi minh city_62-5,hcmc_transport,62-5,Bến xe An Sương - Bến xe Hậu Nghĩa,3,E53935,FFFFFF,,Distance: 12.8 km | Fare: 0 VND
+ho chi minh city_62-5,hcmc_transport,62-5,Bến xe Hậu Nghĩa - Bến xe An Sương,3,E53935,FFFFFF,,Distance: 12.9 km | Fare: 0 VND
+ho chi minh city_62-6,hcmc_transport,62-6,Bến xe Chợ Lớn - Bến xe Hậu Nghĩa,3,E53935,FFFFFF,,Distance: 31.2 km | Fare: 0 VND
+ho chi minh city_62-6,hcmc_transport,62-6,Bến xe Hậu Nghĩa - Bến xe Chợ Lớn,3,E53935,FFFFFF,,Distance: 23.0 km | Fare: 0 VND
+ho chi minh city_62-7,hcmc_transport,62-7,Bến xe Chợ Lớn - Bến xe Đức Huệ,3,E53935,FFFFFF,,Distance: 82.7 km | Fare: 0 VND
+ho chi minh city_62-7,hcmc_transport,62-7,Bến xe Đức Huệ - Bến xe Chợ Lớn,3,E53935,FFFFFF,,Distance: 46.5 km | Fare: 0 VND
+ho chi minh city_62-8,hcmc_transport,62-8,Bến xe Chợ Lớn - Bến xe Tân An,3,E53935,FFFFFF,,Distance: 16.3 km | Fare: 0 VND
+ho chi minh city_62-8,hcmc_transport,62-8,Bến xe Tân An - Bến xe Chợ Lớn,3,E53935,FFFFFF,,Distance: 16.0 km | Fare: 0 VND
+ho chi minh city_62-9,hcmc_transport,62-9,Bến xe Quận 8 - Thị xã Gò Công,3,E53935,FFFFFF,,Distance: 11.3 km | Fare: 0 VND
+ho chi minh city_62-9,hcmc_transport,62-9,Thị xã Gò Công - Bến xe Quận 8,3,E53935,FFFFFF,,Distance: 11.1 km | Fare: 0 VND
+ho chi minh city_62-10,hcmc_transport,62-10,Bến xe Chợ Lớn - Thanh Vĩnh Đông,3,E53935,FFFFFF,,Distance: 16.3 km | Fare: 0 VND
+ho chi minh city_62-10,hcmc_transport,62-10,Thanh Vĩnh Đông - Bến xe Chợ Lớn,3,E53935,FFFFFF,,Distance: 16.4 km | Fare: 0 VND
+ho chi minh city_62-11,hcmc_transport,62-11,Bến xe Quận 8 - Bến xe Tân Tập,3,E53935,FFFFFF,,Distance: 11.3 km | Fare: 0 VND
+ho chi minh city_62-11,hcmc_transport,62-11,Bến xe Tân Tập - Bến xe Quận 8,3,E53935,FFFFFF,,Distance: 11.4 km | Fare: 0 VND
+ho chi minh city_63-1,hcmc_transport,63-1,Bến xe Tân Phú - Bến xe Tiền Giang,3,E53935,FFFFFF,,Distance: 29.4 km | Fare: 0 VND
+ho chi minh city_63-1,hcmc_transport,63-1,Bến xe Tiền Giang - Bến xe Tân Phú,3,E53935,FFFFFF,,Distance: 29.5 km | Fare: 0 VND
+ho chi minh city_64,hcmc_transport,64,Bến xe Miền Đông - Đầm Sen,3,E53935,FFFFFF,,Distance: 16.5 km | Fare: 0 VND
+ho chi minh city_64,hcmc_transport,64,Đầm Sen - Bến xe Miền Đông,3,E53935,FFFFFF,,Distance: 23.8 km | Fare: 0 VND
+ho chi minh city_65,hcmc_transport,65,Bến Thành - Cách mạng Tháng 8 - Bến xe An Sương,3,E53935,FFFFFF,,Distance: 25.8 km | Fare: 0 VND
+ho chi minh city_65,hcmc_transport,65,Bến xe An Sương - Cách mạng Tháng 8 - Bến Thành,3,E53935,FFFFFF,,Distance: 12.0 km | Fare: 0 VND
+ho chi minh city_67,hcmc_transport,67,Bến xe Miền Đông cũ - Bến xe Miền Đông mới,3,E53935,FFFFFF,,Distance: 22.0 km | Fare: 0 VND
+ho chi minh city_67,hcmc_transport,67,Bến xe Miền Đông mới - Bến xe Miền Đông cũ,3,E53935,FFFFFF,,Distance: 35.0 km | Fare: 0 VND
+ho chi minh city_68,hcmc_transport,68,Bến xe Chợ Lớn - Đại học Tài chính-Marketing,3,E53935,FFFFFF,,Distance: 16.8 km | Fare: 0 VND
+ho chi minh city_68,hcmc_transport,68,Đại học Tài chính-Marketing - Bến xe Chợ Lớn,3,E53935,FFFFFF,,Distance: 15.9 km | Fare: 0 VND
+ho chi minh city_69,hcmc_transport,69,Bến xe Sài Gòn - Khu dân cư Vĩnh Lộc,3,E53935,FFFFFF,,Distance: 24.5 km | Fare: 0 VND
+ho chi minh city_69,hcmc_transport,69,Khu dân cư Vĩnh Lộc - Bến xe Sài Gòn,3,E53935,FFFFFF,,Distance: 29.9 km | Fare: 0 VND
+ho chi minh city_70,hcmc_transport,70,Tân Quy - Bến Súc,3,E53935,FFFFFF,,Distance: 24.6 km | Fare: 0 VND
+ho chi minh city_70,hcmc_transport,70,Bến Súc - Tân Quy,3,E53935,FFFFFF,,Distance: 44.4 km | Fare: 0 VND
+ho chi minh city_70-1,hcmc_transport,70-1,Bến xe Củ Chi - Bến xe Tây Ninh,3,E53935,FFFFFF,,Distance: 78.5 km | Fare: 0 VND
+ho chi minh city_70-1,hcmc_transport,70-1,Bến xe Tây Ninh - Bến xe Củ Chi,3,E53935,FFFFFF,,Distance: 133.9 km | Fare: 0 VND
+ho chi minh city_70-2,hcmc_transport,70-2,Bến xe Củ Chi - Tòa Thánh - Khu du lịch Núi Bà Đen,3,E53935,FFFFFF,,Distance: 27.4 km | Fare: 0 VND
+ho chi minh city_70-2,hcmc_transport,70-2,Khu du lịch Núi Bà Đen - Tòa Thánh - Bến xe Củ Chi,3,E53935,FFFFFF,,Distance: 48.3 km | Fare: 0 VND
+ho chi minh city_71,hcmc_transport,71,Bến xe An Sương - Phật Cô Đơn,3,E53935,FFFFFF,,Distance: 66.5 km | Fare: 0 VND
+ho chi minh city_71,hcmc_transport,71,Phật Cô Đơn - Bến xe An Sương,3,E53935,FFFFFF,,Distance: 29.8 km | Fare: 0 VND
+ho chi minh city_72,hcmc_transport,72,Bến xe Sài Gòn - Hiệp Phước,3,E53935,FFFFFF,,Distance: 19.9 km | Fare: 0 VND
+ho chi minh city_72,hcmc_transport,72,Hiệp Phước - Bến xe Sài Gòn,3,E53935,FFFFFF,,Distance: 20.0 km | Fare: 0 VND
+ho chi minh city_72-1,hcmc_transport,72-1,Sân bay Tân Sơn Nhất - Bến xe Vũng Tàu,3,E53935,FFFFFF,,Distance: 18.6 km | Fare: 0 VND
+ho chi minh city_72-1,hcmc_transport,72-1,Bến xe Vũng Tàu - Sân bay Tân Sơn Nhất,3,E53935,FFFFFF,,Distance: 10.6 km | Fare: 0 VND
+ho chi minh city_73,hcmc_transport,73,Chợ Bình Chánh - Bến xe buýt Lê Minh Xuân,3,E53935,FFFFFF,,Distance: 42.9 km | Fare: 0 VND
+ho chi minh city_73,hcmc_transport,73,Bến xe buýt Lê Minh Xuân - Chợ Bình Chánh,3,E53935,FFFFFF,,Distance: 35.8 km | Fare: 0 VND
+ho chi minh city_74,hcmc_transport,74,Bến xe An Sương - Bến xe Củ Chi,3,E53935,FFFFFF,,Distance: 19.7 km | Fare: 0 VND
+ho chi minh city_74,hcmc_transport,74,Bến xe Củ Chi - Bến xe An Sương,3,E53935,FFFFFF,,Distance: 20.5 km | Fare: 0 VND
+ho chi minh city_75,hcmc_transport,75,Bến xe Sài Gòn - Cần Giờ,3,E53935,FFFFFF,,Distance: 171.9 km | Fare: 0 VND
+ho chi minh city_75,hcmc_transport,75,Cần Giờ - Bến xe Sài Gòn,3,E53935,FFFFFF,,Distance: 157.2 km | Fare: 0 VND
+ho chi minh city_76,hcmc_transport,76,Long Phước - Bến xe Miền Đông mới,3,E53935,FFFFFF,,Distance: 28.0 km | Fare: 0 VND
+ho chi minh city_76,hcmc_transport,76,Bến xe Miền Đông mới - Long Phước,3,E53935,FFFFFF,,Distance: 40.4 km | Fare: 0 VND
+ho chi minh city_78,hcmc_transport,78,Bến xe Thới An - Ngã ba Giồng - Cầu Lớn,3,E53935,FFFFFF,,Distance: 17.9 km | Fare: 0 VND
+ho chi minh city_78,hcmc_transport,78,Cầu Lớn - Ngã ba Giồng - Bến xe Thới An,3,E53935,FFFFFF,,Distance: 17.7 km | Fare: 0 VND
+ho chi minh city_79,hcmc_transport,79,Bến xe Củ Chi - Đền Bến Dược,3,E53935,FFFFFF,,Distance: 81.4 km | Fare: 0 VND
+ho chi minh city_79,hcmc_transport,79,Đền Bến Dược - Bến xe Củ Chi,3,E53935,FFFFFF,,Distance: 119.1 km | Fare: 0 VND
+ho chi minh city_81,hcmc_transport,81,Bến xe Chợ Lớn - Lê Minh Xuân,3,E53935,FFFFFF,,Distance: 41.3 km | Fare: 0 VND
+ho chi minh city_81,hcmc_transport,81,Lê Minh Xuân - Bến xe Chợ Lớn,3,E53935,FFFFFF,,Distance: 28.9 km | Fare: 0 VND
+ho chi minh city_84,hcmc_transport,84,Bến xe Chợ Lớn - Tân Túc,3,E53935,FFFFFF,,Distance: 18.8 km | Fare: 0 VND
+ho chi minh city_84,hcmc_transport,84,Tân Túc - Bến xe Chợ Lớn,3,E53935,FFFFFF,,Distance: 24.6 km | Fare: 0 VND
+ho chi minh city_85,hcmc_transport,85,Bến xe An Sương - Khu công nghiệp Nhị Xuân,3,E53935,FFFFFF,,Distance: 20.1 km | Fare: 0 VND
+ho chi minh city_85,hcmc_transport,85,Khu công nghiệp Nhị Xuân - Bến xe An Sương,3,E53935,FFFFFF,,Distance: 19.1 km | Fare: 0 VND
+ho chi minh city_87,hcmc_transport,87,Bến xe Củ Chi - An Nhơn Tây,3,E53935,FFFFFF,,Distance: 30.3 km | Fare: 0 VND
+ho chi minh city_87,hcmc_transport,87,An Nhơn Tây - Bến xe Củ Chi,3,E53935,FFFFFF,,Distance: 46.5 km | Fare: 0 VND
+ho chi minh city_88,hcmc_transport,88,Bến Thành - Chợ Long Phước,3,E53935,FFFFFF,,Distance: 58.1 km | Fare: 0 VND
+ho chi minh city_88,hcmc_transport,88,Chợ Long Phước - Bến Thành,3,E53935,FFFFFF,,Distance: 80.7 km | Fare: 0 VND
+ho chi minh city_89,hcmc_transport,89,Đại học Nông Lâm - Bến tàu Hiệp Bình Chánh,3,E53935,FFFFFF,,Distance: 30.0 km | Fare: 0 VND
+ho chi minh city_89,hcmc_transport,89,Bến tàu Hiệp Bình Chánh - Đại học Nông Lâm,3,E53935,FFFFFF,,Distance: 22.3 km | Fare: 0 VND
+ho chi minh city_90,hcmc_transport,90,Phà Bình Khánh - Cần Thạnh,3,E53935,FFFFFF,,Distance: 168.2 km | Fare: 0 VND
+ho chi minh city_90,hcmc_transport,90,Cần Thạnh - Phà Bình Khánh,3,E53935,FFFFFF,,Distance: 103.0 km | Fare: 0 VND
+ho chi minh city_91,hcmc_transport,91,Bến xe Miền Tây - Chợ nông sản Thủ Đức,3,E53935,FFFFFF,,Distance: 22.4 km | Fare: 0 VND
+ho chi minh city_91,hcmc_transport,91,Chợ nông sản Thủ Đức - Bến xe Miền Tây,3,E53935,FFFFFF,,Distance: 39.0 km | Fare: 0 VND
+ho chi minh city_93,hcmc_transport,93,Bến Thành - Bến xe Miền Đông mới,3,E53935,FFFFFF,,Distance: 39.2 km | Fare: 0 VND
+ho chi minh city_93,hcmc_transport,93,Bến xe Miền Đông mới - Bến Thành,3,E53935,FFFFFF,,Distance: 40.9 km | Fare: 0 VND
+ho chi minh city_94,hcmc_transport,94,Bến xe Chợ Lớn - Bến xe Củ Chi,3,E53935,FFFFFF,,Distance: 94.2 km | Fare: 0 VND
+ho chi minh city_94,hcmc_transport,94,Bến xe Củ Chi - Bến xe Chợ Lớn,3,E53935,FFFFFF,,Distance: 92.3 km | Fare: 0 VND
+ho chi minh city_99,hcmc_transport,99,Chợ Thạnh Mỹ Lợi - Đại học Quốc gia,3,E53935,FFFFFF,,Distance: 39.6 km | Fare: 0 VND
+ho chi minh city_99,hcmc_transport,99,Đại học Quốc gia - Chợ Thạnh Mỹ Lợi,3,E53935,FFFFFF,,Distance: 48.8 km | Fare: 0 VND
+ho chi minh city_100,hcmc_transport,100,Bến xe Củ Chi - Cầu Tân Thái,3,E53935,FFFFFF,,Distance: 34.9 km | Fare: 0 VND
+ho chi minh city_100,hcmc_transport,100,Cầu Tân Thái - Bến xe Củ Chi,3,E53935,FFFFFF,,Distance: 43.7 km | Fare: 0 VND
+ho chi minh city_101,hcmc_transport,101,Bến xe Chợ Lớn - Chợ Tân Nhựt,3,E53935,FFFFFF,,Distance: 25.8 km | Fare: 0 VND
+ho chi minh city_101,hcmc_transport,101,Chợ Tân Nhựt - Bến xe Chợ Lớn,3,E53935,FFFFFF,,Distance: 31.0 km | Fare: 0 VND
+ho chi minh city_102,hcmc_transport,102,Bến xe Sài Gòn - Nguyễn Văn Linh - Bến xe Miền Tây,3,E53935,FFFFFF,,Distance: 36.1 km | Fare: 0 VND
+ho chi minh city_102,hcmc_transport,102,Bến xe Miền Tây - Nguyễn Văn Linh - Bến xe Sài Gòn,3,E53935,FFFFFF,,Distance: 41.7 km | Fare: 0 VND
+ho chi minh city_103,hcmc_transport,103,Bến xe Chợ Lớn - Bến xe Ngã tư Ga,3,E53935,FFFFFF,,Distance: 28.0 km | Fare: 0 VND
+ho chi minh city_103,hcmc_transport,103,Bến xe Ngã tư Ga - Bến xe Chợ Lớn,3,E53935,FFFFFF,,Distance: 31.9 km | Fare: 0 VND
+ho chi minh city_104,hcmc_transport,104,Bến xe An Sương - Bến xe buýt Văn Thánh,3,E53935,FFFFFF,,Distance: 14.5 km | Fare: 0 VND
+ho chi minh city_104,hcmc_transport,104,Bến xe buýt Văn Thánh - Bến xe An Sương,3,E53935,FFFFFF,,Distance: 56.5 km | Fare: 0 VND
+ho chi minh city_107,hcmc_transport,107,Bến xe Củ Chi - Bố Heo,3,E53935,FFFFFF,,Distance: 27.2 km | Fare: 0 VND
+ho chi minh city_107,hcmc_transport,107,Bố Heo - Bến xe Củ Chi,3,E53935,FFFFFF,,Distance: 32.6 km | Fare: 0 VND
+ho chi minh city_109,hcmc_transport,109,Sân bay Tân Sơn Nhất - Bến xe Sài Gòn,3,E53935,FFFFFF,,Distance: 13.4 km | Fare: 0 VND
+ho chi minh city_110,hcmc_transport,110,Hiệp Phước - Phước Lộc,3,E53935,FFFFFF,,Distance: 23.8 km | Fare: 0 VND
+ho chi minh city_110,hcmc_transport,110,Phước Lộc - Hiệp Phước,3,E53935,FFFFFF,,Distance: 35.7 km | Fare: 0 VND
+ho chi minh city_122,hcmc_transport,122,Bến xe An Sương - Tân Quy,3,E53935,FFFFFF,,Distance: 50.1 km | Fare: 0 VND
+ho chi minh city_122,hcmc_transport,122,Tân Quy - Bến xe An Sương,3,E53935,FFFFFF,,Distance: 30.6 km | Fare: 0 VND
+ho chi minh city_126,hcmc_transport,126,Bến xe Củ Chi - Bình Mỹ,3,E53935,FFFFFF,,Distance: 18.6 km | Fare: 0 VND
+ho chi minh city_126,hcmc_transport,126,Bình Mỹ - Bến xe Củ Chi,3,E53935,FFFFFF,,Distance: 18.0 km | Fare: 0 VND
+ho chi minh city_127,hcmc_transport,127,An Thới Đông - Ngã ba Bà Xán,3,E53935,FFFFFF,,Distance: 15.6 km | Fare: 0 VND
+ho chi minh city_127,hcmc_transport,127,Ngã ba Bà Xán - An Thới Đông,3,E53935,FFFFFF,,Distance: 22.6 km | Fare: 0 VND
+ho chi minh city_128,hcmc_transport,128,Tân Điền - An Nghĩa,3,E53935,FFFFFF,,Distance: 50.5 km | Fare: 0 VND
+ho chi minh city_128,hcmc_transport,128,An Nghĩa - Tân Điền,3,E53935,FFFFFF,,Distance: 48.0 km | Fare: 0 VND
+ho chi minh city_139,hcmc_transport,139,Bến xe Miền Tây - Khu tái định cư Phú Mỹ,3,E53935,FFFFFF,,Distance: 27.1 km | Fare: 0 VND
+ho chi minh city_139,hcmc_transport,139,Khu tái định cư Phú Mỹ - Bến xe Miền Tây,3,E53935,FFFFFF,,Distance: 19.6 km | Fare: 0 VND
+ho chi minh city_140,hcmc_transport,140,Bến xe Sài Gòn - Phạm Thế Hiển - Khu dân cư Phú Lợi,3,E53935,FFFFFF,,Distance: 16.3 km | Fare: 0 VND
+ho chi minh city_140,hcmc_transport,140,Khu dân cư Phú Lợi - Phạm Thế Hiển - Bến xe Sài Gòn,3,E53935,FFFFFF,,Distance: 32.1 km | Fare: 0 VND
+ho chi minh city_141,hcmc_transport,141,Khu du lịch BCR - Long Trường - Khu chế xuất Linh Trung II,3,E53935,FFFFFF,,Distance: 34.3 km | Fare: 0 VND
+ho chi minh city_141,hcmc_transport,141,Khu chế xuất Linh Trung II - Long Trường - Khu du lịch BCR,3,E53935,FFFFFF,,Distance: 41.3 km | Fare: 0 VND
+ho chi minh city_145,hcmc_transport,145,Bến xe Chợ Lớn - Chợ Hiệp Thành,3,E53935,FFFFFF,,Distance: 20.9 km | Fare: 0 VND
+ho chi minh city_145,hcmc_transport,145,Chợ Hiệp Thành - Bến xe Chợ Lớn,3,E53935,FFFFFF,,Distance: 20.9 km | Fare: 0 VND
+ho chi minh city_146,hcmc_transport,146,Bến xe Miền Đông - Chợ Hiệp Thành,3,E53935,FFFFFF,,Distance: 28.1 km | Fare: 0 VND
+ho chi minh city_146,hcmc_transport,146,Chợ Hiệp Thành - Bến xe Miền Đông,3,E53935,FFFFFF,,Distance: 30.4 km | Fare: 0 VND
+ho chi minh city_148,hcmc_transport,148,Bến xe Miền Tây - Gò Vấp,3,E53935,FFFFFF,,Distance: 13.1 km | Fare: 0 VND
+ho chi minh city_148,hcmc_transport,148,Gò Vấp - Bến xe Miền Tây,3,E53935,FFFFFF,,Distance: 26.7 km | Fare: 0 VND
+ho chi minh city_150,hcmc_transport,150,Bến xe Chợ Lớn - Bến xe Miền Đông mới,3,E53935,FFFFFF,,Distance: 54.9 km | Fare: 0 VND
+ho chi minh city_150,hcmc_transport,150,Bến xe Miền Đông mới - Bến xe Chợ Lớn,3,E53935,FFFFFF,,Distance: 63.3 km | Fare: 0 VND
+ho chi minh city_151,hcmc_transport,151,Bến xe Miền Tây - Bến xe An Sương,3,E53935,FFFFFF,,Distance: 21.3 km | Fare: 0 VND
+ho chi minh city_151,hcmc_transport,151,Bến xe An Sương - Bến xe Miền Tây,3,E53935,FFFFFF,,Distance: 39.9 km | Fare: 0 VND
+ho chi minh city_152,hcmc_transport,152,Khu dân cư Trung Sơn - Bến Thành - Sân bay Tân Sơn Nhất,3,E53935,FFFFFF,,Distance: 22.6 km | Fare: 0 VND
+ho chi minh city_152,hcmc_transport,152,Sân bay Tân Sơn Nhất - Bến Thành - Khu dân cư Trung Sơn,3,E53935,FFFFFF,,Distance: 11.8 km | Fare: 0 VND
+ho chi minh city_D3,hcmc_transport,D3,Riverside Resident - Crescent Mall,3,E53935,FFFFFF,,Distance: 4.3 km | Fare: 0 VND
+ho chi minh city_D3,hcmc_transport,D3,Crescent Mall - Riverside Resident,3,E53935,FFFFFF,,Distance: 4.3 km | Fare: 0 VND
+ho chi minh city_D4,hcmc_transport,D4,Vinhomes Grand Park - Bến xe Sài Gòn,3,E53935,FFFFFF,,Distance: 42.6 km | Fare: 0 VND
+ho chi minh city_D4,hcmc_transport,D4,Bến xe Sài Gòn - Vinhomes Grand Park,3,E53935,FFFFFF,,Distance: 46.6 km | Fare: 0 VND
+ho chi minh city_GRP01,hcmc_transport,GRP01,Nội khu Grand Park,3,E53935,FFFFFF,,Distance: 7.7 km | Fare: 0 VND
+ho chi minh city_GRP03,hcmc_transport,GRP03,Grand Park 03,3,E53935,FFFFFF,,Distance: 54.7 km | Fare: 0 VND
+ho chi minh city_07,hcmc_transport,07,Bến xe Biên Hòa - Bến xe Thạnh Phú,3,E53935,FFFFFF,,Distance: 21.6 km | Fare: 0 VND
+ho chi minh city_07,hcmc_transport,07,Bến xe Thạnh Phú - Bến xe Biên Hòa,3,E53935,FFFFFF,,Distance: 19.3 km | Fare: 0 VND
+ho chi minh city_10,hcmc_transport,10,Trạm xe Big C - Bến xe Xuân Lộc,3,E53935,FFFFFF,,Distance: 71.1 km | Fare: 0 VND
+ho chi minh city_10,hcmc_transport,10,Bến xe Xuân Lộc - Trạm xe Big C,3,E53935,FFFFFF,,Distance: 70.7 km | Fare: 0 VND
+ho chi minh city_11,hcmc_transport,11,Trạm xe Gò Dầu - Bến xe Ngã tư Vũng Tàu,3,E53935,FFFFFF,,Distance: 36.4 km | Fare: 0 VND
+ho chi minh city_16,hcmc_transport,16,Bến xe Phương Lâm - Bến xe Biên Hòa,3,E53935,FFFFFF,,Distance: 107.1 km | Fare: 0 VND
+ho chi minh city_60-18,hcmc_transport,60-18,Khu du lịch Đại Nam - Khu du lịch sinh thái Vườn Xoài,3,E53935,FFFFFF,,Distance: 75.2 km | Fare: 0 VND
+ho chi minh city_61-37,hcmc_transport,61-37,Văn phòng Xe Buýt Becamex Tokyu - Tòa nhà Becamex,3,E53935,FFFFFF,,Distance: 14.6 km | Fare: 0 VND
+ho chi minh city_61-38,hcmc_transport,61-38,Tòa nhà Becamex - Trường Ngô Thời Nhiệm,3,E53935,FFFFFF,,Distance: 15.1 km | Fare: 0 VND
+ho chi minh city_61-38,hcmc_transport,61-38,Trường Ngô Thời Nhiệm - Tòa nhà Becamex,3,E53935,FFFFFF,,Distance: 13.0 km | Fare: 0 VND
+ho chi minh city_61-39,hcmc_transport,61-39,Tòa nhà Becamex - Nhà ở xã hội Hòa Lợi,3,E53935,FFFFFF,,Distance: 22.8 km | Fare: 0 VND
+ho chi minh city_61-39,hcmc_transport,61-39,Nhà ở xã hội Hòa Lợi - Tòa nhà Becamex,3,E53935,FFFFFF,,Distance: 20.1 km | Fare: 0 VND
+ho chi minh city_61-51,hcmc_transport,61-51,Tòa nhà Becamex - Nhà ở xã hội Định Hòa,3,E53935,FFFFFF,,Distance: 23.3 km | Fare: 0 VND
+ho chi minh city_61-51,hcmc_transport,61-51,Nhà ở xã hội Định Hòa - Tòa nhà Becamex,3,E53935,FFFFFF,,Distance: 17.1 km | Fare: 0 VND
+ho chi minh city_61-52,hcmc_transport,61-52,Tòa nhà Becamex - Văn phòng Xe Buýt Becamex Tokyu,3,E53935,FFFFFF,,Distance: 15.2 km | Fare: 0 VND
+ho chi minh city_61-52,hcmc_transport,61-52,Văn phòng Xe Buýt Becamex Tokyu - Tòa nhà Becamex,3,E53935,FFFFFF,,Distance: 15.2 km | Fare: 0 VND
+ho chi minh city_61-53,hcmc_transport,61-53,Tòa nhà Becamex - Trường Ngô Thời Nhiệm,3,E53935,FFFFFF,,Distance: 13.3 km | Fare: 0 VND
+ho chi minh city_61-53,hcmc_transport,61-53,Trường Ngô Thời Nhiệm - Tòa nhà Becamex,3,E53935,FFFFFF,,Distance: 13.2 km | Fare: 0 VND
+ho chi minh city_61-55,hcmc_transport,61-55,Tòa nhà Becamex - Đại học Quốc tế Miền Đông (EIU),3,E53935,FFFFFF,,Distance: 21.6 km | Fare: 0 VND
+ho chi minh city_61-55,hcmc_transport,61-55,Đại học Quốc tế Miền Đông (EIU) - Tòa nhà Becamex,3,E53935,FFFFFF,,Distance: 15.0 km | Fare: 0 VND
+ho chi minh city_61-77A,hcmc_transport,61-77A,Bến xe Miền Đông mới - Trạm trung chuyển Hikari,3,E53935,FFFFFF,,Distance: 59.4 km | Fare: 0 VND
+ho chi minh city_61-77A,hcmc_transport,61-77A,Trạm trung chuyển Hikari - Bến xe Miền Đông mới,3,E53935,FFFFFF,,Distance: 31.4 km | Fare: 0 VND
+ho chi minh city_153,hcmc_transport,153,Ga tàu thuỷ Bình An - Đường Liên Phường,3,E53935,FFFFFF,,Distance: 28.6 km | Fare: 0 VND
+ho chi minh city_153,hcmc_transport,153,Đường Liên Phường - Ga tàu thuỷ Bình An,3,E53935,FFFFFF,,Distance: 33.7 km | Fare: 0 VND
+ho chi minh city_154,hcmc_transport,154,Trường Đại học Quản lý và Công nghệ - Masteri An Phú,3,E53935,FFFFFF,,Distance: 18.9 km | Fare: 0 VND
+ho chi minh city_155,hcmc_transport,155,Ga Bến Thành (Cổng 1) - Bến Vân Đồn - Ga Nhà hát Thành phố,3,E53935,FFFFFF,,Distance: 4.8 km | Fare: 0 VND
+ho chi minh city_154,hcmc_transport,154,Masteri An Phú - Trường Đại học Quản lý và Công nghệ,3,E53935,FFFFFF,,Distance: 22.7 km | Fare: 0 VND
+ho chi minh city_156D,hcmc_transport,156D,Bến Thành - Ga Hòa Hưng - Bệnh viện Mắt Thành phố Hồ Chí Minh,3,E53935,FFFFFF,,Distance: 17.8 km | Fare: 0 VND
+ho chi minh city_156V,hcmc_transport,156V,Bến Thành - Đại học Sài Gòn Cơ sở 3 - Ga Hòa Hưng,3,E53935,FFFFFF,,Distance: 11.1 km | Fare: 0 VND
+ho chi minh city_157,hcmc_transport,157,Bến xe buýt Văn Thánh – Khu dân cư Thạnh Mỹ Lợi,3,E53935,FFFFFF,,Distance: 13.9 km | Fare: 0 VND
+ho chi minh city_157,hcmc_transport,157,Khu dân cư Thạnh Mỹ Lợi - Bến xe buýt Văn Thánh,3,E53935,FFFFFF,,Distance: 16.2 km | Fare: 0 VND
+ho chi minh city_158,hcmc_transport,158,Bến xe buýt Văn Thánh - Cư xá Thanh Đa,3,E53935,FFFFFF,,Distance: 6.4 km | Fare: 0 VND
+ho chi minh city_159,hcmc_transport,159,Chung cư Ngô Tất Tố - Ngã tư Hàng Xanh,3,E53935,FFFFFF,,Distance: 5.1 km | Fare: 0 VND
+ho chi minh city_160,hcmc_transport,160,Ga Văn Thánh - Vinhomes Central Park,3,E53935,FFFFFF,,Distance: 2.3 km | Fare: 0 VND
+ho chi minh city_161,hcmc_transport,161,Bến xe buýt Văn Thánh - Bến xe Ngã tư Ga,3,E53935,FFFFFF,,Distance: 17.4 km | Fare: 0 VND
+ho chi minh city_161,hcmc_transport,161,Bến xe Ngã tư Ga - Bến xe buýt Văn Thánh,3,E53935,FFFFFF,,Distance: 19.9 km | Fare: 0 VND
+ho chi minh city_162,hcmc_transport,162,Ga Thủ Đức - Chung cư Man Thiện - Ga Bình Thái,3,E53935,FFFFFF,,Distance: 10.5 km | Fare: 0 VND
+ho chi minh city_162,hcmc_transport,162,Ga Bình Thái - Chung cư Man Thiện - Ga Thủ Đức,3,E53935,FFFFFF,,Distance: 9.0 km | Fare: 0 VND
+ho chi minh city_163V,hcmc_transport,163V,Ga Metro Bình Thái - Cao đẳng Công Thương - Trường Trung học cơ sở Phước Bình,3,E53935,FFFFFF,,Distance: 8.1 km | Fare: 0 VND
+ho chi minh city_163D,hcmc_transport,163D,Ga Metro Bình Thái - Trường Trung học cơ sở Phước Bình - Cao đẳng Công Thương,3,E53935,FFFFFF,,Distance: 8.5 km | Fare: 0 VND
+ho chi minh city_164D,hcmc_transport,164D,Đại học Nông Lâm - Ga Metro Khu Công nghệ cao - Chung cư Topaz,3,E53935,FFFFFF,,Distance: 9.1 km | Fare: 0 VND
+ho chi minh city_164V,hcmc_transport,164V,Đại học Nông Lâm - Chung cư Topaz - Ga Metro Khu Công nghệ cao,3,E53935,FFFFFF,,Distance: 10.8 km | Fare: 0 VND
+ho chi minh city_165,hcmc_transport,165,Đại học Nông Lâm - Khu Công nghệ cao,3,E53935,FFFFFF,,Distance: 13.9 km | Fare: 0 VND
+ho chi minh city_166,hcmc_transport,166,Ga Đại học Quốc gia - Ga Đại học Quốc gia,3,E53935,FFFFFF,,Distance: 7.0 km | Fare: 0 VND
+ho chi minh city_167V,hcmc_transport,167V,Đại học Hutech - Đại học Kinh tế Luật - Khu chế xuất linh trung 1 - Ga Khu công nghệ cao,3,E53935,FFFFFF,,Distance: 14.4 km | Fare: 0 VND
+ho chi minh city_167D,hcmc_transport,167D,Đại học Hutech - Ga Khu công nghệ cao - Đại học Kinh tế Luật - Khu Chế xuất Linh Trung 1,3,E53935,FFFFFF,,Distance: 13.4 km | Fare: 0 VND
+ho chi minh city_168V,hcmc_transport,168V,Đại học Ngân hàng - Nhà Thiếu nhi Thành phố Thủ Đức - Ga Thủ Đức,3,E53935,FFFFFF,,Distance: 6.5 km | Fare: 0 VND
+ho chi minh city_168D,hcmc_transport,168D,Đại học Ngân hàng - Ga Thủ Đức - Nhà Thiếu nhi Thành phố Thủ Đức,3,E53935,FFFFFF,,Distance: 6.1 km | Fare: 0 VND
+ho chi minh city_169V,hcmc_transport,169V,Ga Metro Bình Thái - Cảng Phúc Long - Vincom Thủ Đức,3,E53935,FFFFFF,,Distance: 5.7 km | Fare: 0 VND
+ho chi minh city_169D,hcmc_transport,169D,Ga Metro Bình Thái - Vincom Thủ Đức - Cảng Phúc Long,3,E53935,FFFFFF,,Distance: 6.2 km | Fare: 0 VND
+ho chi minh city_TGC01,hcmc_transport,TGC01,The Global City - Techcombank Lê Duẩn,3,E53935,FFFFFF,,Distance: 23.7 km | Fare: 0 VND
+ho chi minh city_60-5,hcmc_transport,60-5,Bến xe buýt Đại học Quốc Gia – Bến xe Biên Hòa,3,E53935,FFFFFF,,Distance: 5.2 km | Fare: 0 VND
+ho chi minh city_60-5,hcmc_transport,60-5,Bến xe Biên Hoà - Bến xe buýt Đại học Quốc Gia,3,E53935,FFFFFF,,Distance: 8.0 km | Fare: 0 VND
+ho chi minh city_60-7,hcmc_transport,60-7,Bến xe Miền Đông mới - Bến xe Biên Hoà,3,E53935,FFFFFF,,Distance: 4.2 km | Fare: 0 VND
+ho chi minh city_60-7,hcmc_transport,60-7,Bến xe Biên Hoà - Bến xe Miền Đông mới,3,E53935,FFFFFF,,Distance: 13.3 km | Fare: 0 VND
+ho chi minh city_61-2,hcmc_transport,61-2,Thủ Dầu Một - Mỹ Phước,3,E53935,FFFFFF,,Distance: 22.4 km | Fare: 0 VND
+ho chi minh city_61-2,hcmc_transport,61-2,Mỹ Phước - Thủ Dầu Một,3,E53935,FFFFFF,,Distance: 23.3 km | Fare: 0 VND
+ho chi minh city_61-4,hcmc_transport,61-4,Thủ Dầu Một - Thanh Tuyền - Dầu Tiếng,3,E53935,FFFFFF,,Distance: 4.6 km | Fare: 0 VND
+ho chi minh city_61-4,hcmc_transport,61-4,Dầu Tiếng - Thanh Tuyền - Thủ Dầu Một,3,E53935,FFFFFF,,Distance: 4.8 km | Fare: 0 VND
+ho chi minh city_TIA,hcmc_transport,TIA,Tân Sơn Nhất Shuttle Bus,3,E53935,FFFFFF,,Distance: 0.0 km | Fare: 0 VND
+ho chi minh city_61-9,hcmc_transport,61-9,Thủ Dầu Một - Suối Tiên - Bến xe Miền Đông Mới,3,E53935,FFFFFF,,Distance: 49.7 km | Fare: 0 VND
+ho chi minh city_61-9,hcmc_transport,61-9,Bến xe Miền Đông mới - Suối Tiên - Thủ Dầu Một,3,E53935,FFFFFF,,Distance: 45.4 km | Fare: 0 VND
+ho chi minh city_61-77B,hcmc_transport,61-77B,Bến xe Miền Đông mới - Siêu thị GO! Dĩ An,3,E53935,FFFFFF,,Distance: 3.8 km | Fare: 0 VND
+ho chi minh city_61-77B,hcmc_transport,61-77B,Siêu thị GO! Dĩ An - Bến xe Miền Đông mới,3,E53935,FFFFFF,,Distance: 3.9 km | Fare: 0 VND
+ho chi minh city_72-2B,hcmc_transport,72-2B,Cảng tàu khách Vũng Tàu - Sân bay Tân Sơn Nhất,3,E53935,FFFFFF,,Distance: 16.1 km | Fare: 0 VND
+ho chi minh city_72-2B,hcmc_transport,72-2B,Sân bay Tân Sơn Nhất - Cảng tàu khách Vũng Tàu,3,E53935,FFFFFF,,Distance: 16.2 km | Fare: 0 VND
+ho chi minh city_86,hcmc_transport,86,Bến Thành - Đại học Tôn Đức Thắng - Nhơn Đức,3,E53935,FFFFFF,,Distance: 12.1 km | Fare: 0 VND
+ho chi minh city_86,hcmc_transport,86,Nhơn Đức - Đại học Tôn Đức Thắng - Bến Thành,3,E53935,FFFFFF,,Distance: 12.5 km | Fare: 0 VND
+ho chi minh city_171,hcmc_transport,171,Bến xe Phú Chánh - Trung tâm hành chính Bình Dương - Bến Thành,3,E53935,FFFFFF,,Distance: 99.8 km | Fare: 0 VND
+ho chi minh city_171,hcmc_transport,171,Bến Thành - Trung tâm hành chính Bình Dương - Bến xe Phú Chánh,3,E53935,FFFFFF,,Distance: 91.8 km | Fare: 0 VND
+ho chi minh city_172,hcmc_transport,172,Bến xe Vũng Tàu - Trung tâm hành chính Bà Rịa-Vũng Tàu - Bến Thành,3,E53935,FFFFFF,,Distance: 180.9 km | Fare: 0 VND
+ho chi minh city_172,hcmc_transport,172,Bến Thành - Trung tâm hành chính Bà Rịa-Vũng Tàu - Bến xe Vũng Tàu,3,E53935,FFFFFF,,Distance: 150.2 km | Fare: 0 VND
+ho chi minh city_60-15,hcmc_transport,60-15,Thủ Dầu Một - Đồng Xoài,3,E53935,FFFFFF,,Distance: 4.6 km | Fare: 0 VND
+ho chi minh city_60-15,hcmc_transport,60-15,Đồng Xoài - Thủ Dầu Một,3,E53935,FFFFFF,,Distance: 4.1 km | Fare: 0 VND
+ho chi minh city_170,hcmc_transport,170,Bến xe buýt khu A - Bến xe buýt khu B,3,E53935,FFFFFF,,Distance: 10.9 km | Fare: 0 VND
+ho chi minh city_170,hcmc_transport,170,Bến xe buýt khu B - Bến xe buýt khu A,3,E53935,FFFFFF,,Distance: 11.8 km | Fare: 0 VND
