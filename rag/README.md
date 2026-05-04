@@ -1,87 +1,86 @@
 # RAG Transportation Suggestion Service
 
-This document outlines the architecture, data flow, and components for the Retrieval-Augmented Generation (RAG) service designed to suggest optimal transportation methods (walk, bike, motorbike, car, bus, metro, etc.).
+Welcome to the Retrieval-Augmented Generation (RAG) service for the Tourist Assistant. This service acts as an intelligent travel agent, analyzing a user's current context (weather, distance, traffic) and cross-referencing it with a database of transportation knowledge to suggest the most optimal travel method.
 
-## 🏗️ System Architecture
+## 🔄 System Flow
 
-### 1. Core Components
+The system operates in two main flows:
 
-*   **LLM (Language Model):** **Gemini 2.5 Flash** (via external API). Chosen for its high speed, multimodal capabilities, and excellent reasoning, which is perfect for synthesizing context.
-*   **Embedding Model:** **Gemini `text-embedding-004`** or **Hugging Face `all-MiniLM-L6-v2`**. 
-    *   *Recommendation:* Use Gemini's `text-embedding-004` as it integrates seamlessly with the same API key you use for Gemini 2.5 Flash and has a generous free tier. Alternatively, `all-MiniLM-L6-v2` can be run locally for 100% free embeddings.
-*   **Vector Database:** **PostgreSQL with `pgvector`**. We will store the transportation knowledge and their vector embeddings here.
-*   **External APIs:**
-    *   **Weather API** (e.g., OpenWeatherMap, WeatherAPI) for real-time weather conditions.
-    *   **Routing API** (e.g., Google Maps Directions, Mapbox, or OSRM) for distance, elevation, and real-time traffic data.
+### 1. Data Ingestion (Knowledge Base Population)
+1. **Input:** The system receives a descriptive text for a transportation type (e.g., "bike", "metro").
+2. **Embedding Generation:** The text description is sent to the embedding model to generate a 768-dimensional vector representation.
+3. **Storage:** The vector and original text are securely stored in a PostgreSQL database utilizing the `pgvector` extension.
+*Note: We have provided a `seed.py` script to automatically populate this base knowledge.*
 
----
+### 2. Inference (User Request & RAG Pipeline)
+1. **Context Collection:** The user requests a route. The frontend collects external context, such as weather conditions, distance, and traffic.
+2. **Query Embedding:** This context (e.g., "Weather is Heavy Rain with 28°C. Route distance is 5km and traffic is Heavy.") is converted into a vector embedding.
+3. **Vector Search:** The database (`pgvector`) performs a similarity search to find the top 3 most relevant transportation methods based on the current context.
+4. **Prompt Construction & LLM Generation:** The context and retrieved facts are injected into a prompt for the Large Language Model. The LLM acts as the reasoning engine and returns a context-aware recommendation to the user.
 
-## 🗄️ Database Schema (pgvector)
+## 🧠 Models Used
 
-We need to update the Postgres Docker image to one that supports `pgvector` (e.g., `pgvector/pgvector:pg16`).
+* **Embedding Model:** `gemini-embedding-001` 
+  * Configured with `output_dimensionality=768` to keep database storage efficient while maintaining accuracy.
+* **Large Language Model (LLM):** `gemini-2.5-flash`
+  * Chosen for its blazing fast inference speed and excellent reasoning capabilities.
 
-```sql
-CREATE EXTENSION IF NOT EXISTS vector;
+## ⚙️ Environment Variables
 
-CREATE TABLE transport_knowledge (
-    id SERIAL PRIMARY KEY,
-    transport_type VARCHAR(50) NOT NULL, -- e.g., 'bike', 'motorbike', 'metro'
-    description TEXT NOT NULL,           -- e.g., 'very agile, high compatibility inside heavy traffic...'
-    embedding vector(768)                -- Dimension depends on the embedding model (768 for Gemini)
-);
+To run the application, you must define the following in your `rag/.env` file:
+
+```env
+# Your Google Gemini API Key
+GEMINI_API_KEY=your_gemini_api_key_here
+
+# Postgres database connection string (matches docker-compose.yml defaults)
+DATABASE_URL=postgresql://tourist:tourist_secret@postgres:5432/tourist_assistant
 ```
 
----
+## 🛠️ Local Setup Instructions
 
-## 🔄 Data Flows
+1. **Configure Environment:** 
+   Navigate to the `rag` directory and ensure your `.env` file is populated with the correct `GEMINI_API_KEY`.
 
-### Flow 1: Data Ingestion (Knowledge Base Population)
-*Our team feeds the embedding model data.*
-
-1. **Input:** Admin provides a descriptive text for a transport type.
-   > *Example:* "bike - very agile, high compatibility inside heavy traffic, vulnerable to weather, very good sightseeing in cool day, bad for hot days, not allowed in storms."
-2. **Embedding Generation:** The service sends the description to the Embedding Model (e.g., Gemini `text-embedding-004`).
-3. **Storage:** The returned vector and the original text are stored in the `transport_knowledge` table in PostgreSQL.
-
-### Flow 2: Inference (User Request & RAG Pipeline)
-*The user asks for a recommendation.*
-
-1. **User Request:** User requests a route from Point A to Point B.
-2. **External Data Fetch:**
-   *   Fetch current weather for the location (e.g., "Heavy rain, 28°C").
-   *   Fetch route data (e.g., "Distance: 5km, Traffic: Heavy").
-3. **Query Embedding:** Combine the user's implicit needs (weather + traffic) into a query string: *"Short distance in heavy rain and heavy traffic"* and generate an embedding for it.
-4. **Vector Search:** Query `pgvector` to find the most relevant transportation knowledge.
-   ```sql
-   SELECT transport_type, description, embedding <=> '[...query_vector...]' AS distance
-   FROM transport_knowledge
-   ORDER BY distance ASC
-   LIMIT 3;
+2. **Start the Infrastructure:**
+   Navigate back to the root of the project and start the `rag` and `postgres` services using Docker Compose:
+   ```bash
+   docker compose up -d --build rag postgres
    ```
-5. **Prompt Construction:** Combine everything into a prompt for Gemini 2.5 Flash.
-   ```text
-   You are an expert travel assistant. Based on the following facts, recommend the best transport method.
-   
-   [Relevant Knowledge from DB]: 
-   - Motorbike: medium agile, good for heavy traffic, vulnerable to weather...
-   - Car: not agile, bad for heavy traffic, protected from weather...
-   
-   [Current Context]:
-   - Weather: Heavy Rain, 28°C
-   - Route: 5km, Heavy Traffic
-   
-   Question: Which transport method is best for the user right now and why?
+
+3. **Seed the Database:**
+   Once the containers are running, you need to populate the database with the initial transportation knowledge. Run the `seed.py` script inside the `rag` container:
+   ```bash
+   docker exec -it ta_rag python seed.py
    ```
-6. **LLM Response:** Gemini 2.5 Flash streams back the customized, context-aware recommendation to the user.
+   *You should see output indicating that embeddings are being generated and upserted successfully.*
 
----
+## 🧪 Testing with Postman
 
-## 🚀 Next Steps for Implementation
+The RAG service exposes a REST API via FastAPI running on port `8000` locally. You can test it using Postman or cURL.
 
-1. **Update `docker-compose.yml`**: Change the `postgres:16-alpine` image to `pgvector/pgvector:pg16` so `pgvector` can be used.
-2. **Create the Go/Node Service inside `rag/`**: Set up a basic web server (e.g., using Gin in Go or Express in Node.js).
-3. **Integrate Google GenAI SDK**: For calling both the Gemini 2.5 Flash model and the embedding model.
-4. **Implement DB Connection**: Connect to Postgres and create the pgvector tables.
-5. **Create Endpoints**:
-   *   `POST /rag/ingest`: For the team to add new transport knowledge.
-   *   `POST /rag/suggest`: For the frontend to request transport suggestions.
+### 1. Get a Transportation Suggestion
+* **Endpoint:** `POST http://localhost:8000/rag/suggest`
+* **Content-Type:** `application/json`
+* **Body:**
+  ```json
+  {
+      "weather_condition": "Heavy Rain",
+      "temperature": "28°C",
+      "distance": "5km",
+      "traffic_condition": "Heavy"
+  }
+  ```
+* **Expected Response:** A JSON object containing the LLM's recommended transport method and reasoning.
+
+### 2. Ingest New Knowledge (Optional)
+* **Endpoint:** `POST http://localhost:8000/rag/ingest`
+* **Content-Type:** `application/json`
+* **Body:**
+  ```json
+  {
+      "transport_type": "taxi",
+      "description": "very comfortable, protected from weather, expensive, affected by heavy traffic."
+  }
+  ```
+* **Expected Response:** `{"status": "success", "message": "Knowledge ingested."}`
