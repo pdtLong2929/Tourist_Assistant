@@ -1,58 +1,51 @@
-name: Frontend CI/CD to GCP
+name: RAG Service CI/CD to GCP
 
 on:
   push:
     branches: [ "main" ]
     paths:
-      - 'frontend/**'
-      - '.github/workflows/frontend-cicd.yml'
+      - 'rag/**'
+      - '.github/workflows/rag-cicd.yml'
+      - 'docker-compose.yml'
   pull_request:
     branches: [ "main" ]
     paths:
-      - 'frontend/**'
-      - '.github/workflows/frontend-cicd.yml'
-      - 'docker-compose.yml'
+      - 'rag/**'
+      - '.github/workflows/rag-cicd.yml'
+
 env:
   PROJECT_ID: 'touristassistant-29-03-2026'
-  REGION: 'asia-southeast1'               
-  GAR_REPO: 'tourism-frontend'           
-  SERVICE_NAME: 'tourism-frontend-app' 
-  IMAGE_NAME: 'nextjs-app'
-  NGINX_URL: 'https://tourism-nginx-gateway-367022044809.asia-southeast1.run.app'
+  REGION: 'asia-southeast1'
+  GAR_REPO: 'tourism-frontend'
+  SERVICE_NAME: 'tourism-rag-service'
+  IMAGE_NAME: 'rag-service'
 
-# Required for Workload Identity Federation
 permissions:
   contents: 'read'
   id-token: 'write'
 
 jobs:
-  # ── Job 1 : Lint ─────────────────────────────────────────────────────────
-  lint:
-    name: Lint Check
+  # ── Job 1 : Test & Validation ──────────────────────────────────────────────
+  test:
+    name: Config & Code Validation
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          node-version: 24
-          cache: 'npm'
-          cache-dependency-path: frontend/aetherion/package-lock.json
+          python-version: '3.14'
 
       - name: Install dependencies
-        working-directory: frontend/aetherion
-        run: npm ci
-
-      - name: Run ESLint
-        working-directory: frontend/aetherion
-        run: npm run lint
-
+        working-directory: ./rag
+        run: pip install -r requirements.txt
+        
   # ── Job 2 : Docker Compose Integration Test ──────────────────────────────
   integration-test:
     name: Integration Test (Docker Compose)
-    needs: lint
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -62,35 +55,25 @@ jobs:
         run: |
           cp .env.example .env || true
           cp login/.env.example login/.env || true
-          touch rag/.env || true
+          echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" > rag/.env
 
       - name: Start services via Docker Compose
-        run: docker compose up -d --build --wait
+        run: docker compose up -d --build --wait rag postgres
 
-      - name: Wait for frontend to be ready
+      - name: Wait for RAG service to be ready
         run: |
-          echo "Waiting for frontend to respond on port 3000..."
+          echo "Waiting for RAG service to respond on port 8000..."
           for i in $(seq 1 30); do
-            if curl -sf http://localhost:3000 > /dev/null 2>&1; then
-              echo "Frontend is up!"
+            if curl -sf http://localhost:8000/health > /dev/null 2>&1; then
+              echo "RAG service is up!"
               exit 0
             fi
             echo "  attempt $i/30 — not ready yet, retrying in 5s..."
             sleep 5
           done
-          echo "Frontend failed to start in time."
-          docker compose logs frontend
+          echo "RAG service failed to start in time."
+          docker compose logs rag
           exit 1
-
-      - name: Verify PostgreSQL is healthy
-        run: |
-          docker compose exec -T postgres pg_isready -U tourist
-          echo "PostgreSQL is healthy"
-
-      - name: Verify MongoDB is healthy
-        run: |
-          docker compose exec -T mongodb mongosh --eval "db.adminCommand('ping')" -u tourist -p tourist_secret --authenticationDatabase admin
-          echo "MongoDB is healthy"
 
       - name: Tear down
         if: always()
@@ -102,7 +85,7 @@ jobs:
     needs: integration-test
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -124,14 +107,12 @@ jobs:
         run: |-
           gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
 
-      # 3. Build & Push using the multi-stage Dockerfile
+      # 3. Build & Push using the RAG Dockerfile
       - name: Build and Push Docker Image
-        working-directory: ./frontend
+        working-directory: ./rag
         run: |-
           DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPO }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
-          docker build \
-            --build-arg NEXT_PUBLIC_NGINX_URL=${{ env.NGINX_URL }} \
-            -t $DOCKER_TAG .
+          docker build -t $DOCKER_TAG .
           docker push $DOCKER_TAG
 
       # 4. Deploy to Cloud Run
@@ -142,17 +123,4 @@ jobs:
             --image $DOCKER_TAG \
             --region ${{ env.REGION }} \
             --allow-unauthenticated \
-            --set-env-vars="\
-          NODE_ENV=production,\
-          JWT_EXPIRES_IN=15m,\
-          JWT_REFRESH_EXPIRES_IN=7d,\
-          FRONTEND_URL=https://tourism-frontend-app-367022044809.asia-southeast1.run.app,\
-          NEXT_PUBLIC_NGINX_URL=https://tourism-nginx-gateway-367022044809.asia-southeast1.run.app" \
-            --set-secrets="\
-          POSTGRES_URL=POSTGRES_URL:latest,\
-          JWT_SECRET=JWT_SECRET:latest,\
-          JWT_REFRESH_SECRET=JWT_REFRESH_SECRET:latest,\
-          GOOGLE_CLIENT_ID=GOOGLE_CLIENT_ID:latest,\
-          GOOGLE_CLIENT_SECRET=GOOGLE_CLIENT_SECRET:latest,\
-          GOOGLE_REDIRECT_URI=GOOGLE_REDIRECT_URI:latest,\
-          RESEND_API_KEY=RESEND_API_KEY:latest"
+            --set-secrets="GEMINI_API_KEY=GEMINI_API_KEY:latest,POSTGRES_URL=POSTGRES_URL:latest"
