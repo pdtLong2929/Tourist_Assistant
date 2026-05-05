@@ -1,0 +1,375 @@
+route_id,agency_id,route_short_name,route_long_name,route_type,route_color,route_text_color,route_url,route_desc
+hanoi_23,transerco,23,Nguyễn Công Trứ - Nguyễn Công Trứ (Chiều đi),3,E53935,FFFFFF,,Distance: 13.6 km | Fare: 0 VND
+hanoi_BRT01,transerco,BRT01,Bến xe Yên Nghĩa - Kim Mã,3,E53935,FFFFFF,,Distance: 15.9 km | Fare: 0 VND
+hanoi_BRT01,transerco,BRT01,Kim Mã - Bến xe Yên Nghĩa,3,E53935,FFFFFF,,Distance: 12.3 km | Fare: 0 VND
+hanoi_11,transerco,11,Công viên Thống Nhất - Học viện Nông nghiệp Việt Nam,3,E53935,FFFFFF,,Distance: 15.1 km | Fare: 0 VND
+hanoi_11,transerco,11,Học viện Nông nghiệp Việt Nam - Công viên Thống Nhất,3,E53935,FFFFFF,,Distance: 20.1 km | Fare: 0 VND
+hanoi_04,transerco,04,Long Biên - Bệnh viện Nội tiết Trung ương cơ sở 2,3,E53935,FFFFFF,,Distance: 23.0 km | Fare: 0 VND
+hanoi_04,transerco,04,Bệnh viện Nội tiết Trung ương cơ sở 2 - Long Biên,3,E53935,FFFFFF,,Distance: 40.8 km | Fare: 0 VND
+hanoi_09A,transerco,09A,Trần Khánh Dư - Cầu Giấy - Đại học Mỏ,3,E53935,FFFFFF,,Distance: 48.3 km | Fare: 0 VND
+hanoi_09A,transerco,09A,Đại học Mỏ - Cầu Giấy - Trần Khánh Dư,3,E53935,FFFFFF,,Distance: 48.0 km | Fare: 0 VND
+hanoi_99,transerco,99,Kim Mã - Ngũ Hiệp,3,E53935,FFFFFF,,Distance: 12.6 km | Fare: 0 VND
+hanoi_99,transerco,99,Ngũ Hiệp - Kim Mã,3,E53935,FFFFFF,,Distance: 12.8 km | Fare: 0 VND
+hanoi_05,transerco,05,Mai Động - Đại học Tài nguyên và Môi trường Hà Nội,3,E53935,FFFFFF,,Distance: 50.8 km | Fare: 0 VND
+hanoi_05,transerco,05,Đại học Tài nguyên và Môi trường Hà Nội - Mai Động,3,E53935,FFFFFF,,Distance: 41.5 km | Fare: 0 VND
+hanoi_26,transerco,26,Mai Động - Sân vận động Quốc gia,3,E53935,FFFFFF,,Distance: 17.4 km | Fare: 0 VND
+hanoi_26,transerco,26,Sân vận động Quốc gia - Mai Động,3,E53935,FFFFFF,,Distance: 14.8 km | Fare: 0 VND
+hanoi_42,transerco,42,Bến xe Giáp Bát - Trung Mầu (Gia Lâm),3,E53935,FFFFFF,,Distance: 25.7 km | Fare: 0 VND
+hanoi_42,transerco,42,Trung Mầu (Gia Lâm) - Bến xe Giáp Bát,3,E53935,FFFFFF,,Distance: 61.2 km | Fare: 0 VND
+hanoi_159,transerco,159,Bệnh viện Bệnh nhiệt đới Trung ương cơ sở 2 - Khu đô thị Times City,3,E53935,FFFFFF,,Distance: 56.2 km | Fare: 0 VND
+hanoi_159,transerco,159,Khu đô thị Times City - Bệnh viện Bệnh nhiệt đới Trung ương cơ sở 2,3,E53935,FFFFFF,,Distance: 41.7 km | Fare: 0 VND
+hanoi_157,transerco,157,Bến xe Mỹ Đình - Bến xe Sơn Tây,3,E53935,FFFFFF,,Distance: 104.3 km | Fare: 0 VND
+hanoi_157,transerco,157,Bến xe Sơn Tây - Bến xe Mỹ Đình,3,E53935,FFFFFF,,Distance: 113.8 km | Fare: 0 VND
+hanoi_16,transerco,16,Bến xe Mỹ Đình - Bến xe Nước Ngầm,3,E53935,FFFFFF,,Distance: 31.7 km | Fare: 0 VND
+hanoi_16,transerco,16,Bến xe Nước Ngầm - Bến xe Mỹ Đình,3,E53935,FFFFFF,,Distance: 11.8 km | Fare: 0 VND
+hanoi_60B,transerco,60B,Bến xe Nước Ngầm - Đại học Tài chính - Ngân hàng Hà Nội (CS1),3,E53935,FFFFFF,,Distance: 63.6 km | Fare: 0 VND
+hanoi_31,transerco,31,Bách Khoa - Chèm (Đại học Mỏ),3,E53935,FFFFFF,,Distance: 17.4 km | Fare: 0 VND
+hanoi_31,transerco,31,Chèm (Đại học Mỏ) - Bách Khoa,3,E53935,FFFFFF,,Distance: 16.8 km | Fare: 0 VND
+hanoi_60B,transerco,60B,Đại học Tài chính - Ngân hàng Hà Nội (CS1) - Bến xe Nước Ngầm,3,E53935,FFFFFF,,Distance: 66.2 km | Fare: 0 VND
+hanoi_07,transerco,07,Cầu Giấy - Sân bay Nội Bài (điểm đỗ T1),3,E53935,FFFFFF,,Distance: 41.4 km | Fare: 0 VND
+hanoi_07,transerco,07,Sân bay Nội Bài (điểm đỗ T1) - Cầu Giấy,3,E53935,FFFFFF,,Distance: 28.3 km | Fare: 0 VND
+hanoi_01,transerco,01,Bến xe Gia Lâm - Bến xe Yên Nghĩa,3,E53935,FFFFFF,,Distance: 34.4 km | Fare: 0 VND
+hanoi_24,transerco,24,Long Biên - Ngã Tư Sở - Cầu Giấy,3,E53935,FFFFFF,,Distance: 21.2 km | Fare: 0 VND
+hanoi_24,transerco,24,Cầu Giấy - Ngã Tư Sở - Long Biên,3,E53935,FFFFFF,,Distance: 12.9 km | Fare: 0 VND
+hanoi_01,transerco,01,Bến xe Yên Nghĩa - Bến xe Gia Lâm,3,E53935,FFFFFF,,Distance: 24.2 km | Fare: 0 VND
+hanoi_02,transerco,02,Bác Cổ - Bến xe Yên Nghĩa,3,E53935,FFFFFF,,Distance: 28.1 km | Fare: 0 VND
+hanoi_02,transerco,02,Bến xe Yên Nghĩa - Bác Cổ,3,E53935,FFFFFF,,Distance: 14.9 km | Fare: 0 VND
+hanoi_104,transerco,104,Bến xe Nước Ngầm - Mỹ Đình,3,E53935,FFFFFF,,Distance: 22.7 km | Fare: 0 VND
+hanoi_104,transerco,104,Mỹ Đình - Bến xe Nước Ngầm,3,E53935,FFFFFF,,Distance: 25.7 km | Fare: 0 VND
+hanoi_106,transerco,106,Khu đô thị Mỗ Lao - Trung tâm thương mại AEON Mall Long Biên,3,E53935,FFFFFF,,Distance: 34.1 km | Fare: 0 VND
+hanoi_106,transerco,106,Trung tâm thương mại AEON Mall Long Biên - Khu đô thị Mỗ Lao,3,E53935,FFFFFF,,Distance: 27.9 km | Fare: 0 VND
+hanoi_60A,transerco,60A,"KĐT Pháp Vân, Tứ Hiệp - Công Viên Nước Hồ Tây",3,E53935,FFFFFF,,Distance: 78.3 km | Fare: 0 VND
+hanoi_60A,transerco,60A,"Công Viên Nước Hồ Tây - KĐT Pháp Vân, Tứ Hiệp",3,E53935,FFFFFF,,Distance: 62.5 km | Fare: 0 VND
+hanoi_12,transerco,12,Công viên Nghĩa Đô - Khánh Hà (Thường Tín),3,E53935,FFFFFF,,Distance: 42.9 km | Fare: 0 VND
+hanoi_12,transerco,12,Khánh Hà (Thường Tín) - Công viên Nghĩa Đô,3,E53935,FFFFFF,,Distance: 34.1 km | Fare: 0 VND
+hanoi_97,transerco,97,Hoài Đức - Công viên Nghĩa Đô,3,E53935,FFFFFF,,Distance: 32.8 km | Fare: 0 VND
+hanoi_97,transerco,97,Công viên Nghĩa Đô - Hoài Đức,3,E53935,FFFFFF,,Distance: 27.7 km | Fare: 0 VND
+hanoi_09B,transerco,09B,Trần Khánh Dư - Công viên Thống Nhất - Bến xe Mỹ Đình,3,E53935,FFFFFF,,Distance: 26.3 km | Fare: 0 VND
+hanoi_03A,transerco,03A,Bến xe Giáp Bát - Bến xe Gia Lâm,3,E53935,FFFFFF,,Distance: 16.5 km | Fare: 0 VND
+hanoi_03A,transerco,03A,Bến xe Gia Lâm - Bến xe Giáp Bát,3,E53935,FFFFFF,,Distance: 12.3 km | Fare: 0 VND
+hanoi_03B,transerco,03B,Bến xe Nước Ngầm - Giang Biên (Long Biên),3,E53935,FFFFFF,,Distance: 21.7 km | Fare: 0 VND
+hanoi_03B,transerco,03B,Giang Biên (Long Biên) - Bến xe Nước Ngầm,3,E53935,FFFFFF,,Distance: 42.1 km | Fare: 0 VND
+hanoi_09B,transerco,09B,Bến xe Mỹ Đình - Công viên Thống Nhất - Trần Khánh Dư,3,E53935,FFFFFF,,Distance: 11.4 km | Fare: 0 VND
+hanoi_161,transerco,161,Cầu Giấy - Tam Hiệp,3,E53935,FFFFFF,,Distance: 21.3 km | Fare: 0 VND
+hanoi_161,transerco,161,Tam Hiệp - Cầu Giấy,3,E53935,FFFFFF,,Distance: 13.0 km | Fare: 0 VND
+hanoi_27,transerco,27,Bến xe Yên Nghĩa - Bến xe Nam Thăng Long,3,E53935,FFFFFF,,Distance: 50.1 km | Fare: 0 VND
+hanoi_47A,transerco,47A,Long Biên - Bát Tràng,3,E53935,FFFFFF,,Distance: 13.2 km | Fare: 0 VND
+hanoi_47A,transerco,47A,Bát Tràng - Long Biên,3,E53935,FFFFFF,,Distance: 24.1 km | Fare: 0 VND
+hanoi_25,transerco,25,Bệnh viện Nhiệt đới Trung ương cơ sở 2 - Bến xe Giáp Bát,3,E53935,FFFFFF,,Distance: 40.3 km | Fare: 0 VND
+hanoi_25,transerco,25,Bến xe Giáp Bát - Bệnh viện Nhiệt đới Trung ương cơ sở 2,3,E53935,FFFFFF,,Distance: 36.1 km | Fare: 0 VND
+hanoi_27,transerco,27,Bến xe Nam Thăng Long - Bến xe Yên Nghĩa,3,E53935,FFFFFF,,Distance: 50.7 km | Fare: 0 VND
+hanoi_29,transerco,29,Bến xe Giáp Bát - Tân Lập,3,E53935,FFFFFF,,Distance: 40.9 km | Fare: 0 VND
+hanoi_50,transerco,50,Long Biên - Khu đô thị An Lạc (Hoài Đức),3,E53935,FFFFFF,,Distance: 45.8 km | Fare: 0 VND
+hanoi_50,transerco,50,Khu đô thị An Lạc (Hoài Đức) - Long Biên,3,E53935,FFFFFF,,Distance: 54.1 km | Fare: 0 VND
+hanoi_29,transerco,29,Tân Lập - Bến xe Giáp Bát,3,E53935,FFFFFF,,Distance: 19.9 km | Fare: 0 VND
+hanoi_47B,transerco,47B,Đại học Kinh tế Quốc dân - Kiêu Kỵ,3,E53935,FFFFFF,,Distance: 26.0 km | Fare: 0 VND
+hanoi_47B,transerco,47B,Kiêu Kỵ - Đại học Kinh tế Quốc dân,3,E53935,FFFFFF,,Distance: 24.9 km | Fare: 0 VND
+hanoi_49,transerco,49,Trần Khánh Dư - Nhổn,3,E53935,FFFFFF,,Distance: 30.3 km | Fare: 0 VND
+hanoi_49,transerco,49,Nhổn - Trần Khánh Dư,3,E53935,FFFFFF,,Distance: 18.8 km | Fare: 0 VND
+hanoi_100,transerco,100,Long Biên - Đặng Xá (Gia Lâm),3,E53935,FFFFFF,,Distance: 37.5 km | Fare: 0 VND
+hanoi_100,transerco,100,Đặng Xá (Gia Lâm) - Long Biên,3,E53935,FFFFFF,,Distance: 26.3 km | Fare: 0 VND
+hanoi_86,transerco,86,Ga Hà Nội - Sân bay Nội Bài,3,E53935,FFFFFF,,Distance: 24.4 km | Fare: 0 VND
+hanoi_86,transerco,86,Sân bay Nội Bài - Ga Hà Nội,3,E53935,FFFFFF,,Distance: 25.2 km | Fare: 0 VND
+hanoi_08A,transerco,08A,Long Biên - Đông Mỹ,3,E53935,FFFFFF,,Distance: 29.0 km | Fare: 0 VND
+hanoi_68,transerco,68,Hà Đông (Bến xe Yên Nghĩa)  - Sân bay Nội Bài,3,E53935,FFFFFF,,Distance: 71.4 km | Fare: 0 VND
+hanoi_68,transerco,68,Sân bay Nội Bài - Hà Đông (Bến xe Yên Nghĩa),3,E53935,FFFFFF,,Distance: 54.3 km | Fare: 0 VND
+hanoi_08A,transerco,08A,Đông Mỹ - Long Biên,3,E53935,FFFFFF,,Distance: 14.3 km | Fare: 0 VND
+hanoi_08B,transerco,08B,Long Biên - Vạn Phúc,3,E53935,FFFFFF,,Distance: 35.7 km | Fare: 0 VND
+hanoi_122,transerco,122,Bến xe Gia Lâm - Khu công nghiệp Bắc Thăng Long,3,E53935,FFFFFF,,Distance: 29.0 km | Fare: 0 VND
+hanoi_122,transerco,122,Khu công nghiệp Bắc Thăng Long - Bến xe Gia Lâm,3,E53935,FFFFFF,,Distance: 28.0 km | Fare: 0 VND
+hanoi_109,transerco,109,Mỹ Đình - Nội Bài,3,E53935,FFFFFF,,Distance: 27.3 km | Fare: 0 VND
+hanoi_109,transerco,109,Nội Bài - Mỹ Đình,3,E53935,FFFFFF,,Distance: 21.2 km | Fare: 0 VND
+hanoi_08B,transerco,08B,Vạn Phúc - Long Biên,3,E53935,FFFFFF,,Distance: 25.7 km | Fare: 0 VND
+hanoi_13,transerco,13,Công viên Nước Hồ Tây - Cổ Nhuế (Học viện Cảnh sát),3,E53935,FFFFFF,,Distance: 15.8 km | Fare: 0 VND
+hanoi_90,transerco,90,Hào Nam - Cầu Nhật Tân - Sân bay Nội Bài,3,E53935,FFFFFF,,Distance: 43.5 km | Fare: 0 VND
+hanoi_90,transerco,90,Sân bay Nội Bài - Cầu Nhật Tân - Hào Nam,3,E53935,FFFFFF,,Distance: 47.5 km | Fare: 0 VND
+hanoi_21A,transerco,21A,Bến xe Giáp Bát - Bến xe Yên Nghĩa,3,E53935,FFFFFF,,Distance: 14.1 km | Fare: 0 VND
+hanoi_21A,transerco,21A,Bến xe Yên Nghĩa - Bến xe Giáp Bát,3,E53935,FFFFFF,,Distance: 14.3 km | Fare: 0 VND
+hanoi_21B,transerco,21B,Duyên Thái - Bến xe Mỹ Đình,3,E53935,FFFFFF,,Distance: 31.5 km | Fare: 0 VND
+hanoi_21B,transerco,21B,Bến xe Mỹ Đình - Duyên Thái,3,E53935,FFFFFF,,Distance: 18.8 km | Fare: 0 VND
+hanoi_22A,transerco,22A,Bến xe Gia Lâm - Khu đô thị Kiến Hưng,3,E53935,FFFFFF,,Distance: 33.5 km | Fare: 0 VND
+hanoi_22A,transerco,22A,Khu đô thị Kiến Hưng - Bến xe Gia Lâm,3,E53935,FFFFFF,,Distance: 33.1 km | Fare: 0 VND
+hanoi_22B,transerco,22B,Bến xe Giáp Bát - Đô Nghĩa (Hà Đông),3,E53935,FFFFFF,,Distance: 25.1 km | Fare: 0 VND
+hanoi_22B,transerco,22B,Đô Nghĩa (Hà Đông) - Bến xe Giáp Bát,3,E53935,FFFFFF,,Distance: 20.3 km | Fare: 0 VND
+hanoi_88,transerco,88,Bến xe Mỹ Đình - Hòa Lạc - Xuân Mai,3,E53935,FFFFFF,,Distance: 82.7 km | Fare: 0 VND
+hanoi_88,transerco,88,Xuân Mai - Hòa Lạc - Bến xe Mỹ Đình,3,E53935,FFFFFF,,Distance: 110.1 km | Fare: 0 VND
+hanoi_72,transerco,72,Bến xe Yên Nghĩa - Xuân Mai,3,E53935,FFFFFF,,Distance: 57.6 km | Fare: 0 VND
+hanoi_72,transerco,72,Xuân Mai - Bến xe Yên Nghĩa,3,E53935,FFFFFF,,Distance: 21.1 km | Fare: 0 VND
+hanoi_28,transerco,28,Bến xe Nước Ngầm - Đông Ngạc - Đại học Mỏ,3,E53935,FFFFFF,,Distance: 14.9 km | Fare: 0 VND
+hanoi_28,transerco,28,Đại học Mỏ - Đông Ngạc - Bến xe Nước Ngầm,3,E53935,FFFFFF,,Distance: 17.7 km | Fare: 0 VND
+hanoi_163,transerco,163,Bến xe Yên Nghĩa - Nhổn,3,E53935,FFFFFF,,Distance: 72.8 km | Fare: 0 VND
+hanoi_163,transerco,163,Nhổn - Bến xe Yên Nghĩa,3,E53935,FFFFFF,,Distance: 67.1 km | Fare: 0 VND
+hanoi_20A,transerco,20A,Nhổn - Quốc lộ 32 - Bến xe Sơn Tây,3,E53935,FFFFFF,,Distance: 49.8 km | Fare: 0 VND
+hanoi_20A,transerco,20A,Bến xe Sơn Tây - Quốc lộ 32 - Nhổn,3,E53935,FFFFFF,,Distance: 25.8 km | Fare: 0 VND
+hanoi_52,transerco,52,Công viên Thống Nhất - Lệ Chi (Gia Lâm),3,E53935,FFFFFF,,Distance: 62.7 km | Fare: 0 VND
+hanoi_69,transerco,69,Long Biên - Dương Quang (Gia Lâm),3,E53935,FFFFFF,,Distance: 64.8 km | Fare: 0 VND
+hanoi_69,transerco,69,Dương Quang (Gia Lâm) - Long Biên,3,E53935,FFFFFF,,Distance: 51.4 km | Fare: 0 VND
+hanoi_20B,transerco,20B,Nhổn - Bến xe Sơn Tây,3,E53935,FFFFFF,,Distance: 61.6 km | Fare: 0 VND
+hanoi_20B,transerco,20B,Bến xe Sơn Tây - Nhổn,3,E53935,FFFFFF,,Distance: 74.0 km | Fare: 0 VND
+hanoi_98,transerco,98,Yên Phụ - Gia Thụy - AEON Mall Long Biên,3,E53935,FFFFFF,,Distance: 14.2 km | Fare: 0 VND
+hanoi_98,transerco,98,AEON Mall Long Biên - Gia Thụy - Yên Phụ,3,E53935,FFFFFF,,Distance: 16.1 km | Fare: 0 VND
+hanoi_89,transerco,89,Bến xe Yên Nghĩa - Bến xe Sơn Tây,3,E53935,FFFFFF,,Distance: 106.6 km | Fare: 0 VND
+hanoi_89,transerco,89,Bến xe Sơn Tây - Bến xe Yên Nghĩa,3,E53935,FFFFFF,,Distance: 119.3 km | Fare: 0 VND
+hanoi_105,transerco,105,Đô Nghĩa - Cầu Giấy,3,E53935,FFFFFF,,Distance: 30.2 km | Fare: 0 VND
+hanoi_115,transerco,115,Vân Đình - Đại học Lâm nghiệp,3,E53935,FFFFFF,,Distance: 98.2 km | Fare: 0 VND
+hanoi_115,transerco,115,Đại học Lâm nghiệp - Vân Đình,3,E53935,FFFFFF,,Distance: 112.4 km | Fare: 0 VND
+hanoi_114,transerco,114,Bến xe Yên Nghĩa - Miếu Môn,3,E53935,FFFFFF,,Distance: 47.0 km | Fare: 0 VND
+hanoi_114,transerco,114,Miếu Môn - Bến xe Yên Nghĩa,3,E53935,FFFFFF,,Distance: 39.6 km | Fare: 0 VND
+hanoi_35B,transerco,35B,Nam Thăng Long - Thanh Lâm,3,E53935,FFFFFF,,Distance: 22.4 km | Fare: 0 VND
+hanoi_35B,transerco,35B,Thanh Lâm - Nam Thăng Long,3,E53935,FFFFFF,,Distance: 21.4 km | Fare: 0 VND
+hanoi_91,transerco,91,Bến xe Yên Nghĩa - Kim Bài - Phú Túc,3,E53935,FFFFFF,,Distance: 27.1 km | Fare: 0 VND
+hanoi_91,transerco,91,Phú Túc - Kim Bài - Bến xe Yên Nghĩa,3,E53935,FFFFFF,,Distance: 27.7 km | Fare: 0 VND
+hanoi_105,transerco,105,Cầu Giấy - Đô Nghĩa,3,E53935,FFFFFF,,Distance: 23.8 km | Fare: 0 VND
+hanoi_112,transerco,112,Nam Thăng Long - Thạch Đà (Mê Linh),3,E53935,FFFFFF,,Distance: 21.9 km | Fare: 0 VND
+hanoi_112,transerco,112,Thạch Đà (Mê Linh) - Nam Thăng Long,3,E53935,FFFFFF,,Distance: 27.1 km | Fare: 0 VND
+hanoi_119,transerco,119,Hòa Lạc - Bất Bạt (Ba Vì),3,E53935,FFFFFF,,Distance: 40.9 km | Fare: 0 VND
+hanoi_119,transerco,119,Bất Bạt (Ba Vì) - Hòa Lạc,3,E53935,FFFFFF,,Distance: 99.9 km | Fare: 0 VND
+hanoi_107,transerco,107,Kim Mã - Làng văn hóa du lịch các dân tộc Việt Nam,3,E53935,FFFFFF,,Distance: 51.8 km | Fare: 0 VND
+hanoi_107,transerco,107,Làng văn hóa du lịch các dân tộc Việt Nam - Kim Mã,3,E53935,FFFFFF,,Distance: 96.6 km | Fare: 0 VND
+hanoi_66,transerco,66,Bến xe Yên Nghĩa - Đan Phượng,3,E53935,FFFFFF,,Distance: 42.7 km | Fare: 0 VND
+hanoi_66,transerco,66,Đan Phượng - Bến xe Yên Nghĩa,3,E53935,FFFFFF,,Distance: 50.4 km | Fare: 0 VND
+hanoi_92,transerco,92,Nhổn - Phú Sơn (Ba Vì),3,E53935,FFFFFF,,Distance: 44.4 km | Fare: 0 VND
+hanoi_92,transerco,92,Phú Sơn (Ba Vì) - Nhổn,3,E53935,FFFFFF,,Distance: 44.1 km | Fare: 0 VND
+hanoi_103A,transerco,103A,Bến xe Mỹ Đình - Hương Sơn,3,E53935,FFFFFF,,Distance: 132.0 km | Fare: 0 VND
+hanoi_103A,transerco,103A,Hương Sơn - Bến xe Mỹ Đình,3,E53935,FFFFFF,,Distance: 180.0 km | Fare: 0 VND
+hanoi_06A,transerco,06A,Bến xe Giáp Bát - Cầu Giẽ,3,E53935,FFFFFF,,Distance: 65.0 km | Fare: 0 VND
+hanoi_06A,transerco,06A,Cầu Giẽ - Bến xe Giáp Bát,3,E53935,FFFFFF,,Distance: 46.8 km | Fare: 0 VND
+hanoi_56A,transerco,56A,Mỹ Đình - Núi Đôi,3,E53935,FFFFFF,,Distance: 103.2 km | Fare: 0 VND
+hanoi_56A,transerco,56A,Núi Đôi - Mỹ Đình,3,E53935,FFFFFF,,Distance: 40.1 km | Fare: 0 VND
+hanoi_74,transerco,74,Bến xe Mỹ Đình - Xuân Khanh,3,E53935,FFFFFF,,Distance: 63.5 km | Fare: 0 VND
+hanoi_74,transerco,74,Xuân Khanh - Bến xe Mỹ Đình,3,E53935,FFFFFF,,Distance: 49.1 km | Fare: 0 VND
+hanoi_56B,transerco,56B,Học viện Phật giáo Việt Nam - Xuân Giang - Bắc Phú - Học viện Phật giáo Việt Nam,3,E53935,FFFFFF,,Distance: 32.5 km | Fare: 0 VND
+hanoi_56B,transerco,56B,Học viện Phật giáo Việt Nam - Bắc Phú - Xuân Giang - Học viện Phật giáo Việt Nam,3,E53935,FFFFFF,,Distance: 32.5 km | Fare: 0 VND
+hanoi_06B,transerco,06B,Bến xe Giáp Bát - Hồng Vân,3,E53935,FFFFFF,,Distance: 30.5 km | Fare: 0 VND
+hanoi_06B,transerco,06B,Hồng Vân - Bến xe Giáp Bát,3,E53935,FFFFFF,,Distance: 42.5 km | Fare: 0 VND
+hanoi_06C,transerco,06C,Bến xe Giáp Bát - Phú Minh,3,E53935,FFFFFF,,Distance: 46.3 km | Fare: 0 VND
+hanoi_06C,transerco,06C,Phú Minh - Bến xe Giáp Bát,3,E53935,FFFFFF,,Distance: 40.7 km | Fare: 0 VND
+hanoi_06D,transerco,06D,Bến xe Giáp Bát - Tân Dân,3,E53935,FFFFFF,,Distance: 54.0 km | Fare: 0 VND
+hanoi_06D,transerco,06D,Tân Dân - Bến xe Giáp Bát,3,E53935,FFFFFF,,Distance: 45.4 km | Fare: 0 VND
+hanoi_06E,transerco,06E,Bến xe Giáp Bát - Phú Túc,3,E53935,FFFFFF,,Distance: 51.6 km | Fare: 0 VND
+hanoi_06E,transerco,06E,Phú Túc - Bến xe Giáp Bát,3,E53935,FFFFFF,,Distance: 44.9 km | Fare: 0 VND
+hanoi_E03,transerco,E03,Mỹ Đình (Hàm Nghi) - Khu đô thị Ocean Park,3,E53935,FFFFFF,,Distance: 46.4 km | Fare: 0 VND
+hanoi_E03,transerco,E03,Khu đô thị Ocean Park - Mỹ Đình (Hàm Nghi),3,E53935,FFFFFF,,Distance: 74.2 km | Fare: 0 VND
+hanoi_102,transerco,102,Bến xe Yên Nghĩa - Vân Đình,3,E53935,FFFFFF,,Distance: 52.9 km | Fare: 0 VND
+hanoi_102,transerco,102,Vân Đình - Bến xe Yên Nghĩa,3,E53935,FFFFFF,,Distance: 50.7 km | Fare: 0 VND
+hanoi_E05,transerco,E05,Long Biên - Cầu Giấy - Khu đô thị Smart City,3,E53935,FFFFFF,,Distance: 30.6 km | Fare: 0 VND
+hanoi_E05,transerco,E05,Khu đô thị Smart City - Cầu Giấy - Long Biên,3,E53935,FFFFFF,,Distance: 24.4 km | Fare: 0 VND
+hanoi_84,transerco,84,Cầu Diễn - Khu đô thị Linh Đàm,3,E53935,FFFFFF,,Distance: 19.7 km | Fare: 0 VND
+hanoi_84,transerco,84,Khu đô thị Linh Đàm - Cầu Diễn,3,E53935,FFFFFF,,Distance: 21.3 km | Fare: 0 VND
+hanoi_E01,transerco,E01,Bến xe Mỹ Đình - Khu đô thị Ocean Park,3,E53935,FFFFFF,,Distance: 26.2 km | Fare: 0 VND
+hanoi_E01,transerco,E01,Khu đô thị Ocean Park - Bến xe Mỹ Đình,3,E53935,FFFFFF,,Distance: 66.6 km | Fare: 0 VND
+hanoi_E02,transerco,E02,Hào Nam - Khu đô thị Ocean Park,3,E53935,FFFFFF,,Distance: 38.8 km | Fare: 0 VND
+hanoi_E02,transerco,E02,Khu đô thị Ocean Park - Hào Nam,3,E53935,FFFFFF,,Distance: 26.9 km | Fare: 0 VND
+hanoi_E06,transerco,E06,Bến xe Giáp Bát - Khu đô thị Smart City,3,E53935,FFFFFF,,Distance: 40.2 km | Fare: 0 VND
+hanoi_E06,transerco,E06,Khu đô thị Smart City - Bến xe Giáp Bát,3,E53935,FFFFFF,,Distance: 21.0 km | Fare: 0 VND
+hanoi_E07,transerco,E07,Long Biên - Bờ Hồ - Khu đô thị Smart City,3,E53935,FFFFFF,,Distance: 30.6 km | Fare: 0 VND
+hanoi_E07,transerco,E07,Khu đô thị Smart City - Bờ Hồ - Long Biên,3,E53935,FFFFFF,,Distance: 15.3 km | Fare: 0 VND
+hanoi_E08,transerco,E08,Nam Thăng Long - Khu đô thị Times City,3,E53935,FFFFFF,,Distance: 42.4 km | Fare: 0 VND
+hanoi_E08,transerco,E08,Khu đô thị Times City - Nam Thăng Long,3,E53935,FFFFFF,,Distance: 61.1 km | Fare: 0 VND
+hanoi_E09,transerco,E09,Khu đô thị Smart City - Khu liên cơ quan sở ngành Hà Nội,3,E53935,FFFFFF,,Distance: 33.7 km | Fare: 0 VND
+hanoi_E09,transerco,E09,Khu liên cơ quan sở ngành Hà Nội - Khu đô thị Smart City,3,E53935,FFFFFF,,Distance: 57.8 km | Fare: 0 VND
+hanoi_146,transerco,146,Hào Nam - Phù Đổng,3,E53935,FFFFFF,,Distance: 21.4 km | Fare: 0 VND
+hanoi_143,transerco,143,Hào Nam - Thị trấn Đông Anh,3,E53935,FFFFFF,,Distance: 41.7 km | Fare: 0 VND
+hanoi_37,transerco,37,Bến xe Giáp Bát - Chương Mỹ,3,E53935,FFFFFF,,Distance: 19.7 km | Fare: 0 VND
+hanoi_37,transerco,37,Chương Mỹ - Bến xe Giáp Bát,3,E53935,FFFFFF,,Distance: 28.3 km | Fare: 0 VND
+hanoi_E04,transerco,E04,Khu đô thị Smart City - Vincom Long Biên,3,E53935,FFFFFF,,Distance: 73.5 km | Fare: 0 VND
+hanoi_E04,transerco,E04,Vincom Long Biên - Khu đô thị Smart City,3,E53935,FFFFFF,,Distance: 67.7 km | Fare: 0 VND
+hanoi_19,transerco,19,Trần Khánh Dư - Học viện chính sách và phát triển,3,E53935,FFFFFF,,Distance: 51.7 km | Fare: 0 VND
+hanoi_19,transerco,19,Học viện chính sách và phát triển - Trần Khánh Dư,3,E53935,FFFFFF,,Distance: 40.1 km | Fare: 0 VND
+hanoi_41,transerco,41,Bến Xe Giáp Bát - Nam Thăng Long,3,E53935,FFFFFF,,Distance: 35.0 km | Fare: 0 VND
+hanoi_41,transerco,41,Nam Thăng Long - Bến Xe Giáp Bát,3,E53935,FFFFFF,,Distance: 45.8 km | Fare: 0 VND
+hanoi_32,transerco,32,Bến xe Giáp Bát - Nhổn,3,E53935,FFFFFF,,Distance: 41.1 km | Fare: 0 VND
+hanoi_32,transerco,32,Nhổn - Bến xe Giáp Bát,3,E53935,FFFFFF,,Distance: 35.6 km | Fare: 0 VND
+hanoi_162,transerco,162,Nhổn - Thọ An (Đan Phượng),3,E53935,FFFFFF,,Distance: 25.7 km | Fare: 0 VND
+hanoi_162,transerco,162,Thọ An (Đan Phượng) - Nhổn,3,E53935,FFFFFF,,Distance: 20.7 km | Fare: 0 VND
+hanoi_160,transerco,160,Kim Lũ (Sóc Sơn) - Nam Thăng Long,3,E53935,FFFFFF,,Distance: 63.5 km | Fare: 0 VND
+hanoi_160,transerco,160,Nam Thăng Long - Kim Lũ (Sóc Sơn),3,E53935,FFFFFF,,Distance: 54.7 km | Fare: 0 VND
+hanoi_158,transerco,158,Bến xe Yên Nghĩa - Khu đô thị Đặng Xá (Gia Lâm),3,E53935,FFFFFF,,Distance: 63.6 km | Fare: 0 VND
+hanoi_158,transerco,158,Khu đô thị Đặng Xá (Gia Lâm) - Bến xe Yên Nghĩa,3,E53935,FFFFFF,,Distance: 43.6 km | Fare: 0 VND
+hanoi_103B,transerco,103B,Bến xe Mỹ Đình - Hồng Quang - Hương Sơn,3,E53935,FFFFFF,,Distance: 172.7 km | Fare: 0 VND
+hanoi_59,transerco,59,Thư Lâm - Yên Sở,3,E53935,FFFFFF,,Distance: 69.1 km | Fare: 0 VND
+hanoi_110,transerco,110,Bến xe Sơn Tây - Minh Quang (Ba Vì),3,E53935,FFFFFF,,Distance: 39.0 km | Fare: 0 VND
+hanoi_110,transerco,110,Minh Quang (Ba Vì) - Bến xe Sơn Tây,3,E53935,FFFFFF,,Distance: 42.4 km | Fare: 0 VND
+hanoi_36,transerco,36,Yên Xá - Long Biên,3,E53935,FFFFFF,,Distance: 21.5 km | Fare: 0 VND
+hanoi_36,transerco,36,Long Biên - Yên Xá,3,E53935,FFFFFF,,Distance: 38.2 km | Fare: 0 VND
+hanoi_13,transerco,13,Cổ Nhuế (Học viện Cảnh sát) - Công viên nước Hồ Tây,3,E53935,FFFFFF,,Distance: 14.4 km | Fare: 0 VND
+hanoi_15,transerco,15,Bến xe Gia Lâm - Phố Nỉ,3,E53935,FFFFFF,,Distance: 35.7 km | Fare: 0 VND
+hanoi_15,transerco,15,Phố Nỉ - Bến xe Gia Lâm,3,E53935,FFFFFF,,Distance: 35.5 km | Fare: 0 VND
+hanoi_17,transerco,17,Long Biên - Nội Bài,3,E53935,FFFFFF,,Distance: 29.3 km | Fare: 0 VND
+hanoi_17,transerco,17,Nội Bài - Long Biên,3,E53935,FFFFFF,,Distance: 48.4 km | Fare: 0 VND
+hanoi_23,transerco,23,Nguyễn Công Trứ - Nguyễn Công Trứ (Chiều về),3,E53935,FFFFFF,,Distance: 13.7 km | Fare: 0 VND
+hanoi_30,transerco,30,Khu đô thị Gamuda - Bến xe Mỹ Đình,3,E53935,FFFFFF,,Distance: 20.0 km | Fare: 0 VND
+hanoi_30,transerco,30,Bến xe Mỹ Đình - Khu đô thị Gamuda,3,E53935,FFFFFF,,Distance: 33.1 km | Fare: 0 VND
+hanoi_33,transerco,33,Cụm Công nghiệp Thanh Oai - Xuân Đỉnh,3,E53935,FFFFFF,,Distance: 28.0 km | Fare: 0 VND
+hanoi_33,transerco,33,Xuân Đỉnh - Cụm công nghiệp Thanh Oai,3,E53935,FFFFFF,,Distance: 66.3 km | Fare: 0 VND
+hanoi_34,transerco,34,Bến xe Mỹ Đình - Bến xe Gia Lâm,3,E53935,FFFFFF,,Distance: 18.2 km | Fare: 0 VND
+hanoi_34,transerco,34,Bến xe Gia Lâm - Bến xe Mỹ Đình,3,E53935,FFFFFF,,Distance: 13.9 km | Fare: 0 VND
+hanoi_35A,transerco,35A,Trần Khánh Dư - Nam Thăng Long,3,E53935,FFFFFF,,Distance: 24.1 km | Fare: 0 VND
+hanoi_35A,transerco,35A,Nam Thăng Long - Trần Khánh Dư,3,E53935,FFFFFF,,Distance: 15.6 km | Fare: 0 VND
+hanoi_38,transerco,38,Tân Xuân - Mai Động,3,E53935,FFFFFF,,Distance: 18.6 km | Fare: 0 VND
+hanoi_38,transerco,38,Mai Động - Tân Xuân,3,E53935,FFFFFF,,Distance: 17.9 km | Fare: 0 VND
+hanoi_39,transerco,39,Công viên Nghĩa Đô - Mai Động,3,E53935,FFFFFF,,Distance: 21.0 km | Fare: 0 VND
+hanoi_39,transerco,39,Mai Động - Công viên Nghĩa Đô,3,E53935,FFFFFF,,Distance: 21.2 km | Fare: 0 VND
+hanoi_40,transerco,40,Công viên Thống Nhất - Văn Lâm,3,E53935,FFFFFF,,Distance: 42.2 km | Fare: 0 VND
+hanoi_40,transerco,40,Văn Lâm - Công viên Thống Nhất,3,E53935,FFFFFF,,Distance: 22.0 km | Fare: 0 VND
+hanoi_46,transerco,46,Bến xe Mỹ Đình - Thị trấn Đông Anh,3,E53935,FFFFFF,,Distance: 28.7 km | Fare: 0 VND
+hanoi_46,transerco,46,Thị trấn Đông Anh - Bến xe Mỹ Đình,3,E53935,FFFFFF,,Distance: 23.0 km | Fare: 0 VND
+hanoi_48,transerco,48,Bến xe Nước Ngầm - Chương Dương - Phúc Lợi (Chung cư Ruby City),3,E53935,FFFFFF,,Distance: 23.4 km | Fare: 0 VND
+hanoi_48,transerco,48,Phúc Lợi (Chung cư Ruby City) - Chương Dương - Bến xe Nước Ngầm,3,E53935,FFFFFF,,Distance: 49.1 km | Fare: 0 VND
+hanoi_51,transerco,51,Bến Xe Gia Lâm - Trần Vỹ (Học viện Tư Pháp),3,E53935,FFFFFF,,Distance: 33.4 km | Fare: 0 VND
+hanoi_51,transerco,51,Trần Vỹ (Học viện Tư pháp) - Bến xe Gia Lâm,3,E53935,FFFFFF,,Distance: 22.5 km | Fare: 0 VND
+hanoi_52,transerco,52,Lệ Chi (Gia Lâm) - Công viên Thống Nhất,3,E53935,FFFFFF,,Distance: 46.2 km | Fare: 0 VND
+hanoi_53A,transerco,53A,Hoàng Quốc Việt - Đông Anh,3,E53935,FFFFFF,,Distance: 21.2 km | Fare: 0 VND
+hanoi_53A,transerco,53A,Đông Anh - Hoàng Quốc Việt,3,E53935,FFFFFF,,Distance: 21.7 km | Fare: 0 VND
+hanoi_53B,transerco,53B,Bến xe Mỹ Đình - Kim Hoa (Mê Linh),3,E53935,FFFFFF,,Distance: 23.4 km | Fare: 0 VND
+hanoi_53B,transerco,53B,Kim Hoa (Mê Linh) - Bến xe Mỹ Đình,3,E53935,FFFFFF,,Distance: 22.7 km | Fare: 0 VND
+hanoi_54,transerco,54,Long Biên - Bắc Ninh,3,E53935,FFFFFF,,Distance: 27.1 km | Fare: 0 VND
+hanoi_54,transerco,54,Bắc Ninh - Long Biên,3,E53935,FFFFFF,,Distance: 30.0 km | Fare: 0 VND
+hanoi_55,transerco,55,Trung tâm thương mại AEON Mall Long Biên - Cầu Giấy,3,E53935,FFFFFF,,Distance: 38.5 km | Fare: 0 VND
+hanoi_55,transerco,55,Cầu Giấy - Trung tâm thương mại AEON Mall Long Biên,3,E53935,FFFFFF,,Distance: 26.7 km | Fare: 0 VND
+hanoi_57,transerco,57,Nam Thăng Long - Khu công nghiệp Phú Nghĩa,3,E53935,FFFFFF,,Distance: 60.6 km | Fare: 0 VND
+hanoi_57,transerco,57,Khu công nghiệp Phú Nghĩa - Nam Thăng Long,3,E53935,FFFFFF,,Distance: 65.8 km | Fare: 0 VND
+hanoi_58,transerco,58,Long Biên - Thạch Đà,3,E53935,FFFFFF,,Distance: 39.5 km | Fare: 0 VND
+hanoi_58,transerco,58,Thạch Đà - Long Biên,3,E53935,FFFFFF,,Distance: 40.2 km | Fare: 0 VND
+hanoi_59,transerco,59,Yên Sở - Thư Lâm,3,E53935,FFFFFF,,Distance: 87.6 km | Fare: 0 VND
+hanoi_61,transerco,61,Công viên Cầu Giấy - Dục Tú (Đông Anh),3,E53935,FFFFFF,,Distance: 34.1 km | Fare: 0 VND
+hanoi_61,transerco,61,Dục Tú (Đông Anh) - Công viên Cầu Giấy,3,E53935,FFFFFF,,Distance: 34.5 km | Fare: 0 VND
+hanoi_62,transerco,62,Bến xe Yên Nghĩa - Bến xe Thường Tín,3,E53935,FFFFFF,,Distance: 25.0 km | Fare: 0 VND
+hanoi_62,transerco,62,Bến xe Thường Tín - Bến xe Yên Nghĩa,3,E53935,FFFFFF,,Distance: 33.3 km | Fare: 0 VND
+hanoi_63,transerco,63,Khu công nghiệp Bắc Thăng Long - Tiến Thịnh (Mê Linh),3,E53935,FFFFFF,,Distance: 25.9 km | Fare: 0 VND
+hanoi_63,transerco,63,Tiến Thịnh (Mê Linh) - Khu công nghiệp Bắc Thăng Long,3,E53935,FFFFFF,,Distance: 26.9 km | Fare: 0 VND
+hanoi_64,transerco,64,Bến xe Mỹ Đình - Phố Nỉ,3,E53935,FFFFFF,,Distance: 40.2 km | Fare: 0 VND
+hanoi_64,transerco,64,Phố Nỉ - Bến Xe Mỹ Đình,3,E53935,FFFFFF,,Distance: 39.6 km | Fare: 0 VND
+hanoi_65,transerco,65,Long Biên - Thụy Lâm (Đông Anh),3,E53935,FFFFFF,,Distance: 49.0 km | Fare: 0 VND
+hanoi_65,transerco,65,Thụy Lâm (Đông Anh) - Long Biên,3,E53935,FFFFFF,,Distance: 35.4 km | Fare: 0 VND
+hanoi_67,transerco,67,Đan Phượng - Đoài Phương,3,E53935,FFFFFF,,Distance: 49.8 km | Fare: 0 VND
+hanoi_67,transerco,67,Đoài Phương - Đan Phượng,3,E53935,FFFFFF,,Distance: 59.3 km | Fare: 0 VND
+hanoi_85,transerco,85,Công viên Nghĩa Đô - Khu đô thị Thanh Hà,3,E53935,FFFFFF,,Distance: 34.4 km | Fare: 0 VND
+hanoi_85,transerco,85,Khu đô thị Thanh Hà - Công viện Nghĩa Đô,3,E53935,FFFFFF,,Distance: 46.7 km | Fare: 0 VND
+hanoi_87,transerco,87,Bến xe Mỹ Đình - Quốc Oai - Xuân Mai,3,E53935,FFFFFF,,Distance: 44.5 km | Fare: 0 VND
+hanoi_87,transerco,87,Xuân Mai - Quốc Oai - Bến xe Mỹ Đình,3,E53935,FFFFFF,,Distance: 86.6 km | Fare: 0 VND
+hanoi_93,transerco,93,Nam Thăng Long - Bắc Sơn (Sóc Sơn),3,E53935,FFFFFF,,Distance: 72.4 km | Fare: 0 VND
+hanoi_93,transerco,93,Bắc Sơn (Sóc Sơn) - Nam Thăng Long,3,E53935,FFFFFF,,Distance: 44.2 km | Fare: 0 VND
+hanoi_94,transerco,94,Bến xe Giáp Bát - Kim Bài,3,E53935,FFFFFF,,Distance: 28.5 km | Fare: 0 VND
+hanoi_94,transerco,94,Kim Bài - Bến xe Giáp Bát,3,E53935,FFFFFF,,Distance: 27.2 km | Fare: 0 VND
+hanoi_95,transerco,95,Nam Thăng Long - Xuân Hòa,3,E53935,FFFFFF,,Distance: 26.4 km | Fare: 0 VND
+hanoi_95,transerco,95,Xuân Hòa - Nam Thăng Long,3,E53935,FFFFFF,,Distance: 26.2 km | Fare: 0 VND
+hanoi_96,transerco,96,Cầu Giấy - Đông Anh,3,E53935,FFFFFF,,Distance: 55.6 km | Fare: 0 VND
+hanoi_96,transerco,96,Đông Anh - Cầu Giấy,3,E53935,FFFFFF,,Distance: 49.5 km | Fare: 0 VND
+hanoi_101A,transerco,101A,Bến xe Giáp Bát - Vân Đình,3,E53935,FFFFFF,,Distance: 80.5 km | Fare: 0 VND
+hanoi_101A,transerco,101A,Vân Đình - Bến xe Giáp Bát,3,E53935,FFFFFF,,Distance: 64.1 km | Fare: 0 VND
+hanoi_101B,transerco,101B,Bến xe Giáp Bát - Đại Cường (Ứng Hòa),3,E53935,FFFFFF,,Distance: 80.4 km | Fare: 0 VND
+hanoi_101B,transerco,101B,Đại Cường (Ứng Hòa) - Bến xe Giáp Bát,3,E53935,FFFFFF,,Distance: 58.7 km | Fare: 0 VND
+hanoi_103B,transerco,103B,Hương Sơn - Hồng Quang - Bến xe Mỹ Đình,3,E53935,FFFFFF,,Distance: 73.3 km | Fare: 0 VND
+hanoi_108,transerco,108,Bến xe Thường Tín - Minh Tân,3,E53935,FFFFFF,,Distance: 55.1 km | Fare: 0 VND
+hanoi_108,transerco,108,Minh Tân - Bến xe Thường Tín,3,E53935,FFFFFF,,Distance: 55.8 km | Fare: 0 VND
+hanoi_111,transerco,111,Bến xe Sơn Tây - Bất Bạt,3,E53935,FFFFFF,,Distance: 24.3 km | Fare: 0 VND
+hanoi_111,transerco,111,Bất Bạt - Bến xe Sơn Tây,3,E53935,FFFFFF,,Distance: 24.3 km | Fare: 0 VND
+hanoi_113,transerco,113,Bến xe Thường Tín - Bến đò Vườn Chuối,3,E53935,FFFFFF,,Distance: 37.0 km | Fare: 0 VND
+hanoi_113,transerco,113,Bến đò Vườn Chuối - Bến xe Thường Tín,3,E53935,FFFFFF,,Distance: 28.6 km | Fare: 0 VND
+hanoi_116,transerco,116,Yên Xuân - Bến xe Yên Nghĩa,3,E53935,FFFFFF,,Distance: 40.6 km | Fare: 0 VND
+hanoi_116,transerco,116,Bến xe Yên Nghĩa - Yên Xuân,3,E53935,FFFFFF,,Distance: 73.0 km | Fare: 0 VND
+hanoi_117,transerco,117,Hòa Lạc - Nhổn,3,E53935,FFFFFF,,Distance: 63.8 km | Fare: 0 VND
+hanoi_117,transerco,117,Nhổn - Hòa Lạc,3,E53935,FFFFFF,,Distance: 73.5 km | Fare: 0 VND
+hanoi_118,transerco,118,Bến xe Sơn Tây - Quốc lộ 32 - Bất Bạt,3,E53935,FFFFFF,,Distance: 77.4 km | Fare: 0 VND
+hanoi_118,transerco,118,Bất Bạt - Quốc lộ 32 - Bến xe Sơn Tây,3,E53935,FFFFFF,,Distance: 74.6 km | Fare: 0 VND
+hanoi_123,transerco,123,Bến xe Yên Nghĩa - Hồng Dương (Thanh Oai),3,E53935,FFFFFF,,Distance: 36.3 km | Fare: 0 VND
+hanoi_123,transerco,123,Hồng Dương (Thanh Oai) - Bến xe Yên Nghĩa,3,E53935,FFFFFF,,Distance: 34.4 km | Fare: 0 VND
+hanoi_124,transerco,124,Bến xe Yên Nghĩa - Hồng Sơn,3,E53935,FFFFFF,,Distance: 32.8 km | Fare: 0 VND
+hanoi_124,transerco,124,Hồng Sơn - Bến xe Yên Nghĩa,3,E53935,FFFFFF,,Distance: 61.6 km | Fare: 0 VND
+hanoi_125,transerco,125,Bến xe Giáp Bát - Tỉnh lộ 427B - Vân Đình,3,E53935,FFFFFF,,Distance: 74.0 km | Fare: 0 VND
+hanoi_125,transerco,125,Vân Đình - Tỉnh lộ 427B - Bến xe Giáp Bát,3,E53935,FFFFFF,,Distance: 45.5 km | Fare: 0 VND
+hanoi_126,transerco,126,Bến xe Sơn Tây - Trung Hà (Ba Vì),3,E53935,FFFFFF,,Distance: 44.1 km | Fare: 0 VND
+hanoi_126,transerco,126,Trung Hà (Ba Vì) - Bến xe Sơn Tây,3,E53935,FFFFFF,,Distance: 43.5 km | Fare: 0 VND
+hanoi_142,transerco,142,Nam Thăng Long – KĐT Vincom Long Biên,3,E53935,FFFFFF,,Distance: 41.7 km | Fare: 0 VND
+hanoi_142,transerco,142,KĐT Vincom Long Biên - Nam Thăng Long,3,E53935,FFFFFF,,Distance: 55.1 km | Fare: 0 VND
+hanoi_143,transerco,143,Thị trấn Đông Anh - Hào Nam,3,E53935,FFFFFF,,Distance: 17.6 km | Fare: 0 VND
+hanoi_144,transerco,144,Đại học Mỏ - Trần Khánh Dư,3,E53935,FFFFFF,,Distance: 19.6 km | Fare: 0 VND
+hanoi_144,transerco,144,Trần Khánh Dư - Đại học Mỏ,3,E53935,FFFFFF,,Distance: 29.3 km | Fare: 0 VND
+hanoi_146,transerco,146,Phù Đổng - Hào Nam,3,E53935,FFFFFF,,Distance: 20.1 km | Fare: 0 VND
+hanoi_E10,transerco,E10,Khu đô thị Ocean Park - Sân bay Nội Bài,3,E53935,FFFFFF,,Distance: 75.2 km | Fare: 0 VND
+hanoi_E10,transerco,E10,Sân bay Nội Bài - Khu đô thị Ocean Park,3,E53935,FFFFFF,,Distance: 87.3 km | Fare: 0 VND
+hanoi_OCT1,transerco,OCT1,Royal City R1 - Công viên Vin Wonders - Water Park,3,E53935,FFFFFF,,Distance: 64.5 km | Fare: 0 VND
+hanoi_OCT2,transerco,OCT2,Nhà hát Lớn - Công viên VinWonders - Water Park,3,E53935,FFFFFF,,Distance: 38.1 km | Fare: 0 VND
+hanoi_OCT1,transerco,OCT1,Công viên Vin Wonders - Water Park - Royal City R1,3,E53935,FFFFFF,,Distance: 39.2 km | Fare: 0 VND
+hanoi_OCT2,transerco,OCT2,Công viên VinWonders - Water Park - Nhà hát Lớn,3,E53935,FFFFFF,,Distance: 26.0 km | Fare: 0 VND
+hanoi_SMC1,transerco,SMC1,Smart City 1,3,E53935,FFFFFF,,Distance: 7.0 km | Fare: 0 VND
+hanoi_08ACT,transerco,08ACT,Long Biên - Đông Mỹ (cuối tuần),3,E53935,FFFFFF,,Distance: 23.5 km | Fare: 0 VND
+hanoi_08ACT,transerco,08ACT,Đông Mỹ - Long Biên (cuối tuần),3,E53935,FFFFFF,,Distance: 14.5 km | Fare: 0 VND
+hanoi_08BCT,transerco,08BCT,Long Biên - Vạn Phúc (cuối tuần),3,E53935,FFFFFF,,Distance: 48.0 km | Fare: 0 VND
+hanoi_08BCT,transerco,08BCT,Vạn Phúc - Long Biên (cuối tuần),3,E53935,FFFFFF,,Distance: 25.9 km | Fare: 0 VND
+hanoi_11CT,transerco,11CT,Công viên Thống Nhất - Học viện Nông Nghiệp Việt Nam (cuối tuần),3,E53935,FFFFFF,,Distance: 15.3 km | Fare: 0 VND
+hanoi_11CT,transerco,11CT,Học viện Nông nghiệp Việt Nam - Công viên Thống Nhất (cuối tuần),3,E53935,FFFFFF,,Distance: 20.1 km | Fare: 0 VND
+hanoi_30CT,transerco,30CT,Khu đô thị Gamuda - Bến xe Mỹ Đình (cuối tuần),3,E53935,FFFFFF,,Distance: 16.4 km | Fare: 0 VND
+hanoi_30CT,transerco,30CT,Bến xe Mỹ Đình - Khu đô thị Gamuda (cuối tuần),3,E53935,FFFFFF,,Distance: 24.5 km | Fare: 0 VND
+hanoi_36CT,transerco,36CT,Long Biên - Yên Xá (cuối tuần),3,E53935,FFFFFF,,Distance: 26.5 km | Fare: 0 VND
+hanoi_36CT,transerco,36CT,Yên Xá - Long Biên (cuối tuần),3,E53935,FFFFFF,,Distance: 23.7 km | Fare: 0 VND
+hanoi_40CT,transerco,40CT,Công viên Thống Nhất - Văn Lâm (cuối tuần),3,E53935,FFFFFF,,Distance: 32.9 km | Fare: 0 VND
+hanoi_40CT,transerco,40CT,Văn Lâm - Công viên Thống Nhất (cuối tuần),3,E53935,FFFFFF,,Distance: 22.0 km | Fare: 0 VND
+hanoi_86CT,transerco,86CT,Ga Hà Nội - Sân bay Nội Bài (cuối tuần),3,E53935,FFFFFF,,Distance: 26.3 km | Fare: 0 VND
+hanoi_86CT,transerco,86CT,Sân bay Nội Bài - Ga Hà Nội (cuối tuần),3,E53935,FFFFFF,,Distance: 46.6 km | Fare: 0 VND
+hanoi_OCP1,transerco,OCP1,"Nội liên khu Ocean Park 1,2,3",3,E53935,FFFFFF,,Distance: 19.4 km | Fare: 0 VND
+hanoi_OCP2,transerco,OCP2,"Nội khu Ocean Park 2,3",3,E53935,FFFFFF,,Distance: 10.6 km | Fare: 0 VND
+hanoi_70A,transerco,70A,Bến xe Mỹ Đình - Trung Hà,3,E53935,FFFFFF,,Distance: 99.7 km | Fare: 0 VND
+hanoi_70A,transerco,70A,Trung Hà - Bến xe Mỹ Đình,3,E53935,FFFFFF,,Distance: 96.8 km | Fare: 0 VND
+hanoi_70B,transerco,70B,Bến xe Mỹ Đình - Phú Cường,3,E53935,FFFFFF,,Distance: 116.8 km | Fare: 0 VND
+hanoi_70B,transerco,70B,Phú Cường - Bến xe Mỹ Đình,3,E53935,FFFFFF,,Distance: 104.1 km | Fare: 0 VND
+hanoi_71,transerco,71,Công viên Nghĩa Đô - Đại học Quốc gia Hà Nội (Hòa Lạc),3,E53935,FFFFFF,,Distance: 34.8 km | Fare: 0 VND
+hanoi_71,transerco,71,Đại học Quốc gia Hà Nội (Hòa Lạc) - Công viên Nghĩa Đô,3,E53935,FFFFFF,,Distance: 35.4 km | Fare: 0 VND
+hanoi_78,transerco,78,Bến xe Mỹ Đình - Tế Tiêu,3,E53935,FFFFFF,,Distance: 42.4 km | Fare: 0 VND
+hanoi_78,transerco,78,Tế Tiêu - Bến xe Mỹ Đình,3,E53935,FFFFFF,,Distance: 42.9 km | Fare: 0 VND
+hanoi_203,transerco,203,Bến xe Giáp Bát - Bến xe Bắc Giang,3,E53935,FFFFFF,,Distance: 116.3 km | Fare: 0 VND
+hanoi_203,transerco,203,Bến xe Bắc Giang - Bến xe Giáp Bát,3,E53935,FFFFFF,,Distance: 117.3 km | Fare: 0 VND
+hanoi_204,transerco,204,Long Biên - Thuận Thành,3,E53935,FFFFFF,,Distance: 72.6 km | Fare: 0 VND
+hanoi_204,transerco,204,Thuận Thành - Long Biên,3,E53935,FFFFFF,,Distance: 73.2 km | Fare: 0 VND
+hanoi_207,transerco,207,Bến xe Gia Lâm - Bến xe Triều Dương,3,E53935,FFFFFF,,Distance: 0.0 km | Fare: 0 VND
+hanoi_210,transerco,210,Bến xe Gia Lâm - Bến xe Hiệp Hòa,3,E53935,FFFFFF,,Distance: 76.0 km | Fare: 0 VND
+hanoi_210,transerco,210,Bến xe Hiệp Hòa - Bến xe Gia Lâm,3,E53935,FFFFFF,,Distance: 81.5 km | Fare: 0 VND
+hanoi_212,transerco,212,Bến xe Mỹ Đình - Bến xe Quế Võ,3,E53935,FFFFFF,,Distance: 164.7 km | Fare: 0 VND
+hanoi_212,transerco,212,Bến xe Quế Võ - Bến xe Mỹ Đình,3,E53935,FFFFFF,,Distance: 94.4 km | Fare: 0 VND
+hanoi_BN08,transerco,BN08,Kênh Vàng - Bắc Ninh,3,E53935,FFFFFF,,Distance: 111.1 km | Fare: 0 VND
+hanoi_BN08,transerco,BN08,Bắc Ninh - Kênh Vàng,3,E53935,FFFFFF,,Distance: 158.7 km | Fare: 0 VND
+hanoi_BN86A,transerco,BN86A,Bắc Ninh - Minh Tân,3,E53935,FFFFFF,,Distance: 116.2 km | Fare: 0 VND
+hanoi_BN86A,transerco,BN86A,Minh Tân - Bắc Ninh,3,E53935,FFFFFF,,Distance: 79.2 km | Fare: 0 VND
+hanoi_BN86B,transerco,BN86B,Bắc Ninh - Đại Lai,3,E53935,FFFFFF,,Distance: 115.7 km | Fare: 0 VND
+hanoi_BN86B,transerco,BN86B,Đại Lai - Bắc Ninh,3,E53935,FFFFFF,,Distance: 78.7 km | Fare: 0 VND
+hanoi_BN68,transerco,BN68,Chi Lăng - KCN VSIP,3,E53935,FFFFFF,,Distance: 200.1 km | Fare: 0 VND
+hanoi_BN68,transerco,BN68,KCN VSIP - Chi Lăng,3,E53935,FFFFFF,,Distance: 207.8 km | Fare: 0 VND
+hanoi_BN27,transerco,BN27,Kênh Vàng - Xuân Lâm,3,E53935,FFFFFF,,Distance: 58.4 km | Fare: 0 VND
+hanoi_BN27,transerco,BN27,Xuân Lâm - Kênh Vàng,3,E53935,FFFFFF,,Distance: 61.4 km | Fare: 0 VND
+hanoi_BN03,transerco,BN03,Bến xe Bắc Ninh - Cầu Đò Lo,3,E53935,FFFFFF,,Distance: 72.8 km | Fare: 0 VND
+hanoi_BN03,transerco,BN03,Cầu Đò Lo - Bến xe Bắc Ninh,3,E53935,FFFFFF,,Distance: 75.0 km | Fare: 0 VND
+hanoi_BN01,transerco,BN01,Bến xe Bắc Ninh - Lương Tài,3,E53935,FFFFFF,,Distance: 68.1 km | Fare: 0 VND
+hanoi_BN01,transerco,BN01,Lương Tài - Bến xe Bắc Ninh,3,E53935,FFFFFF,,Distance: 92.0 km | Fare: 0 VND
+hanoi_52CT,transerco,52CT,Công viên Thống Nhất - Lệ Chi (Gia Lâm) (cuối tuần),3,E53935,FFFFFF,,Distance: 22.8 km | Fare: 0 VND
+hanoi_52CT,transerco,52CT,Lệ Chi (Gia Lâm) - Công viên Thống Nhất (cuối tuần),3,E53935,FFFFFF,,Distance: 22.0 km | Fare: 0 VND
+hanoi_VP08,transerco,VP08,Tuyến buýt VP08: Phúc Yên - Vĩnh Tường (BX TT Vĩnh Tường),3,E53935,FFFFFF,,Distance: 1.8 km | Fare: 0 VND
+hanoi_VP08,transerco,VP08,Tuyến buýt VP08: Vĩnh Tường (BX TT Vĩnh Tường) - Phúc Yên,3,E53935,FFFFFF,,Distance: 0.2 km | Fare: 0 VND
+hanoi_43,transerco,43,Kim Mã - Thị trấn Đông Anh,3,E53935,FFFFFF,,Distance: 23.0 km | Fare: 0 VND
+hanoi_43,transerco,43,Thị trấn Đông Anh - Kim Mã,3,E53935,FFFFFF,,Distance: 23.1 km | Fare: 0 VND
+hanoi_22,transerco,22,Xã Vĩnh Hải - Cầu Đăng - KCN VSIP Thủy Nguyên,3,E53935,FFFFFF,,Distance: 44.5 km | Fare: 0 VND
+hanoi_22,transerco,22,KCN VSIP Thủy Nguyên - Cầu Đăng - Xã Vĩnh Hải,3,E53935,FFFFFF,,Distance: 44.7 km | Fare: 0 VND
+hanoi_E11,transerco,E11,Yên Phụ - Yên Phụ (chiều đi),3,E53935,FFFFFF,,Distance: 24.7 km | Fare: 0 VND
+hanoi_E11,transerco,E11,Yên Phụ - Yên Phụ (chiều về),3,E53935,FFFFFF,,Distance: 21.7 km | Fare: 0 VND
+hanoi_BN-E18,transerco,BN-E18,Vũ Ninh - Bắc Giang,3,E53935,FFFFFF,,Distance: 10.5 km | Fare: 0 VND
+hanoi_BN-E18,transerco,BN-E18,Bắc Giang - Vũ Ninh,3,E53935,FFFFFF,,Distance: 12.4 km | Fare: 0 VND
+hanoi_VP09,transerco,VP09,Tuyến buýt VP09: Phúc Yên - Vĩnh Tường,3,E53935,FFFFFF,,Distance: 3.2 km | Fare: 0 VND
+hanoi_VP09,transerco,VP09,Tuyến buýt VP09: Vĩnh Tường - Phúc Yên,3,E53935,FFFFFF,,Distance: 25.5 km | Fare: 0 VND
+hanoi_20ATC,transerco,20ATC,Nhổn - Quốc lộ 32 - Minh Châu,3,E53935,FFFFFF,,Distance: 42.4 km | Fare: 0 VND
+hanoi_20ATC,transerco,20ATC,Minh Châu - Quốc lộ 32 - Nhổn,3,E53935,FFFFFF,,Distance: 74.1 km | Fare: 0 VND
+hanoi_212,transerco,212,Bến xe Quế Võ - UBND phường Cảnh Thụy,3,E53935,FFFFFF,,Distance: 2.1 km | Fare: 0 VND
+hanoi_212,transerco,212,UBND phường Cảnh Thụy - Bến xe Quế Võ,3,E53935,FFFFFF,,Distance: 2.8 km | Fare: 0 VND
+hanoi_212,transerco,212,UBND xã Phu Lang - Bến xe Quế Võ,3,E53935,FFFFFF,,Distance: 4.8 km | Fare: 0 VND
+hanoi_212,transerco,212,Bến xe Quế Võ - UBND xã Phù Lãng,3,E53935,FFFFFF,,Distance: 9.0 km | Fare: 0 VND
+hanoi_146CT,transerco,146CT,Hào Nam - Phù Đổng (cuối tuần),3,E53935,FFFFFF,,Distance: 21.4 km | Fare: 0 VND
+hanoi_146CT,transerco,146CT,Phù Đổng - Hào Nam (cuối tuần),3,E53935,FFFFFF,,Distance: 20.0 km | Fare: 0 VND
+hanoi_02-1,transerco,02-1,Bến xe buýt An Lão - Bến xe Vĩnh Bảo,3,E53935,FFFFFF,,Distance: 13.7 km | Fare: 0 VND
+hanoi_02-1,transerco,02-1,Bến xe Vĩnh Bảo - Bến xe buýt An Lão,3,E53935,FFFFFF,,Distance: 15.0 km | Fare: 0 VND
+hanoi_108TC,transerco,108TC,Bến xe Thường Tín - Quang Lãng (Đại Xuyên),3,E53935,FFFFFF,,Distance: 26.9 km | Fare: 0 VND
+hanoi_108TC,transerco,108TC,Quang Lãng (Đại Xuyên) - Bến xe Thường Tín,3,E53935,FFFFFF,,Distance: 25.3 km | Fare: 0 VND
+hanoi_E06TC,transerco,E06TC,Bến xe Giáp Bát - Hòa Lạc,3,E53935,FFFFFF,,Distance: 66.0 km | Fare: 0 VND
+hanoi_E06TC,transerco,E06TC,Hòa Lạc - Bến xe Giáp Bát,3,E53935,FFFFFF,,Distance: 41.0 km | Fare: 0 VND
+hanoi_E07TC,transerco,E07TC,Long Biên - Hòa Lạc,3,E53935,FFFFFF,,Distance: 40.5 km | Fare: 0 VND
+hanoi_E07TC,transerco,E07TC,Hòa Lạc - Long Biên,3,E53935,FFFFFF,,Distance: 41.3 km | Fare: 0 VND
+hanoi_157TC,transerco,157TC,Bến xe Mỹ Đình - Bến xe Sơn Tây,3,E53935,FFFFFF,,Distance: 37.4 km | Fare: 0 VND
+hanoi_157TC,transerco,157TC,Bến xe Sơn Tây - Bến xe Mỹ Đình,3,E53935,FFFFFF,,Distance: 37.9 km | Fare: 0 VND

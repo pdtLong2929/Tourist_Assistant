@@ -1,0 +1,2 @@
+agency_id,agency_name,agency_url,agency_timezone,agency_lang
+hcmc_transport,HCMC Management Center for Public Transport,https://www.hcmcptat.gov.vn,Asia/Ho_Chi_Minh,vi

@@ -1,0 +1,320 @@
+route_id,service_id,trip_id,trip_headsign,direction_id,shape_id
+ho chi minh city_109,service_daily,trip_ho chi minh city_109_0_1,Bến xe Sài Gòn - Sân bay Tân Sơn Nhất,0,shape_ho chi minh city_109_out
+ho chi minh city_01,service_daily,trip_ho chi minh city_01_0_2,Ga Ba Son - Bến xe Chợ Lớn,0,shape_ho chi minh city_01_out
+ho chi minh city_01,service_daily,trip_ho chi minh city_01_0_3,Bến xe Chợ Lớn - Ga Ba Son,0,shape_ho chi minh city_01_out
+ho chi minh city_D2,service_daily,trip_ho chi minh city_D2_0_4,Sky Garden - Crescent Mall,0,shape_ho chi minh city_D2_out
+ho chi minh city_D2,service_daily,trip_ho chi minh city_D2_0_5,Crescent Mall - Sky Garden,0,shape_ho chi minh city_D2_out
+ho chi minh city_01,service_daily,trip_ho chi minh city_01_0_6,Trường Đại học Công nghệ Đồng Nai - Bến xe Ngã tư Vũng Tàu,0,shape_ho chi minh city_01_out
+ho chi minh city_02,service_daily,trip_ho chi minh city_02_0_7,Bến xe Biên Hòa - Trạm xe Nhơn Trạch,0,shape_ho chi minh city_02_out
+ho chi minh city_01,service_daily,trip_ho chi minh city_01_0_8,Bến xe Ngã tư Vũng Tàu - Trường Đại học Công nghệ Đồng Nai,0,shape_ho chi minh city_01_out
+ho chi minh city_03,service_daily,trip_ho chi minh city_03_0_9,Bến xe Hố Nai - Trạm xe Hóa An,0,shape_ho chi minh city_03_out
+ho chi minh city_02,service_daily,trip_ho chi minh city_02_0_10,Trạm xe Nhơn Trạch - Bến xe Biên Hòa,0,shape_ho chi minh city_02_out
+ho chi minh city_03,service_daily,trip_ho chi minh city_03_0_11,Trạm xe Hóa An - Bến xe Hố Nai,0,shape_ho chi minh city_03_out
+ho chi minh city_08,service_daily,trip_ho chi minh city_08_0_12,Trạm xe Big C - Bến xe Thạnh Phú,0,shape_ho chi minh city_08_out
+ho chi minh city_11,service_daily,trip_ho chi minh city_11_0_13,Bến xe Ngã tư Vũng Tàu - Trạm xe Gò Dầu,0,shape_ho chi minh city_11_out
+ho chi minh city_08,service_daily,trip_ho chi minh city_08_0_14,Bến xe Thạnh Phú - Trạm xe Big C,0,shape_ho chi minh city_08_out
+ho chi minh city_60-18,service_daily,trip_ho chi minh city_60-18_0_15,Khu du lịch sinh thái Vườn Xoài - Khu du lịch Đại Nam,0,shape_ho chi minh city_60-18_out
+ho chi minh city_16,service_daily,trip_ho chi minh city_16_0_16,Bến xe Biên Hòa - Bến xe Phương Lâm,0,shape_ho chi minh city_16_out
+ho chi minh city_03,service_daily,trip_ho chi minh city_03_0_17,Bến Thành - Thạnh Xuân,0,shape_ho chi minh city_03_out
+ho chi minh city_03,service_daily,trip_ho chi minh city_03_0_18,Thạnh Xuân - Bến Thành,0,shape_ho chi minh city_03_out
+ho chi minh city_04,service_daily,trip_ho chi minh city_04_0_19,Bến Thành - Cộng Hòa - Bến xe An Sương,0,shape_ho chi minh city_04_out
+ho chi minh city_04,service_daily,trip_ho chi minh city_04_0_20,Bến xe An Sương - Cộng Hòa - Bến Thành,0,shape_ho chi minh city_04_out
+ho chi minh city_05,service_daily,trip_ho chi minh city_05_0_21,Bến xe Chợ Lớn - Bến xe Biên Hòa,0,shape_ho chi minh city_05_out
+ho chi minh city_05,service_daily,trip_ho chi minh city_05_0_22,Bến xe Biên Hòa - Bến xe Chợ Lớn,0,shape_ho chi minh city_05_out
+ho chi minh city_06,service_daily,trip_ho chi minh city_06_0_23,Đại học Nông Lâm,0,shape_ho chi minh city_06_out
+ho chi minh city_06,service_daily,trip_ho chi minh city_06_0_24,Đại học Nông Lâm - Bến xe Chợ Lớn,0,shape_ho chi minh city_06_out
+ho chi minh city_07,service_daily,trip_ho chi minh city_07_0_25,Bến xe Chợ Lớn - Gò Vấp,0,shape_ho chi minh city_07_out
+ho chi minh city_07,service_daily,trip_ho chi minh city_07_0_26,Gò Vấp - Bên xe Chợ Lớn,0,shape_ho chi minh city_07_out
+ho chi minh city_08,service_daily,trip_ho chi minh city_08_0_27,Bến xe Quận 8 - Đại học Quốc gia,0,shape_ho chi minh city_08_out
+ho chi minh city_08,service_daily,trip_ho chi minh city_08_0_28,Đại học Quốc gia - Bến xe Quận 8,0,shape_ho chi minh city_08_out
+ho chi minh city_09,service_daily,trip_ho chi minh city_09_0_29,Bến xe Chợ Lớn - Bình Chánh - Hưng Long,0,shape_ho chi minh city_09_out
+ho chi minh city_09,service_daily,trip_ho chi minh city_09_0_30,Hưng Long - Bình Chánh - Bến xe Chợ Lớn,0,shape_ho chi minh city_09_out
+ho chi minh city_10,service_daily,trip_ho chi minh city_10_0_31,Đại học Quốc gia - Bến xe Miền Tây,0,shape_ho chi minh city_10_out
+ho chi minh city_10,service_daily,trip_ho chi minh city_10_0_32,Bến xe Miền Tây - Đại học Quốc gia,0,shape_ho chi minh city_10_out
+ho chi minh city_13,service_daily,trip_ho chi minh city_13_0_33,Bến xe Sài Gòn - Bến xe Củ Chi,0,shape_ho chi minh city_13_out
+ho chi minh city_13,service_daily,trip_ho chi minh city_13_0_34,Bến xe Củ Chi - Bến xe Sài Gòn,0,shape_ho chi minh city_13_out
+ho chi minh city_14,service_daily,trip_ho chi minh city_14_0_35,Bến xe Miền Đông - Bến xe Miền Tây,0,shape_ho chi minh city_14_out
+ho chi minh city_14,service_daily,trip_ho chi minh city_14_0_36,Bến xe Miền Tây - Bến xe Miền Đông,0,shape_ho chi minh city_14_out
+ho chi minh city_15,service_daily,trip_ho chi minh city_15_0_37,Chợ Phú Định - Đầm Sen,0,shape_ho chi minh city_15_out
+ho chi minh city_15,service_daily,trip_ho chi minh city_15_0_38,Đầm Sen - Chợ Phú Định,0,shape_ho chi minh city_15_out
+ho chi minh city_16,service_daily,trip_ho chi minh city_16_0_39,Bến xe Chợ Lớn - Bến xe Tân Phú,0,shape_ho chi minh city_16_out
+ho chi minh city_16,service_daily,trip_ho chi minh city_16_0_40,Bến xe Tân Phú - Bến xe Chợ Lớn,0,shape_ho chi minh city_16_out
+ho chi minh city_18,service_daily,trip_ho chi minh city_18_0_41,Bến Thành - Chợ Hiệp Thành,0,shape_ho chi minh city_18_out
+ho chi minh city_18,service_daily,trip_ho chi minh city_18_0_42,Chợ Hiệp Thành - Bến Thành,0,shape_ho chi minh city_18_out
+ho chi minh city_19,service_daily,trip_ho chi minh city_19_0_43,Bến xe Sài Gòn - Khu chế xuất Linh Trung - Đại học Quốc gia,0,shape_ho chi minh city_19_out
+ho chi minh city_19,service_daily,trip_ho chi minh city_19_0_44,Đại học Quốc gia - Khu chế xuất Linh Trung - Bến xe Sài Gòn,0,shape_ho chi minh city_19_out
+ho chi minh city_20,service_daily,trip_ho chi minh city_20_0_45,Bến Thành - Nhà Bè,0,shape_ho chi minh city_20_out
+ho chi minh city_20,service_daily,trip_ho chi minh city_20_0_46,Nhà Bè - Bến Thành,0,shape_ho chi minh city_20_out
+ho chi minh city_22,service_daily,trip_ho chi minh city_22_0_47,Bến xe Quận 8 - Bến xe buýt Lê Minh Xuân,0,shape_ho chi minh city_22_out
+ho chi minh city_22,service_daily,trip_ho chi minh city_22_0_48,Bến xe buýt Lê Minh Xuân - Bến xe Quận 8,0,shape_ho chi minh city_22_out
+ho chi minh city_23,service_daily,trip_ho chi minh city_23_0_49,Bến xe Chợ Lớn - Ngã ba Giồng - Cầu Lớn,0,shape_ho chi minh city_23_out
+ho chi minh city_23,service_daily,trip_ho chi minh city_23_0_50,Cầu Lớn - Ngã ba Giồng - Bến xe Chợ Lớn,0,shape_ho chi minh city_23_out
+ho chi minh city_24,service_daily,trip_ho chi minh city_24_0_51,Bến xe Miền Đông - Hóc Môn,0,shape_ho chi minh city_24_out
+ho chi minh city_24,service_daily,trip_ho chi minh city_24_0_52,Hóc Môn - Bến xe Miền Đông,0,shape_ho chi minh city_24_out
+ho chi minh city_25,service_daily,trip_ho chi minh city_25_0_53,Bến xe Quận 8 - Khu dân cư Vĩnh Lộc A,0,shape_ho chi minh city_25_out
+ho chi minh city_25,service_daily,trip_ho chi minh city_25_0_54,Khu dân cư Vĩnh Lộc A - Bến xe Quận 8,0,shape_ho chi minh city_25_out
+ho chi minh city_27,service_daily,trip_ho chi minh city_27_0_55,Bến xe Sài Gòn - Âu Cơ - Bến xe An Sương,0,shape_ho chi minh city_27_out
+ho chi minh city_27,service_daily,trip_ho chi minh city_27_0_56,Bến xe An Sương - Âu Cơ - Bến xe Sài Gòn,0,shape_ho chi minh city_27_out
+ho chi minh city_28,service_daily,trip_ho chi minh city_28_0_57,Bến xe Sài Gòn - Chợ Xuân Thới Thượng,0,shape_ho chi minh city_28_out
+ho chi minh city_28,service_daily,trip_ho chi minh city_28_0_58,Chợ Xuân Thới Thượng - Bến xe Sài Gòn,0,shape_ho chi minh city_28_out
+ho chi minh city_29,service_daily,trip_ho chi minh city_29_0_59,Phà Cát Lái - Chợ Nông sản Thủ Đức,0,shape_ho chi minh city_29_out
+ho chi minh city_29,service_daily,trip_ho chi minh city_29_0_60,Chợ Nông sản Thủ Đức - Phà Cát Lái,0,shape_ho chi minh city_29_out
+ho chi minh city_30,service_daily,trip_ho chi minh city_30_0_61,Chợ Tân Hương - Bến xe buýt Văn Thánh,0,shape_ho chi minh city_30_out
+ho chi minh city_30,service_daily,trip_ho chi minh city_30_0_62,Bến xe buýt Văn Thánh - Chợ Tân Hương,0,shape_ho chi minh city_30_out
+ho chi minh city_31,service_daily,trip_ho chi minh city_31_0_63,Đại học Tôn Đức Thắng - Bến Thành - Đại học Văn Lang,0,shape_ho chi minh city_31_out
+ho chi minh city_31,service_daily,trip_ho chi minh city_31_0_64,Đại học Văn Lang - Bến Thành - Đại học Tôn Đức Thắng,0,shape_ho chi minh city_31_out
+ho chi minh city_32,service_daily,trip_ho chi minh city_32_0_65,Bến xe Miền Tây - Bến xe Ngã tư Ga,0,shape_ho chi minh city_32_out
+ho chi minh city_32,service_daily,trip_ho chi minh city_32_0_66,Bến xe Ngã tư Ga - Bến xe Miền Tây,0,shape_ho chi minh city_32_out
+ho chi minh city_33,service_daily,trip_ho chi minh city_33_0_67,Bến xe An Sương - Suối Tiên - Đại học Quốc gia,0,shape_ho chi minh city_33_out
+ho chi minh city_33,service_daily,trip_ho chi minh city_33_0_68,Đại học Quốc gia - Suối Tiên - Bến xe An Sương,0,shape_ho chi minh city_33_out
+ho chi minh city_34,service_daily,trip_ho chi minh city_34_0_69,Bến xe Sài Gòn - Bến xe Quận 8,0,shape_ho chi minh city_34_out
+ho chi minh city_34,service_daily,trip_ho chi minh city_34_0_70,Bến xe Quận 8 - Bến xe Sài Gòn,0,shape_ho chi minh city_34_out
+ho chi minh city_36,service_daily,trip_ho chi minh city_36_0_71,Bến Thành - Thới An,0,shape_ho chi minh city_36_out
+ho chi minh city_36,service_daily,trip_ho chi minh city_36_0_72,Thới An - Bến Thành,0,shape_ho chi minh city_36_out
+ho chi minh city_38,service_daily,trip_ho chi minh city_38_0_73,Khu dân cư Tân Quy - Bến Thành - Đầm Sen,0,shape_ho chi minh city_38_out
+ho chi minh city_38,service_daily,trip_ho chi minh city_38_0_74,Đầm Sen - Bến Thành - Khu dân cư Tân Quy,0,shape_ho chi minh city_38_out
+ho chi minh city_39,service_daily,trip_ho chi minh city_39_0_75,Bến Thành - Võ Văn Kiệt - Bến xe Miền Tây,0,shape_ho chi minh city_39_out
+ho chi minh city_39,service_daily,trip_ho chi minh city_39_0_76,Bến xe Miền Tây - Võ Văn Kiệt - Bến Thành,0,shape_ho chi minh city_39_out
+ho chi minh city_41,service_daily,trip_ho chi minh city_41_0_77,Bến xe Miền Tây - Ngã tư Bốn xã - Bến xe An Sương,0,shape_ho chi minh city_41_out
+ho chi minh city_41,service_daily,trip_ho chi minh city_41_0_78,Bến xe An Sương - Ngã tư Bốn xã - Bến xe Miền Tây,0,shape_ho chi minh city_41_out
+ho chi minh city_43,service_daily,trip_ho chi minh city_43_0_79,Bến xe Miền Đông - Phà Cát Lái,0,shape_ho chi minh city_43_out
+ho chi minh city_43,service_daily,trip_ho chi minh city_43_0_80,Phà Cát Lái - Bến xe Miền Đông,0,shape_ho chi minh city_43_out
+ho chi minh city_44,service_daily,trip_ho chi minh city_44_0_81,Cảng Quận 4 - Bình Quới,0,shape_ho chi minh city_44_out
+ho chi minh city_44,service_daily,trip_ho chi minh city_44_0_82,Bình Quới - Cảng Quận 4,0,shape_ho chi minh city_44_out
+ho chi minh city_45,service_daily,trip_ho chi minh city_45_0_83,Đại học Kinh tế - Bến Thành - Bến xe Miền Đông,0,shape_ho chi minh city_45_out
+ho chi minh city_45,service_daily,trip_ho chi minh city_45_0_84,Bến xe Miền Đông - Bến Thành - Đại học Kinh tế,0,shape_ho chi minh city_45_out
+ho chi minh city_46,service_daily,trip_ho chi minh city_46_0_85,Công viên Tôn Thất Thuyết - Bến Mễ Cốc,0,shape_ho chi minh city_46_out
+ho chi minh city_46,service_daily,trip_ho chi minh city_46_0_86,Bến Mễ Cốc - Công viên Tôn Thất Thuyết,0,shape_ho chi minh city_46_out
+ho chi minh city_47,service_daily,trip_ho chi minh city_47_0_87,Bến xe Chợ Lớn - Quốc lộ 50 - Hưng Long,0,shape_ho chi minh city_47_out
+ho chi minh city_47,service_daily,trip_ho chi minh city_47_0_88,Hưng Long - Quốc lộ 50 - Bến xe Chợ Lớn,0,shape_ho chi minh city_47_out
+ho chi minh city_48,service_daily,trip_ho chi minh city_48_0_89,Bến xe Tân Phú - Chợ Hiệp Thành,0,shape_ho chi minh city_48_out
+ho chi minh city_48,service_daily,trip_ho chi minh city_48_0_90,Chợ Hiệp Thành - Bến xe Tân Phú,0,shape_ho chi minh city_48_out
+ho chi minh city_50,service_daily,trip_ho chi minh city_50_0_91,Đại học Bách khoa - Đại học Quốc gia,0,shape_ho chi minh city_50_out
+ho chi minh city_50,service_daily,trip_ho chi minh city_50_0_92,Đại học Quốc gia - Đại học Bách khoa,0,shape_ho chi minh city_50_out
+ho chi minh city_52,service_daily,trip_ho chi minh city_52_0_93,Bến Thành - Đại học Quốc gia,0,shape_ho chi minh city_52_out
+ho chi minh city_52,service_daily,trip_ho chi minh city_52_0_94,Đại học Quốc gia - Bến Thành,0,shape_ho chi minh city_52_out
+ho chi minh city_53,service_daily,trip_ho chi minh city_53_0_95,Lê Hồng Phong - Đại học Quốc gia,0,shape_ho chi minh city_53_out
+ho chi minh city_53,service_daily,trip_ho chi minh city_53_0_96,Đại học Quốc gia - Lê Hồng Phong,0,shape_ho chi minh city_53_out
+ho chi minh city_55,service_daily,trip_ho chi minh city_55_0_97,Công viên Phần mềm Quang Trung - Bến xe buýt Văn Thánh,0,shape_ho chi minh city_55_out
+ho chi minh city_55,service_daily,trip_ho chi minh city_55_0_98,Bến xe buýt Văn Thánh - Công viên Phần mềm Quang Trung,0,shape_ho chi minh city_55_out
+ho chi minh city_56,service_daily,trip_ho chi minh city_56_0_99,Bến xe Chợ Lớn - Bến xe Miền Đông mới,0,shape_ho chi minh city_56_out
+ho chi minh city_56,service_daily,trip_ho chi minh city_56_0_100,Bến xe Miền Đông mới - Bến xe Chợ Lớn,0,shape_ho chi minh city_56_out
+ho chi minh city_57,service_daily,trip_ho chi minh city_57_0_101,Chợ Phước Bình - Trường Trung học phổ thông Hiệp Bình,0,shape_ho chi minh city_57_out
+ho chi minh city_57,service_daily,trip_ho chi minh city_57_0_102,Trường Trung học phổ thông Hiệp Bình - Chợ Phước Bình,0,shape_ho chi minh city_57_out
+ho chi minh city_58,service_daily,trip_ho chi minh city_58_0_103,Bến xe Ngã tư Ga - Khu công nghiệp Đông Nam,0,shape_ho chi minh city_58_out
+ho chi minh city_58,service_daily,trip_ho chi minh city_58_0_104,Khu công nghiệp Đông Nam - Bến xe Ngã tư Ga,0,shape_ho chi minh city_58_out
+ho chi minh city_59,service_daily,trip_ho chi minh city_59_0_105,Bến xe Quận 8 - Bến xe Ngã tư Ga,0,shape_ho chi minh city_59_out
+ho chi minh city_59,service_daily,trip_ho chi minh city_59_0_106,Bến xe Ngã tư Ga - Bến xe Quận 8,0,shape_ho chi minh city_59_out
+ho chi minh city_60-1,service_daily,trip_ho chi minh city_60-1_0_107,Bến xe Miền Tây - Bến xe Biên Hòa,0,shape_ho chi minh city_60-1_out
+ho chi minh city_60-1,service_daily,trip_ho chi minh city_60-1_0_108,Bến xe Biên Hòa - Bến xe Miền Tây,0,shape_ho chi minh city_60-1_out
+ho chi minh city_60-2,service_daily,trip_ho chi minh city_60-2_0_109,Đại học Nông Lâm - Bến xe Phú Túc,0,shape_ho chi minh city_60-2_out
+ho chi minh city_60-2,service_daily,trip_ho chi minh city_60-2_0_110,Bến xe Phú Túc - Đại học Nông Lâm,0,shape_ho chi minh city_60-2_out
+ho chi minh city_60-3,service_daily,trip_ho chi minh city_60-3_0_111,Bến xe Miền Đông - Khu công nghiệp Nhơn Trạch,0,shape_ho chi minh city_60-3_out
+ho chi minh city_60-3,service_daily,trip_ho chi minh city_60-3_0_112,Khu công nghiệp Nhơn Trạch - Bến xe Miền Đông,0,shape_ho chi minh city_60-3_out
+ho chi minh city_61,service_daily,trip_ho chi minh city_61_0_113,Bến xe Chợ Lớn - Bến xe buýt Lê Minh Xuân,0,shape_ho chi minh city_61_out
+ho chi minh city_61,service_daily,trip_ho chi minh city_61_0_114,Bến xe buýt Lê Minh Xuân - Bến xe Chợ Lớn,0,shape_ho chi minh city_61_out
+ho chi minh city_61-3,service_daily,trip_ho chi minh city_61-3_0_115,Bến xe An Sương - Bến xe Thủ Dầu Một,0,shape_ho chi minh city_61-3_out
+ho chi minh city_61-3,service_daily,trip_ho chi minh city_61-3_0_116,Bến xe Thủ Dầu Một - Bến xe An Sương,0,shape_ho chi minh city_61-3_out
+ho chi minh city_61-8,service_daily,trip_ho chi minh city_61-8_0_117,Bến xe Thủ Dầu Một - Bến xe Miền Đông,0,shape_ho chi minh city_61-8_out
+ho chi minh city_61-8,service_daily,trip_ho chi minh city_61-8_0_118,Bến xe Miền Đông - Bến xe Thủ Dầu Một,0,shape_ho chi minh city_61-8_out
+ho chi minh city_62,service_daily,trip_ho chi minh city_62_0_119,Bến xe Quận 8 - Thới An,0,shape_ho chi minh city_62_out
+ho chi minh city_62,service_daily,trip_ho chi minh city_62_0_120,Thới An - Bến xe Quận 8,0,shape_ho chi minh city_62_out
+ho chi minh city_62-1,service_daily,trip_ho chi minh city_62-1_0_121,Bến xe Chợ Lớn - Bến xe Tân Trụ,0,shape_ho chi minh city_62-1_out
+ho chi minh city_62-1,service_daily,trip_ho chi minh city_62-1_0_122,Bến xe Tân Trụ - Bến xe Chợ Lớn,0,shape_ho chi minh city_62-1_out
+ho chi minh city_62-2,service_daily,trip_ho chi minh city_62-2_0_123,Bến xe Chợ Lớn - Ngã ba Tân Lân,0,shape_ho chi minh city_62-2_out
+ho chi minh city_62-2,service_daily,trip_ho chi minh city_62-2_0_124,Ngã ba Tân Lân - Bến xe Chợ Lớn,0,shape_ho chi minh city_62-2_out
+ho chi minh city_62-5,service_daily,trip_ho chi minh city_62-5_0_125,Bến xe An Sương - Bến xe Hậu Nghĩa,0,shape_ho chi minh city_62-5_out
+ho chi minh city_62-5,service_daily,trip_ho chi minh city_62-5_0_126,Bến xe Hậu Nghĩa - Bến xe An Sương,0,shape_ho chi minh city_62-5_out
+ho chi minh city_62-6,service_daily,trip_ho chi minh city_62-6_0_127,Bến xe Chợ Lớn - Bến xe Hậu Nghĩa,0,shape_ho chi minh city_62-6_out
+ho chi minh city_62-6,service_daily,trip_ho chi minh city_62-6_0_128,Bến xe Hậu Nghĩa - Bến xe Chợ Lớn,0,shape_ho chi minh city_62-6_out
+ho chi minh city_62-7,service_daily,trip_ho chi minh city_62-7_0_129,Bến xe Chợ Lớn - Bến xe Đức Huệ,0,shape_ho chi minh city_62-7_out
+ho chi minh city_62-7,service_daily,trip_ho chi minh city_62-7_0_130,Bến xe Đức Huệ - Bến xe Chợ Lớn,0,shape_ho chi minh city_62-7_out
+ho chi minh city_62-8,service_daily,trip_ho chi minh city_62-8_0_131,Bến xe Chợ Lớn - Bến xe Tân An,0,shape_ho chi minh city_62-8_out
+ho chi minh city_62-8,service_daily,trip_ho chi minh city_62-8_0_132,Bến xe Tân An - Bến xe Chợ Lớn,0,shape_ho chi minh city_62-8_out
+ho chi minh city_62-9,service_daily,trip_ho chi minh city_62-9_0_133,Bến xe Quận 8 - Thị xã Gò Công,0,shape_ho chi minh city_62-9_out
+ho chi minh city_62-9,service_daily,trip_ho chi minh city_62-9_0_134,Thị xã Gò Công - Bến xe Quận 8,0,shape_ho chi minh city_62-9_out
+ho chi minh city_62-10,service_daily,trip_ho chi minh city_62-10_0_135,Bến xe Chợ Lớn - Thanh Vĩnh Đông,0,shape_ho chi minh city_62-10_out
+ho chi minh city_62-10,service_daily,trip_ho chi minh city_62-10_0_136,Thanh Vĩnh Đông - Bến xe Chợ Lớn,0,shape_ho chi minh city_62-10_out
+ho chi minh city_62-11,service_daily,trip_ho chi minh city_62-11_0_137,Bến xe Quận 8 - Bến xe Tân Tập,0,shape_ho chi minh city_62-11_out
+ho chi minh city_62-11,service_daily,trip_ho chi minh city_62-11_0_138,Bến xe Tân Tập - Bến xe Quận 8,0,shape_ho chi minh city_62-11_out
+ho chi minh city_63-1,service_daily,trip_ho chi minh city_63-1_0_139,Bến xe Tân Phú - Bến xe Tiền Giang,0,shape_ho chi minh city_63-1_out
+ho chi minh city_63-1,service_daily,trip_ho chi minh city_63-1_0_140,Bến xe Tiền Giang - Bến xe Tân Phú,0,shape_ho chi minh city_63-1_out
+ho chi minh city_64,service_daily,trip_ho chi minh city_64_0_141,Bến xe Miền Đông - Đầm Sen,0,shape_ho chi minh city_64_out
+ho chi minh city_64,service_daily,trip_ho chi minh city_64_0_142,Đầm Sen - Bến xe Miền Đông,0,shape_ho chi minh city_64_out
+ho chi minh city_65,service_daily,trip_ho chi minh city_65_0_143,Bến Thành - Cách mạng Tháng 8 - Bến xe An Sương,0,shape_ho chi minh city_65_out
+ho chi minh city_65,service_daily,trip_ho chi minh city_65_0_144,Bến xe An Sương - Cách mạng Tháng 8 - Bến Thành,0,shape_ho chi minh city_65_out
+ho chi minh city_67,service_daily,trip_ho chi minh city_67_0_145,Bến xe Miền Đông cũ - Bến xe Miền Đông mới,0,shape_ho chi minh city_67_out
+ho chi minh city_67,service_daily,trip_ho chi minh city_67_0_146,Bến xe Miền Đông mới - Bến xe Miền Đông cũ,0,shape_ho chi minh city_67_out
+ho chi minh city_68,service_daily,trip_ho chi minh city_68_0_147,Bến xe Chợ Lớn - Đại học Tài chính-Marketing,0,shape_ho chi minh city_68_out
+ho chi minh city_68,service_daily,trip_ho chi minh city_68_0_148,Đại học Tài chính-Marketing - Bến xe Chợ Lớn,0,shape_ho chi minh city_68_out
+ho chi minh city_69,service_daily,trip_ho chi minh city_69_0_149,Bến xe Sài Gòn - Khu dân cư Vĩnh Lộc,0,shape_ho chi minh city_69_out
+ho chi minh city_69,service_daily,trip_ho chi minh city_69_0_150,Khu dân cư Vĩnh Lộc - Bến xe Sài Gòn,0,shape_ho chi minh city_69_out
+ho chi minh city_70,service_daily,trip_ho chi minh city_70_0_151,Tân Quy - Bến Súc,0,shape_ho chi minh city_70_out
+ho chi minh city_70,service_daily,trip_ho chi minh city_70_0_152,Bến Súc - Tân Quy,0,shape_ho chi minh city_70_out
+ho chi minh city_70-1,service_daily,trip_ho chi minh city_70-1_0_153,Bến xe Củ Chi - Bến xe Tây Ninh,0,shape_ho chi minh city_70-1_out
+ho chi minh city_70-1,service_daily,trip_ho chi minh city_70-1_0_154,Bến xe Tây Ninh - Bến xe Củ Chi,0,shape_ho chi minh city_70-1_out
+ho chi minh city_70-2,service_daily,trip_ho chi minh city_70-2_0_155,Bến xe Củ Chi - Tòa Thánh - Khu du lịch Núi Bà Đen,0,shape_ho chi minh city_70-2_out
+ho chi minh city_70-2,service_daily,trip_ho chi minh city_70-2_0_156,Khu du lịch Núi Bà Đen - Tòa Thánh - Bến xe Củ Chi,0,shape_ho chi minh city_70-2_out
+ho chi minh city_71,service_daily,trip_ho chi minh city_71_0_157,Bến xe An Sương - Phật Cô Đơn,0,shape_ho chi minh city_71_out
+ho chi minh city_71,service_daily,trip_ho chi minh city_71_0_158,Phật Cô Đơn - Bến xe An Sương,0,shape_ho chi minh city_71_out
+ho chi minh city_72,service_daily,trip_ho chi minh city_72_0_159,Bến xe Sài Gòn - Hiệp Phước,0,shape_ho chi minh city_72_out
+ho chi minh city_72,service_daily,trip_ho chi minh city_72_0_160,Hiệp Phước - Bến xe Sài Gòn,0,shape_ho chi minh city_72_out
+ho chi minh city_72-1,service_daily,trip_ho chi minh city_72-1_0_161,Sân bay Tân Sơn Nhất - Bến xe Vũng Tàu,0,shape_ho chi minh city_72-1_out
+ho chi minh city_72-1,service_daily,trip_ho chi minh city_72-1_0_162,Bến xe Vũng Tàu - Sân bay Tân Sơn Nhất,0,shape_ho chi minh city_72-1_out
+ho chi minh city_73,service_daily,trip_ho chi minh city_73_0_163,Chợ Bình Chánh - Bến xe buýt Lê Minh Xuân,0,shape_ho chi minh city_73_out
+ho chi minh city_73,service_daily,trip_ho chi minh city_73_0_164,Bến xe buýt Lê Minh Xuân - Chợ Bình Chánh,0,shape_ho chi minh city_73_out
+ho chi minh city_74,service_daily,trip_ho chi minh city_74_0_165,Bến xe An Sương - Bến xe Củ Chi,0,shape_ho chi minh city_74_out
+ho chi minh city_74,service_daily,trip_ho chi minh city_74_0_166,Bến xe Củ Chi - Bến xe An Sương,0,shape_ho chi minh city_74_out
+ho chi minh city_75,service_daily,trip_ho chi minh city_75_0_167,Bến xe Sài Gòn - Cần Giờ,0,shape_ho chi minh city_75_out
+ho chi minh city_75,service_daily,trip_ho chi minh city_75_0_168,Cần Giờ - Bến xe Sài Gòn,0,shape_ho chi minh city_75_out
+ho chi minh city_76,service_daily,trip_ho chi minh city_76_0_169,Long Phước - Bến xe Miền Đông mới,0,shape_ho chi minh city_76_out
+ho chi minh city_76,service_daily,trip_ho chi minh city_76_0_170,Bến xe Miền Đông mới - Long Phước,0,shape_ho chi minh city_76_out
+ho chi minh city_78,service_daily,trip_ho chi minh city_78_0_171,Bến xe Thới An - Ngã ba Giồng - Cầu Lớn,0,shape_ho chi minh city_78_out
+ho chi minh city_78,service_daily,trip_ho chi minh city_78_0_172,Cầu Lớn - Ngã ba Giồng - Bến xe Thới An,0,shape_ho chi minh city_78_out
+ho chi minh city_79,service_daily,trip_ho chi minh city_79_0_173,Bến xe Củ Chi - Đền Bến Dược,0,shape_ho chi minh city_79_out
+ho chi minh city_79,service_daily,trip_ho chi minh city_79_0_174,Đền Bến Dược - Bến xe Củ Chi,0,shape_ho chi minh city_79_out
+ho chi minh city_81,service_daily,trip_ho chi minh city_81_0_175,Bến xe Chợ Lớn - Lê Minh Xuân,0,shape_ho chi minh city_81_out
+ho chi minh city_81,service_daily,trip_ho chi minh city_81_0_176,Lê Minh Xuân - Bến xe Chợ Lớn,0,shape_ho chi minh city_81_out
+ho chi minh city_84,service_daily,trip_ho chi minh city_84_0_177,Bến xe Chợ Lớn - Tân Túc,0,shape_ho chi minh city_84_out
+ho chi minh city_84,service_daily,trip_ho chi minh city_84_0_178,Tân Túc - Bến xe Chợ Lớn,0,shape_ho chi minh city_84_out
+ho chi minh city_85,service_daily,trip_ho chi minh city_85_0_179,Bến xe An Sương - Khu công nghiệp Nhị Xuân,0,shape_ho chi minh city_85_out
+ho chi minh city_85,service_daily,trip_ho chi minh city_85_0_180,Khu công nghiệp Nhị Xuân - Bến xe An Sương,0,shape_ho chi minh city_85_out
+ho chi minh city_87,service_daily,trip_ho chi minh city_87_0_181,Bến xe Củ Chi - An Nhơn Tây,0,shape_ho chi minh city_87_out
+ho chi minh city_87,service_daily,trip_ho chi minh city_87_0_182,An Nhơn Tây - Bến xe Củ Chi,0,shape_ho chi minh city_87_out
+ho chi minh city_88,service_daily,trip_ho chi minh city_88_0_183,Bến Thành - Chợ Long Phước,0,shape_ho chi minh city_88_out
+ho chi minh city_88,service_daily,trip_ho chi minh city_88_0_184,Chợ Long Phước - Bến Thành,0,shape_ho chi minh city_88_out
+ho chi minh city_89,service_daily,trip_ho chi minh city_89_0_185,Đại học Nông Lâm - Bến tàu Hiệp Bình Chánh,0,shape_ho chi minh city_89_out
+ho chi minh city_89,service_daily,trip_ho chi minh city_89_0_186,Bến tàu Hiệp Bình Chánh - Đại học Nông Lâm,0,shape_ho chi minh city_89_out
+ho chi minh city_90,service_daily,trip_ho chi minh city_90_0_187,Phà Bình Khánh - Cần Thạnh,0,shape_ho chi minh city_90_out
+ho chi minh city_90,service_daily,trip_ho chi minh city_90_0_188,Cần Thạnh - Phà Bình Khánh,0,shape_ho chi minh city_90_out
+ho chi minh city_91,service_daily,trip_ho chi minh city_91_0_189,Bến xe Miền Tây - Chợ nông sản Thủ Đức,0,shape_ho chi minh city_91_out
+ho chi minh city_91,service_daily,trip_ho chi minh city_91_0_190,Chợ nông sản Thủ Đức - Bến xe Miền Tây,0,shape_ho chi minh city_91_out
+ho chi minh city_93,service_daily,trip_ho chi minh city_93_0_191,Bến Thành - Bến xe Miền Đông mới,0,shape_ho chi minh city_93_out
+ho chi minh city_93,service_daily,trip_ho chi minh city_93_0_192,Bến xe Miền Đông mới - Bến Thành,0,shape_ho chi minh city_93_out
+ho chi minh city_94,service_daily,trip_ho chi minh city_94_0_193,Bến xe Chợ Lớn - Bến xe Củ Chi,0,shape_ho chi minh city_94_out
+ho chi minh city_94,service_daily,trip_ho chi minh city_94_0_194,Bến xe Củ Chi - Bến xe Chợ Lớn,0,shape_ho chi minh city_94_out
+ho chi minh city_99,service_daily,trip_ho chi minh city_99_0_195,Chợ Thạnh Mỹ Lợi - Đại học Quốc gia,0,shape_ho chi minh city_99_out
+ho chi minh city_99,service_daily,trip_ho chi minh city_99_0_196,Đại học Quốc gia - Chợ Thạnh Mỹ Lợi,0,shape_ho chi minh city_99_out
+ho chi minh city_100,service_daily,trip_ho chi minh city_100_0_197,Bến xe Củ Chi - Cầu Tân Thái,0,shape_ho chi minh city_100_out
+ho chi minh city_100,service_daily,trip_ho chi minh city_100_0_198,Cầu Tân Thái - Bến xe Củ Chi,0,shape_ho chi minh city_100_out
+ho chi minh city_101,service_daily,trip_ho chi minh city_101_0_199,Bến xe Chợ Lớn - Chợ Tân Nhựt,0,shape_ho chi minh city_101_out
+ho chi minh city_101,service_daily,trip_ho chi minh city_101_0_200,Chợ Tân Nhựt - Bến xe Chợ Lớn,0,shape_ho chi minh city_101_out
+ho chi minh city_102,service_daily,trip_ho chi minh city_102_0_201,Bến xe Sài Gòn - Nguyễn Văn Linh - Bến xe Miền Tây,0,shape_ho chi minh city_102_out
+ho chi minh city_102,service_daily,trip_ho chi minh city_102_0_202,Bến xe Miền Tây - Nguyễn Văn Linh - Bến xe Sài Gòn,0,shape_ho chi minh city_102_out
+ho chi minh city_103,service_daily,trip_ho chi minh city_103_0_203,Bến xe Chợ Lớn - Bến xe Ngã tư Ga,0,shape_ho chi minh city_103_out
+ho chi minh city_103,service_daily,trip_ho chi minh city_103_0_204,Bến xe Ngã tư Ga - Bến xe Chợ Lớn,0,shape_ho chi minh city_103_out
+ho chi minh city_104,service_daily,trip_ho chi minh city_104_0_205,Bến xe An Sương - Bến xe buýt Văn Thánh,0,shape_ho chi minh city_104_out
+ho chi minh city_104,service_daily,trip_ho chi minh city_104_0_206,Bến xe buýt Văn Thánh - Bến xe An Sương,0,shape_ho chi minh city_104_out
+ho chi minh city_107,service_daily,trip_ho chi minh city_107_0_207,Bến xe Củ Chi - Bố Heo,0,shape_ho chi minh city_107_out
+ho chi minh city_107,service_daily,trip_ho chi minh city_107_0_208,Bố Heo - Bến xe Củ Chi,0,shape_ho chi minh city_107_out
+ho chi minh city_109,service_daily,trip_ho chi minh city_109_0_209,Sân bay Tân Sơn Nhất - Bến xe Sài Gòn,0,shape_ho chi minh city_109_out
+ho chi minh city_110,service_daily,trip_ho chi minh city_110_0_210,Hiệp Phước - Phước Lộc,0,shape_ho chi minh city_110_out
+ho chi minh city_110,service_daily,trip_ho chi minh city_110_0_211,Phước Lộc - Hiệp Phước,0,shape_ho chi minh city_110_out
+ho chi minh city_122,service_daily,trip_ho chi minh city_122_0_212,Bến xe An Sương - Tân Quy,0,shape_ho chi minh city_122_out
+ho chi minh city_122,service_daily,trip_ho chi minh city_122_0_213,Tân Quy - Bến xe An Sương,0,shape_ho chi minh city_122_out
+ho chi minh city_126,service_daily,trip_ho chi minh city_126_0_214,Bến xe Củ Chi - Bình Mỹ,0,shape_ho chi minh city_126_out
+ho chi minh city_126,service_daily,trip_ho chi minh city_126_0_215,Bình Mỹ - Bến xe Củ Chi,0,shape_ho chi minh city_126_out
+ho chi minh city_127,service_daily,trip_ho chi minh city_127_0_216,An Thới Đông - Ngã ba Bà Xán,0,shape_ho chi minh city_127_out
+ho chi minh city_127,service_daily,trip_ho chi minh city_127_0_217,Ngã ba Bà Xán - An Thới Đông,0,shape_ho chi minh city_127_out
+ho chi minh city_128,service_daily,trip_ho chi minh city_128_0_218,Tân Điền - An Nghĩa,0,shape_ho chi minh city_128_out
+ho chi minh city_128,service_daily,trip_ho chi minh city_128_0_219,An Nghĩa - Tân Điền,0,shape_ho chi minh city_128_out
+ho chi minh city_139,service_daily,trip_ho chi minh city_139_0_220,Bến xe Miền Tây - Khu tái định cư Phú Mỹ,0,shape_ho chi minh city_139_out
+ho chi minh city_139,service_daily,trip_ho chi minh city_139_0_221,Khu tái định cư Phú Mỹ - Bến xe Miền Tây,0,shape_ho chi minh city_139_out
+ho chi minh city_140,service_daily,trip_ho chi minh city_140_0_222,Bến xe Sài Gòn - Phạm Thế Hiển - Khu dân cư Phú Lợi,0,shape_ho chi minh city_140_out
+ho chi minh city_140,service_daily,trip_ho chi minh city_140_0_223,Khu dân cư Phú Lợi - Phạm Thế Hiển - Bến xe Sài Gòn,0,shape_ho chi minh city_140_out
+ho chi minh city_141,service_daily,trip_ho chi minh city_141_0_224,Khu du lịch BCR - Long Trường - Khu chế xuất Linh Trung II,0,shape_ho chi minh city_141_out
+ho chi minh city_141,service_daily,trip_ho chi minh city_141_0_225,Khu chế xuất Linh Trung II - Long Trường - Khu du lịch BCR,0,shape_ho chi minh city_141_out
+ho chi minh city_145,service_daily,trip_ho chi minh city_145_0_226,Bến xe Chợ Lớn - Chợ Hiệp Thành,0,shape_ho chi minh city_145_out
+ho chi minh city_145,service_daily,trip_ho chi minh city_145_0_227,Chợ Hiệp Thành - Bến xe Chợ Lớn,0,shape_ho chi minh city_145_out
+ho chi minh city_146,service_daily,trip_ho chi minh city_146_0_228,Bến xe Miền Đông - Chợ Hiệp Thành,0,shape_ho chi minh city_146_out
+ho chi minh city_146,service_daily,trip_ho chi minh city_146_0_229,Chợ Hiệp Thành - Bến xe Miền Đông,0,shape_ho chi minh city_146_out
+ho chi minh city_148,service_daily,trip_ho chi minh city_148_0_230,Bến xe Miền Tây - Gò Vấp,0,shape_ho chi minh city_148_out
+ho chi minh city_148,service_daily,trip_ho chi minh city_148_0_231,Gò Vấp - Bến xe Miền Tây,0,shape_ho chi minh city_148_out
+ho chi minh city_150,service_daily,trip_ho chi minh city_150_0_232,Bến xe Chợ Lớn - Bến xe Miền Đông mới,0,shape_ho chi minh city_150_out
+ho chi minh city_150,service_daily,trip_ho chi minh city_150_0_233,Bến xe Miền Đông mới - Bến xe Chợ Lớn,0,shape_ho chi minh city_150_out
+ho chi minh city_151,service_daily,trip_ho chi minh city_151_0_234,Bến xe Miền Tây - Bến xe An Sương,0,shape_ho chi minh city_151_out
+ho chi minh city_151,service_daily,trip_ho chi minh city_151_0_235,Bến xe An Sương - Bến xe Miền Tây,0,shape_ho chi minh city_151_out
+ho chi minh city_152,service_daily,trip_ho chi minh city_152_0_236,Khu dân cư Trung Sơn - Bến Thành - Sân bay Tân Sơn Nhất,0,shape_ho chi minh city_152_out
+ho chi minh city_152,service_daily,trip_ho chi minh city_152_0_237,Sân bay Tân Sơn Nhất - Bến Thành - Khu dân cư Trung Sơn,0,shape_ho chi minh city_152_out
+ho chi minh city_D3,service_daily,trip_ho chi minh city_D3_0_238,Riverside Resident - Crescent Mall,0,shape_ho chi minh city_D3_out
+ho chi minh city_D3,service_daily,trip_ho chi minh city_D3_0_239,Crescent Mall - Riverside Resident,0,shape_ho chi minh city_D3_out
+ho chi minh city_D4,service_daily,trip_ho chi minh city_D4_0_240,Vinhomes Grand Park - Bến xe Sài Gòn,0,shape_ho chi minh city_D4_out
+ho chi minh city_D4,service_daily,trip_ho chi minh city_D4_0_241,Bến xe Sài Gòn - Vinhomes Grand Park,0,shape_ho chi minh city_D4_out
+ho chi minh city_GRP01,service_daily,trip_ho chi minh city_GRP01_0_242,Nội khu Grand Park,0,shape_ho chi minh city_GRP01_out
+ho chi minh city_GRP03,service_daily,trip_ho chi minh city_GRP03_0_243,Grand Park 03,0,shape_ho chi minh city_GRP03_out
+ho chi minh city_07,service_daily,trip_ho chi minh city_07_0_244,Bến xe Biên Hòa - Bến xe Thạnh Phú,0,shape_ho chi minh city_07_out
+ho chi minh city_07,service_daily,trip_ho chi minh city_07_0_245,Bến xe Thạnh Phú - Bến xe Biên Hòa,0,shape_ho chi minh city_07_out
+ho chi minh city_10,service_daily,trip_ho chi minh city_10_0_246,Trạm xe Big C - Bến xe Xuân Lộc,0,shape_ho chi minh city_10_out
+ho chi minh city_10,service_daily,trip_ho chi minh city_10_0_247,Bến xe Xuân Lộc - Trạm xe Big C,0,shape_ho chi minh city_10_out
+ho chi minh city_11,service_daily,trip_ho chi minh city_11_0_248,Trạm xe Gò Dầu - Bến xe Ngã tư Vũng Tàu,0,shape_ho chi minh city_11_out
+ho chi minh city_16,service_daily,trip_ho chi minh city_16_0_249,Bến xe Phương Lâm - Bến xe Biên Hòa,0,shape_ho chi minh city_16_out
+ho chi minh city_60-18,service_daily,trip_ho chi minh city_60-18_0_250,Khu du lịch Đại Nam - Khu du lịch sinh thái Vườn Xoài,0,shape_ho chi minh city_60-18_out
+ho chi minh city_61-37,service_daily,trip_ho chi minh city_61-37_0_251,Văn phòng Xe Buýt Becamex Tokyu - Tòa nhà Becamex,0,shape_ho chi minh city_61-37_out
+ho chi minh city_61-38,service_daily,trip_ho chi minh city_61-38_0_252,Tòa nhà Becamex - Trường Ngô Thời Nhiệm,0,shape_ho chi minh city_61-38_out
+ho chi minh city_61-38,service_daily,trip_ho chi minh city_61-38_0_253,Trường Ngô Thời Nhiệm - Tòa nhà Becamex,0,shape_ho chi minh city_61-38_out
+ho chi minh city_61-39,service_daily,trip_ho chi minh city_61-39_0_254,Tòa nhà Becamex - Nhà ở xã hội Hòa Lợi,0,shape_ho chi minh city_61-39_out
+ho chi minh city_61-39,service_daily,trip_ho chi minh city_61-39_0_255,Nhà ở xã hội Hòa Lợi - Tòa nhà Becamex,0,shape_ho chi minh city_61-39_out
+ho chi minh city_61-51,service_daily,trip_ho chi minh city_61-51_0_256,Tòa nhà Becamex - Nhà ở xã hội Định Hòa,0,shape_ho chi minh city_61-51_out
+ho chi minh city_61-51,service_daily,trip_ho chi minh city_61-51_0_257,Nhà ở xã hội Định Hòa - Tòa nhà Becamex,0,shape_ho chi minh city_61-51_out
+ho chi minh city_61-52,service_daily,trip_ho chi minh city_61-52_0_258,Tòa nhà Becamex - Văn phòng Xe Buýt Becamex Tokyu,0,shape_ho chi minh city_61-52_out
+ho chi minh city_61-52,service_daily,trip_ho chi minh city_61-52_0_259,Văn phòng Xe Buýt Becamex Tokyu - Tòa nhà Becamex,0,shape_ho chi minh city_61-52_out
+ho chi minh city_61-53,service_daily,trip_ho chi minh city_61-53_0_260,Tòa nhà Becamex - Trường Ngô Thời Nhiệm,0,shape_ho chi minh city_61-53_out
+ho chi minh city_61-53,service_daily,trip_ho chi minh city_61-53_0_261,Trường Ngô Thời Nhiệm - Tòa nhà Becamex,0,shape_ho chi minh city_61-53_out
+ho chi minh city_61-55,service_daily,trip_ho chi minh city_61-55_0_262,Tòa nhà Becamex - Đại học Quốc tế Miền Đông (EIU),0,shape_ho chi minh city_61-55_out
+ho chi minh city_61-55,service_daily,trip_ho chi minh city_61-55_0_263,Đại học Quốc tế Miền Đông (EIU) - Tòa nhà Becamex,0,shape_ho chi minh city_61-55_out
+ho chi minh city_61-77A,service_daily,trip_ho chi minh city_61-77A_0_264,Bến xe Miền Đông mới - Trạm trung chuyển Hikari,0,shape_ho chi minh city_61-77A_out
+ho chi minh city_61-77A,service_daily,trip_ho chi minh city_61-77A_0_265,Trạm trung chuyển Hikari - Bến xe Miền Đông mới,0,shape_ho chi minh city_61-77A_out
+ho chi minh city_153,service_daily,trip_ho chi minh city_153_0_266,Ga tàu thuỷ Bình An - Đường Liên Phường,0,shape_ho chi minh city_153_out
+ho chi minh city_153,service_daily,trip_ho chi minh city_153_0_267,Đường Liên Phường - Ga tàu thuỷ Bình An,0,shape_ho chi minh city_153_out
+ho chi minh city_154,service_daily,trip_ho chi minh city_154_0_268,Trường Đại học Quản lý và Công nghệ - Masteri An Phú,0,shape_ho chi minh city_154_out
+ho chi minh city_155,service_daily,trip_ho chi minh city_155_0_269,Ga Bến Thành (Cổng 1) - Bến Vân Đồn - Ga Nhà hát Thành phố,0,shape_ho chi minh city_155_out
+ho chi minh city_154,service_daily,trip_ho chi minh city_154_0_270,Masteri An Phú - Trường Đại học Quản lý và Công nghệ,0,shape_ho chi minh city_154_out
+ho chi minh city_156D,service_daily,trip_ho chi minh city_156D_0_271,Bến Thành - Ga Hòa Hưng - Bệnh viện Mắt Thành phố Hồ Chí Minh,0,shape_ho chi minh city_156D_out
+ho chi minh city_156V,service_daily,trip_ho chi minh city_156V_0_272,Bến Thành - Đại học Sài Gòn Cơ sở 3 - Ga Hòa Hưng,0,shape_ho chi minh city_156V_out
+ho chi minh city_157,service_daily,trip_ho chi minh city_157_0_273,Khu dân cư Thạnh Mỹ Lợi,0,shape_ho chi minh city_157_out
+ho chi minh city_157,service_daily,trip_ho chi minh city_157_0_274,Khu dân cư Thạnh Mỹ Lợi - Bến xe buýt Văn Thánh,0,shape_ho chi minh city_157_out
+ho chi minh city_158,service_daily,trip_ho chi minh city_158_0_275,Bến xe buýt Văn Thánh - Cư xá Thanh Đa,0,shape_ho chi minh city_158_out
+ho chi minh city_159,service_daily,trip_ho chi minh city_159_0_276,Chung cư Ngô Tất Tố - Ngã tư Hàng Xanh,0,shape_ho chi minh city_159_out
+ho chi minh city_160,service_daily,trip_ho chi minh city_160_0_277,Ga Văn Thánh - Vinhomes Central Park,0,shape_ho chi minh city_160_out
+ho chi minh city_161,service_daily,trip_ho chi minh city_161_0_278,Bến xe buýt Văn Thánh - Bến xe Ngã tư Ga,0,shape_ho chi minh city_161_out
+ho chi minh city_161,service_daily,trip_ho chi minh city_161_0_279,Bến xe Ngã tư Ga - Bến xe buýt Văn Thánh,0,shape_ho chi minh city_161_out
+ho chi minh city_162,service_daily,trip_ho chi minh city_162_0_280,Ga Thủ Đức - Chung cư Man Thiện - Ga Bình Thái,0,shape_ho chi minh city_162_out
+ho chi minh city_162,service_daily,trip_ho chi minh city_162_0_281,Ga Bình Thái - Chung cư Man Thiện - Ga Thủ Đức,0,shape_ho chi minh city_162_out
+ho chi minh city_163V,service_daily,trip_ho chi minh city_163V_0_282,Ga Metro Bình Thái - Cao đẳng Công Thương - Trường Trung học cơ sở Phước Bình,0,shape_ho chi minh city_163V_out
+ho chi minh city_163D,service_daily,trip_ho chi minh city_163D_0_283,Ga Metro Bình Thái - Trường Trung học cơ sở Phước Bình - Cao đẳng Công Thương,0,shape_ho chi minh city_163D_out
+ho chi minh city_164D,service_daily,trip_ho chi minh city_164D_0_284,Đại học Nông Lâm - Ga Metro Khu Công nghệ cao - Chung cư Topaz,0,shape_ho chi minh city_164D_out
+ho chi minh city_164V,service_daily,trip_ho chi minh city_164V_0_285,Đại học Nông Lâm - Chung cư Topaz - Ga Metro Khu Công nghệ cao,0,shape_ho chi minh city_164V_out
+ho chi minh city_165,service_daily,trip_ho chi minh city_165_0_286,Đại học Nông Lâm - Khu Công nghệ cao,0,shape_ho chi minh city_165_out
+ho chi minh city_166,service_daily,trip_ho chi minh city_166_0_287,Ga Đại học Quốc gia - Ga Đại học Quốc gia,0,shape_ho chi minh city_166_out
+ho chi minh city_167V,service_daily,trip_ho chi minh city_167V_0_288,Đại học Hutech - Đại học Kinh tế Luật - Khu chế xuất linh trung 1 - Ga Khu công nghệ cao,0,shape_ho chi minh city_167V_out
+ho chi minh city_167D,service_daily,trip_ho chi minh city_167D_0_289,Đại học Hutech - Ga Khu công nghệ cao - Đại học Kinh tế Luật - Khu Chế xuất Linh Trung 1,0,shape_ho chi minh city_167D_out
+ho chi minh city_168V,service_daily,trip_ho chi minh city_168V_0_290,Đại học Ngân hàng - Nhà Thiếu nhi Thành phố Thủ Đức - Ga Thủ Đức,0,shape_ho chi minh city_168V_out
+ho chi minh city_168D,service_daily,trip_ho chi minh city_168D_0_291,Đại học Ngân hàng - Ga Thủ Đức - Nhà Thiếu nhi Thành phố Thủ Đức,0,shape_ho chi minh city_168D_out
+ho chi minh city_169V,service_daily,trip_ho chi minh city_169V_0_292,Ga Metro Bình Thái - Cảng Phúc Long - Vincom Thủ Đức,0,shape_ho chi minh city_169V_out
+ho chi minh city_169D,service_daily,trip_ho chi minh city_169D_0_293,Ga Metro Bình Thái - Vincom Thủ Đức - Cảng Phúc Long,0,shape_ho chi minh city_169D_out
+ho chi minh city_TGC01,service_daily,trip_ho chi minh city_TGC01_0_294,The Global City - Techcombank Lê Duẩn,0,shape_ho chi minh city_TGC01_out
+ho chi minh city_60-5,service_daily,trip_ho chi minh city_60-5_0_295,Bến xe Biên Hòa,0,shape_ho chi minh city_60-5_out
+ho chi minh city_60-5,service_daily,trip_ho chi minh city_60-5_0_296,Bến xe Biên Hoà - Bến xe buýt Đại học Quốc Gia,0,shape_ho chi minh city_60-5_out
+ho chi minh city_60-7,service_daily,trip_ho chi minh city_60-7_0_297,Bến xe Miền Đông mới - Bến xe Biên Hoà,0,shape_ho chi minh city_60-7_out
+ho chi minh city_60-7,service_daily,trip_ho chi minh city_60-7_0_298,Bến xe Biên Hoà - Bến xe Miền Đông mới,0,shape_ho chi minh city_60-7_out
+ho chi minh city_61-2,service_daily,trip_ho chi minh city_61-2_0_299,Thủ Dầu Một - Mỹ Phước,0,shape_ho chi minh city_61-2_out
+ho chi minh city_61-2,service_daily,trip_ho chi minh city_61-2_0_300,Mỹ Phước - Thủ Dầu Một,0,shape_ho chi minh city_61-2_out
+ho chi minh city_61-4,service_daily,trip_ho chi minh city_61-4_0_301,Thủ Dầu Một - Thanh Tuyền - Dầu Tiếng,0,shape_ho chi minh city_61-4_out
+ho chi minh city_61-4,service_daily,trip_ho chi minh city_61-4_0_302,Dầu Tiếng - Thanh Tuyền - Thủ Dầu Một,0,shape_ho chi minh city_61-4_out
+ho chi minh city_TIA,service_daily,trip_ho chi minh city_TIA_0_303,Tân Sơn Nhất Shuttle Bus,0,shape_ho chi minh city_TIA_out
+ho chi minh city_61-9,service_daily,trip_ho chi minh city_61-9_0_304,Thủ Dầu Một - Suối Tiên - Bến xe Miền Đông Mới,0,shape_ho chi minh city_61-9_out
+ho chi minh city_61-9,service_daily,trip_ho chi minh city_61-9_0_305,Bến xe Miền Đông mới - Suối Tiên - Thủ Dầu Một,0,shape_ho chi minh city_61-9_out
+ho chi minh city_61-77B,service_daily,trip_ho chi minh city_61-77B_0_306,Bến xe Miền Đông mới - Siêu thị GO! Dĩ An,0,shape_ho chi minh city_61-77B_out
+ho chi minh city_61-77B,service_daily,trip_ho chi minh city_61-77B_0_307,Siêu thị GO! Dĩ An - Bến xe Miền Đông mới,0,shape_ho chi minh city_61-77B_out
+ho chi minh city_72-2B,service_daily,trip_ho chi minh city_72-2B_0_308,Cảng tàu khách Vũng Tàu - Sân bay Tân Sơn Nhất,0,shape_ho chi minh city_72-2B_out
+ho chi minh city_72-2B,service_daily,trip_ho chi minh city_72-2B_0_309,Sân bay Tân Sơn Nhất - Cảng tàu khách Vũng Tàu,0,shape_ho chi minh city_72-2B_out
+ho chi minh city_86,service_daily,trip_ho chi minh city_86_0_310,Bến Thành - Đại học Tôn Đức Thắng - Nhơn Đức,0,shape_ho chi minh city_86_out
+ho chi minh city_86,service_daily,trip_ho chi minh city_86_0_311,Nhơn Đức - Đại học Tôn Đức Thắng - Bến Thành,0,shape_ho chi minh city_86_out
+ho chi minh city_171,service_daily,trip_ho chi minh city_171_0_312,Bến xe Phú Chánh - Trung tâm hành chính Bình Dương - Bến Thành,0,shape_ho chi minh city_171_out
+ho chi minh city_171,service_daily,trip_ho chi minh city_171_0_313,Bến Thành - Trung tâm hành chính Bình Dương - Bến xe Phú Chánh,0,shape_ho chi minh city_171_out
+ho chi minh city_172,service_daily,trip_ho chi minh city_172_0_314,Bến xe Vũng Tàu - Trung tâm hành chính Bà Rịa-Vũng Tàu - Bến Thành,0,shape_ho chi minh city_172_out
+ho chi minh city_172,service_daily,trip_ho chi minh city_172_0_315,Bến Thành - Trung tâm hành chính Bà Rịa-Vũng Tàu - Bến xe Vũng Tàu,0,shape_ho chi minh city_172_out
+ho chi minh city_60-15,service_daily,trip_ho chi minh city_60-15_0_316,Thủ Dầu Một - Đồng Xoài,0,shape_ho chi minh city_60-15_out
+ho chi minh city_60-15,service_daily,trip_ho chi minh city_60-15_0_317,Đồng Xoài - Thủ Dầu Một,0,shape_ho chi minh city_60-15_out
+ho chi minh city_170,service_daily,trip_ho chi minh city_170_0_318,Bến xe buýt khu A - Bến xe buýt khu B,0,shape_ho chi minh city_170_out
+ho chi minh city_170,service_daily,trip_ho chi minh city_170_0_319,Bến xe buýt khu B - Bến xe buýt khu A,0,shape_ho chi minh city_170_out

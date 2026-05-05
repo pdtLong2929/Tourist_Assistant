@@ -1,0 +1,2 @@
+feed_publisher_name,feed_publisher_url,feed_lang,feed_start_date,feed_end_date,feed_version
+vietnam-gtfs (community scraper),https://github.com/yourname/vietnam-gtfs,vi,20260504,20261031,20260504
