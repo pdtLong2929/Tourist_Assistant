@@ -11,39 +11,6 @@ Single PostgreSQL database, all tables under the `trip_db` schema. Data is split
 
 ---
 
-## Setup Order
-
-Use the bootloader — it handles everything automatically:
-
-```bash
-python bootloader.py \
-  --dsn         "postgresql://user:pass@localhost:5432/mydb" \
-  --hanoi-gtfs  ./hanoi_gtfs \
-  --hcmc-gtfs   ./hcmc_gtfs \
-  --triples     ./final_destination_triples.json
-```
-
-Or run manually in this order:
-
-```
-1. schema_v2.sql       — app + transport tables
-2. gtfs_schema.sql     — GTFS tables + views + nearest_stops()
-3. triples_schema.sql  — destination_triples + destination_aspects
-4. seed.sql            — transport modes + providers + top 30 aspects
-5. gtfs_loader.py      — import GTFS feed(s) per city
-6. triples_loader.py   — import destination triples JSON
-```
-
-**Skip flags** (bootloader only):
-```bash
---skip-schema    # skip SQL schema files (already applied)
---skip-seed      # skip seed.sql
---skip-gtfs      # skip GTFS loading
---skip-triples   # skip triples loading
-```
-
----
-
 ## Tables
 
 ### `users`
