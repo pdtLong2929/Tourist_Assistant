@@ -13,7 +13,11 @@ app = FastAPI(title="RAG Transportation Service")
 
 # Initialize Gemini Client
 # Assumes GEMINI_API_KEY is in environment variables
-client = genai.Client()
+try:
+    client = genai.Client()
+except Exception as e:
+    print(f"Warning: Failed to initialize Gemini Client: {e}")
+    client = None
 MODEL_ID = "gemini-2.5-flash"
 EMBEDDING_MODEL_ID = "gemini-embedding-001"
 
@@ -57,6 +61,9 @@ def health_check():
 @app.post("/rag/ingest")
 def ingest_knowledge(req: IngestRequest):
     try:
+        if not client:
+            raise HTTPException(status_code=500, detail="Gemini client not initialized")
+            
         # Generate embedding
         response = client.models.embed_content(
             model=EMBEDDING_MODEL_ID,
@@ -80,6 +87,9 @@ def ingest_knowledge(req: IngestRequest):
 @app.post("/rag/suggest")
 def suggest_transport(req: SuggestRequest):
     try:
+        if not client:
+            raise HTTPException(status_code=500, detail="Gemini client not initialized")
+            
         query_text = f"Weather is {req.weather_condition} with {req.temperature}. Route distance is {req.distance} and traffic is {req.traffic_condition}."
         
         # Generate embedding for the query
