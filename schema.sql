@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict gLqhIqQADy0nn4lR4ccXR66F98wh4uRc3Ykwjm0sp2ryH3OilyiRWaq7ZSY6PoO
+\restrict UdNiwztzb4O8NAcMs7a0dcPEXvaEvbjIBSdnhUgVXKI6pQtfV5EHwZLGfsp0py8
 
 -- Dumped from database version 18.3 (Debian 18.3-1.pgdg13+1)
 -- Dumped by pg_dump version 18.3 (Debian 18.3-1.pgdg13+1)
@@ -59,6 +59,19 @@ ALTER FUNCTION trip_db.nearest_stops(lat numeric, lon numeric, p_feed character,
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
+
+--
+-- Name: destination_triples; Type: TABLE; Schema: trip_db; Owner: admin
+--
+
+CREATE TABLE trip_db.destination_triples (
+    destination_id character(10) NOT NULL,
+    triples jsonb NOT NULL,
+    generated_at timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+ALTER TABLE trip_db.destination_triples OWNER TO admin;
 
 --
 -- Name: destinations; Type: TABLE; Schema: trip_db; Owner: admin
@@ -450,6 +463,14 @@ CREATE VIEW trip_db.v_route_stops AS
 ALTER VIEW trip_db.v_route_stops OWNER TO admin;
 
 --
+-- Name: destination_triples destination_triples_pkey; Type: CONSTRAINT; Schema: trip_db; Owner: admin
+--
+
+ALTER TABLE ONLY trip_db.destination_triples
+    ADD CONSTRAINT destination_triples_pkey PRIMARY KEY (destination_id);
+
+
+--
 -- Name: destinations destinations_pkey; Type: CONSTRAINT; Schema: trip_db; Owner: admin
 --
 
@@ -788,6 +809,14 @@ CREATE INDEX idx_users_phone ON trip_db.users USING btree (phone);
 
 
 --
+-- Name: destination_triples fk_destination_triples_destination; Type: FK CONSTRAINT; Schema: trip_db; Owner: admin
+--
+
+ALTER TABLE ONLY trip_db.destination_triples
+    ADD CONSTRAINT fk_destination_triples_destination FOREIGN KEY (destination_id) REFERENCES trip_db.destinations(destination_id) ON DELETE CASCADE;
+
+
+--
 -- Name: gtfs_agency fk_gtfs_agency_feed; Type: FK CONSTRAINT; Schema: trip_db; Owner: admin
 --
 
@@ -967,5 +996,5 @@ ALTER TABLE ONLY trip_db.user_preferences
 -- PostgreSQL database dump complete
 --
 
-\unrestrict gLqhIqQADy0nn4lR4ccXR66F98wh4uRc3Ykwjm0sp2ryH3OilyiRWaq7ZSY6PoO
+\unrestrict UdNiwztzb4O8NAcMs7a0dcPEXvaEvbjIBSdnhUgVXKI6pQtfV5EHwZLGfsp0py8
 

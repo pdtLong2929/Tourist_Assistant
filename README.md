@@ -13,14 +13,33 @@ Single PostgreSQL database, all tables under the `trip_db` schema. Data is split
 
 ## Setup Order
 
-Run these files in order:
+Use the bootloader — it handles everything automatically:
+
+```bash
+python bootloader.py \
+  --dsn         "postgresql://user:pass@localhost:5432/mydb" \
+  --hanoi-gtfs  ./hanoi_gtfs \
+  --hcmc-gtfs   ./hcmc_gtfs \
+  --triples     ./final_destination_triples.json
+```
+
+Or run manually in this order:
 
 ```
-1. schema.sql       — all app + transport tables
-2. data.sql         — user + destinations + reviews + user_preferences
-2. gtfs_schema.sql     — GTFS tables + views + nearest_stops() function
-3. seed.sql            — static data for modes and providers
-4. gtfs_loader.py      — import GTFS feed(s) for each city
+1. schema_v2.sql       — app + transport tables
+2. gtfs_schema.sql     — GTFS tables + views + nearest_stops()
+3. triples_schema.sql  — destination_triples + destination_aspects
+4. seed.sql            — transport modes + providers + top 30 aspects
+5. gtfs_loader.py      — import GTFS feed(s) per city
+6. triples_loader.py   — import destination triples JSON
+```
+
+**Skip flags** (bootloader only):
+```bash
+--skip-schema    # skip SQL schema files (already applied)
+--skip-seed      # skip seed.sql
+--skip-gtfs      # skip GTFS loading
+--skip-triples   # skip triples loading
 ```
 
 ---
@@ -48,7 +67,8 @@ One row per user. Stores soft preferences as JSONB — not behavioral history, j
 |---|---|---|
 | `user_id` | char(10) | PK, FK → users |
 | `preferred_transport_modes` | jsonb | e.g. `["BUS","WALK"]` |
-| `preferred_destination_tags` | jsonb | e.g. `["food: 0.5","nature: 0.1"]` |
+| `preferred_destination_tags` | jsonb | e.g. `["food","nature"]` |
+| `preferred_food_tags` | jsonb | |
 | `avoid_tags` | jsonb | e.g. `["crowded"]` |
 | `budget_min` | numeric(12,2) | VND |
 | `budget_max` | numeric(12,2) | VND |
@@ -230,6 +250,36 @@ Scoring service output for a specific `route_option`. Stores each factor separat
 
 ---
 
+### `destination_triples`
+Cosimilarity triple data per destination, generated from review text. Kept separate from `destinations` so regular destination queries stay lean — only joined when running recommendations.
+
+| Column | Type | Notes |
+|---|---|---|
+| `destination_id` | char(10) | PK, FK → destinations |
+| `triples` | jsonb | keyed by aspect, e.g. `{"food": {"pos": ["fresh"], "neg": [], "score": 0.85}}` |
+| `generated_at` | timestamptz | when the triples were last computed |
+
+GIN index on `triples` enables fast aspect queries without full table scans.
+
+> **Current dataset:** 481 destinations, 243 triple keys each. 16 of the top 30 aspects have direct matches in the data; the remaining 14 (e.g. `temple`, `church`, `tea`) simply had no review signal — they return no score rather than erroring.
+
+---
+
+### `destination_aspects`
+The top 30 aspects shown in the user input form, ranked by popularity. The frontend reads this table to render filter options; the recommendation service uses `aspect_key` to look up the matching triple key.
+
+| Column | Type | Notes |
+|---|---|---|
+| `aspect_id` | serial | PK |
+| `aspect_key` | varchar(50) | unique — matches key in `destination_triples.triples` |
+| `display_name` | varchar(100) | label shown in UI |
+| `popularity_rank` | smallint | 1 = most popular |
+
+**Top 30 aspects (seeded):**
+`market`, `food`, `price`, `guide`, `service`, `staff`, `park`, `space`, `view`, `quality`, `temple`, `air`, `trees`, `church`, `shop`, `mall`, `floor`, `atmosphere`, `city`, `attitude`, `culture`, `location`, `markets`, `life`, `clothes`, `store`, `scenery`, `goods`, `tea`, `fun`
+
+---
+
 ## GTFS Tables
 
 These are populated by `gtfs_loader.py` and should be treated as **read-only** by the app — only the loader writes to them.
@@ -282,7 +332,28 @@ JOIN trip_db.transport_modes m ON m.mode_id = p.mode_id
 WHERE m.code = 'RIDE_HAILING' AND p.is_active = true;
 ```
 
-### Route options for a request, with scores
+### Destinations scored by multiple user-selected aspects
+```sql
+-- Dynamically built by recommendation service based on user's selected aspects
+SELECT d.destination_id, d.name,
+    COALESCE((t.triples -> 'food'  ->> 'score')::numeric, 0) +
+    COALESCE((t.triples -> 'view'  ->> 'score')::numeric, 0) +
+    COALESCE((t.triples -> 'space' ->> 'score')::numeric, 0) AS relevance_score
+FROM trip_db.destination_triples t
+JOIN trip_db.destinations d ON d.destination_id = t.destination_id
+WHERE d.is_active = true
+ORDER BY relevance_score DESC
+LIMIT 10;
+```
+
+### All aspects for the input form, in order
+```sql
+SELECT aspect_key, display_name
+FROM trip_db.destination_aspects
+ORDER BY popularity_rank;
+```
+
+
 ```sql
 SELECT
     ro.option_name,
