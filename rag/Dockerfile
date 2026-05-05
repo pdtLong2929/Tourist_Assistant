@@ -13,4 +13,4 @@ COPY . .
 EXPOSE 8000
 
 # Run seed script then start the application
-CMD ["sh", "-c", "python seed.py && uvicorn main:app --host 0.0.0.0 --port 8000"]
+CMD ["sh", "-c", "python seed.py && uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"]
