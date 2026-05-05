@@ -8,7 +8,11 @@ import time
 
 load_dotenv()
 
-client = genai.Client()
+try:
+    client = genai.Client()
+except Exception as e:
+    print(f"Warning: Failed to initialize Gemini Client: {e}")
+    client = None
 EMBEDDING_MODEL_ID = "gemini-embedding-001"
 DB_URL = os.getenv("POSTGRES_URL")
 
@@ -69,6 +73,10 @@ def seed():
             
             if existing and existing[0] == item["description"]:
                 print(f"Skipping '{item['type']}' - no changes detected.")
+                continue
+
+            if not client:
+                print(f"Warning: Gemini client not initialized. Skipping embedding generation for '{item['type']}'.")
                 continue
 
             print(f"Generating embedding for '{item['type']}'...")

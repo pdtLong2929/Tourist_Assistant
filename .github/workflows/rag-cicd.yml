@@ -123,7 +123,4 @@ jobs:
             --image $DOCKER_TAG \
             --region ${{ env.REGION }} \
             --allow-unauthenticated \
-            --set-secrets="GEMINI_API_KEY=GEMINI_API_KEY:latest" \
-            --set-env-vars="\
-            --set-secrets="\
-            POSTGRES_URL=POSTGRES_URL:latest"
+            --set-secrets="GEMINI_API_KEY=GEMINI_API_KEY:latest,POSTGRES_URL=POSTGRES_URL:latest"
