@@ -2,7 +2,7 @@ name: RAG Service CI/CD to GCP
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "rag" ]
     paths:
       - 'rag/**'
       - '.github/workflows/rag-cicd.yml'
@@ -36,7 +36,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
+          python-version: '3.14'
 
       - name: Install dependencies
         working-directory: ./rag
@@ -64,7 +64,7 @@ jobs:
         run: |
           echo "Waiting for RAG service to respond on port 8000..."
           for i in $(seq 1 30); do
-            if curl -sf http://localhost:8000/docs > /dev/null 2>&1; then
+            if curl -sf http://localhost:8000/health > /dev/null 2>&1; then
               echo "RAG service is up!"
               exit 0
             fi
@@ -125,4 +125,5 @@ jobs:
             --allow-unauthenticated \
             --set-secrets="GEMINI_API_KEY=GEMINI_API_KEY:latest" \
             --set-env-vars="\
-          DATABASE_URL=postgresql://tourist:tourist_secret@postgres:5432/tourist_assistant"
+            --set-secrets="\
+            POSTGRES_URL=POSTGRES_URL:latest"

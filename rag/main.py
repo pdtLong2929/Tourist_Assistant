@@ -17,7 +17,7 @@ client = genai.Client()
 MODEL_ID = "gemini-2.5-flash"
 EMBEDDING_MODEL_ID = "gemini-embedding-001"
 
-DB_URL = os.getenv("DATABASE_URL")
+DB_URL = os.getenv("POSTGRES_URL")
 
 class IngestRequest(BaseModel):
     transport_type: str
@@ -49,6 +49,10 @@ def startup_event():
         """)
     finally:
         conn.close()
+
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}
 
 @app.post("/rag/ingest")
 def ingest_knowledge(req: IngestRequest):
@@ -103,7 +107,7 @@ def suggest_transport(req: SuggestRequest):
             context_blocks.append(f"- {row[0]}: {row[1]}")
         context_str = "\n".join(context_blocks)
 
-        prompt = f"""You are an expert travel assistant. Based on the following facts, recommend the best transport method.
+        prompt = f"""You are an expert travel assistant. Based on the following facts, please rate all transportation types and provide an explanation for each rating.
 
 [Relevant Knowledge from DB]: 
 {context_str}
@@ -111,7 +115,7 @@ def suggest_transport(req: SuggestRequest):
 [Current Context]:
 {query_text}
 
-Question: Which transport method is best for the user right now and why? Keep your answer concise.
+Question: Rate all transportation types based on the current context and provide a brief explanation for each rating.
 """
 
         # Generate response using Gemini

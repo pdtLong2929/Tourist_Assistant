@@ -1,0 +1,7 @@
+fastapi
+uvicorn[standard]
+pydantic
+psycopg[binary,pool]
+pgvector
+google-genai
+python-dotenv

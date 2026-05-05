@@ -29,8 +29,8 @@ lerna-debug.log*
 .DS_Store?
 Thumbs.db
 
-# Project-specific temporary files
-*.txt
+tsc_output.txt
+tsc.txt
 
 # Agents
 /.agents
