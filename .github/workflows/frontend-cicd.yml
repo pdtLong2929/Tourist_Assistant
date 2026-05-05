@@ -60,8 +60,9 @@ jobs:
 
       - name: Create .env from defaults
         run: |
-          cp .env.example .env
-          cp login/.env.example login/.env
+          cp .env.example .env || true
+          cp login/.env.example login/.env || true
+          touch rag/.env || true
 
       - name: Start services via Docker Compose
         run: docker compose up -d --build --wait
