@@ -10,7 +10,7 @@ load_dotenv()
 
 client = genai.Client()
 EMBEDDING_MODEL_ID = "gemini-embedding-001"
-DB_URL = os.getenv("DATABASE_URL")
+DB_URL = os.getenv("POSTGRES_URL")
 
 seed_data = [
     {

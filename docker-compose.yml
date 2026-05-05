@@ -120,7 +120,7 @@ services:
     env_file:
       - ./rag/.env
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER:-tourist}:${POSTGRES_PASSWORD:-tourist_secret}@postgres:5432/${POSTGRES_DB:-tourist_assistant}
+      POSTGRES_URL: postgresql://${POSTGRES_USER:-tourist}:${POSTGRES_PASSWORD:-tourist_secret}@postgres:5432/${POSTGRES_DB:-tourist_assistant}
     depends_on:
       postgres:
         condition: service_healthy
