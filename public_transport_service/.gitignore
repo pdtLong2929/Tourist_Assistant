@@ -12,6 +12,7 @@ __pycache__/
 gtfs-hcmc/
 gtfs_hn/
 *.txt
+!requirements.txt
 *.csv
 *.zip
 
@@ -30,3 +31,6 @@ Thumbs.db
 .pytest_cache/
 htmlcov/
 .coverage
+
+data/*
+!data/.gitkeep
