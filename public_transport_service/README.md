@@ -4,7 +4,7 @@
 - **Pure Python:** Thuật toán tính toán không gian (Spatial calculation) và routing được xây dựng bằng Python thuần 
 
 ## Hướng dẫn cài đặt
-**Bước 1:** Tạo thưu mục data cùng cấp với app và chuẩn bị gtfs_hn và gtfs_hcmc trong thư mục data, lấy trong link sau:
+**Bước 1:** Tạo thư mục data cùng cấp với app và chuẩn bị gtfs_hn và gtfs_hcmc trong thư mục data, lấy trong link sau:
 [https://drive.google.com/drive/u/0/folders/1e5s1h44qkmZe7G280C-nAOO8kIaB_xWK](https://drive.google.com/drive/u/0/folders/1e5s1h44qkmZe7G280C-nAOO8kIaB_xWK)
 
 **Bước 2:** Chuẩn bị môi trường
