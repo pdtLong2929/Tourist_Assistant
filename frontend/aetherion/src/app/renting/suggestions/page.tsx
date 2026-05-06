@@ -32,6 +32,39 @@ export default function RentingSuggestion() {
   const [floatingIcons, setFloatingIcons] = useState<any[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [matchProgress, setMatchProgress] = useState(0);
+  const [userId] = useState(() => typeof window !== 'undefined' ? `user_${Math.random().toString(36).substring(7)}` : '');
+
+  useEffect(() => {
+    if (!userId) return;
+    const wsUrl = window.location.protocol === 'https:' ? `wss://${window.location.host}/ws?userId=${userId}` : `ws://${window.location.host}/ws?userId=${userId}`;
+    const ws = new WebSocket(wsUrl);
+
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        console.log("WebSocket Received:", data);
+        if (data.result) {
+          setResult({
+            vehicle: "AI Recommended Selection",
+            category: "Optimal Match",
+            reason: data.result,
+            matchScore: 99,
+            features: [
+              { label: "AI Confidence", score: 99 }
+            ],
+            specs: {
+              details: "Analyzed by AI Worker"
+            },
+          });
+          setLoading(false);
+        }
+      } catch (e) {
+        console.error("Error parsing WS message:", e);
+      }
+    };
+
+    return () => ws.close();
+  }, [userId]);
 
   const aiIcons = [Cpu, Network, BrainCircuit, Database, Fingerprint, Sparkles];
 
@@ -49,7 +82,7 @@ export default function RentingSuggestion() {
     setFloatingIcons(generatedIcons);
   }, []);
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     if (!inputValue.trim()) return;
     setLoading(true);
     setResult(null);
@@ -61,30 +94,22 @@ export default function RentingSuggestion() {
       );
     }, 100);
 
-    setTimeout(() => {
-      clearInterval(progressInterval);
-      setMatchProgress(100);
-      setResult({
-        vehicle: "Cyber SUV X",
-        category: "Premium All-Terrain",
-        reason:
-          "Advanced AWD system with terrain response control matches your highland requirements. Vehicle equipped with adaptive suspension for Da Lat's mountainous roads.",
-        matchScore: 98,
-        features: [
-          { label: "Terrain Match", score: 99 },
-          { label: "Weather Adapt", score: 95 },
-          { label: "Comfort Level", score: 98 },
-          { label: "Safety Rating", score: 97 },
-        ],
-        specs: {
-          power: "450 HP",
-          range: "500 km",
-          seats: "7",
-          drivetrain: "Intelligent AWD",
-        },
+    try {
+      await fetch('/api/v1/jobs/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: userId,
+          query: inputValue,
+          jobType: "vehicle_suggestion"
+        })
       });
+      // Do not set loading to false here, wait for the WebSocket message
+    } catch (e) {
+      console.error(e);
       setLoading(false);
-    }, 2500);
+      clearInterval(progressInterval);
+    }
   };
 
   if (!mounted) return null;

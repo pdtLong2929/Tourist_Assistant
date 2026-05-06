@@ -146,8 +146,81 @@ services:
     depends_on:
       - frontend
       - login
+      - api_service
+      - notification
     networks:
       - ta_network
+
+  # ─── Go Notification Service ────────────────────────────────────────────
+  notification:
+    build:
+      context: ./notification
+      dockerfile: Dockerfile
+    container_name: ta_notification
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      PORT: 8080
+    networks:
+      - ta_network
+
+  # ─── Go API Service (Async tasks) ───────────────────────────────────────
+  api_service:
+    build:
+      context: ./api_service
+      dockerfile: Dockerfile
+    container_name: ta_api_service
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      PORT: 8081
+    networks:
+      - ta_network
+
+  # ─── Go Worker Service ────────────────────────────────────────────────
+  worker_service:
+    build:
+      context: ./worker_service
+      dockerfile: Dockerfile
+    container_name: ta_worker_service
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    environment:
+      PORT: 8001
+    networks:
+      - ta_network
+
+  # ─── Pub/Sub Emulator ──────────────────────────────────────────────────
+  pubsub:
+    image: gcr.io/google.com/cloudsdktool/cloud-sdk:emulators
+    container_name: ta_pubsub
+    command: gcloud beta emulators pubsub start --project=test-project --host-port=0.0.0.0:8085
+    ports:
+      - "8085:8085"
+    networks:
+      - ta_network
+
+  # ─── Pub/Sub Init ──────────────────────────────────────────────────────
+  pubsub-init:
+    image: curlimages/curl
+    container_name: ta_pubsub_init
+    depends_on:
+      - pubsub
+    networks:
+      - ta_network
+    command: >
+      sh -c "
+        echo 'Waiting for Pub/Sub to start...';
+        sleep 5;
+        curl -s -X PUT http://pubsub:8085/v1/projects/test-project/topics/ai-jobs;
+        curl -s -X PUT http://pubsub:8085/v1/projects/test-project/topics/ai-results;
+        curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/worker-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/ai-jobs\",\"pushConfig\":{\"pushEndpoint\":\"http://worker_service:8001/pubsub/push\"}}';
+        curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/notification-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/ai-results\",\"pushConfig\":{\"pushEndpoint\":\"http://notification:8080/pubsub/results\"}}';
+        echo 'Pub/Sub Initialized!';
+      "
 
 # ─── Volumes ──────────────────────────────────────────────────────────────
 volumes:
