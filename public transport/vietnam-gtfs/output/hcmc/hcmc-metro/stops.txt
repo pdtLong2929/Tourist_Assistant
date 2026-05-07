@@ -1,0 +1,29 @@
+stop_id,stop_name,stop_lat,stop_lon,stop_url,location_type
+osm_node_11586280334,Suoi Tien Terminal,10.8796111,106.8140678,https://www.openstreetmap.org/node/11586280334,0
+osm_node_11586280332,National University,10.8663195,106.801193,https://www.openstreetmap.org/node/11586280332,0
+osm_node_11586280330,High Tech Park,10.8590126,106.7888225,https://www.openstreetmap.org/node/11586280330,0
+osm_node_11586280329,Thu Duc,10.8464116,106.7716333,https://www.openstreetmap.org/node/11586280329,0
+osm_node_11586280325,Binh Thai,10.8326791,106.7638872,https://www.openstreetmap.org/node/11586280325,0
+osm_node_11586280323,Phuoc Long,10.8214282,106.7581599,https://www.openstreetmap.org/node/11586280323,0
+osm_node_9733886370,Rach Chiec,10.8085541,106.755247,https://www.openstreetmap.org/node/9733886370,0
+osm_node_11586280321,An Phu,10.8021999,106.7422332,https://www.openstreetmap.org/node/11586280321,0
+osm_node_11586280319,Thao Dien,10.8005113,106.7336461,https://www.openstreetmap.org/node/11586280319,0
+osm_node_11586280315,Tan Cang,10.7986171,106.7233192,https://www.openstreetmap.org/node/11586280315,0
+osm_node_2890940318,Van Thanh Park,10.7960829,106.7154943,https://www.openstreetmap.org/node/2890940318,0
+osm_node_11586280312,Ba Son,10.7820821,106.7083481,https://www.openstreetmap.org/node/11586280312,0
+osm_node_11586280311,Opera House,10.7756293,106.7021468,https://www.openstreetmap.org/node/11586280311,0
+osm_node_11586280309,Ben Thanh,10.7709021,106.6974617,https://www.openstreetmap.org/node/11586280309,0
+osm_node_11586280308,Ben Thanh,10.7707525,106.6976235,https://www.openstreetmap.org/node/11586280308,0
+osm_node_11586280310,Opera House,10.7755113,106.7022619,https://www.openstreetmap.org/node/11586280310,0
+osm_node_11586280313,Ba Son,10.7819867,106.708464,https://www.openstreetmap.org/node/11586280313,0
+osm_node_11586280314,Van Thanh Park,10.7960451,106.7155211,https://www.openstreetmap.org/node/11586280314,0
+osm_node_11586280316,Tan Cang,10.7985812,106.7233239,https://www.openstreetmap.org/node/11586280316,0
+osm_node_11586280320,Thao Dien,10.8004707,106.7336535,https://www.openstreetmap.org/node/11586280320,0
+osm_node_11586280322,An Phu,10.8020845,106.7422533,https://www.openstreetmap.org/node/11586280322,0
+osm_node_9733886226,Rach Chiec,10.8085376,106.7552804,https://www.openstreetmap.org/node/9733886226,0
+osm_node_11586280324,Phuoc Long,10.821417,106.7581973,https://www.openstreetmap.org/node/11586280324,0
+osm_node_11586280326,Binh Thai,10.8326599,106.7639195,https://www.openstreetmap.org/node/11586280326,0
+osm_node_11586280328,Thu Duc,10.846403,106.7716657,https://www.openstreetmap.org/node/11586280328,0
+osm_node_11586280331,High Tech Park,10.8589744,106.7888389,https://www.openstreetmap.org/node/11586280331,0
+osm_node_11586280333,National University,10.8662864,106.8012088,https://www.openstreetmap.org/node/11586280333,0
+osm_node_11586280335,Suoi Tien Terminal,10.8795689,106.81417,https://www.openstreetmap.org/node/11586280335,0

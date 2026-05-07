@@ -1,0 +1,40 @@
+stop_id,stop_name,stop_lat,stop_lon,stop_url,location_type
+osm_node_6819506969,Cat Linh,21.0281565,105.8272207,https://www.openstreetmap.org/node/6819506969,0
+osm_node_6544472077,La Thanh,21.0201444,105.8253269,https://www.openstreetmap.org/node/6544472077,0
+osm_node_6544472078,Thai Ha,21.0145374,105.8194321,https://www.openstreetmap.org/node/6544472078,0
+osm_node_6544472079,Lang,21.0064568,105.8160202,https://www.openstreetmap.org/node/6544472079,0
+osm_node_6819506966,Thuong Dinh,20.9976983,105.81223,https://www.openstreetmap.org/node/6819506966,0
+osm_node_6819506965,Ring Road 3,20.9923086,105.8044088,https://www.openstreetmap.org/node/6819506965,0
+osm_node_6544472082,Phung Khoang,20.9842949,105.7930346,https://www.openstreetmap.org/node/6544472082,0
+osm_node_6544472083,Van Quan,20.9777421,105.784762,https://www.openstreetmap.org/node/6544472083,0
+osm_node_6544472084,Ha Dong,20.9702707,105.7749863,https://www.openstreetmap.org/node/6544472084,0
+osm_node_6819506960,La Khe,20.9638428,105.7667964,https://www.openstreetmap.org/node/6819506960,0
+osm_node_6819506959,Van Khe,20.9556553,105.756183,https://www.openstreetmap.org/node/6819506959,0
+osm_node_5875623880,Yen Nghia,20.949796,105.7484068,https://www.openstreetmap.org/node/5875623880,0
+osm_node_6819506958,Yen Nghia,20.9497634,105.7484438,https://www.openstreetmap.org/node/6819506958,0
+osm_node_6544495085,Van Khe,20.9556221,105.7562116,https://www.openstreetmap.org/node/6544495085,0
+osm_node_6819506961,La Khe,20.9638218,105.7668214,https://www.openstreetmap.org/node/6819506961,0
+osm_node_6819506962,Ha Dong,20.9702497,105.7750059,https://www.openstreetmap.org/node/6819506962,0
+osm_node_6819506963,Van Quan,20.9777105,105.7847894,https://www.openstreetmap.org/node/6819506963,0
+osm_node_6819506964,Phung Khoang,20.9842637,105.7930607,https://www.openstreetmap.org/node/6819506964,0
+osm_node_6544472081,Ring Road 3,20.9922879,105.8044331,https://www.openstreetmap.org/node/6544472081,0
+osm_node_6544472080,Thuong Dinh,20.9976589,105.812249,https://www.openstreetmap.org/node/6544472080,0
+osm_node_6819506967,Lang,21.0064719,105.8160567,https://www.openstreetmap.org/node/6819506967,0
+osm_node_6819506979,Thai Ha,21.0145187,105.8194546,https://www.openstreetmap.org/node/6819506979,0
+osm_node_6819506980,La Thanh,21.020136,105.8253538,https://www.openstreetmap.org/node/6819506980,0
+osm_node_8124813844,Nhon,21.0525714,105.7352194,https://www.openstreetmap.org/node/8124813844,0
+osm_node_8124813850,Minh Khai,21.0479495,105.7447965,https://www.openstreetmap.org/node/8124813850,0
+osm_node_8124813856,Phu Dien,21.0438985,105.7552604,https://www.openstreetmap.org/node/8124813856,0
+osm_node_8124813862,Cau Dien,21.0411927,105.762681,https://www.openstreetmap.org/node/8124813862,0
+osm_node_8124813868,Le Duc Tho,21.0380271,105.7729857,https://www.openstreetmap.org/node/8124813868,0
+osm_node_8124813874,National University,21.0366441,105.7826928,https://www.openstreetmap.org/node/8124813874,0
+osm_node_8124813880,Chua Ha,21.0349016,105.7943621,https://www.openstreetmap.org/node/8124813880,0
+osm_node_8124813886,Cau Giay,21.0292035,105.8033539,https://www.openstreetmap.org/node/8124813886,0
+osm_node_8124813885,Cau Giay,21.0292367,105.8033744,https://www.openstreetmap.org/node/8124813885,0
+osm_node_8124813879,Chua Ha,21.0349419,105.7943815,https://www.openstreetmap.org/node/8124813879,0
+osm_node_8124813873,National University,21.0366812,105.7826932,https://www.openstreetmap.org/node/8124813873,0
+osm_node_8124813867,Le Duc Tho,21.0380658,105.7729948,https://www.openstreetmap.org/node/8124813867,0
+osm_node_8124813861,Cau Dien,21.0412487,105.7627014,https://www.openstreetmap.org/node/8124813861,0
+osm_node_8124813855,Phu Dien,21.0439453,105.7552804,https://www.openstreetmap.org/node/8124813855,0
+osm_node_8124813849,Minh Khai,21.0480032,105.7448168,https://www.openstreetmap.org/node/8124813849,0
+osm_node_8124813843,Nhon,21.0526112,105.735244,https://www.openstreetmap.org/node/8124813843,0

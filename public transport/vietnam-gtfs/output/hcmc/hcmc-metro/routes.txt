@@ -1,0 +1,3 @@
+route_id,agency_id,route_short_name,route_long_name,route_type,route_color,route_text_color,route_url
+hcmc_11919222,HCMC_METRO,L1,Suoi Tien - Ben Thanh,1,0079B8,FFFFFF,https://www.openstreetmap.org/relation/11919222
+hcmc_11919223,HCMC_METRO,L1,Ben Thanh - Suoi Tien,1,0079B8,FFFFFF,https://www.openstreetmap.org/relation/11919223

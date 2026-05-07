@@ -1,0 +1,7 @@
+route_id,agency_id,route_short_name,route_long_name,route_type,route_color,route_text_color,route_url
+hanoi_9684066,HMR,T2A,Hanoi Metro Line 2A: Cat Linh → Yen Nghia,1,00C000,FFFFFF,https://www.openstreetmap.org/relation/9684066
+hanoi_9684072,HMR,T2A,Hanoi Metro Line 2A: Yen Nghia → Cat Linh,1,00C000,FFFFFF,https://www.openstreetmap.org/relation/9684072
+hanoi_12989508,HMR,T3,Tuyến 3: Nhổn → Cầu Giấy,1,A5B635,FFFFFF,https://www.openstreetmap.org/relation/12989508
+hanoi_12989509,HMR,T3,Tuyến 3: Cầu Giấy → Nhổn,1,A5B635,FFFFFF,https://www.openstreetmap.org/relation/12989509
+hanoi_17739982,HMR,T2,Nam Thăng Long - Trần Hưng Đạo,1,0055A4,FFFFFF,https://www.openstreetmap.org/relation/17739982
+hanoi_17739983,HMR,T2,Trần Hưng Đạo - Nam Thăng Long,1,0055A4,FFFFFF,https://www.openstreetmap.org/relation/17739983
