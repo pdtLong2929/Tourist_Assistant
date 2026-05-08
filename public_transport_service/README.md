@@ -33,7 +33,7 @@ uvicorn app.main:app --port 8002 --reload
 ```
 - Truy cập http://localhost:8002/docs để sử dụng Swagger UI
 
-### Các Endpoints chính:
+## Các Endpoints chính:
 
 #### 1. POST `/transit/suggest` (Quan trọng nhất)
 Gửi lên một danh sách các địa điểm (tọa độ), nhận về top các cách đi xe buýt tốt nhất.
@@ -66,3 +66,64 @@ Lấy danh sách tất cả trạm dừng của thành phố đã chọn
 
 #### 6. GET `/transit/{city}/stops/{stop_id}`
 Lấy thông tin của trạm dừng theo stop_id
+
+## Test
+### HCMC
+```json
+{
+  "city": "hcmc",
+  "locations": [
+    {
+      "lat": 10.7724,
+      "lon": 106.6981
+    },
+    {
+      "lat": 10.7950,
+      "lon": 106.7218
+    },
+    {
+      "lat": 10.8650,
+      "lon": 106.8000
+    },
+    {
+      "lat": 10.8782,
+      "lon": 106.8063
+    },
+    {
+      "lat": 10.8820,
+      "lon": 106.8280
+    }
+  ],
+  "top_k": 3,
+  "max_walk_meters": 1500,
+  "combine_routes": true
+}
+```
+
+
+### HN
+``` json
+{
+  "city": "hn",
+  "locations": [
+    {
+      "lat": 21.028511,
+      "lon": 105.852431 
+    },
+    {
+      "lat": 21.027800,
+      "lon": 105.825900
+    },
+    {
+      "lat": 20.950000,
+      "lon": 105.753200
+    }
+  ],
+  "top_k": 3,
+  "max_walk_meters": 1500,
+  "combine_routes": true
+}
+```
+
+
+

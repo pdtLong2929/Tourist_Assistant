@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, Query, Path
-from typing import List
+from typing import List, Dict
 
 from ..schemas.public_transport_schema import (
     TransitRequest, TransitResponse, RouteCombo, RouteSegment, NearbyStop, LegInfo, CityCode
@@ -8,20 +8,23 @@ from ..services.public_transport_logic import TransitService
 
 router = APIRouter(prefix="/transit")
 
-_services = {
-    "hn": TransitService(folder_name="gtfs_hn"),
-    "hcmc": TransitService(folder_name="gtfs-hcmc")
+print("Pre-loading GTFS data into memory...")
+_services: Dict[str, TransitService] = {
+    "hcmc": TransitService("hcmc"),
+    "hn": TransitService("hn")
 }
 
 @router.post("/suggest", response_model=TransitResponse, tags=["Transit Suggestion"])
 def suggest_routes(request: TransitRequest):
     if len(request.locations) < 2:
-        raise HTTPException(status_code=400, detail="At least 2 locations required.")
-    if request.city.value not in _services:
-         raise HTTPException(status_code=400, detail="City not supported.")
+        raise HTTPException(status_code=400, detail="At least 2 locations are required.")
     
-    current_service = _services[request.city.value]
-    locs = [loc.dict() for loc in request.locations]
+    city_code = request.city.value
+    if city_code not in _services:
+         raise HTTPException(status_code=400, detail="Requested city is not supported or missing data.")
+    
+    current_service = _services[city_code]
+    locs = [loc.model_dump() for loc in request.locations]
 
     raw_results = current_service.recommend(
         locations=locs,
@@ -47,6 +50,7 @@ def suggest_routes(request: TransitRequest):
                     route_id=seg["route_id"],
                     route_short_name=seg["route_short_name"],
                     route_long_name=seg["route_long_name"],
+                    transit_type=seg["transit_type"],
                     board_stop=NearbyStop(**seg["board_stop"]),
                     alight_stop=NearbyStop(**seg["alight_stop"]),
                     stops_on_route=seg["stops_on_route"],
@@ -78,20 +82,20 @@ def suggest_routes(request: TransitRequest):
         message=f"Found {len(recommendations)} suitable route suggestions."
     )
 
+
 @router.get("/{city}/routes", tags=["Routes & Stops"])
 def get_all_routes(city: CityCode):
-    """Retrieve a list of all bus routes in the city."""
+    """Retrieve a list of all transit routes (Bus and Metro) in the city."""
     if city.value not in _services:
         raise HTTPException(status_code=400, detail="City not supported.")
-    
     return _services[city.value].get_all_routes()
 
 @router.get("/{city}/routes/{route_id}", tags=["Routes & Stops"])
 def get_route_details(
     city: CityCode, 
-    route_id: str = Path(..., description="The ID of the bus route")
+    route_id: str = Path(..., description="The ID of the transit route")
 ):
-    """Retrieve detailed information about a specific bus route."""
+    """Retrieve detailed information about a specific transit route."""
     if city.value not in _services:
         raise HTTPException(status_code=400, detail="City not supported.")
     
@@ -103,15 +107,15 @@ def get_route_details(
 @router.get("/{city}/routes/{route_id}/stops", tags=["Routes & Stops"])
 def get_stops_of_route(
     city: CityCode, 
-    route_id: str = Path(..., description="The ID of the bus route")
+    route_id: str = Path(..., description="The ID of the transit route")
 ):
-    """Retrieve a list of stops that a specific bus route passes through."""
+    """Retrieve an ordered list of stops that a specific route passes through."""
     if city.value not in _services:
         raise HTTPException(status_code=400, detail="City not supported.")
     
     stops = _services[city.value].get_stops_by_route(route_id)
     if not stops:
-        raise HTTPException(status_code=404, detail="Route not found or has no stops.")
+        raise HTTPException(status_code=404, detail="Route not found or has no stops associated.")
     return stops
 
 @router.get("/{city}/stops", tags=["Routes & Stops"])
@@ -120,13 +124,11 @@ def get_all_stops(
     skip: int = Query(0, description="Skip the first N results (used for pagination)"),
     limit: int = Query(100, description="Maximum number of stops to return in one call")
 ):
-    """Retrieve a list of all bus stops (Paginated to avoid overloading)."""
+    """Retrieve a paginated list of all transit stops/stations."""
     if city.value not in _services:
         raise HTTPException(status_code=400, detail="City not supported.")
     
     all_stops = _services[city.value].get_all_stops()
-    
-    # Slicing the array for pagination
     paginated_stops = all_stops[skip : skip + limit]
     
     return {
@@ -140,9 +142,9 @@ def get_all_stops(
 @router.get("/{city}/stops/{stop_id}", tags=["Routes & Stops"])
 def get_stop_details(
     city: CityCode, 
-    stop_id: str = Path(..., description="The ID of the bus stop")
+    stop_id: str = Path(..., description="The ID of the transit stop/station")
 ):
-    """Retrieve detailed information about a specific bus stop."""
+    """Retrieve detailed information about a specific stop or station."""
     if city.value not in _services:
         raise HTTPException(status_code=400, detail="City not supported.")
     
