@@ -9,9 +9,6 @@ WORKDIR /app
 COPY --from=builder /app/api_service .
 
 ENV PORT=8081
-# This env var points the Google Cloud SDK to our local emulator
-ENV PUBSUB_EMULATOR_HOST=pubsub:8085 
-ENV GOOGLE_CLOUD_PROJECT=test-project
 
 EXPOSE 8081
 CMD ["./api_service"]

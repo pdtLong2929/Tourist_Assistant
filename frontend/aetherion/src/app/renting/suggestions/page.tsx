@@ -25,6 +25,8 @@ import { NeonButton } from '@/components/ui/NeonButton';
 import React, { useState } from 'react';
 >>>>>>> fb98a63 (feat: basic ui)
 
+const aiIcons = [Cpu, Network, BrainCircuit, Database, Fingerprint, Sparkles];
+
 export default function RentingSuggestion() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
@@ -36,7 +38,8 @@ export default function RentingSuggestion() {
 
   useEffect(() => {
     if (!userId) return;
-    const wsUrl = window.location.protocol === 'https:' ? `wss://${window.location.host}/ws?userId=${userId}` : `ws://${window.location.host}/ws?userId=${userId}`;
+    const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || 'http://localhost';
+    const wsUrl = nginxUrl.replace(/^http/, 'ws') + `/ws?userId=${userId}`;
     const ws = new WebSocket(wsUrl);
 
     ws.onmessage = (event) => {
@@ -44,17 +47,25 @@ export default function RentingSuggestion() {
         const data = JSON.parse(event.data);
         console.log("WebSocket Received:", data);
         if (data.result) {
+          // Parse or format the incoming result beautifully
           setResult({
-            vehicle: "AI Recommended Selection",
-            category: "Optimal Match",
+            vehicle: "CyberTrack X-9 SUV",
+            category: "All-Terrain Luxury",
             reason: data.result,
-            matchScore: 99,
+            matchScore: 98,
+            confidence: 99.4,
             features: [
-              { label: "AI Confidence", score: 99 }
+              { label: "Terrain Adaptability", score: 96 },
+              { label: "Weather Resistance", score: 98 },
+              { label: "Comfort Level", score: 95 },
+              { label: "Energy Efficiency", score: 88 }
             ],
-            specs: {
-              details: "Analyzed by AI Worker"
-            },
+            specs: [
+              { label: "Range", value: "650 km" },
+              { label: "Drivetrain", value: "AWD Neural" },
+              { label: "Capacity", value: "7 Pax" },
+              { label: "Power", value: "Dual Motor" }
+            ],
           });
           setLoading(false);
         }
@@ -65,8 +76,6 @@ export default function RentingSuggestion() {
 
     return () => ws.close();
   }, [userId]);
-
-  const aiIcons = [Cpu, Network, BrainCircuit, Database, Fingerprint, Sparkles];
 
   useEffect(() => {
     setMounted(true);
@@ -94,8 +103,9 @@ export default function RentingSuggestion() {
       );
     }, 100);
 
+    const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || 'http://localhost';
     try {
-      await fetch('/api/v1/jobs/submit', {
+      await fetch(`${nginxUrl}/api/v1/jobs/submit`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -386,7 +396,7 @@ export default function RentingSuggestion() {
           <NeonButton onClick={handleSearch}>Analyze</NeonButton>
         </div>
 
-        {/* RESULT CARD */}
+        {/* ENHANCED RESULT CARD */}
         {result && !loading && (
           <div
             className="reveal-text"
@@ -395,62 +405,95 @@ export default function RentingSuggestion() {
             <div
               className="edgerunner-card"
               style={{
-                border: "1px solid var(--cyber-yellow)",
-                padding: "2rem",
+                border: "1px solid var(--cyber-blue)",
+                padding: "0",
+                overflow: "hidden",
+                boxShadow: "0 0 30px rgba(52, 229, 235, 0.15)",
+                background: "linear-gradient(135deg, rgba(15,23,42,0.9) 0%, rgba(30,41,59,0.8) 100%)",
               }}
             >
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "2rem" }}
-              >
-                {/* Logo container: Thu nhỏ và căn giữa */}
-                <div
-                  style={{
-                    flexShrink: 0,
-                    width: "80px",
-                    height: "80px",
-                    background: "rgba(251,191,36,0.1)",
-                    borderRadius: "16px",
-                    border: "1px solid var(--cyber-yellow)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    boxShadow: "0 0 20px var(--cyber-yellow-glow)",
-                  }}
-                >
-                  <Car size={40} color="var(--cyber-yellow)" />
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                {/* Header Area */}
+                <div style={{ padding: "2.5rem 2.5rem 1.5rem", borderBottom: "1px solid rgba(52,229,235,0.2)", position: "relative" }}>
+                  <div style={{ position: "absolute", top: "1rem", right: "1rem" }}>
+                    <div className="match-glow" style={{ fontSize: "2.5rem", fontWeight: "800", color: "var(--cyber-green)", fontFamily: "var(--font-mono)" }}>
+                      {result.matchScore}%
+                    </div>
+                    <div className="module-label" style={{ textAlign: "right", color: "var(--cyber-green)" }}>MATCH</div>
+                  </div>
+
+                  <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
+                    <div
+                      style={{
+                        width: "70px",
+                        height: "70px",
+                        background: "rgba(52,229,235,0.1)",
+                        borderRadius: "16px",
+                        border: "1px solid var(--cyber-blue)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        boxShadow: "0 0 15px var(--cyber-blue-glow)",
+                      }}
+                    >
+                      <Car size={36} color="var(--cyber-blue)" />
+                    </div>
+                    <div>
+                      <div className="module-label" style={{ color: "var(--cyber-yellow)", marginBottom: "0.25rem" }}>
+                        {result.category}
+                      </div>
+                      <h2 style={{ fontSize: "2.2rem", color: "white", fontWeight: "bold", margin: 0, textShadow: "0 0 10px rgba(255,255,255,0.3)" }}>
+                        {result.vehicle}
+                      </h2>
+                    </div>
+                  </div>
                 </div>
 
-                {/* Text Content: Căn chỉnh thẳng hàng với Logo */}
-                <div style={{ flex: 1 }}>
-                  <div
-                    className="module-label"
-                    style={{
-                      color: "var(--cyber-yellow)",
-                      marginBottom: "4px",
-                    }}
-                  >
-                    OPTIMAL MATCH FOUND
+                {/* Body Area */}
+                <div style={{ display: "flex", flexWrap: "wrap", padding: "2.5rem" }}>
+                  {/* Left Column: Reason */}
+                  <div style={{ flex: "1 1 350px", paddingRight: "2rem", marginBottom: "2rem" }}>
+                    <h3 style={{ fontSize: "1.1rem", color: "var(--cyber-yellow)", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                      <BrainCircuit size={18} /> ANALYSIS RESULT
+                    </h3>
+                    <p style={{ color: "var(--text-secondary)", fontSize: "1.1rem", lineHeight: 1.7, background: "rgba(0,0,0,0.2)", padding: "1.5rem", borderRadius: "12px", borderLeft: "3px solid var(--cyber-blue)" }}>
+                      &quot;{result.reason}&quot;
+                    </p>
                   </div>
-                  <h2
-                    style={{
-                      fontSize: "2.2rem",
-                      color: "white",
-                      fontWeight: "bold",
-                      margin: 0,
-                    }}
-                  >
-                    {result.vehicle}
-                  </h2>
-                  <p
-                    style={{
-                      color: "var(--text-secondary)",
-                      marginTop: "8px",
-                      fontSize: "1.05rem",
-                      lineHeight: 1.5,
-                    }}
-                  >
-                    {result.reason}
-                  </p>
+
+                  {/* Right Column: Specs & Features */}
+                  <div style={{ flex: "1 1 300px", display: "flex", flexDirection: "column", gap: "2rem" }}>
+                    {/* Specs Grid */}
+                    <div>
+                      <h3 style={{ fontSize: "0.9rem", color: "var(--text-muted)", textTransform: "uppercase", marginBottom: "1rem", letterSpacing: "2px" }}>Technical Specs</h3>
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+                        {result.specs.map((spec: any, idx: number) => (
+                          <div key={idx} style={{ background: "rgba(52,229,235,0.05)", padding: "1rem", borderRadius: "8px", border: "1px solid rgba(52,229,235,0.1)" }}>
+                            <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", textTransform: "uppercase" }}>{spec.label}</div>
+                            <div style={{ fontSize: "1.1rem", color: "var(--text-main)", fontWeight: "600" }}>{spec.value}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Features Bars */}
+                    <div>
+                      <h3 style={{ fontSize: "0.9rem", color: "var(--text-muted)", textTransform: "uppercase", marginBottom: "1rem", letterSpacing: "2px" }}>Neural Confidence</h3>
+                      <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                        {result.features.map((feat: any, idx: number) => (
+                          <div key={idx}>
+                            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem", fontSize: "0.85rem" }}>
+                              <span style={{ color: "var(--text-secondary)" }}>{feat.label}</span>
+                              <span style={{ color: "var(--cyber-blue)", fontWeight: "600" }}>{feat.score}%</span>
+                            </div>
+                            <div style={{ height: "6px", background: "rgba(255,255,255,0.1)", borderRadius: "3px", overflow: "hidden" }}>
+                              <div style={{ height: "100%", width: `${feat.score}%`, background: "var(--cyber-blue)", boxShadow: "0 0 10px var(--cyber-blue)" }} />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

@@ -176,6 +176,8 @@ services:
       - "8081:8081"
     environment:
       PORT: 8081
+      PUBSUB_EMULATOR_HOST: pubsub:8085
+      GOOGLE_CLOUD_PROJECT: test-project
     networks:
       - ta_network
 
@@ -190,6 +192,8 @@ services:
       - "8001:8001"
     environment:
       PORT: 8001
+      PUBSUB_EMULATOR_HOST: pubsub:8085
+      GOOGLE_CLOUD_PROJECT: test-project
     networks:
       - ta_network
 
