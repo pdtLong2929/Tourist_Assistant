@@ -1,11 +1,15 @@
-import os
+import csv
 import hashlib
+import os
+import re
 import time
+from pathlib import Path
+
 import psycopg
-from pgvector.psycopg import register_vector
+from dotenv import load_dotenv
 from google import genai
 from google.genai import types
-from dotenv import load_dotenv
+from pgvector.psycopg import register_vector
 
 load_dotenv()
 
@@ -17,80 +21,28 @@ except Exception as e:
 
 EMBEDDING_MODEL_ID = "gemini-embedding-001"
 EMBEDDING_DIMENSIONS = 768
-# Fix: .env uses DATABASE_URL, not POSTGRES_URL
-DB_URL = os.getenv("DATABASE_URL")
+DB_URL = os.getenv("DATABASE_URL") or os.getenv("POSTGRES_URL")
+EMBEDDING_DELAY_SECONDS = float(os.getenv("EMBEDDING_DELAY_SECONDS", "0.75"))
+EMBEDDING_MAX_RETRIES = int(os.getenv("EMBEDDING_MAX_RETRIES", "8"))
 
-seed_data = [
-    {
-        "type": "bike",
-        "description": "Very agile and easy to maneuver.",
-        "good_for": "light traffic, short distances, cool weather, sightseeing",
-        "bad_for": "hot days, heavy rain, storms, long distances",
-        "constraints": "not allowed during storms, requires physical effort",
-        "weather_sensitivity": "high",
-        "traffic_sensitivity": "low",
-    },
-    {
-        "type": "motorbike",
-        "description": "Medium agility, good urban mobility.",
-        "good_for": "heavy traffic, any weather except storms, sightseeing",
-        "bad_for": "storms, group travel, carrying large luggage",
-        "constraints": "dangerous in storms, requires license",
-        "weather_sensitivity": "medium",
-        "traffic_sensitivity": "low",
-    },
-    {
-        "type": "car",
-        "description": "Low agility but fully enclosed and comfortable.",
-        "good_for": "group travel, bad weather, long distances, storms, luggage",
-        "bad_for": "heavy traffic, city centers, finding parking",
-        "constraints": "difficult parking, high cost, not eco-friendly",
-        "weather_sensitivity": "none",
-        "traffic_sensitivity": "high",
-    },
-    {
-        "type": "bus",
-        "description": "Shared public transit on fixed routes.",
-        "good_for": "budget travel, bad weather, storms, medium distances",
-        "bad_for": "heavy traffic (shares road), tight schedules, remote destinations",
-        "constraints": "fixed routes and timetables, crowded in peak hours",
-        "weather_sensitivity": "none",
-        "traffic_sensitivity": "medium",
-    },
-    {
-        "type": "metro",
-        "description": "Underground rail, completely isolated from street conditions.",
-        "good_for": "any weather, storms, heavy traffic, long cross-city distances, reliability",
-        "bad_for": "areas without metro stations, carrying large luggage",
-        "constraints": "fixed stations only, no door-to-door service",
-        "weather_sensitivity": "none",
-        "traffic_sensitivity": "none",
-    },
-]
-
-
-def build_embedding_text(item: dict) -> str:
-    """Flatten structured fields into one string for embedding.
-    Keeping field labels in the text (e.g. 'Bad for: storms') helps the
-    model match query terms like 'storm' to the right concept."""
-    return (
-        f"{item['description']} "
-        f"Good for: {item['good_for']}. "
-        f"Bad for: {item['bad_for']}. "
-        f"Constraints: {item['constraints']}. "
-        f"Weather sensitivity: {item['weather_sensitivity']}. "
-        f"Traffic sensitivity: {item['traffic_sensitivity']}."
-    )
+REQUIRED_COLUMNS = {
+    "weather_condition",
+    "temperature",
+    "distance",
+    "traffic_condition",
+    "time_of_day",
+    "chosen_mode",
+    "reasoning",
+    "serialized_query",
+    "serialized_with_label",
+}
 
 
 def content_hash(text: str, model: str) -> str:
-    """Hash of (embedding text + model id). Any change — including a model
-    swap — forces a re-embed rather than silently keeping a stale vector."""
-    return hashlib.sha256(f"{model}::{text}".encode()).hexdigest()
+    return hashlib.sha256(f"{model}::{text}".encode("utf-8")).hexdigest()
 
 
 def wait_for_db(url: str, retries: int = 10, delay: float = 2.0):
-    """Retry until Postgres accepts a connection instead of sleeping blindly."""
     for attempt in range(1, retries + 1):
         try:
             conn = psycopg.connect(url, autocommit=True)
@@ -104,115 +56,201 @@ def wait_for_db(url: str, retries: int = 10, delay: float = 2.0):
             time.sleep(delay)
 
 
+def resolve_dataset_path() -> Path:
+    configured = os.getenv("DATASET_PATH")
+    candidates = [
+        Path(configured) if configured else None,
+        Path("dataset.csv"),
+        Path(__file__).resolve().parent / "dataset.csv",
+        Path(__file__).resolve().parent.parent / "dataset.csv",
+    ]
+
+    for candidate in candidates:
+        if candidate and candidate.exists():
+            return candidate
+
+    tried = ", ".join(str(p) for p in candidates if p)
+    raise FileNotFoundError(f"Could not find dataset.csv. Tried: {tried}")
+
+
+def load_dataset(path: Path) -> list[dict]:
+    with path.open(newline="", encoding="utf-8-sig") as f:
+        reader = csv.DictReader(f)
+        missing = REQUIRED_COLUMNS - set(reader.fieldnames or [])
+        if missing:
+            raise ValueError(f"{path} is missing required columns: {sorted(missing)}")
+        return [row for row in reader if row.get("serialized_with_label")]
+
+
+def retry_delay_from_error(error: Exception, fallback: float) -> float:
+    message = str(error)
+    match = re.search(r"retryDelay': '(\d+)s", message)
+    if match:
+        return float(match.group(1)) + 2.0
+
+    match = re.search(r"retry in ([\d.]+)s", message, re.IGNORECASE)
+    if match:
+        return float(match.group(1)) + 2.0
+
+    return fallback
+
+
+def generate_embedding(text: str) -> list[float]:
+    delay = 5.0
+    for attempt in range(1, EMBEDDING_MAX_RETRIES + 1):
+        try:
+            response = client.models.embed_content(
+                model=EMBEDDING_MODEL_ID,
+                contents=text,
+                config=types.EmbedContentConfig(output_dimensionality=EMBEDDING_DIMENSIONS),
+            )
+            if EMBEDDING_DELAY_SECONDS > 0:
+                time.sleep(EMBEDDING_DELAY_SECONDS)
+            return response.embeddings[0].values
+        except Exception as e:
+            is_rate_limit = "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e)
+            if not is_rate_limit or attempt == EMBEDDING_MAX_RETRIES:
+                raise
+
+            sleep_for = retry_delay_from_error(e, delay)
+            print(
+                f"Embedding quota hit; sleeping {sleep_for:.1f}s "
+                f"(attempt {attempt}/{EMBEDDING_MAX_RETRIES})..."
+            )
+            time.sleep(sleep_for)
+            delay = min(delay * 2, 60.0)
+
+    raise RuntimeError("Embedding retry loop exited unexpectedly.")
+
+
 def ensure_schema(conn):
     conn.execute("CREATE EXTENSION IF NOT EXISTS vector;")
     register_vector(conn)
     conn.execute("""
-        CREATE TABLE IF NOT EXISTS transport_knowledge (
-            id                  SERIAL PRIMARY KEY,
-            transport_type      VARCHAR(50) UNIQUE NOT NULL,
-            description         TEXT NOT NULL,
-            good_for            TEXT,
-            bad_for             TEXT,
-            constraints         TEXT,
-            weather_sensitivity VARCHAR(20),
-            traffic_sensitivity VARCHAR(20),
-            embedding           vector(768),
-            content_hash        TEXT,
-            embedding_model     VARCHAR(100),
-            created_at          TIMESTAMPTZ DEFAULT NOW(),
-            updated_at          TIMESTAMPTZ DEFAULT NOW()
+        CREATE TABLE IF NOT EXISTS transport_scenarios (
+            id                    SERIAL PRIMARY KEY,
+            scenario_hash         TEXT UNIQUE NOT NULL,
+            weather_condition     TEXT NOT NULL,
+            temperature           TEXT NOT NULL,
+            distance              TEXT NOT NULL,
+            traffic_condition     TEXT NOT NULL,
+            time_of_day           TEXT NOT NULL,
+            chosen_mode           VARCHAR(50) NOT NULL,
+            reasoning             TEXT,
+            serialized_query      TEXT NOT NULL,
+            serialized_with_label TEXT NOT NULL,
+            embedding             vector(768),
+            embedding_model       VARCHAR(100),
+            created_at            TIMESTAMPTZ DEFAULT NOW(),
+            updated_at            TIMESTAMPTZ DEFAULT NOW()
         );
     """)
-    # Migrate existing tables that were created before these columns were added.
-    # ADD COLUMN IF NOT EXISTS is safe to run repeatedly — it's a no-op if the column exists.
     migrations = [
-        "ALTER TABLE transport_knowledge ADD COLUMN IF NOT EXISTS good_for TEXT;",
-        "ALTER TABLE transport_knowledge ADD COLUMN IF NOT EXISTS bad_for TEXT;",
-        "ALTER TABLE transport_knowledge ADD COLUMN IF NOT EXISTS constraints TEXT;",
-        "ALTER TABLE transport_knowledge ADD COLUMN IF NOT EXISTS weather_sensitivity VARCHAR(20);",
-        "ALTER TABLE transport_knowledge ADD COLUMN IF NOT EXISTS traffic_sensitivity VARCHAR(20);",
-        "ALTER TABLE transport_knowledge ADD COLUMN IF NOT EXISTS content_hash TEXT;",
-        "ALTER TABLE transport_knowledge ADD COLUMN IF NOT EXISTS embedding_model VARCHAR(100);",
-        "ALTER TABLE transport_knowledge ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ DEFAULT NOW();",
-        "ALTER TABLE transport_knowledge ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW();",
+        "ALTER TABLE transport_scenarios ADD COLUMN IF NOT EXISTS scenario_hash TEXT;",
+        "ALTER TABLE transport_scenarios ADD COLUMN IF NOT EXISTS weather_condition TEXT;",
+        "ALTER TABLE transport_scenarios ADD COLUMN IF NOT EXISTS temperature TEXT;",
+        "ALTER TABLE transport_scenarios ADD COLUMN IF NOT EXISTS distance TEXT;",
+        "ALTER TABLE transport_scenarios ADD COLUMN IF NOT EXISTS traffic_condition TEXT;",
+        "ALTER TABLE transport_scenarios ADD COLUMN IF NOT EXISTS time_of_day TEXT;",
+        "ALTER TABLE transport_scenarios ADD COLUMN IF NOT EXISTS chosen_mode VARCHAR(50);",
+        "ALTER TABLE transport_scenarios ADD COLUMN IF NOT EXISTS reasoning TEXT;",
+        "ALTER TABLE transport_scenarios ADD COLUMN IF NOT EXISTS serialized_query TEXT;",
+        "ALTER TABLE transport_scenarios ADD COLUMN IF NOT EXISTS serialized_with_label TEXT;",
+        "ALTER TABLE transport_scenarios ADD COLUMN IF NOT EXISTS embedding vector(768);",
+        "ALTER TABLE transport_scenarios ADD COLUMN IF NOT EXISTS embedding_model VARCHAR(100);",
+        "ALTER TABLE transport_scenarios ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ DEFAULT NOW();",
+        "ALTER TABLE transport_scenarios ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW();",
     ]
     for migration in migrations:
         conn.execute(migration)
-    print("Schema up to date.")
+    conn.execute("""
+        CREATE UNIQUE INDEX IF NOT EXISTS transport_scenarios_hash_idx
+        ON transport_scenarios (scenario_hash);
+    """)
+    print("Scenario schema up to date.")
 
 
 def seed():
-    # Fix: was raising RuntimeError which crashed the container before uvicorn started.
-    # Now we warn and exit cleanly — uvicorn still starts with whatever is in the DB.
+    if not DB_URL:
+        raise RuntimeError("DATABASE_URL or POSTGRES_URL must be set.")
+
     if not client:
-        print("Warning: Gemini client not initialized — skipping seed. "
-              "Run seed.py manually once GEMINI_API_KEY is set.")
+        print(
+            "Warning: Gemini client not initialized — skipping seed. "
+            "Run seed.py manually once GEMINI_API_KEY is set."
+        )
         return
+
+    dataset_path = resolve_dataset_path()
+    rows = load_dataset(dataset_path)
+    print(f"Loaded {len(rows)} rows from {dataset_path}.")
 
     wait_for_db(DB_URL)
     conn = psycopg.connect(DB_URL, autocommit=True)
-    print("Starting seeding process...")
+    print("Starting dataset seeding process...")
 
-    ensure_schema(conn)
+    try:
+        ensure_schema(conn)
 
-    for item in seed_data:
-        embed_text = build_embedding_text(item)
-        chash = content_hash(embed_text, EMBEDDING_MODEL_ID)
+        inserted = 0
+        skipped = 0
+        for index, row in enumerate(rows, start=1):
+            embedding_text = row["serialized_with_label"]
+            scenario_hash = content_hash(embedding_text, EMBEDDING_MODEL_ID)
 
-        existing = conn.execute(
-            "SELECT content_hash FROM transport_knowledge WHERE transport_type = %s",
-            (item["type"],),
-        ).fetchone()
+            existing = conn.execute(
+                "SELECT embedding_model FROM transport_scenarios WHERE scenario_hash = %s",
+                (scenario_hash,),
+            ).fetchone()
+            if existing:
+                skipped += 1
+                continue
 
-        if existing and existing[0] == chash:
-            print(f"Skipping '{item['type']}' — content unchanged.")
-            continue
+            print(f"Generating embedding for dataset row {index}/{len(rows)}...")
+            embedding = generate_embedding(embedding_text)
 
-        print(f"Generating embedding for '{item['type']}'...")
-        response = client.models.embed_content(
-            model=EMBEDDING_MODEL_ID,
-            contents=embed_text,
-            config=types.EmbedContentConfig(output_dimensionality=EMBEDDING_DIMENSIONS),
-        )
-        embedding = response.embeddings[0].values
+            conn.execute(
+                """
+                INSERT INTO transport_scenarios
+                    (scenario_hash, weather_condition, temperature, distance,
+                     traffic_condition, time_of_day, chosen_mode, reasoning,
+                     serialized_query, serialized_with_label, embedding,
+                     embedding_model, updated_at)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())
+                ON CONFLICT (scenario_hash) DO UPDATE SET
+                    weather_condition     = EXCLUDED.weather_condition,
+                    temperature           = EXCLUDED.temperature,
+                    distance              = EXCLUDED.distance,
+                    traffic_condition     = EXCLUDED.traffic_condition,
+                    time_of_day           = EXCLUDED.time_of_day,
+                    chosen_mode           = EXCLUDED.chosen_mode,
+                    reasoning             = EXCLUDED.reasoning,
+                    serialized_query      = EXCLUDED.serialized_query,
+                    serialized_with_label = EXCLUDED.serialized_with_label,
+                    embedding             = EXCLUDED.embedding,
+                    embedding_model       = EXCLUDED.embedding_model,
+                    updated_at            = NOW();
+                """,
+                (
+                    scenario_hash,
+                    row["weather_condition"],
+                    row["temperature"],
+                    row["distance"],
+                    row["traffic_condition"],
+                    row["time_of_day"],
+                    row["chosen_mode"],
+                    row["reasoning"],
+                    row["serialized_query"],
+                    row["serialized_with_label"],
+                    embedding,
+                    EMBEDDING_MODEL_ID,
+                ),
+            )
+            inserted += 1
 
-        conn.execute(
-            """
-            INSERT INTO transport_knowledge
-                (transport_type, description, good_for, bad_for, constraints,
-                 weather_sensitivity, traffic_sensitivity,
-                 embedding, content_hash, embedding_model, updated_at)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())
-            ON CONFLICT (transport_type) DO UPDATE SET
-                description         = EXCLUDED.description,
-                good_for            = EXCLUDED.good_for,
-                bad_for             = EXCLUDED.bad_for,
-                constraints         = EXCLUDED.constraints,
-                weather_sensitivity = EXCLUDED.weather_sensitivity,
-                traffic_sensitivity = EXCLUDED.traffic_sensitivity,
-                embedding           = EXCLUDED.embedding,
-                content_hash        = EXCLUDED.content_hash,
-                embedding_model     = EXCLUDED.embedding_model,
-                updated_at          = NOW();
-            """,
-            (
-                item["type"],
-                item["description"],
-                item["good_for"],
-                item["bad_for"],
-                item["constraints"],
-                item["weather_sensitivity"],
-                item["traffic_sensitivity"],
-                embedding,
-                chash,
-                EMBEDDING_MODEL_ID,
-            ),
-        )
-        print(f"Upserted '{item['type']}' successfully.")
-
-    conn.close()
-    print("Seeding complete!")
+        print(f"Seeding complete. Inserted {inserted}, skipped {skipped}.")
+    finally:
+        conn.close()
 
 
 if __name__ == "__main__":
