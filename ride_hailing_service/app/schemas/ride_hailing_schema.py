@@ -11,11 +11,13 @@ class LegRequest(BaseModel):
 
 class RideEstimateRequest(BaseModel):
     legs: List[LegRequest] = Field(..., description="Ordered list of journey legs to estimate")
+    city: str = Field(..., description="City context (e.g., 'HCMC' or 'Hanoi')")
     top_k: int = Field(3, description="Number of top ride options to return per leg")
 
     model_config = {
         "json_schema_extra": {
             "example": {
+                "city": "HCMC",
                 "legs": [
                     {"distance_km": 15.0, "location_type": "airport", "vehicle_category": "car"},
                     {"distance_km": 5.0, "location_type": "university", "vehicle_category": "car"}
@@ -46,9 +48,10 @@ class RideEstimateResponse(BaseModel):
     status: str
     data: List[LegResponse]
 
-# --- SINGLE LEG SCHEMAS (Giữ nguyên như đã chốt) ---
+# --- SINGLE LEG SCHEMAS ---
 class SingleLegEstimateRequest(BaseModel):
     distance_km: float = Field(..., gt=0)
+    city: str = Field(..., description="City context (e.g., 'HCMC' or 'Hanoi')")
     location_type: str = Field("normal")
     vehicle_category: Optional[str] = Field(None, description="Filter by vehicle type")
 
