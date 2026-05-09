@@ -69,6 +69,7 @@ def suggest_routes(request: TransitRequest):
             
         recommendations.append(RouteCombo(
             rank=combo["rank"],
+            score=combo.get("score", 0.0), 
             legs=legs_data,
             total_distance_km=combo["total_distance_km"],
             total_duration_min=combo["total_duration_min"],
