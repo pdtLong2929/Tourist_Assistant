@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Khám phá địa điểm · Gợi ý thông minh</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600;9..144,800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:        #0d0f14;
+      --surface:   #161a23;
+      --card:      #1c2130;
+      --border:    #2a3045;
+      --accent:    #e8c97a;
+      --accent2:   #7ac9e8;
+      --text:      #e8e6df;
+      --muted:     #7a8099;
+      --radius:    14px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px 80px;
+      background-image:
+        radial-gradient(ellipse 60% 40% at 70% 10%, rgba(122,201,232,.07) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 50% at 20% 80%, rgba(232,201,122,.06) 0%, transparent 70%);
+    }
+
+    /* ── Header ─────────────────────────────── */
+    header {
+      text-align: center;
+      margin-bottom: 48px;
+      animation: fadeUp .6s ease both;
+    }
+    header .eyebrow {
+      font-size: .72rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    header h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.1;
+      color: var(--text);
+    }
+    header h1 span { color: var(--accent); }
+    header p {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: .95rem;
+      max-width: 440px;
+      margin-inline: auto;
+      line-height: 1.6;
+    }
+
+    /* ── Form card ───────────────────────────── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px 32px 40px;
+      width: 100%;
+      max-width: 680px;
+      animation: fadeUp .6s .1s ease both;
+    }
+
+    .card-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .card-sub {
+      font-size: .82rem;
+      color: var(--muted);
+      margin-bottom: 26px;
+    }
+
+    /* ── Checkbox grid ───────────────────────── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+    }
+
+    .chip {
+      position: relative;
+    }
+    .chip input[type="checkbox"] {
+      position: absolute;
+      opacity: 0;
+      width: 0; height: 0;
+    }
+    .chip label {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: var(--card);
+      cursor: pointer;
+      font-size: .85rem;
+      font-weight: 400;
+      color: var(--muted);
+      transition: all .18s ease;
+      user-select: none;
+    }
+    .chip label .ico { font-size: 1rem; }
+    .chip label .rank {
+      margin-left: auto;
+      font-size: .68rem;
+      color: var(--border);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .chip input:checked + label {
+      border-color: var(--accent);
+      background: rgba(232,201,122,.08);
+      color: var(--accent);
+    }
+    .chip input:checked + label .rank { color: rgba(232,201,122,.4); }
+    .chip label:hover {
+      border-color: rgba(232,201,122,.4);
+      color: var(--text);
+    }
+
+    /* ── Counter ─────────────────────────────── */
+    .counter {
+      margin-top: 20px;
+      font-size: .82rem;
+      color: var(--muted);
+    }
+    .counter strong { color: var(--accent); }
+
+    /* ── Divider ─────────────────────────────── */
+    hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+
+    /* ── Inputs ──────────────────────────────── */
+    .field { margin-bottom: 16px; }
+    .field label {
+      display: block;
+      font-size: .78rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 7px;
+    }
+    .field input {
+      width: 100%;
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 14px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: .9rem;
+      outline: none;
+      transition: border-color .18s;
+    }
+    .field input:focus { border-color: var(--accent2); }
+    .field input::placeholder { color: var(--muted); }
+
+    /* ── Submit ──────────────────────────────── */
+    .btn-wrap { margin-top: 28px; }
+    button[type="submit"] {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      background: var(--accent);
+      color: #0d0f14;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity .18s, transform .15s;
+    }
+    button[type="submit"]:hover { opacity: .88; }
+    button[type="submit"]:active { transform: scale(.98); }
+    button[type="submit"]:disabled { opacity: .4; cursor: not-allowed; }
+
+    /* ── Result card ─────────────────────────── */
+    #result {
+      width: 100%;
+      max-width: 680px;
+      margin-top: 24px;
+      animation: fadeUp .4s ease both;
+    }
+    .result-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 28px 32px;
+    }
+    .result-card h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.15rem;
+      color: var(--accent2);
+      margin-bottom: 18px;
+    }
+
+    .score-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .score-big {
+      font-family: 'Fraunces', serif;
+      font-size: 3.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .score-bar-wrap { flex: 1; }
+    .score-bar-track {
+      height: 6px;
+      background: var(--border);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .score-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 99px;
+      transition: width .8s cubic-bezier(.4,0,.2,1);
+    }
+    .score-label { font-size: .8rem; color: var(--muted); margin-top: 6px; }
+
+    .vector-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .vtag {
+      padding: 4px 11px;
+      border-radius: 99px;
+      background: rgba(232,201,122,.1);
+      border: 1px solid rgba(232,201,122,.25);
+      font-size: .78rem;
+      color: var(--accent);
+    }
+
+    .explanation {
+      font-size: .9rem;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--card);
+      border-left: 3px solid var(--accent2);
+      padding: 14px 16px;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .phase-json {
+      margin-top: 18px;
+    }
+    .phase-json summary {
+      font-size: .78rem;
+      color: var(--muted);
+      cursor: pointer;
+      letter-spacing: .06em;
+    }
+    .phase-json pre {
+      margin-top: 10px;
+      background: #111318;
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: .78rem;
+      color: var(--accent2);
+      overflow-x: auto;
+      line-height: 1.6;
+    }
+
+    .error-msg {
+      color: #e87a7a;
+      background: rgba(232,122,122,.07);
+      border: 1px solid rgba(232,122,122,.2);
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: .88rem;
+    }
+
+    /* ── Spinner ─────────────────────────────── */
+    .spinner {
+      display: inline-block;
+      width: 18px; height: 18px;
+      border: 2px solid rgba(13,15,20,.3);
+      border-top-color: #0d0f14;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+
+    /* ── Animations ──────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 500px) {
+      .card { padding: 24px 18px 28px; }
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="eyebrow">AI-Powered · Recommendation System</div>
+    <h1>Bạn thích gì khi <span>khám phá</span>?</h1>
+    <p>Chọn những điều bạn quan tâm — hệ thống sẽ gợi ý địa điểm phù hợp nhất.</p>
+  </header>
+
+  <!-- ── FORM ── -->
+  <div class="card">
+    <div class="card-title">Sở thích của bạn</div>
+    <div class="card-sub">Chọn một hoặc nhiều mục (tối đa 30)</div>
+
+    <div class="grid" id="checkboxGrid">
+      <!-- injected by JS -->
+    </div>
+
+    <p class="counter">Đã chọn: <strong id="selectedCount">0</strong> mục</p>
+
+    <hr />
+
+    <div class="field">
+      <label>User ID</label>
+      <input type="text" id="userId" placeholder="Nhập user ID (vd: 123)" value="123" />
+    </div>
+
+    <div class="btn-wrap">
+      <button type="submit" id="submitBtn" disabled>
+        Hoàn thành →
+      </button>
+    </div>
+  </div>
+
+  <!-- ── RESULT ── -->
+  <div id="result" style="display:none"></div>
+
+  <script>
+    // ── 30 preferences: { value (backend key), label (friendly), icon } ──
+    const PREFERENCES = [
+      { value: "market",     label: "Chợ / Bazaar",        icon: "🏪" },
+      { value: "food",       label: "Ẩm thực",             icon: "🍜" },
+      { value: "price",      label: "Giá cả hợp lý",       icon: "💰" },
+      { value: "guide",      label: "Hướng dẫn viên",      icon: "🧭" },
+      { value: "service",    label: "Dịch vụ tốt",         icon: "⭐" },
+      { value: "staff",      label: "Nhân viên thân thiện",icon: "🤝" },
+      { value: "park",       label: "Công viên",           icon: "🌳" },
+      { value: "space",      label: "Không gian rộng",     icon: "🏟️" },
+      { value: "view",       label: "Tầm nhìn đẹp",        icon: "🌅" },
+      { value: "quality",    label: "Chất lượng cao",      icon: "🏅" },
+      { value: "temple",     label: "Đền / Chùa",          icon: "⛩️" },
+      { value: "air",        label: "Không khí trong lành",icon: "💨" },
+      { value: "trees",      label: "Nhiều cây xanh",      icon: "🌿" },
+      { value: "church",     label: "Nhà thờ",             icon: "⛪" },
+      { value: "shop",       label: "Mua sắm nhỏ lẻ",      icon: "🛍️" },
+      { value: "mall",       label: "Trung tâm thương mại",icon: "🏬" },
+      { value: "floor",      label: "Nhiều tầng / Toà nhà",icon: "🏢" },
+      { value: "atmosphere", label: "Bầu không khí",       icon: "✨" },
+      { value: "city",       label: "Phong cách đô thị",   icon: "🌆" },
+      { value: "attitude",   label: "Thái độ phục vụ",     icon: "😊" },
+      { value: "culture",    label: "Văn hoá địa phương",  icon: "🎭" },
+      { value: "location",   label: "Vị trí thuận tiện",   icon: "📍" },
+      { value: "markets",    label: "Khu chợ sầm uất",     icon: "🛒" },
+      { value: "life",       label: "Cuộc sống sôi động",  icon: "🎶" },
+      { value: "clothes",    label: "Thời trang / Quần áo",icon: "👗" },
+      { value: "store",      label: "Cửa hàng đa dạng",    icon: "🏪" },
+      { value: "scenery",    label: "Cảnh quan thiên nhiên",icon:"🏞️" },
+      { value: "goods",      label: "Hàng hoá phong phú",  icon: "📦" },
+      { value: "tea",        label: "Trà / Cà phê",        icon: "🍵" },
+      { value: "fun",        label: "Vui vẻ / Giải trí",   icon: "🎉" },
+    ];
+
+    // ── Render checkboxes ──
+    const grid = document.getElementById("checkboxGrid");
+    PREFERENCES.forEach((pref, i) => {
+      const wrap = document.createElement("div");
+      wrap.className = "chip";
+      wrap.innerHTML = `
+        <input type="checkbox" id="pref_${pref.value}" value="${pref.value}" />
+        <label for="pref_${pref.value}">
+          <span class="ico">${pref.icon}</span>
+          ${pref.label}
+          <span class="rank">#${String(i + 1).padStart(2,"0")}</span>
+        </label>`;
+      grid.appendChild(wrap);
+    });
+
+    // ── Counter + button state ──
+    const countEl  = document.getElementById("selectedCount");
+    const submitBtn = document.getElementById("submitBtn");
+
+    document.querySelectorAll(".chip input").forEach(cb => {
+      cb.addEventListener("change", () => {
+        const n = document.querySelectorAll(".chip input:checked").length;
+        countEl.textContent = n;
+        submitBtn.disabled = n === 0;
+      });
+    });
+
+    // ── Submit ──
+    const API_BASE = "http://localhost:3000/api";
+
+    submitBtn.addEventListener("click", async () => {
+      const userId = document.getElementById("userId").value.trim();
+      const preferences = [...document.querySelectorAll(".chip input:checked")]
+        .map(cb => cb.value);
+
+      if (!userId) {
+        showError("Vui lòng nhập User ID.");
+        return;
+      }
+
+      if (preferences.length === 0) {
+        showError("Vui lòng chọn ít nhất một sở thích.");
+        return;
+      }
+
+      setLoading(true);
+
+      try {
+        const res = await fetch(`${API_BASE}/preferences`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ 
+            user_id: parseInt(userId), 
+            preferences 
+          })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.error || "Lỗi server");
+
+        // ←←← PHẦN ĐÃ ĐƠN GIẢN HÓA
+        renderSuccess(userId, preferences);
+
+      } catch (err) {
+        showError(`Lỗi khi lưu sở thích: ${err.message}`);
+      } finally {
+        setLoading(false);
+      }
+    });
+    
+    function renderSuccess(userId, preferences) {
+      const resultEl = document.getElementById("result");
+      
+      const tags = preferences.map(v => {
+        const found = PREFERENCES.find(p => p.value === v);
+        return `<span class="vtag">${found ? found.icon + " " + found.label : v}</span>`;
+      }).join("");
+
+      resultEl.innerHTML = `
+        <div class="result-card">
+          <h2>✅ Sở thích đã được lưu thành công!</h2>
+          
+          <p style="margin: 16px 0 20px; color: var(--muted);">
+            User ID: <strong>${userId}</strong>
+          </p>
+
+          <div class="vector-wrap">${tags}</div>
+          
+          <div class="explanation">
+            Sở thích của bạn đã được lưu vào hệ thống.<br>
+            Hệ thống sẽ sử dụng những thông tin này để gợi ý địa điểm phù hợp nhất.
+          </div>
+        </div>`;
+
+      resultEl.style.display = "block";
+      resultEl.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function showError(msg) {
+      const resultEl = document.getElementById("result");
+      resultEl.innerHTML = `<div class="result-card"><div class="error-msg">⚠ ${msg}</div></div>`;
+      resultEl.style.display = "block";
+      resultEl.scrollIntoView({ behavior: "smooth" });
+    }
+
+    function setLoading(on) {
+      submitBtn.disabled = on;
+      submitBtn.innerHTML = on
+        ? `<span class="spinner"></span> Đang xử lý...`
+        : "Hoàn thành →";
+    }
+  </script>
+</body>
+</html>
