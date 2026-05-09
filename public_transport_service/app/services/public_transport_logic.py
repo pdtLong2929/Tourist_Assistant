@@ -51,7 +51,8 @@ class TransitService:
         total_walk = 0
         
         for leg in combo["legs"]:
-            total_walk += leg["walk_to_target_m"]
+            board_walk = leg["segments"][0]["board_stop"]["distance_m"]
+            total_walk += (board_walk + leg["walk_to_target_m"])
             total_transfers += max(0, len(leg["segments"]) - 1)
             for seg in leg["segments"]:
                 unique_covered.update(seg["covered_location_indices"])
@@ -129,7 +130,9 @@ class TransitService:
                         path = self.loader.get_valid_path(rid, s1["stop_id"], s2["stop_id"])
                         if path:
                             dist = self.loader.calculate_distance(path)
-                            score = -(s1["distance_m"] + s2["distance_m"] + dist * 5)
+                            transit_time_min = (dist / self.SPEEDS_KMH["default"]) * 60
+                            walk_time_min = (s1["distance_m"] + s2["distance_m"]) / 72.0
+                            score = -(transit_time_min + (walk_time_min * 2))
                             if rid not in best_direct or score > best_direct[rid]["score"]:
                                 seg = self._build_segment(rid, s1, s2, len(path)-1, [idx1, idx2], dist)
                                 best_direct[rid] = {"segments": [seg], "score": score}
