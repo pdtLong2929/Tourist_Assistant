@@ -85,7 +85,6 @@ def recommend(req: RecommendRequest):
                 "predicted_rating": round(score, 1),
             })
 
-    # --- UNIFIED SORTING & SLICING ---
     # Sort the results from highest to lowest predicted rating
     results.sort(key=lambda x: x["predicted_rating"], reverse=True)  
     
