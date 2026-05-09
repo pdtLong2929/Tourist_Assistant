@@ -58,6 +58,35 @@ def load_resources():
     except Exception as e:
         print(f"INITIALIZATION ERROR: {str(e)}")
 
+def get_user_context(user_id: str):
+    """
+    Lấy thông tin User từ Database và TRẢ VỀ CHÍNH XÁC cấu trúc cần thiết.
+    """
+    u_idx = state["uid_map"].get(user_id)
+    
+    # --- TRƯỜNG HỢP NEW USER (Lấy từ Database) ---
+    if u_idx is None:
+        # Giả lập lệnh SELECT trả về JSON
+        db_tags_json = {
+            "tokyo": 0.5358,
+            "street": 0.4606,
+            "shop": 0.3612,
+            "layout": 0.3579,
+            "area": 0.3257
+        }
+        
+        # CHUẨN HÓA: Trả về một List of Tuples: [(tag, weight), (tag, weight)]
+        sorted_tags = sorted(db_tags_json.items(), key=lambda x: x[1], reverse=True)
+        return sorted_tags[:5] # Lấy Top 5
+        
+    # --- TRƯỜNG HỢP USER CŨ (Lấy từ EFM) ---
+    else:
+        # get_user_interests hiện tại trả về List of Strings: ["food", "price"]
+        # Ta cũng phải chuẩn hóa nó về dạng [(tag, weight)] để đồng bộ.
+        # Vì EFM không nhả weight trực tiếp ra đây, ta gán weight mặc định là 1.0
+        efm_tags = get_user_interests(user_id) 
+        return [(tag, 1.0) for tag in efm_tags]
+
 def get_user_interests(user_id: str, top_k: int = 3):
     """
     Extract the top aspects a user cares about from EFM's U1 matrix.
@@ -88,12 +117,72 @@ def get_user_interests(user_id: str, top_k: int = 3):
     except Exception as e:
         print(f"Error extracting user interests: {e}")
         return []
+    
+def get_destination_features(item_id: str):
+    return state["mock_db"].get(item_id, {})
 
-def generate_ai_explanation(item_id: str, score: float, user_interests: list) -> str:
+def calculate_cold_start_score(user_id: str, item_id: str, top_n: int = 5):
     """
-    Generate an AI-powered explanation in English based on the intersection of user preferences and item features.
+    Tính điểm cho user mới dựa trên trung bình điểm của các user tương đồng (tính bằng trọng số).
     """
-    item_data = state["mock_db"].get(item_id, {})
+    # 1. Lấy interests của user hiện tại (Tất cả giờ đều đi qua get_user_context)
+    current_interests = get_user_context(user_id) 
+    
+    # Biến List of Tuples thành Dictionary để dễ tính toán: {"tokyo": 0.5, "street": 0.4}
+    current_dict = {tag: weight for tag, weight in current_interests}
+    if not current_dict:
+        return 3.5  # Mức phòng thủ cuối cùng nếu user trắng thông tin
+
+    i_idx = state["iid_map"].get(item_id)
+    if i_idx is None:
+        return 3.5
+
+    similarities = []
+    
+    # 2. Duyệt qua các user cũ ĐÃ CÓ trong EFM để so sánh
+    for other_id, other_u_idx in state["uid_map"].items():
+        if other_id == user_id:
+            continue
+            
+        # SỬA LỖI Ở ĐÂY: Dùng get_user_context thay vì get_user_interests
+        other_interests = get_user_context(other_id)
+        other_dict = {tag: weight for tag, weight in other_interests}
+        
+        # Tìm các tag trùng nhau giữa 2 người (Giao của 2 tập hợp keys)
+        common_tags = current_dict.keys() & other_dict.keys()
+        
+        if common_tags:
+            sim_score = 0
+            # SỬA LỖI Ở ĐÂY: Phải có vòng lặp để nhân trọng số của từng tag trùng
+            for tag in common_tags:
+                sim_score += current_dict[tag] * other_dict[tag]
+                
+            similarities.append((other_u_idx, sim_score))
+
+    if not similarities:
+        return 3.8 # Điểm trung bình khá nếu không tìm thấy ai giống
+
+    # 3. Sắp xếp lấy Top N người giống nhất (dựa trên sim_score)
+    similarities.sort(key=lambda x: x[1], reverse=True)
+    top_neighbors = similarities[:top_n]
+
+    # 4. Lấy điểm dự báo từ EFM cho các neighbors này với item_id
+    neighbor_scores = []
+    for u_idx_neighbor, sim_weight in top_neighbors:
+        raw_s = state["model_efm"].score(u_idx_neighbor, i_idx)
+        neighbor_scores.append(raw_s)
+
+    # 5. Trả về trung bình cộng điểm của các neighbors
+    return float(np.mean(neighbor_scores))
+
+def generate_ai_explanation(item_data: dict, score: float, user_interests: list) -> str:
+    """
+    Generate an AI-powered explanation.
+    Đầu vào user_interests đã được gò về chuẩn: [("food", 0.8), ("price", 0.5)]
+    """
+    # 1. Rút trích chỉ lấy tên tag cho Llama
+    interest_keys = [item[0] for item in user_interests]
+    
     aspects = item_data.get('aspects', {})
 
     matched_pros = []
@@ -101,18 +190,24 @@ def generate_ai_explanation(item_id: str, score: float, user_interests: list) ->
     cons = []
 
     for aspect, data in aspects.items():
-        pos_op = data['positive_opinions'][0] if data['positive_opinions'] else "good"
-        neg_op = data['negative_opinions'][0] if data['negative_opinions'] else "not satisfied"
+        # Dùng .get() để an toàn tuyệt đối, tránh lỗi KeyError nếu Database mất field
+        pos_list = data.get('positive_opinions', [])
+        neg_list = data.get('negative_opinions', [])
         
-        if aspect in user_interests and data['sentiment_score'] > 0:
+        pos_op = pos_list[0] if pos_list else "good"
+        neg_op = neg_list[0] if neg_list else "not satisfied"
+        sentiment = data.get('sentiment_score', 0)
+        
+        # So khớp
+        if aspect in interest_keys and sentiment > 0:
             matched_pros.append(f"{aspect} ({pos_op})")
-        elif data['sentiment_score'] > 0:
+        elif sentiment > 0:
             other_pros.append(f"{aspect} ({pos_op})")
         
-        if data['sentiment_score'] < 0:
+        if sentiment < 0:
             cons.append(f"{aspect} ({neg_op})")
 
-    interests_str = ", ".join(user_interests)
+    interests_str = ", ".join(interest_keys)
     matched_str = ", ".join(matched_pros) if matched_pros else "general highlights"
     
     prompt = f"""
@@ -138,5 +233,7 @@ def generate_ai_explanation(item_id: str, score: float, user_interests: list) ->
             temperature=0.4
         )
         return chat.choices[0].message.content.strip()
-    except:
+    except Exception as e:
+        print(f"Llama Error: {str(e)}")
         return f"This location matches your interest in {interests_str}."
+
