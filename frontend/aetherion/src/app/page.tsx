@@ -58,7 +58,7 @@ export default function LandingPage() {
         }}
       />
 
-      {/* BACKGROUND 3D GRID & SCANNER */}
+      {/* DYNAMIC ANIMATED BACKGROUND WITH IMAGES */}
       <div
         className="map-fade-in"
         style={{
@@ -66,15 +66,59 @@ export default function LandingPage() {
           inset: 0,
           zIndex: 0,
           pointerEvents: "none",
+          background: "#0f172a",
         }}
       >
-        {/* Sky / deep gradient */}
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+          @keyframes fadeSlide1 {
+            0%, 25%, 100% { opacity: 1; transform: scale(1); }
+            33%, 92% { opacity: 0; transform: scale(1.05); }
+          }
+          @keyframes fadeSlide2 {
+            0%, 25%, 92%, 100% { opacity: 0; transform: scale(1.05); }
+            33%, 58% { opacity: 1; transform: scale(1); }
+          }
+          @keyframes fadeSlide3 {
+            0%, 58%, 100% { opacity: 0; transform: scale(1.05); }
+            66%, 92% { opacity: 1; transform: scale(1); }
+          }
+          .bg-slide {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+            mix-blend-mode: overlay;
+          }
+          .bg-slide-1 { background-image: url('/images/bg1.jpg'); animation: fadeSlide1 24s infinite; }
+          .bg-slide-2 { background-image: url('/images/bg2.jpg'); animation: fadeSlide2 24s infinite; }
+          .bg-slide-3 { background-image: url('/images/bg3.jpg'); animation: fadeSlide3 24s infinite; }
+          
+          @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+          }
+        `,
+          }}
+        />
+
+        {/* IMAGE SLIDESHOW */}
+        <div className="bg-slide bg-slide-1" />
+        <div className="bg-slide bg-slide-2" />
+        <div className="bg-slide bg-slide-3" />
+
+        {/* DARK GRADIENT OVERLAY SO TEXT IS READABLE */}
         <div
           style={{
             position: "absolute",
             inset: 0,
-            background: "linear-gradient(180deg, #0f172a 0%, #1e293b 100%)",
-            opacity: 0.95,
+            background:
+              "linear-gradient(180deg, rgba(15,23,42,0.5) 0%, rgba(30,41,59,0.6) 100%)",
+            zIndex: 2,
           }}
         />
 
@@ -103,37 +147,7 @@ export default function LandingPage() {
             animation: "grid-pan 4s linear infinite",
             transform: "perspective(1000px) rotateX(65deg) scale(1.2)",
             transformOrigin: "center top",
-            zIndex: 1,
-          }}
-        />
-
-        {/* Ambient Glows */}
-        <div
-          style={{
-            position: "absolute",
-            top: "25%",
-            left: "-5rem",
-            width: "30rem",
-            height: "30rem",
-            borderRadius: "50%",
-            opacity: 0.2,
-            filter: "blur(80px)",
-            background:
-              "radial-gradient(circle, var(--cyber-blue) 0%, transparent 70%)",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            bottom: "10%",
-            right: "-5rem",
-            width: "30rem",
-            height: "30rem",
-            borderRadius: "50%",
-            opacity: 0.2,
-            filter: "blur(80px)",
-            background:
-              "radial-gradient(circle, var(--cyber-purple) 0%, transparent 70%)",
+            zIndex: 3,
           }}
         />
       </div>
@@ -381,7 +395,9 @@ export default function LandingPage() {
                     {t("landing.feat1Desc" as any)}
                   </p>
 
-                  <div className="ready-label">{t("landing.feat1Check" as any)}</div>
+                  <div className="ready-label">
+                    {t("landing.feat1Check" as any)}
+                  </div>
                 </div>
               </a>
             </RevealOnScroll>
@@ -419,7 +435,9 @@ export default function LandingPage() {
                     {t("landing.feat2Desc" as any)}
                   </p>
 
-                  <div className="ready-label">{t("landing.feat2Check" as any)}</div>
+                  <div className="ready-label">
+                    {t("landing.feat2Check" as any)}
+                  </div>
                 </div>
               </a>
             </RevealOnScroll>
@@ -457,7 +475,9 @@ export default function LandingPage() {
                     {t("landing.feat3Desc" as any)}
                   </p>
 
-                  <div className="ready-label">{t("landing.feat3Check" as any)}</div>
+                  <div className="ready-label">
+                    {t("landing.feat3Check" as any)}
+                  </div>
                 </div>
               </a>
             </RevealOnScroll>

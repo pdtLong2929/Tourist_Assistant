@@ -21,6 +21,7 @@ export default function LoginPage() {
   const router = useRouter();
 
   // 1. Thêm State để lưu dữ liệu nhập từ bàn phím
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -31,7 +32,7 @@ export default function LoginPage() {
     setMounted(true);
   }, []);
 
-  // 2. Hàm xử lý Đăng nhập thực tế
+  // 2. Hàm xử lý Đăng nhập / Đăng ký thực tế
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -39,33 +40,38 @@ export default function LoginPage() {
     setSuccessMessage("");
 
     try {
-      // Gọi tới link Nginx Gateway + /login
-      const response = await fetch("http://localhost:80/login", {
+      const endpoint = isSignUp ? "http://localhost:80/register" : "http://localhost:80/login";
+      const payload = isSignUp ? { name, email, password } : { email, password };
+
+      const response = await fetch(endpoint, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json", //
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          email: email, // Nhét email vào body
-          password: password, // Nhét password vào body
-        }),
+        body: JSON.stringify(payload),
       });
 
       const data = await response.json();
       if (response.ok) {
         localStorage.setItem("accessToken", data.accessToken);
-        localStorage.setItem("cyber_user", JSON.stringify(data.user));
+        if (data.user) {
+          localStorage.setItem("cyber_user", JSON.stringify(data.user));
+        }
 
         //Phát tín hiệu báo đã đăng nhập thành công
         window.dispatchEvent(new Event("userAuthChanged"));
 
-        setSuccessMessage("Login successful. Returning to homepage...");
+        setSuccessMessage(isSignUp ? "Registration successful. Welcome!" : "Login successful. Redirecting...");
+        
         setTimeout(() => {
-          router.push("/");
+          if (localStorage.getItem("hidePreferencesForm_" + data.user.id) === "true") {
+            router.push("/");
+          } else {
+            router.push("/preferences");
+          }
         }, 800);
       } else {
-        setErrorMessage("Authentication Failed - Wrong username or password!");
-        // Tự động xóa thông báo lỗi sau 3 giây
+        setErrorMessage(data.message || "Authentication Failed!");
         setTimeout(() => setErrorMessage(""), 3000);
       }
     } catch (error) {
@@ -73,6 +79,28 @@ export default function LoginPage() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleForgotPassword = async () => {
+    const emailPrompt = window.prompt("Nhập email để khôi phục mật khẩu:");
+    if (!emailPrompt) return;
+    
+    try {
+      const res = await fetch("http://localhost:80/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: emailPrompt })
+      });
+      const data = await res.json();
+      alert(data.message || "Đã gửi yêu cầu khôi phục mật khẩu!");
+    } catch (err) {
+      alert("Lỗi khi kết nối với máy chủ.");
+    }
+  };
+
+  const handleGoogleLogin = () => {
+    alert("Chức năng Google Login đang được phát triển. Vui lòng thử lại sau!");
+    // TODO: Chèn logic OAuth thực tế vào đây sau.
   };
 
   if (!mounted) return null;
@@ -114,9 +142,11 @@ export default function LoginPage() {
         ></div>
       </div>
       <div
-        style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}
+        style={{ display: "grid", gridTemplateColumns: "1fr", gap: "1rem" }}
       >
         <button
+          type="button"
+          onClick={handleGoogleLogin}
           className="social-btn"
           style={{
             display: "flex",
@@ -145,33 +175,6 @@ export default function LoginPage() {
             <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
           </svg>
           Google
-        </button>
-        <button
-          className="social-btn"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "0.75rem",
-            padding: "0.9rem",
-            borderRadius: "8px",
-            border: "1px solid rgba(167, 139, 250, 0.3)",
-            background: "rgba(15, 23, 42, 0.6)",
-            color: "var(--text-main)",
-            cursor: "pointer",
-            fontSize: "1.1rem",
-            fontWeight: "600",
-            transition: "all 0.3s ease",
-          }}
-        >
-          <svg
-            style={{ width: "1.2rem", height: "1.2rem" }}
-            fill="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-          </svg>
-          Facebook
         </button>
       </div>
     </div>
@@ -480,18 +483,24 @@ export default function LoginPage() {
               type="text"
               placeholder={t("login.usernamePlaceholder") as any}
               className="cyber-input"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               required
             />
             <input
               type="email"
               placeholder="Email"
               className="cyber-input"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
             <input
               type="password"
               placeholder={t("login.passwordPlaceholder") as any}
               className="cyber-input"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
 
@@ -610,6 +619,23 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)} // Cập nhật state
             />
+            <div style={{ textAlign: "right", marginTop: "-0.5rem" }}>
+              <button
+                type="button"
+                onClick={handleForgotPassword}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "var(--cyber-blue)",
+                  fontSize: "0.85rem",
+                  cursor: "pointer",
+                  fontFamily: "var(--font-mono)",
+                  textDecoration: "underline",
+                }}
+              >
+                Forgot password?
+              </button>
+            </div>
 
             <button
               type="submit"

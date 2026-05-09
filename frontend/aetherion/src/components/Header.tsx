@@ -17,7 +17,16 @@ export default function Header() {
     const checkLoginStatus = () => {
       const loggedInUser = localStorage.getItem("cyber_user");
       if (loggedInUser) {
-        setUser(JSON.parse(loggedInUser));
+        try {
+          const userObj = JSON.parse(loggedInUser);
+          const nickname = localStorage.getItem("cyber_user_nickname");
+          if (nickname) {
+            userObj.name = nickname;
+          }
+          setUser(userObj);
+        } catch (e) {
+          setUser(null);
+        }
       } else {
         setUser(null);
       }
@@ -136,11 +145,14 @@ export default function Header() {
           <div style={{ position: "relative" }}>
             <div
               className="user-badge"
-              onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
+              onClick={() => {
+                setIsLangDropdownOpen(!isLangDropdownOpen);
+                setIsDropdownOpen(false);
+              }}
               style={{
                 cursor: "pointer",
-                border: "1px solid var(--cyber-purple)",
-                background: "rgba(168, 85, 247, 0.1)",
+                border: "1px solid var(--cyber-yellow)",
+                background: "rgba(251, 191, 36, 0.1)",
                 display: "flex",
                 alignItems: "center",
                 gap: "8px",
@@ -152,7 +164,7 @@ export default function Header() {
                 style={{
                   fontFamily: "var(--font-mono)",
                   fontSize: "0.9rem",
-                  color: "var(--cyber-purple)",
+                  color: "var(--cyber-yellow)",
                   fontWeight: "700",
                 }}
               >
@@ -185,7 +197,7 @@ export default function Header() {
                   style={{
                     padding: "12px 16px",
                     textAlign: "left",
-                    background: language === "en" ? "rgba(168, 85, 247, 0.2)" : "transparent",
+                    background: language === "en" ? "rgba(251, 191, 36, 0.2)" : "transparent",
                     color: "white",
                     border: "none",
                     borderBottom: "1px solid rgba(255,255,255,0.05)",
@@ -194,7 +206,7 @@ export default function Header() {
                     transition: "all 0.2s ease",
                   }}
                   onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}
-                  onMouseLeave={(e) => (e.currentTarget.style.background = language === "en" ? "rgba(168, 85, 247, 0.2)" : "transparent")}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = language === "en" ? "rgba(251, 191, 36, 0.2)" : "transparent")}
                 >
                   English
                 </button>
@@ -206,7 +218,7 @@ export default function Header() {
                   style={{
                     padding: "12px 16px",
                     textAlign: "left",
-                    background: language === "vi" ? "rgba(168, 85, 247, 0.2)" : "transparent",
+                    background: language === "vi" ? "rgba(251, 191, 36, 0.2)" : "transparent",
                     color: "white",
                     border: "none",
                     cursor: "pointer",
@@ -214,7 +226,7 @@ export default function Header() {
                     transition: "all 0.2s ease",
                   }}
                   onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}
-                  onMouseLeave={(e) => (e.currentTarget.style.background = language === "vi" ? "rgba(168, 85, 247, 0.2)" : "transparent")}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = language === "vi" ? "rgba(251, 191, 36, 0.2)" : "transparent")}
                 >
                   Tiếng Việt
                 </button>
@@ -226,7 +238,10 @@ export default function Header() {
             <div style={{ position: "relative" }}>
               <div
                 className="user-badge"
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                onClick={() => {
+                  setIsDropdownOpen(!isDropdownOpen);
+                  setIsLangDropdownOpen(false);
+                }}
                 style={{
                   cursor: "pointer",
                   border: "1px solid var(--cyber-blue)",

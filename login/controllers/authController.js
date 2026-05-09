@@ -50,7 +50,11 @@ exports.register = async (req, res) => {
       path: '/api/auth/refresh'
     });
 
-    res.status(201).json({ accessToken, message: 'User registered successfully' });
+    res.status(201).json({ 
+      accessToken, 
+      user: { id: user.id, name: user.name, email: user.email },
+      message: 'User registered successfully' 
+    });
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }

@@ -7,7 +7,8 @@ import { UserCircle, LogOut, Shield, Mail, Cpu, CheckCircle } from "lucide-react
 interface CyberUser {
   id: string;
   email: string;
-  username: string;
+  name: string;
+  age?: string;
 }
 
 export default function ProfilePage() {
@@ -22,7 +23,14 @@ export default function ProfilePage() {
     const storedUser = localStorage.getItem("cyber_user");
     if (storedUser) {
       try {
-        setUser(JSON.parse(storedUser));
+        const userObj = JSON.parse(storedUser);
+        const nickname = localStorage.getItem("cyber_user_nickname");
+        const age = localStorage.getItem("cyber_user_age");
+        
+        if (nickname) userObj.name = nickname;
+        if (age) userObj.age = age;
+        
+        setUser(userObj);
       } catch (error) {
         console.error("Failed to parse user data", error);
       }
@@ -285,7 +293,7 @@ export default function ProfilePage() {
           </div>
           <div>
             <h1 className="glitch-yellow" style={{ fontSize: "2.2rem", margin: "0 0 0.5rem 0", color: "var(--text-main)" }}>
-              {user.username}
+              {user.name}
             </h1>
             <div className="ready-label">
               <CheckCircle size={16} color="var(--cyber-green)" />
@@ -303,8 +311,8 @@ export default function ProfilePage() {
           <div className="info-row">
             <Shield size={24} color="var(--cyber-purple)" style={{ opacity: 0.8 }} />
             <div style={{ flex: 1 }}>
-              <div style={{ fontSize: "0.8rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>Username</div>
-              <div style={{ fontSize: "1.1rem", fontWeight: 600, color: "var(--text-main)" }}>{user.username}</div>
+              <div style={{ fontSize: "0.8rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>Username / Nickname</div>
+              <div style={{ fontSize: "1.1rem", fontWeight: 600, color: "var(--text-main)" }}>{user.name}</div>
             </div>
           </div>
 
@@ -315,6 +323,16 @@ export default function ProfilePage() {
               <div style={{ fontSize: "1.1rem", fontWeight: 600, color: "var(--text-main)" }}>{user.email}</div>
             </div>
           </div>
+          
+          {user.age && (
+            <div className="info-row">
+              <UserCircle size={24} color="var(--cyber-yellow)" style={{ opacity: 0.8 }} />
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: "0.8rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>Tuổi</div>
+                <div style={{ fontSize: "1.1rem", fontWeight: 600, color: "var(--text-main)" }}>{user.age}</div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Action Section */}
