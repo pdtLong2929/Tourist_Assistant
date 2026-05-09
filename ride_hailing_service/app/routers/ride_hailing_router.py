@@ -18,22 +18,26 @@ def estimate_multi_leg_fare(request: RideEstimateRequest):
     """
     data = ride_service.estimate_per_leg(
         legs=request.legs,
+        city=request.city,
         top_k=request.top_k
     )
     return {"status": "success", "data": data}
 
+
 @router.post("/estimate/{leg_id}", response_model=SingleLegResponse)
 def estimate_single_leg_fare(
     request: SingleLegEstimateRequest,
-    leg_id: str = Path(..., description="Unique identifier for the leg (e.g., leg_01)")
+    leg_id: str = Path(..., description="Unique identifier for the leg (e.g., leg_0_1)")
 ):
     """
     Calculates the fare for a single leg and returns ALL available ride options.
     Pre-filters the result if 'vehicle_category' is provided.
     """
+
     data = ride_service.estimate_single_leg(
         distance_km=request.distance_km,
         location_type=request.location_type,
+        city=request.city,                 
         vehicle_category=request.vehicle_category
     )
     return {"status": "success", "leg_id": leg_id, "data": data}
