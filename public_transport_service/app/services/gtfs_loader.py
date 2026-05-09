@@ -131,8 +131,22 @@ class MultiGTFSLoader:
 
     def _build_stop_routes_map(self):
         for route_id, stops in self.route_stops.items():
+            
+            route_data = self.routes.get(route_id)
+            if not route_data:
+                continue
+                
+            exact_route_type = route_data.get("type", "default")
+
             for stop_id in stops:
                 self.stop_routes[stop_id].add(route_id)
+                
+                if stop_id in self.stops:
+                    current_type = self.stops[stop_id].get("type", "")
+                    if current_type == "bus" and exact_route_type in ["metro", "train"]:
+                        self.stops[stop_id]["type"] = exact_route_type
+                    elif current_type not in ["metro", "train"]:
+                        self.stops[stop_id]["type"] = exact_route_type
 
     def nearest_stops(self, lat: float, lon: float, max_meters: float, top_n: int = 10) -> List[Dict]:
         res = []

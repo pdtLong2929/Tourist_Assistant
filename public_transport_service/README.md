@@ -1,5 +1,5 @@
 ## Tính năng 
-- **Thuật toán Scoring 5 tiêu chí:** Xếp hạng tuyến đường dựa trên: Tỷ lệ phủ điểm đến (40%), Khoảng cách đi bộ (20%), Số lần đổi tuyến (15%), Đi đúng hướng TSP (10%), và Thời gian di chuyển (15%).
+- **Thuật toán Scoring 5 tiêu chí:** Xếp hạng tuyến đường dựa trên: Tỷ lệ phủ điểm đến (45%), Khoảng cách đi bộ (10%), Số lần đổi tuyến (20%), Đi đúng hướng TSP (10%), và Thời gian di chuyển (15%).
 - **Multi-city Support:** Hỗ trợ linh hoạt nhiều thành phố cùng lúc (Hà Nội, TP.HCM,...) chỉ bằng cách truyền tham số `city` vào API.
 - **Pure Python:** Thuật toán tính toán không gian (Spatial calculation) và routing được xây dựng bằng Python thuần 
 

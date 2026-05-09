@@ -48,6 +48,7 @@ class LegInfo(BaseModel):
 class RouteCombo(BaseModel):
     """A full journey grouping all legs"""
     rank: int
+    score: float
     legs: List[LegInfo]
     total_distance_km: float      
     total_duration_min: int       
