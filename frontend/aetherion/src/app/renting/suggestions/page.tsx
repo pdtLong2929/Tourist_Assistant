@@ -29,10 +29,12 @@ const aiIcons = [Cpu, Network, BrainCircuit, Database, Fingerprint, Sparkles];
 
 export default function RentingSuggestion() {
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<any[] | null>(null);
   const [mounted, setMounted] = useState(false);
   const [floatingIcons, setFloatingIcons] = useState<any[]>([]);
-  const [inputValue, setInputValue] = useState("");
+  const [journey, setJourney] = useState("");
+  const [startPos, setStartPos] = useState("");
+  const [endPos, setEndPos] = useState("");
   const [matchProgress, setMatchProgress] = useState(0);
   const [userId] = useState(() => typeof window !== 'undefined' ? `user_${Math.random().toString(36).substring(7)}` : '');
 
@@ -47,26 +49,13 @@ export default function RentingSuggestion() {
         const data = JSON.parse(event.data);
         console.log("WebSocket Received:", data);
         if (data.result) {
-          // Parse or format the incoming result beautifully
-          setResult({
-            vehicle: "CyberTrack X-9 SUV",
-            category: "All-Terrain Luxury",
-            reason: data.result,
-            matchScore: 98,
-            confidence: 99.4,
-            features: [
-              { label: "Terrain Adaptability", score: 96 },
-              { label: "Weather Resistance", score: 98 },
-              { label: "Comfort Level", score: 95 },
-              { label: "Energy Efficiency", score: 88 }
-            ],
-            specs: [
-              { label: "Range", value: "650 km" },
-              { label: "Drivetrain", value: "AWD Neural" },
-              { label: "Capacity", value: "7 Pax" },
-              { label: "Power", value: "Dual Motor" }
-            ],
-          });
+          let parsed = [];
+          try {
+             parsed = JSON.parse(data.result);
+          } catch (pe) {
+             console.error("Could not parse result json from LLM", pe);
+          }
+          setResult(Array.isArray(parsed) ? parsed : []);
           setLoading(false);
         }
       } catch (e) {
@@ -92,7 +81,7 @@ export default function RentingSuggestion() {
   }, []);
 
   const handleSearch = async () => {
-    if (!inputValue.trim()) return;
+    if (!journey.trim()) return;
     setLoading(true);
     setResult(null);
     setMatchProgress(0);
@@ -105,16 +94,16 @@ export default function RentingSuggestion() {
 
     const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || 'http://localhost';
     try {
+      const combinedQuery = `Journey: ${journey} | Start: ${startPos} | Destination: ${endPos}`;
       await fetch(`${nginxUrl}/api/v1/jobs/submit`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           userId: userId,
-          query: inputValue,
+          query: combinedQuery,
           jobType: "vehicle_suggestion"
         })
       });
-      // Do not set loading to false here, wait for the WebSocket message
     } catch (e) {
       console.error(e);
       setLoading(false);
@@ -137,7 +126,6 @@ export default function RentingSuggestion() {
         .floating-ai-icons-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; overflow: hidden; z-index: 0; pointer-events: none; }
         .cyber-floating-icon { position: absolute; color: var(--cyber-blue); animation: cascade-icons linear infinite; }
         
-        /* Giữ lại class reveal cho chữ vì nó hoạt động ổn ( Header, Badges) */
         .reveal-text { opacity: 0; animation: reveal-up 1s forwards; }
         @keyframes reveal-up { to { opacity: 1; transform: translateY(0); filter: blur(0); } }
         
@@ -150,6 +138,10 @@ export default function RentingSuggestion() {
         }
         .btn-ready { animation: cyber-pulse 2s infinite; }
         .btn-disabled { opacity: 0.5; cursor: not-allowed !important; filter: grayscale(100%); }
+        
+        .input-group label { display: block; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 0.5rem; font-weight: bold; text-transform: uppercase; }
+        .cyber-input { width: 100%; padding: 1.2rem 1.5rem; background: rgba(15,23,42,0.8); border: 1px solid var(--cyber-border); color: var(--text-main); borderRadius: 12px; fontSize: 1rem; outline: none; transition: all 0.3s ease; }
+        .cyber-input:focus { border-color: var(--cyber-blue); box-shadow: 0 0 15px rgba(52, 229, 235, 0.2); }
       `,
         }}
       />
@@ -173,13 +165,12 @@ export default function RentingSuggestion() {
       <div
         style={{
           padding: "4rem 2rem",
-          maxWidth: "1100px",
+          maxWidth: "1200px",
           margin: "0 auto",
           position: "relative",
           zIndex: 1,
         }}
       >
-        {/* HEADER SECTION - CHỮ THÌ DÙNG CLASS NHƯ CŨ (VÌ ÔN RỒI) */}
         <header
           className="reveal-text"
           style={{
@@ -216,12 +207,11 @@ export default function RentingSuggestion() {
               lineHeight: 1.2,
             }}
           >
-            INTELLIGENT VEHICLE
+            INTELLIGENT TRANSIT
             <br />
-            MATCHING SYSTEM
+            RECOMMENDER
           </h1>
 
-          {/* MỚI: Đoạn mô tả nhỏ về AI (Reveal sau 0.2s) */}
           <p
             className="reveal-text"
             style={{
@@ -233,11 +223,9 @@ export default function RentingSuggestion() {
               animationDelay: "0.2s",
             }}
           >
-            Neural network-powered recommendation engine analyzing terrain,
-            weather, and your preferences in real-time
+            Neural routing network dynamically evaluating all logistics via contextual data.
           </p>
 
-          {/* BADGES CỦA ÔNG (MÀ ÔNG NÓI HIỆN ĐƯỢC THÌ GIỮ NGUYÊN) - Reveal sau 0.3s */}
           <div
             className="reveal-text"
             style={{
@@ -251,17 +239,17 @@ export default function RentingSuggestion() {
             {[
               {
                 icon: Activity,
-                label: "NEURAL v4.2.0",
+                label: "RAG-VECTOR ACTIVE",
                 color: "var(--cyber-blue)",
               },
               {
                 icon: ShieldCheck,
-                label: "TERRAIN ACTIVE",
+                label: "GLOBAL POSITIONING",
                 color: "var(--cyber-green)",
               },
               {
                 icon: Zap,
-                label: "ATMOSPHERIC SYNC",
+                label: "REAL-TIME SYNC",
                 color: "var(--cyber-yellow)",
               },
             ].map((item, i) => (
@@ -294,83 +282,92 @@ export default function RentingSuggestion() {
           <div
             className={`edgerunner-card ${loading ? "scanning-card" : ""}`}
             style={{
-              padding: "2.5rem",
+              padding: "3rem",
               position: "relative",
               overflow: "hidden",
             }}
           >
             <div
-              className="module-label mb-3"
+              className="module-label mb-6"
               style={{
                 display: "flex",
                 alignItems: "center",
                 gap: "8px",
-                fontSize: "0.85rem",
+                fontSize: "0.9rem",
+                color: 'var(--cyber-blue)'
               }}
             >
-              <MapPin size={16} color="var(--cyber-blue)" /> DESCRIBE YOUR
-              JOURNEY
+              <MapPin size={16} /> ROUTE CONFIGURATION SYSTEM
             </div>
-            <div
-              style={{ display: "flex", gap: "1rem", alignItems: "stretch" }}
-            >
-              <div style={{ flex: 1, position: "relative" }}>
-                <Sparkles
-                  size={20}
-                  style={{
-                    position: "absolute",
-                    left: "20px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    color: "var(--cyber-yellow)",
-                    opacity: inputValue ? 1 : 0.5,
-                  }}
-                />
-                <input
-                  type="text"
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  placeholder="E.g., I need a luxury SUV for a trip to the Da Lat highlands..."
-                  style={{
-                    width: "100%",
-                    padding: "1.4rem 1.5rem 1.4rem 55px",
-                    background: "rgba(15,23,42,0.8)",
-                    border: "2px solid var(--cyber-border)",
-                    color: "var(--text-main)",
-                    borderRadius: "12px",
-                    fontSize: "1.1rem",
-                    outline: "none",
-                  }}
-                  onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                />
+            
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '2rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+                <div className="input-group">
+                   <label>Starting Origin</label>
+                   <div style={{ position: 'relative' }}>
+                     <MapPin size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--cyber-blue)' }}/>
+                     <input 
+                       className="cyber-input"
+                       style={{ paddingLeft: '3rem' }}
+                       placeholder="Enter start coordinates or node..."
+                       value={startPos}
+                       onChange={e => setStartPos(e.target.value)}
+                     />
+                   </div>
+                </div>
+
+                <div className="input-group">
+                   <label>Final Destination</label>
+                   <div style={{ position: 'relative' }}>
+                     <TrendingUp size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--cyber-yellow)' }}/>
+                     <input 
+                       className="cyber-input"
+                       style={{ paddingLeft: '3rem' }}
+                       placeholder="Enter target destination..."
+                       value={endPos}
+                       onChange={e => setEndPos(e.target.value)}
+                     />
+                   </div>
+                </div>
               </div>
+
+              <div className="input-group">
+                 <label>Journey Narrative & Conditions</label>
+                 <div style={{ position: 'relative' }}>
+                   <Sparkles size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--cyber-green)' }}/>
+                   <input 
+                     className="cyber-input"
+                     style={{ paddingLeft: '3rem' }}
+                     placeholder="e.g. Traveling with luggage in light rain, need maximum luxury..."
+                     value={journey}
+                     onChange={e => setJourney(e.target.value)}
+                   />
+                 </div>
+              </div>
+
               <button
-                className={`cyber-button ${!inputValue.trim() || loading ? "btn-disabled" : "btn-ready"}`}
+                className={`cyber-button ${!journey.trim() || loading ? "btn-disabled" : "btn-ready"}`}
                 onClick={handleSearch}
-                disabled={loading || !inputValue.trim()}
+                disabled={loading || !journey.trim()}
                 style={{
-                  padding: "1.4rem 3rem",
-                  fontSize: "1.1rem",
-                  minWidth: "200px",
+                  padding: "1.5rem 3rem",
+                  fontSize: "1.2rem",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  gap: "10px",
-                  transition: "all 0.4s ease",
+                  gap: "12px",
+                  marginTop: '1rem'
                 }}
               >
                 {loading ? (
                   <>
                     <Loader2 className="animate-spin" size={20} />
-                    <span>PROCESSING</span>
+                    <span>CALCULATING ROUTES</span>
                   </>
                 ) : (
                   <>
-                    <Cpu
-                      size={20}
-                      className={inputValue.trim() ? "text-slate-900" : ""}
-                    />
-                    <span>ANALYZE</span>
+                    <Cpu size={22} className={journey.trim() ? "text-slate-900" : ""} />
+                    <span>GENERATE RECOMMENDATIONS</span>
                   </>
                 )}
               </button>
@@ -396,107 +393,132 @@ export default function RentingSuggestion() {
           <NeonButton onClick={handleSearch}>Analyze</NeonButton>
         </div>
 
-        {/* ENHANCED RESULT CARD */}
+        {/* RENDER 3 BOXES RESULT GRID */}
         {result && !loading && (
           <div
             className="reveal-text"
-            style={{ marginTop: "3rem", animationDelay: "0s" }}
+            style={{ 
+              marginTop: "4rem", 
+              animationDelay: "0s",
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+              gap: '2.5rem'
+            }}
           >
-            <div
-              className="edgerunner-card"
-              style={{
-                border: "1px solid var(--cyber-blue)",
-                padding: "0",
-                overflow: "hidden",
-                boxShadow: "0 0 30px rgba(52, 229, 235, 0.15)",
-                background: "linear-gradient(135deg, rgba(15,23,42,0.9) 0%, rgba(30,41,59,0.8) 100%)",
-              }}
-            >
-              <div style={{ display: "flex", flexDirection: "column" }}>
-                {/* Header Area */}
-                <div style={{ padding: "2.5rem 2.5rem 1.5rem", borderBottom: "1px solid rgba(52,229,235,0.2)", position: "relative" }}>
-                  <div style={{ position: "absolute", top: "1rem", right: "1rem" }}>
-                    <div className="match-glow" style={{ fontSize: "2.5rem", fontWeight: "800", color: "var(--cyber-green)", fontFamily: "var(--font-mono)" }}>
-                      {result.matchScore}%
-                    </div>
-                    <div className="module-label" style={{ textAlign: "right", color: "var(--cyber-green)" }}>MATCH</div>
-                  </div>
-
-                  <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
-                    <div
-                      style={{
-                        width: "70px",
-                        height: "70px",
-                        background: "rgba(52,229,235,0.1)",
-                        borderRadius: "16px",
-                        border: "1px solid var(--cyber-blue)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        boxShadow: "0 0 15px var(--cyber-blue-glow)",
-                      }}
-                    >
-                      <Car size={36} color="var(--cyber-blue)" />
-                    </div>
-                    <div>
-                      <div className="module-label" style={{ color: "var(--cyber-yellow)", marginBottom: "0.25rem" }}>
-                        {result.category}
-                      </div>
-                      <h2 style={{ fontSize: "2.2rem", color: "white", fontWeight: "bold", margin: 0, textShadow: "0 0 10px rgba(255,255,255,0.3)" }}>
-                        {result.vehicle}
-                      </h2>
-                    </div>
+            {result.map((item, idx) => (
+              <div
+                key={idx}
+                className="edgerunner-card"
+                style={{
+                  border: "1px solid var(--cyber-border)",
+                  padding: "0",
+                  overflow: "hidden",
+                  background: "linear-gradient(180deg, rgba(15,23,42,0.9) 0%, rgba(30,41,59,0.8) 100%)",
+                  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                  cursor: 'pointer',
+                  position: 'relative',
+                  borderTop: '3px solid var(--cyber-blue)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-10px)';
+                  e.currentTarget.style.boxShadow = '0 15px 40px rgba(52,229,235,0.15)';
+                  e.currentTarget.style.borderColor = 'var(--cyber-blue)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = 'none';
+                  e.currentTarget.style.borderColor = 'var(--cyber-border)';
+                }}
+              >
+                {/* Image Header Section */}
+                <div style={{ 
+                  height: '200px', 
+                  position: 'relative', 
+                  background: '#000',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  overflow: 'hidden'
+                }}>
+                  <div style={{ 
+                    position: 'absolute', 
+                    inset: 0, 
+                    opacity: 0.4,
+                    backgroundImage: `url(/transports/${item.type?.toLowerCase()}.png)`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    filter: 'blur(8px)'
+                  }} />
+                  <img 
+                    src={`/transports/${item.type?.toLowerCase()}.png`} 
+                    alt={item.type}
+                    style={{
+                      zIndex: 2,
+                      maxHeight: '140px',
+                      objectFit: 'contain',
+                      filter: 'drop-shadow(0 0 20px rgba(52,229,235,0.4))'
+                    }}
+                    onError={(e) => {
+                      // Fallback in case the png path is broken
+                      e.currentTarget.src = "https://via.placeholder.com/200x200/0f172a/34e5eb?text=VEHICLE";
+                    }}
+                  />
+                  {/* Match Percentage Overlay */}
+                  <div style={{
+                    position: 'absolute',
+                    top: '1rem',
+                    right: '1rem',
+                    background: 'rgba(0,0,0,0.8)',
+                    padding: '0.5rem 0.8rem',
+                    borderRadius: '4px',
+                    border: '1px solid var(--cyber-green)',
+                    zIndex: 3
+                  }}>
+                    <span style={{ color: 'var(--cyber-green)', fontWeight: 'bold', fontFamily: 'var(--font-mono)' }}>
+                      {item.rating}%
+                    </span>
                   </div>
                 </div>
 
-                {/* Body Area */}
-                <div style={{ display: "flex", flexWrap: "wrap", padding: "2.5rem" }}>
-                  {/* Left Column: Reason */}
-                  <div style={{ flex: "1 1 350px", paddingRight: "2rem", marginBottom: "2rem" }}>
-                    <h3 style={{ fontSize: "1.1rem", color: "var(--cyber-yellow)", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                      <BrainCircuit size={18} /> ANALYSIS RESULT
-                    </h3>
-                    <p style={{ color: "var(--text-secondary)", fontSize: "1.1rem", lineHeight: 1.7, background: "rgba(0,0,0,0.2)", padding: "1.5rem", borderRadius: "12px", borderLeft: "3px solid var(--cyber-blue)" }}>
-                      &quot;{result.reason}&quot;
-                    </p>
+                {/* Content Section */}
+                <div style={{ padding: '2rem' }}>
+                  <div style={{ 
+                    textTransform: 'uppercase', 
+                    fontFamily: 'var(--font-mono)', 
+                    color: 'var(--cyber-yellow)', 
+                    fontSize: '0.8rem',
+                    letterSpacing: '2px',
+                    marginBottom: '0.5rem'
+                  }}>
+                    TRANSIT MODULE
                   </div>
+                  <h2 style={{ 
+                    fontSize: '2rem', 
+                    color: '#fff', 
+                    fontWeight: '900', 
+                    marginBottom: '1.5rem',
+                    textTransform: 'capitalize'
+                  }}>
+                    {item.type}
+                  </h2>
 
-                  {/* Right Column: Specs & Features */}
-                  <div style={{ flex: "1 1 300px", display: "flex", flexDirection: "column", gap: "2rem" }}>
-                    {/* Specs Grid */}
-                    <div>
-                      <h3 style={{ fontSize: "0.9rem", color: "var(--text-muted)", textTransform: "uppercase", marginBottom: "1rem", letterSpacing: "2px" }}>Technical Specs</h3>
-                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
-                        {result.specs.map((spec: any, idx: number) => (
-                          <div key={idx} style={{ background: "rgba(52,229,235,0.05)", padding: "1rem", borderRadius: "8px", border: "1px solid rgba(52,229,235,0.1)" }}>
-                            <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", textTransform: "uppercase" }}>{spec.label}</div>
-                            <div style={{ fontSize: "1.1rem", color: "var(--text-main)", fontWeight: "600" }}>{spec.value}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Features Bars */}
-                    <div>
-                      <h3 style={{ fontSize: "0.9rem", color: "var(--text-muted)", textTransform: "uppercase", marginBottom: "1rem", letterSpacing: "2px" }}>Neural Confidence</h3>
-                      <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                        {result.features.map((feat: any, idx: number) => (
-                          <div key={idx}>
-                            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem", fontSize: "0.85rem" }}>
-                              <span style={{ color: "var(--text-secondary)" }}>{feat.label}</span>
-                              <span style={{ color: "var(--cyber-blue)", fontWeight: "600" }}>{feat.score}%</span>
-                            </div>
-                            <div style={{ height: "6px", background: "rgba(255,255,255,0.1)", borderRadius: "3px", overflow: "hidden" }}>
-                              <div style={{ height: "100%", width: `${feat.score}%`, background: "var(--cyber-blue)", boxShadow: "0 0 10px var(--cyber-blue)" }} />
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                  <div style={{ 
+                    padding: '1.5rem', 
+                    background: 'rgba(0,0,0,0.3)', 
+                    borderRadius: '8px',
+                    borderLeft: '3px solid var(--cyber-blue)',
+                    minHeight: '150px'
+                  }}>
+                     <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.9rem', color: 'var(--cyber-blue)', marginBottom: '0.75rem' }}>
+                       <BrainCircuit size={16}/> AI LOGIC ANALYSIS
+                     </h3>
+                     <p style={{ color: '#cbd5e1', lineHeight: '1.6', fontSize: '0.95rem' }}>
+                       {item.explanation}
+                     </p>
                   </div>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
         )}
       </div>

@@ -114,7 +114,7 @@ def suggest_transport(req: SuggestRequest):
             context_blocks.append(f"- {row[0]}: {row[1]}")
         context_str = "\n".join(context_blocks)
 
-        prompt = f"""You are an expert travel assistant. Based on the following facts, please rate all transportation types and provide an explanation for each rating.
+        prompt = f"""You are an expert travel assistant. Based on the following facts, please evaluate the relevant transportation types and provide reasoning.
 
 [Relevant Knowledge from DB]: 
 {context_str}
@@ -122,13 +122,23 @@ def suggest_transport(req: SuggestRequest):
 [Current Context]:
 {query_text}
 
-Question: Rate all transportation types based on the current context and provide a brief explanation for each rating.
+Task: Return a strict JSON array evaluating exactly 3 transport options.
+Format example:
+[
+  {{"type": "car", "rating": 85, "explanation": "..."}},
+  {{"type": "bus", "rating": 60, "explanation": "..."}},
+  {{"type": "metro", "rating": 90, "explanation": "..."}}
+]
+Use lowercase lowercase keys exactly as above. 'type' MUST be one of: bike, motorbike, car, walk, bus, metro.
 """
 
         # Generate response using Gemini
         llm_response = client.models.generate_content(
             model=MODEL_ID,
-            contents=prompt
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                response_mime_type="application/json",
+            )
         )
 
         return {"suggestion": llm_response.text}
