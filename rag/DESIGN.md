@@ -181,7 +181,7 @@ Request:
 ```json
 {
   "weather_condition": "heavy rain",
-  "temperature": "28°C hot",
+  "temperature": "28 C hot",
   "distance": "5 km",
   "traffic_condition": "heavy traffic",
   "time_of_day": "18:00 evening rush",
@@ -199,7 +199,7 @@ Response:
   "retrieved": [
     {
       "weather_condition": "heavy rain",
-      "temperature": "30°C hot",
+      "temperature": "30 C hot",
       "distance": "20 km",
       "traffic_condition": "heavy traffic",
       "time_of_day": "18:00 evening rush",
