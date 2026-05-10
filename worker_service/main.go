@@ -1,13 +1,14 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os"
-	"time"
 
 	"cloud.google.com/go/pubsub"
 	"github.com/gin-gonic/gin"
@@ -64,9 +65,24 @@ func main() {
 
 		log.Printf("Worker processing job %s for user %s: '%s'", job.JobID, job.UserID, job.Query)
 
-		// SIMULATE ASYNC HEAVY WORK (e.g. contacting RAG or Internal AI)
-		time.Sleep(3 * time.Second)
-		aiResultText := fmt.Sprintf("AI response for: %s", job.Query)
+		// Contact the RAG Service
+		ragReqBody, _ := json.Marshal(map[string]string{"query": job.Query})
+		ragResp, err := http.Post("http://rag:8000/rag/suggest", "application/json", bytes.NewBuffer(ragReqBody))
+		var aiResultText string
+		if err != nil {
+			log.Println("Error calling RAG service:", err)
+			aiResultText = "Error: Failed to get RAG response"
+		} else {
+			defer ragResp.Body.Close()
+			bodyBytes, _ := io.ReadAll(ragResp.Body)
+			
+			var ragRespData map[string]interface{}
+			if err := json.Unmarshal(bodyBytes, &ragRespData); err == nil && ragRespData["suggestion"] != nil {
+				aiResultText = fmt.Sprintf("%v", ragRespData["suggestion"])
+			} else {
+				aiResultText = string(bodyBytes)
+			}
+		}
 
 		// Create Result Payload
 		resultPayload := map[string]interface{}{

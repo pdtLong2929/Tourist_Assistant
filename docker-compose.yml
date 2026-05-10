@@ -197,6 +197,20 @@ services:
     networks:
       - ta_network
 
+  # ─── Go AI Service ────────────────────────────────────────────────────
+  ai_service:
+    build:
+      context: ./ai_service
+      dockerfile: Dockerfile
+    container_name: ta_ai_service
+    restart: unless-stopped
+    ports:
+      - "8002:8002"
+    environment:
+      PORT: 8002
+    networks:
+      - ta_network
+
   # ─── Pub/Sub Emulator ──────────────────────────────────────────────────
   pubsub:
     image: gcr.io/google.com/cloudsdktool/cloud-sdk:emulators

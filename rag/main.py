@@ -28,10 +28,7 @@ class IngestRequest(BaseModel):
     description: str
 
 class SuggestRequest(BaseModel):
-    weather_condition: str
-    temperature: str
-    distance: str
-    traffic_condition: str
+    query: str
 
 def get_db_connection():
     conn = psycopg.connect(DB_URL, autocommit=True)
@@ -90,7 +87,7 @@ def suggest_transport(req: SuggestRequest):
         if not client:
             raise HTTPException(status_code=500, detail="Gemini client not initialized")
             
-        query_text = f"Weather is {req.weather_condition} with {req.temperature}. Route distance is {req.distance} and traffic is {req.traffic_condition}."
+        query_text = req.query
         
         # Generate embedding for the query
         embed_res = client.models.embed_content(
