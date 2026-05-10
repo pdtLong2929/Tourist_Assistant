@@ -1,6 +1,40 @@
-# Report General Data
+# Vietnam Tourism Recommendation System - Data Report
 
----
+## Overview
+
+This report documents the data architecture and implementation for the Vietnam Tourism Recommendation System, a backend infrastructure focused on personalized trip planning and destination recommendations in Vietnam, particularly Ho Chi Minh City and Hanoi. The system integrates user management, trip planning, destination discovery with aspect-based recommendations, multi-modal transportation options (public transit via GTFS, ride hailing, etc.), and real-time routing with scoring factors.
+
+### Key Features
+
+- **User Management**: Authentication with local and OAuth providers
+- **Trip Planning**: Create and manage multi-destination trips with transportation routing
+- **Destination Discovery**: POI database with reviews and aspect-based recommendations
+- **Transportation Integration**: GTFS data for public transit, ride hailing APIs, and custom providers
+- **Recommendation Engine**: Aspect-based scoring using review text analysis (triples)
+- **Real-time Routing**: Route options with cost, duration, and scoring factors
+
+### System Architecture
+
+The system follows a layered architecture with data ingestion from external sources, a PostgreSQL database with pgvector extension, and API services for recommendations and routing.
+
+#### High-Level Architecture
+
+```
+[External Data Sources]
+    ↓
+[Scrapers & Loaders] → [PostgreSQL Database] ← [Recommendation Service]
+    ↓
+[API Layer] → [Frontend/Client Apps]
+```
+
+#### Components
+
+- **Database Layer**: PostgreSQL with trip_db schema
+- **Data Ingestion Layer**: GTFS loader, triples loader, scrapers
+- **Core Services**: Recommendation, routing, scoring services
+- **API Layer**: RESTful APIs for CRUD operations
+
+## 1. Database Design
 
 
 ## 1. Database Design
@@ -11,27 +45,25 @@
 ### 1.2 Relationship schema
 
 
-**user**(user_id, full_name, email, phone, password_hash, auth_provider)
+**users**(user_id, full_name, email, phone, password_hash, auth_provider)
 
 **user_preferences**(***user_id***, preferred_transport_modes, preferred_destination_tags, avoid_tags, budget_min, budget_max)
 
-**destination**(destination_id, name, category, address, latitude/longitude, rating_avg, is_active)
+**destinations**(destination_id, name, category, address, latitude/longitude, rating_avg, is_active)
 
 **reviews**(***user_id***, ***destination_id***, rating, comment)
 
 **transport_modes**(mode_id, code, name, is_gtfs, gtfs_route_type)
 
-**transport_provider**(provider_id, *mode_id*, name, provider_type, website_url, app_deep_link, is_active)
+**transport_providers**(provider_id, *mode_id*, name, provider_type, website_url, app_deep_link, is_active)
 
-**trips**(trip_id, *user_id*, title, origin_name, origin_lattitude/origin_longitude, start_time/end_time, total_estimated_budget, status)
+**trips**(trip_id, *user_id*, title, origin_name, origin_latitude/origin_longitude, start_time/end_time, total_estimated_budget, status)
 
-**trip_destination**(***trip_id***, ***destination_id***, visit_order, arrival_time/departure_time, note)
+**trip_destinations**(***trip_id***, ***destination_id***, visit_order, arrival_time/departure_time, note)
 
-**route_request**(request_id, *user_id*, *trip_id*, origin_name, origin_lattitude/origin_longitude, destination_name, destination_lattitude/destination_longitude, request_at)
+**route_requests**(request_id, *user_id*, *trip_id*, origin_name, origin_latitude/origin_longitude, destination_name, destination_latitude/destination_longitude, requested_at)
 
-**route_option**(option_id, *request_i_ids*, option_name, estimated_cost, estimated_duration_min, distance_km, transfer_count, score)
-
-**trip_score**(score_id, *option_id*, weather_factor, traffic_factor, cost_factor, comfort_factor, overall_score, external_data_snapshot, scored_at)
+**route_options**(option_id, *request_id*, mode_id, provider_id, gtfs_feed_id, gtfs_route_ids, gtfs_stop_ids, option_name, estimated_cost, estimated_duration_min, distance_km, transfer_count, score)
 
 **destination_triples**(***destination_id***, triples, generated_at)
 
@@ -236,26 +268,6 @@ Each transport option returned for a `route_request`. One request → multiple o
 
 ---
 
-### `trip_scores`
-
-Scoring service output for a specific `route_option`. Stores each factor separately so the frontend can explain the score to users.
-
-| Column | Type | Notes |
-| --- | --- | --- |
-| `score_id` | char(10) | PK |
-| `option_id` | char(10) | FK → route_options |
-| `weather_factor` | numeric(4,2) | 0–10 |
-| `traffic_factor` | numeric(4,2) | 0–10 |
-| `cost_factor` | numeric(4,2) | 0–10 |
-| `comfort_factor` | numeric(4,2) | 0–10 |
-| `overall_score` | numeric(4,2) | 0–10, NOT NULL |
-| `external_data_snapshot` | jsonb | raw weather/traffic API response |
-| `scored_at` | timestamptz |  |
-
-> `external_data_snapshot` is the cache — if the same route is requested again within a short window, return this instead of hitting external APIs again.
-
----
-
 ### `destination_triples`
 
 Cosimilarity triple data per destination, generated from review text. Kept separate from `destinations` so regular destination queries stay lean — only joined when running recommendations.
@@ -358,10 +370,10 @@ The generated dataset spans multiple tables with scientifically-justified record
 
 | Entity | Record Count | Justification |
 | --- | --- | --- |
-| `users` | 1,000 | Sufficient population to capture behavioral diversity; enables 80/10/10 train-validation-test splits with ≥100 test users for holdout evaluation. Also provides baseline for cold-start algorithm evaluation. |
-| `destinations` | ~100 | Covers Ho Chi Minh City's major landmarks (shopping malls, parks, temples, hospitals, universities, markets) with geographic density enabling meaningful geo-spatial filtering. Enables recommendation diversity without curse of dimensionality in content-based similarity. |
+| `users` | 1,599 | Sufficient population to capture behavioral diversity; enables 80/10/10 train-validation-test splits with ≥100 test users for holdout evaluation. Also provides baseline for cold-start algorithm evaluation. |
+| `destinations` | 1366 | Covers Ho Chi Minh City's major landmarks (shopping malls, parks, temples, hospitals, universities, markets) with geographic density enabling meaningful geo-spatial filtering. Enables recommendation diversity without curse of dimensionality in content-based similarity. |
 | `trips` | 3,000 | Represents 3× the user population, yielding ~3 trips per user on average. Statistically sufficient for temporal pattern analysis (seasonality, weekly cycles), user segmentation, and route optimization without storage burden. Allows meaningful statistics per user (μ=3 trips, σ=varies by user segment). |
-| `reviews` | 1,200–1,500 | Generated with 40% of trips triggering 1–3 reviews per trip. Provides sufficient destination-level aggregation (10–15 reviews per destination on average) for reliable average rating computation and sentiment trend analysis. Enables user-destination co-rating analysis for collaborative filtering baselines. |
+| `reviews` | 50000 | Generated with 40% of trips triggering 1–3 reviews per trip. Provides sufficient destination-level aggregation (100-200 reviews per destination on average) for reliable average rating computation and sentiment trend analysis. Enables user-destination co-rating analysis for collaborative filtering baselines. |
 | `trip_destinations` | 2,000–3,000 | Multiple stops per trip (typically 1–3 stops per multi-destination trip). Enables itinerary coherence analysis and route-sequencing model training. Sufficient for temporal embedding of destination visitation sequences. |
 | `route_comparisons` & `route_options` | 1,500–2,000 | Generated as secondary artifacts of trip requests. Mirrors realistic scenario where users evaluate multiple transport options before selection. Enables comparative cost/duration/comfort analysis and scoring model calibration. |
 | `transport_modes` | 7 | Covers `{BUS, METRO, TRAIN, WALK, BIKE, CAR, RIDE_HAILING}`. Fixed enumeration sufficient for category-based feature engineering and provider recommendation filters. |
@@ -390,13 +402,24 @@ Generated data undergoes validation to prevent spurious patterns:
 
 ---
 
-## 1.6 Data sourcing
+## 1.6 Data Ingestion
 
-Hệ thống gợi ý cần dữ liệu nền tảng tốt. Phần này giải trình về nguồn gốc của data thật.
+### GTFS Data
+- **Source**: Official transit agency feeds and OSM-derived GTFS
+- **Loader**: `gtfs_loader.py` with upsert logic
+- **Cities**: Hanoi (Transerco), Ho Chi Minh City (HCMC Bus)
+- **Update Frequency**: Manual re-run on feed updates
 
-* **Danh sách Nguồn Dữ Liệu:** Liệt kê các API, bộ dữ liệu mở (Kaggle, Google Dataset Search), hoặc trang web đã cào dữ liệu (nếu có). Ví dụ: Dữ liệu về các tuyến xe bus, giá vé máy bay, tọa độ điểm du lịch.
-* **Đặc tả Dữ liệu Gốc:** Dữ liệu thu về có định dạng gì (JSON, CSV, XML)? Số lượng quan trắc (rows) và số đặc trưng (features) cơ bản ban đầu là bao nhiêu?
-* **Giới hạn & Thách thức:** Dữ liệu có bị thiếu hụt (missing values), chứa nhiễu (noise), hay mất cân bằng không?
+### Destination Data
+- **Source**: Google Maps scraper (external)
+- **Processing**: Review text analysis for aspect triples
+- **Loader**: `triples_loader.py`
+- **Format**: JSON with aspect-based sentiment scores
+
+### Transportation Providers
+- **Ride Hailing**: Grab API integration
+- **Rentals**: Placeholder for bike/car rental providers
+- **Public Transit**: GTFS feeds
 
 ---
 

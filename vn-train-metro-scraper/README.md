@@ -12,7 +12,7 @@ Outputs valid **GTFS (General Transit Feed Specification)** CSV files ready for 
 ## 📦 Project Structure
 
 ```
-vn-gtfs-scraper/
+vn-train-metro-scraper/
 ├── src/
 │   ├── overpass.py       # Strict Overpass API client
 │   ├── gtfs_builder.py   # OSM → GTFS conversion
