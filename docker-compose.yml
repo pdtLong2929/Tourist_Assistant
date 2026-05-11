@@ -57,6 +57,21 @@ services:
     networks:
       - ta_network
 
+  # ─── Redis ───────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: ta_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+    networks:
+      - ta_network
+
   # ─── Express Login API ────────────────────────────────────────────────
   login:
     build:
@@ -208,6 +223,26 @@ services:
       - "8002:8002"
     environment:
       PORT: 8002
+    networks:
+      - ta_network
+
+  # ─── API Calling Service ──────────────────────────────────────────────
+  api_calling:
+    build:
+      context: ./api_calling
+      dockerfile: Dockerfile
+    container_name: ta_api_calling
+    restart: unless-stopped
+    ports:
+      - "8083:8080"
+    environment:
+      PORT: 8080
+      REDIS_ADDR: redis:6379
+    env_file:
+      - ./api_calling/.env
+    depends_on:
+      redis:
+        condition: service_healthy
     networks:
       - ta_network
 
