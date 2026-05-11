@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 "use client";
 import React, { useState, useEffect } from "react";
 import {
@@ -18,12 +17,6 @@ import {
   Gauge,
   Loader2,
 } from "lucide-react";
-=======
-'use client';
-import { GlassCard } from '@/components/ui/GlassCard';
-import { NeonButton } from '@/components/ui/NeonButton';
-import React, { useState } from 'react';
->>>>>>> fb98a63 (feat: basic ui)
 
 const aiIcons = [Cpu, Network, BrainCircuit, Database, Fingerprint, Sparkles];
 
