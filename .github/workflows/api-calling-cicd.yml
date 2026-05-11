@@ -67,7 +67,7 @@ jobs:
           touch rag/.env || true
 
       - name: Start services via Docker Compose
-        run: docker compose up -d --build --wait api_calling redis pubsub pubsub-init
+        run: docker compose up -d --build --wait api_calling redis pubsub
 
       - name: Wait for API Calling Service to be ready
         run: |
