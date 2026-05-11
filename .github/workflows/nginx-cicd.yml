@@ -67,7 +67,7 @@ jobs:
           touch rag/.env || true
 
       - name: Start services via Docker Compose
-        run: docker compose up -d --build --wait
+        run: docker compose up -d --build --wait nginx postgres mongodb
 
       - name: Wait for Nginx to be ready
         run: |
