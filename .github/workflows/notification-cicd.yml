@@ -2,7 +2,7 @@ name: Notification Service CI/CD to GCP
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "async" ]
     paths:
       - 'notification/**'
       - '.github/workflows/notification-cicd.yml'

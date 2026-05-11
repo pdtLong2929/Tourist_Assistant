@@ -1,6 +1,5 @@
 name: Login API CI/CD to GCP
 
-#test
 on:
   push:
     branches: [ "main" ]

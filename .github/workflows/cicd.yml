@@ -2,7 +2,7 @@ name: Frontend CI/CD to GCP
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "async" ]
   pull_request:
     branches: [ "main" ]
 
