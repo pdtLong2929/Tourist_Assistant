@@ -30,6 +30,21 @@ type JobPayload struct {
 	JobType string `json:"jobType"`
 }
 
+type LocationResponse struct {
+	Destination    string      `json:"destination"`
+	FullAddress    string      `json:"full_address"`
+	Weather        struct {
+		Temp        float64 `json:"temp"`
+		Description string  `json:"description"`
+	} `json:"weather"`
+	Recommendation string      `json:"recommendation"`
+}
+
+type EnrichedJobPayload struct {
+	JobPayload
+	LocationData *LocationResponse `json:"locationData"`
+}
+
 func main() {
 	r := gin.Default()
 
@@ -56,17 +71,31 @@ func main() {
 			return
 		}
 
-		var job JobPayload
+		var job EnrichedJobPayload
 		if err := json.Unmarshal(msg.Message.Data, &job); err != nil {
 			log.Println("Error unmarshaling job data:", err)
-			c.Status(http.StatusBadRequest) // Acknowledge to prevent infinite retries
+			c.Status(http.StatusBadRequest)
 			return
 		}
 
-		log.Printf("Worker processing job %s for user %s: '%s'", job.JobID, job.UserID, job.Query)
+		log.Printf("Worker processing ENRICHED job %s for user %s: '%s'", job.JobID, job.UserID, job.Query)
 
-		// Contact the RAG Service
-		ragReqBody, _ := json.Marshal(map[string]string{"query": job.Query})
+		// Construct comprehensive RAG query using enriched data context
+		enrichedQuery := job.Query
+		if job.LocationData != nil {
+			enrichedQuery = fmt.Sprintf(
+				"Target Location: %s. Address: %s. Current Weather: %s (%.1f°C). Context: %s. User Query: %s",
+				job.LocationData.Destination,
+				job.LocationData.FullAddress,
+				job.LocationData.Weather.Description,
+				job.LocationData.Weather.Temp,
+				job.LocationData.Recommendation,
+				job.Query,
+			)
+		}
+
+		// Contact the RAG Service with enriched context
+		ragReqBody, _ := json.Marshal(map[string]string{"query": enrichedQuery})
 		ragResp, err := http.Post("http://rag:8000/rag/suggest", "application/json", bytes.NewBuffer(ragReqBody))
 		var aiResultText string
 		if err != nil {

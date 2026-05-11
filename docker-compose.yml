@@ -224,6 +224,8 @@ services:
     environment:
       PORT: 8080
       REDIS_ADDR: redis:6379
+      PUBSUB_EMULATOR_HOST: pubsub:8085
+      GOOGLE_CLOUD_PROJECT: test-project
     env_file:
       - ./api_calling/.env
     depends_on:
@@ -255,8 +257,10 @@ services:
         echo 'Waiting for Pub/Sub to start...';
         sleep 5;
         curl -s -X PUT http://pubsub:8085/v1/projects/test-project/topics/ai-jobs;
+        curl -s -X PUT http://pubsub:8085/v1/projects/test-project/topics/task-enrich;
         curl -s -X PUT http://pubsub:8085/v1/projects/test-project/topics/ai-results;
-        curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/worker-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/ai-jobs\",\"pushConfig\":{\"pushEndpoint\":\"http://worker_service:8001/pubsub/push\"}}';
+        curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/api-calling-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/ai-jobs\",\"pushConfig\":{\"pushEndpoint\":\"http://api_calling:8080/pubsub/push\"}}';
+        curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/worker-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/task-enrich\",\"pushConfig\":{\"pushEndpoint\":\"http://worker_service:8001/pubsub/push\"}}';
         curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/notification-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/ai-results\",\"pushConfig\":{\"pushEndpoint\":\"http://notification:8080/pubsub/results\"}}';
         echo 'Pub/Sub Initialized!';
       "

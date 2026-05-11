@@ -1,9 +1,6 @@
-// Cấu trúc bảng User
-
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/db');
 
-// Định nghĩa cấu trúc bảng User
 const User = sequelize.define('User', {
   id: {
     type: DataTypes.INTEGER,
@@ -28,9 +25,6 @@ const User = sequelize.define('User', {
     unique: true,
     allowNull: true,
   },
-
-
-// lấy lại mật khẩu bằng gửi otp qua gmail
   resetPasswordToken: {
     type: DataTypes.STRING,
     allowNull: true,
@@ -48,7 +42,6 @@ const User = sequelize.define('User', {
   timestamps: true, 
 });
 
-// tự động tạo bảng trong DB nếu chưa tồn tại
 User.sync({ alter: true }) 
   .then(() => console.log('User table created/updated'))
   .catch(err => console.log('Error creating table:', err));

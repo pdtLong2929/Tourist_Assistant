@@ -131,6 +131,10 @@ Format example:
 ]
 Use lowercase lowercase keys exactly as above. 'type' MUST be one of: bike, motorbike, car, walk, bus, metro.
 """
+        
+        print("--- SENDING PROMPT TO LLM ---")
+        print(prompt)
+        print("-----------------------------")
 
         # Generate response using Gemini
         llm_response = client.models.generate_content(

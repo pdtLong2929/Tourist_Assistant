@@ -26,6 +26,7 @@ func (c *WeatherClient) GetWeatherByCoords(lat, lon interface{}) (map[string]int
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
+		fmt.Printf("WeatherClient Error: Received Status Code %d\n", resp.StatusCode)
 		return nil, errs.ErrInvalidKey
 	}
 
