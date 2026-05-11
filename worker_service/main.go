@@ -96,7 +96,11 @@ func main() {
 
 		// Contact the RAG Service with enriched context
 		ragReqBody, _ := json.Marshal(map[string]string{"query": enrichedQuery})
-		ragResp, err := http.Post("http://rag:8000/rag/suggest", "application/json", bytes.NewBuffer(ragReqBody))
+		ragServiceURL := os.Getenv("RAG_SERVICE_URL")
+		if ragServiceURL == "" {
+			ragServiceURL = "http://rag:8000"
+		}
+		ragResp, err := http.Post(ragServiceURL+"/rag/suggest", "application/json", bytes.NewBuffer(ragReqBody))
 		var aiResultText string
 		if err != nil {
 			log.Println("Error calling RAG service:", err)
