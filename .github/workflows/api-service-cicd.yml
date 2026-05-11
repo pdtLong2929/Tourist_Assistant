@@ -145,26 +145,34 @@ jobs:
       # 4. Provision Pub/Sub infrastructure
       - name: Provision Pub/Sub Topics and Subscriptions
         run: |-
-          echo "Creating topics if they don't exist..."
-          gcloud pubsub topics create ai-jobs --quiet || echo "Topic already exists"
-          gcloud pubsub topics create task-enrich --quiet || echo "Topic already exists"
-          gcloud pubsub topics create ai-results --quiet || echo "Topic already exists"
+          PROJECT_NUM="367022044809"
+          SA_EMAIL="${PROJECT_NUM}-compute@developer.gserviceaccount.com"
           
+          echo "Creating topics if they don't exist..."
+          gcloud pubsub topics create ai-jobs --project=${{ env.PROJECT_ID }} --quiet || echo "Topic already exists"
+          gcloud pubsub topics create task-enrich --project=${{ env.PROJECT_ID }} --quiet || echo "Topic already exists"
+          gcloud pubsub topics create ai-results --project=${{ env.PROJECT_ID }} --quiet || echo "Topic already exists"
+          
+          echo "Authorizing Cloud Run Service Account to publish..."
+          gcloud pubsub topics add-iam-policy-binding ai-jobs --member="serviceAccount:$SA_EMAIL" --role="roles/pubsub.publisher" --project=${{ env.PROJECT_ID }} --quiet
+          gcloud pubsub topics add-iam-policy-binding task-enrich --member="serviceAccount:$SA_EMAIL" --role="roles/pubsub.publisher" --project=${{ env.PROJECT_ID }} --quiet
+          gcloud pubsub topics add-iam-policy-binding ai-results --member="serviceAccount:$SA_EMAIL" --role="roles/pubsub.publisher" --project=${{ env.PROJECT_ID }} --quiet
+
           echo "Creating push subscriptions..."
           gcloud pubsub subscriptions create api-calling-sub \
             --topic=ai-jobs \
             --push-endpoint=https://tourism-api-calling-367022044809.asia-southeast1.run.app/pubsub/push \
-            --quiet || echo "Subscription already exists"
+            --project=${{ env.PROJECT_ID }} --quiet || echo "Subscription already exists"
             
           gcloud pubsub subscriptions create worker-sub \
             --topic=task-enrich \
             --push-endpoint=https://tourism-worker-service-367022044809.asia-southeast1.run.app/pubsub/push \
-            --quiet || echo "Subscription already exists"
+            --project=${{ env.PROJECT_ID }} --quiet || echo "Subscription already exists"
             
           gcloud pubsub subscriptions create notification-sub \
             --topic=ai-results \
             --push-endpoint=https://tourism-notification-service-367022044809.asia-southeast1.run.app/pubsub/results \
-            --quiet || echo "Subscription already exists"
+            --project=${{ env.PROJECT_ID }} --quiet || echo "Subscription already exists"
 
       # 5. Deploy to Cloud Run
       - name: Deploy to Cloud Run
