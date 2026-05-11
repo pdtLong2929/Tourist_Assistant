@@ -5,42 +5,31 @@ from sklearn.preprocessing import MinMaxScaler
 model = joblib.load("car_regression.pkl")
 
 
-def clean_numeric(series):
-    return (
-        series.astype(str)
-        .str.extract(r'(\d+\.?\d*)')[0]
-        .astype(float)
-    )
-
-
-
 def ranking_car(df):
     df = df.copy()
 
-    df['power_to_torque'] = (df['HorsePower'] / df['Torque'])
-    df = df[
-        [
-            'CC/Battery Capacity',
-            'HorsePower',
-            'Total Speed',
-            'Performance(0 - 100 )KM/H',
-            'Torque',
-            'power_to_torque'
-        ]
+    df['power_to_torque'] = df['HorsePower'] / df['Torque']
+
+    feature_cols = [
+        'CC/Battery Capacity',
+        'HorsePower',
+        'Total Speed',
+        'Performance(0 - 100 )KM/H',
+        'Torque',
+        'power_to_torque'
     ]
-    df['power_to_torque'] = (
-            df['HorsePower'] / df['Torque']
-    )
 
+    X = df[feature_cols]
 
-    predictions = model.predict(df)
+    predictions = model.predict(X)
 
     df['score'] = predictions
 
     return df.sort_values(
-        by="score",
+        by='score',
         ascending=False
     )
+
 
 def ranking_bike(df):
     df = df.copy()
