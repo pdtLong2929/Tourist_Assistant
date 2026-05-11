@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from app.schemas.efm_schemas import PredictionRequest, RecommendRequest
-from app.services.efm_logic import calculate_cold_start_score, state, generate_ai_explanation, get_user_interests, get_destination_features
+from app.services.efm_logic import calculate_cold_start_score, state, generate_ai_explanation, get_user_interests, get_destination_features, validate_location_in_city
 router = APIRouter()
 
 @router.post("/api/predict")
@@ -50,9 +50,11 @@ def recommend(req: RecommendRequest):
     # --- CASE 1: NEW USER (COLD START) ---
     if u_idx is None:
         # Get a sample of items to calculate (e.g., top 50 most popular items)
-        all_item_ids = list(state["iid_map"].keys())[:400]
+        all_item_ids = list(state["iid_map"].keys())[:1000]
 
         for i_id in all_item_ids:
+            if not validate_location_in_city(i_id, req.city):
+                continue
             # Calculate score based on the average of similar "neighbors"
             score = calculate_cold_start_score(req.user_id, i_id)
             
@@ -60,13 +62,16 @@ def recommend(req: RecommendRequest):
                 "item_id": i_id,
                 "predicted_rating": round(score, 1)
             })
+
+            if len(results) >= req.top_k:
+                break
             
     # --- CASE 2: EXISTING USER (IN EFM MODEL) ---
     else:
         try:
             # Get ranked items for this user index from EFM
             rankings, _ = model.rank(u_idx)
-            item_indices = rankings[:req.top_k]
+            item_indices = rankings[:1000]
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Error during recommendation process: {str(e)}")
 
@@ -74,6 +79,9 @@ def recommend(req: RecommendRequest):
             # Map internal Index back to actual ID
             i_id = state["idx_to_iid"].get(idx)
             if not i_id:
+                continue
+
+            if not validate_location_in_city(i_id, req.city):
                 continue
             
             # Calculate score from the EFM model
@@ -85,6 +93,10 @@ def recommend(req: RecommendRequest):
                 "predicted_rating": round(score, 1),
             })
 
+            if len(results) >= req.top_k:
+                break
+
+    # --- UNIFIED SORTING & SLICING ---
     # Sort the results from highest to lowest predicted rating
     results.sort(key=lambda x: x["predicted_rating"], reverse=True)  
     
