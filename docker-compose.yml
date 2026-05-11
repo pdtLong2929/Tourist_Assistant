@@ -82,7 +82,8 @@ services:
     ports:
       - "5036:5036"
     env_file:
-      - ./login/.env
+      - path: ./login/.env
+        required: false
     environment:
       NODE_ENV: production
       PORT: 5036
@@ -133,7 +134,8 @@ services:
     ports:
       - "8000:8000"
     env_file:
-      - ./rag/.env
+      - path: ./rag/.env
+        required: false
     environment:
       POSTGRES_URL: postgresql://${POSTGRES_USER:-tourist}:${POSTGRES_PASSWORD:-tourist_secret}@postgres:5432/${POSTGRES_DB:-tourist_assistant}
     depends_on:
@@ -227,7 +229,8 @@ services:
       PUBSUB_EMULATOR_HOST: pubsub:8085
       GOOGLE_CLOUD_PROJECT: test-project
     env_file:
-      - ./api_calling/.env
+      - path: ./api_calling/.env
+        required: false
     depends_on:
       redis:
         condition: service_healthy

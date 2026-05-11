@@ -2,7 +2,7 @@ name: Login API CI/CD to GCP
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "async" ]
     paths:
       - 'login/**'
       - '.github/workflows/login-cicd.yml'
