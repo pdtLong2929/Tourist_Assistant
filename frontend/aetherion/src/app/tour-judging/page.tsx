@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 "use client";
 import { DataRing } from "@/components/ui/DataRing";
 import React, { useState, useEffect } from "react";

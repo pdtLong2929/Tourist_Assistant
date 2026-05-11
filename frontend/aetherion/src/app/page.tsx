@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 "use client";
 
 import CountUp from "@/components/CountUp";

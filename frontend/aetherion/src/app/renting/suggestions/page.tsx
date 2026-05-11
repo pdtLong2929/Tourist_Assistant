@@ -107,7 +107,6 @@ export default function RentingSuggestion() {
   if (!mounted) return null;
 
   return (
-<<<<<<< HEAD
     <>
       <style
         dangerouslySetInnerHTML={{
@@ -366,24 +365,6 @@ export default function RentingSuggestion() {
               </button>
             </div>
           </div>
-        )}
-      </div>
-    </>
-=======
-    <div style={{ padding: '4rem', maxWidth: '800px', margin: '0 auto' }}>
-      <h1 className="neon-text-blue" style={{ textAlign: 'center', marginBottom: '1rem' }}>AI Concierge Suggestions</h1>
-      <p style={{ textAlign: 'center', color: 'var(--text-secondary)', marginBottom: '3rem' }}>
-        Deterministic vehicle matching based on explicit destination environmental factors.
-      </p>
-
-      <GlassCard>
-        <div style={{ display: 'flex', gap: '1rem' }}>
-          <input 
-            type="text" 
-            placeholder="E.g., I am taking 4 people to the snowy mountains of Aspen" 
-            style={{ flex: 1, padding: '1rem', background: 'rgba(0,0,0,0.5)', border: '1px solid var(--glass-border)', color: '#fff', borderRadius: '8px', fontFamily: 'var(--font-inter)' }}
-          />
-          <NeonButton onClick={handleSearch}>Analyze</NeonButton>
         </div>
 
         {/* RENDER 3 BOXES RESULT GRID */}

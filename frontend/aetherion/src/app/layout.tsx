@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import "./globals.css";
 import React from "react";
 import Header from "@/components/Header";
@@ -191,24 +190,12 @@ function Footer() {
   );
 }
 
-=======
-import './globals.css';
-import { Header } from '@/components/layout/Header';
-import React from 'react';
-
-export const metadata = {
-  title: 'Aetherion - Next Gen Platform',
-  description: 'Vehicle booking, renting suggestions, and intelligent tour judging.',
-};
-
->>>>>>> fb98a63 (feat: basic ui)
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-<<<<<<< HEAD
     <html lang="vi">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -231,14 +218,6 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
-=======
-    <html lang="en">
-      <body style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', margin: 0 }}>
-        <Header />
-        <main style={{ flex: 1, position: "relative", zIndex: 1 }}>
-          {children}
-        </div>
->>>>>>> fb98a63 (feat: basic ui)
       </body>
     </html>
   );

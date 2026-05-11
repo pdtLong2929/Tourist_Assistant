@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 "use client";
 import React, { useState, useEffect } from "react";
 import { Navigation, Car, MapPin, Crosshair, Zap, Activity, Scan, Target } from "lucide-react";
@@ -31,24 +30,10 @@ const MOCK_DRIVERS = [
     heading: 270,
     price: "25.00",
   },
-=======
-'use client';
-import { GlassCard } from '@/components/ui/GlassCard';
-import { NeonButton } from '@/components/ui/NeonButton';
-import { MapPin, Navigation, Car } from 'lucide-react';
-import React, { useState } from 'react';
-
-// Simulated external backend driver data
-const MOCK_DRIVERS = [
-  { id: 'D-801', type: 'Cyber SUV', eta: '3 mins', x: 30, y: 35, heading: 45 },
-  { id: 'D-442', type: 'Aero Sedan', eta: '7 mins', x: 70, y: 15, heading: 120 },
-  { id: 'D-99X', type: 'Hypercar', eta: '12 mins', x: 80, y: 80, heading: 270 }
->>>>>>> fb98a63 (feat: basic ui)
 ];
 
 export default function BookingPage() {
   const [selectedDriver, setSelectedDriver] = useState<string | null>(null);
-<<<<<<< HEAD
   const [isDispatching, setIsDispatching] = useState<boolean>(false);
   const [mounted, setMounted] = useState(false);
 
