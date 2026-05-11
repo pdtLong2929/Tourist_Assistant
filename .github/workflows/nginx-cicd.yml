@@ -44,14 +44,14 @@ jobs:
             -e PORT="80" \
             -e FRONTEND_URL="http://frontend:3000" \
             -e LOGIN_API_URL="http://login:5036" \
+            -e API_SERVICE_URL="http://api_service:8081" \
+            -e NOTIFICATION_URL="http://notification:8080" \
             -e SSL_TOGGLE="on" \
             -e HOST_HEADER="\$proxy_host" \
             -e DNS_RESOLVER="8.8.8.8" \
-            --add-host api_service:127.0.0.1 \
-            --add-host notification:127.0.0.1 \
             -v ${{ github.workspace }}/nginx/nginx.conf:/etc/nginx/nginx.conf:ro \
             -v ${{ github.workspace }}/nginx/conf.d/default.conf:/etc/nginx/default.conf.template:ro \
-            nginx:alpine sh -c "apk add --no-cache gettext && envsubst '\${PORT} \${LOGIN_API_URL} \${FRONTEND_URL} \${SSL_TOGGLE} \${HOST_HEADER} \${DNS_RESOLVER}' < /etc/nginx/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -t"
+            nginx:alpine sh -c "apk add --no-cache gettext && envsubst '\${PORT} \${LOGIN_API_URL} \${API_SERVICE_URL} \${NOTIFICATION_URL} \${FRONTEND_URL} \${SSL_TOGGLE} \${HOST_HEADER} \${DNS_RESOLVER}' < /etc/nginx/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -t"
         continue-on-error: false
 
   # ── Job 2 : Docker Compose Integration Test ──────────────────────────────
@@ -173,6 +173,8 @@ jobs:
             --set-env-vars="\
           FRONTEND_URL=https://tourism-frontend-app-367022044809.asia-southeast1.run.app,\
           LOGIN_API_URL=https://tourism-login-api-367022044809.asia-southeast1.run.app,\
+          API_SERVICE_URL=https://tourism-api-service-367022044809.asia-southeast1.run.app,\
+          NOTIFICATION_URL=https://tourism-notification-service-367022044809.asia-southeast1.run.app,\
           SSL_TOGGLE=on,\
           HOST_HEADER=\$proxy_host,\
           DNS_RESOLVER=8.8.8.8"

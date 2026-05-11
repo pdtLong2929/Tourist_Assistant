@@ -157,6 +157,8 @@ services:
       PORT: ${PORT:-80}
       FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
       LOGIN_API_URL: ${LOGIN_API_URL:-http://login:5036}
+      API_SERVICE_URL: ${API_SERVICE_URL:-http://api_service:8081}
+      NOTIFICATION_URL: ${NOTIFICATION_URL:-http://notification:8080}
       SSL_TOGGLE: ${SSL_TOGGLE:-on}
       HOST_HEADER: ${HOST_HEADER:-localhost}
       DNS_RESOLVER: ${DNS_RESOLVER:-127.0.0.11}
