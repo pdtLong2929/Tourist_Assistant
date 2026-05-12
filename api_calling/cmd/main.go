@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"cloud.google.com/go/pubsub"
 	"github.com/gin-gonic/gin"
@@ -36,9 +37,21 @@ func main() {
 		redisAddr = "localhost:6379"
 	}
 
-	rdb := redis.NewClient(&redis.Options{
-		Addr: redisAddr,
-	})
+	var opt *redis.Options
+	var err error
+
+	if strings.HasPrefix(redisAddr, "redis://") || strings.HasPrefix(redisAddr, "rediss://") {
+		opt, err = redis.ParseURL(redisAddr)
+		if err != nil {
+			log.Fatalf("Failed to parse redis URL: %v", err)
+		}
+	} else {
+		opt = &redis.Options{
+			Addr: redisAddr,
+		}
+	}
+
+	rdb := redis.NewClient(opt)
 
 	ctx := context.Background()
 	if err := rdb.Ping(ctx).Err(); err != nil {

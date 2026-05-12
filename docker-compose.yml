@@ -227,7 +227,7 @@ services:
       - "8083:8080"
     environment:
       PORT: 8080
-      REDIS_ADDR: redis:6379
+      REDIS_ADDR: ${REDIS_ADDR:-redis:6379}
       PUBSUB_EMULATOR_HOST: pubsub:8085
       GOOGLE_CLOUD_PROJECT: test-project
     env_file:
