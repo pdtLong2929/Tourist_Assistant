@@ -81,7 +81,7 @@ def recommend_vehicles_user(temp, user_id, dest_lon, dest_lat, distance_km, budg
         )
     candidates['rating'] = model.predict(X_inference)
 
-    top_recommendations = candidates.sort_values(by='rating', ascending=False).head(10)
+    top_recommendations = candidates.sort_values(by='rating', ascending=False)
 
 
     return top_recommendations[['veh_id', 'price', 'rating']].reset_index(drop=True)
