@@ -1,0 +1,13 @@
+shop_id,shop_name,city,district,lat,lng,vehicle_types,tier,address
+SHOP_001,Saigon Wheels Hub,Ho Chi Minh City,District 1,10.7769,106.7009,"car,motorbike","Budget,Mid-Range","12 Bui Vien, District 1, HCMC"
+SHOP_002,DriveVN Premium,Ho Chi Minh City,Binh Thanh,10.8028,106.715,car,"Mid-Range,Luxury","48 Dien Bien Phu, Binh Thanh, HCMC"
+SHOP_003,Moto Saigon,Ho Chi Minh City,District 3,10.7787,106.689,motorbike,"Budget,Mid-Range,Premium","77 Vo Van Tan, District 3, HCMC"
+SHOP_004,Airport Ride HCMC,Ho Chi Minh City,Tan Binh,10.8185,106.6591,"car,motorbike","Mid-Range,Luxury","302 Hoang Van Thu, Tan Binh, HCMC"
+SHOP_005,Luxe Drive Saigon,Ho Chi Minh City,District 7,10.7289,106.7218,car,"Luxury,Ultra-Luxury","15 Nguyen Luong Bang, District 7, HCMC"
+SHOP_006,Phuong Nam Rentals,Ho Chi Minh City,Go Vap,10.838,106.6749,"car,motorbike","Budget,Mid-Range","9 Nguyen Oanh, Go Vap, HCMC"
+SHOP_007,Hanoi Explorer Rentals,Hanoi,Hoan Kiem,21.0285,105.8542,"car,motorbike","Budget,Mid-Range","24 Hang Bai, Hoan Kiem, Hanoi"
+SHOP_008,Capital Drive VN,Hanoi,Ba Dinh,21.036,105.834,car,"Mid-Range,Luxury","56 Doi Can, Ba Dinh, Hanoi"
+SHOP_009,Thang Long Moto,Hanoi,Dong Da,21.0215,105.8412,motorbike,"Budget,Mid-Range,Premium","101 Tay Son, Dong Da, Hanoi"
+SHOP_010,West Lake Wheels,Hanoi,Cau Giay,21.0388,105.7914,"car,motorbike","Mid-Range,Luxury","88 Xuan Thuy, Cau Giay, Hanoi"
+SHOP_011,Noi Bai Connect Rentals,Hanoi,Long Bien,21.0457,105.8897,car,"Budget,Mid-Range,Luxury","15 Nguyen Van Cu, Long Bien, Hanoi"
+SHOP_012,Tay Ho Premium Rides,Hanoi,Tay Ho,21.0631,105.8323,"car,motorbike","Luxury,Ultra-Luxury,High-End","3 Dang Thai Mai, Tay Ho, Hanoi"

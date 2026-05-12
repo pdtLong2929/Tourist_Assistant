@@ -997,4 +997,3 @@ ALTER TABLE ONLY trip_db.user_preferences
 --
 
 \unrestrict 73U0X5xVbVdnfNrqXrEkx6IslV6xt7w20i56uLpIrZCBcJ1IUETA0Npglnj3zjr
-

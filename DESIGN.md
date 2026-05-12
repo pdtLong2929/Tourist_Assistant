@@ -62,13 +62,27 @@ This repository contains the backend infrastructure for a tourism recommendation
 
 #### Users & Preferences
 ```sql
+
 users (
-    user_id char(10) PRIMARY KEY,
-    full_name varchar(120),
-    email varchar(150) UNIQUE,
-    phone varchar(100) UNIQUE,
-    password_hash text,
-    auth_provider varchar(30)
+    id SERIAL PRIMARY KEY,
+
+    name VARCHAR(255) NOT NULL,
+
+    email VARCHAR(255) NOT NULL UNIQUE,
+
+    password VARCHAR(255),
+
+    "googleId" VARCHAR(255) UNIQUE,
+
+    "resetPasswordToken" VARCHAR(255),
+
+    "resetPasswordExpires" TIMESTAMP,
+
+    "refreshToken" TEXT,
+
+    "createdAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    "updatedAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 )
 
 user_preferences (
