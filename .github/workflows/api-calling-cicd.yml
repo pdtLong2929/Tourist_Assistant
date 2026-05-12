@@ -145,4 +145,9 @@ jobs:
             --image $DOCKER_TAG \
             --region ${{ env.REGION }} \
             --allow-unauthenticated \
-            --set-env-vars="GOOGLE_CLOUD_PROJECT=${{ env.PROJECT_ID }}"
+            --set-env-vars="GOOGLE_CLOUD_PROJECT=${{ env.PROJECT_ID }}" \
+            --set-secrets="\
+          REDIS_ADDR=REDIS_ADDR:latest,\
+          REDIS_PASSWORD=REDIS_PASSWORD:latest,\
+          WEATHER_API_KEY=WEATHER_API_KEY:latest,\
+          LOCATION_API_KEY=LOCATION_API_KEY:latest"

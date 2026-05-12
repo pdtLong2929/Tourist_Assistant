@@ -47,7 +47,8 @@ func main() {
 		}
 	} else {
 		opt = &redis.Options{
-			Addr: redisAddr,
+			Addr:     redisAddr,
+			Password: os.Getenv("REDIS_PASSWORD"),
 		}
 	}
 
@@ -157,4 +158,4 @@ func main() {
 	fmt.Println("Redis connecting at :", redisAddr)
 	
 	r.Run(":" + port)
-}
+}

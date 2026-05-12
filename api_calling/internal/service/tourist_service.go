@@ -126,4 +126,4 @@ func (s *touristService) GetLocationDetail(ctx context.Context, detail string) (
 		Weather:        model.WeatherInfo{Temp: temp, Description: desc},
 		Recommendation: advice,
 	}, nil
-}
+}
