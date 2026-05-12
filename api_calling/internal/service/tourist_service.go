@@ -1,12 +1,14 @@
 package service
 
 import (
-	"github.com/pdtLong2929/Tourist_Assistant/internal/client"
-	model "github.com/pdtLong2929/Tourist_Assistant/internal/models"
 	"context"
 	"encoding/json"
-	"time"
+	"fmt"
 	"log"
+	"time"
+
+	"github.com/pdtLong2929/Tourist_Assistant/internal/client"
+	model "github.com/pdtLong2929/Tourist_Assistant/internal/models"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -18,7 +20,7 @@ type touristService struct {
 	mapClt     *client.MapClient
 	weatherClt *client.WeatherClient
 	aiClt      *client.AIClient
-	rdb 	   *redis.Client
+	rdb        *redis.Client
 }
 
 func NewTouristService(m *client.MapClient, w *client.WeatherClient, a *client.AIClient, r *redis.Client) touristService {
@@ -26,77 +28,102 @@ func NewTouristService(m *client.MapClient, w *client.WeatherClient, a *client.A
 }
 
 func (s *touristService) GetLocationDetail(ctx context.Context, detail string) (*model.LocationResponse, error) {
-    cacheKey := "location:" + detail
+	var lat, lon float64
+	displayName := detail
+	mapDataFound := false
 
-    cachedData, err := s.rdb.Get(ctx, cacheKey).Result()
-    if err == nil {
-        var resp model.LocationResponse
-        if err := json.Unmarshal([]byte(cachedData), &resp); err == nil {
-            return &resp, nil
-        }
-    }
+	// --- 1. GET MAP COORDINATES (CHECK CACHE FIRST) ---
+	mapKey := "map:" + detail
+	if cachedMap, err := s.rdb.Get(ctx, mapKey).Result(); err == nil {
+		var cachedGoong client.GoongResponse
+		if err := json.Unmarshal([]byte(cachedMap), &cachedGoong); err == nil && len(cachedGoong.Results) > 0 {
+			lat = cachedGoong.Results[0].Geometry.Location.Lat
+			lon = cachedGoong.Results[0].Geometry.Location.Lng
+			displayName = cachedGoong.Results[0].FormattedAddress
+			mapDataFound = true
+		}
+	}
 
-    var lat, lon float64
-    displayName := detail
-    
-    allSuccessful := true
+	// Fetch from Map API if cache miss
+	if !mapDataFound {
+		mapData, err := s.mapClt.GetLocation(detail)
+		if err != nil {
+			log.Printf("Warning: Map lookup failed for '%s': %v. Proceeding with fallback.", detail, err)
+		} else if mapData != nil && len(mapData.Results) > 0 {
+			lat = mapData.Results[0].Geometry.Location.Lat
+			lon = mapData.Results[0].Geometry.Location.Lng
+			displayName = mapData.Results[0].FormattedAddress
+			mapDataFound = true
 
-    mapData, err := s.mapClt.GetLocation(detail)
-    if err != nil {
-        allSuccessful = false
-        log.Printf("Warning: Map lookup failed for '%s': %v. Proceeding without caching.", detail, err)
-    } else if len(mapData.Results) > 0 {
-        lat = mapData.Results[0].Geometry.Location.Lat
-        lon = mapData.Results[0].Geometry.Location.Lng
-        displayName = mapData.Results[0].FormattedAddress
-    } else {
-        allSuccessful = false // No results found in map client is also a failure
-    }
+			// Cache valid map result
+			if mapJson, err := json.Marshal(mapData); err == nil {
+				s.rdb.Set(ctx, mapKey, mapJson, 24*time.Hour) // Coordinates don't change often
+			}
+		}
+	}
 
-    var temp float64 = 0.0  
-    desc := "DATA UNAVAILABLE: Failed to retrieve from external Weather API."
+	// --- 2. GET WEATHER DATA (CHECK CACHE FIRST) ---
+	var temp float64 = 0.0
+	desc := "DATA UNAVAILABLE: Failed to retrieve from external Weather API."
+	weatherDataFound := false
 
-    wData, err := s.weatherClt.GetWeatherByCoords(lat, lon)
-    if err != nil {
-        allSuccessful = false
-        log.Printf("Warning: Weather lookup failed for location '%s': %v. Proceeding without caching.", displayName, err)
-    } else if wData != nil {
-        extracted := false
-        if main, ok := wData["main"].(map[string]interface{}); ok {
-            if t, ok := main["temp"].(float64); ok {
-                temp = t
-                extracted = true
-            }
-        }
-        if weather, ok := wData["weather"].([]interface{}); ok && len(weather) > 0 {
-            if wInfo, ok := weather[0].(map[string]interface{}); ok {
-                if d, ok := wInfo["description"].(string); ok {
-                    desc = d
-                }
-            }
-        }
-        if !extracted {
-            allSuccessful = false // Failed to extract critical weather info
-        }
-    } else {
-        allSuccessful = false // Null data
-    }
+	// Only perform weather lookup if we secured location coords
+	if mapDataFound {
+		weatherKey := fmt.Sprintf("weather:%.3f:%.3f", lat, lon)
+		if cachedWeather, err := s.rdb.Get(ctx, weatherKey).Result(); err == nil {
+			var wData map[string]interface{}
+			if err := json.Unmarshal([]byte(cachedWeather), &wData); err == nil {
+				if t, ok := wData["main"].(map[string]interface{})["temp"].(float64); ok {
+					if d, ok := wData["weather"].([]interface{})[0].(map[string]interface{})["description"].(string); ok {
+						temp = t
+						desc = d
+						weatherDataFound = true
+					}
+				}
+			}
+		}
 
-    advice := s.aiClt.GetTravelAdvice(detail, temp, desc)
+		// Fetch from Weather API if cache miss
+		if !weatherDataFound {
+			wData, err := s.weatherClt.GetWeatherByCoords(lat, lon)
+			if err != nil {
+				log.Printf("Warning: Weather lookup failed for %s: %v.", displayName, err)
+			} else if wData != nil {
+				// Safely pull output
+				extracted := false
+				if main, ok := wData["main"].(map[string]interface{}); ok {
+					if t, ok := main["temp"].(float64); ok {
+						temp = t
+						extracted = true
+					}
+				}
+				if weather, ok := wData["weather"].([]interface{}); ok && len(weather) > 0 {
+					if wInfo, ok := weather[0].(map[string]interface{}); ok {
+						if d, ok := wInfo["description"].(string); ok {
+							desc = d
+						}
+					}
+				}
 
-    finalResp := &model.LocationResponse{
-        Destination:    detail,
-        FullAddress:    displayName,
-        Coords:         model.Coordinate{Lat: lat, Lon: lon},
-        Weather:        model.WeatherInfo{Temp: temp, Description: desc},
-        Recommendation: advice,
-    }
+				// Only cache if extraction fully succeeded
+				if extracted {
+					if wJson, err := json.Marshal(wData); err == nil {
+						s.rdb.Set(ctx, weatherKey, wJson, 15*time.Minute) // Cache shorter expiration for climate
+					}
+				}
+			}
+		}
+	}
 
-    // ONLY write cache into Redis if we successfully retrieved all external enrichment data
-    if allSuccessful {
-        jsonData, _ := json.Marshal(finalResp)
-        s.rdb.Set(ctx, cacheKey, jsonData, 15*time.Minute)
-    }
+	// --- 3. GENERATE LLM ADVICE ---
+	advice := s.aiClt.GetTravelAdvice(detail, temp, desc)
 
-    return finalResp, nil
+	// --- 4. COMPILE FINAL RESPONSE ---
+	return &model.LocationResponse{
+		Destination:    detail,
+		FullAddress:    displayName,
+		Coords:         model.Coordinate{Lat: lat, Lon: lon},
+		Weather:        model.WeatherInfo{Temp: temp, Description: desc},
+		Recommendation: advice,
+	}, nil
 }
