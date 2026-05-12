@@ -27,17 +27,64 @@ export default function LoginPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
+  // States cho Forgot Password Modal
+  const [showForgotModal, setShowForgotModal] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotMessage, setForgotMessage] = useState("");
+  const [forgotLoading, setForgotLoading] = useState(false);
+
+  // States cho hiệu ứng Shake
+  const [shakeFields, setShakeFields] = useState<string[]>([]);
+
   // Kích hoạt hiệu ứng boot-up
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  const validateEmail = (emailStr: string) => {
+    return String(emailStr)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
+
   // 2. Hàm xử lý Đăng nhập / Đăng ký thực tế
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     setErrorMessage("");
     setSuccessMessage("");
+
+    // Kiểm tra tính hợp lệ và thêm hiệu ứng rung
+    const newShakeFields: string[] = [];
+    let errorMsg = "";
+
+    if (isSignUp && !name.trim()) {
+      newShakeFields.push("register-name");
+      if (!errorMsg) errorMsg = t("login.pleaseEnterName" as any) || "Vui lòng nhập tên của bạn";
+    }
+
+    if (!email.trim()) {
+      newShakeFields.push(isSignUp ? "register-email" : "login-email");
+      if (!errorMsg) errorMsg = "Vui lòng nhập email / Please enter email";
+    } else if (!validateEmail(email)) {
+      newShakeFields.push(isSignUp ? "register-email" : "login-email");
+      if (!errorMsg) errorMsg = "Email không hợp lệ / Invalid email format";
+    }
+
+    if (!password.trim()) {
+      newShakeFields.push(isSignUp ? "register-password" : "login-password");
+      if (!errorMsg) errorMsg = "Vui lòng nhập mật khẩu / Please enter password";
+    }
+
+    if (newShakeFields.length > 0) {
+      setShakeFields(newShakeFields);
+      setTimeout(() => setShakeFields([]), 500);
+      setErrorMessage(errorMsg);
+      return;
+    }
+
+    setIsLoading(true);
 
     try {
       const endpoint = isSignUp ? "http://localhost:80/register" : "http://localhost:80/login";
@@ -56,6 +103,8 @@ export default function LoginPage() {
         localStorage.setItem("accessToken", data.accessToken);
         if (data.user) {
           localStorage.setItem("cyber_user", JSON.stringify(data.user));
+          localStorage.removeItem("cyber_user_nickname");
+          localStorage.removeItem("cyber_user_age");
         }
 
         //Phát tín hiệu báo đã đăng nhập thành công
@@ -81,20 +130,44 @@ export default function LoginPage() {
     }
   };
 
-  const handleForgotPassword = async () => {
-    const emailPrompt = window.prompt("Nhập email để khôi phục mật khẩu:");
-    if (!emailPrompt) return;
+  const triggerForgotPassword = () => {
+    setShowForgotModal(true);
+    setForgotMessage("");
+    setForgotEmail(email); // Tự động điền email nếu đã nhập ở màn hình login
+  };
+
+  const submitForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!forgotEmail.trim()) {
+      setShakeFields(["forgot-email"]);
+      setTimeout(() => setShakeFields([]), 500);
+      setForgotMessage("Vui lòng nhập email / Please enter email");
+      return;
+    }
+    if (!validateEmail(forgotEmail)) {
+      setShakeFields(["forgot-email"]);
+      setTimeout(() => setShakeFields([]), 500);
+      setForgotMessage("Email không hợp lệ / Invalid email format");
+      return;
+    }
     
+    setForgotLoading(true);
+    setForgotMessage("");
     try {
       const res = await fetch("http://localhost:80/forgot-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: emailPrompt })
+        body: JSON.stringify({ email: forgotEmail })
       });
       const data = await res.json();
-      alert(data.message || "Đã gửi yêu cầu khôi phục mật khẩu!");
+      setForgotMessage(data.message || "Đã gửi yêu cầu khôi phục mật khẩu!");
+      if (res.ok) {
+         setTimeout(() => setShowForgotModal(false), 3000);
+      }
     } catch (err) {
-      alert("Lỗi khi kết nối với máy chủ.");
+      setForgotMessage("Lỗi khi kết nối với máy chủ.");
+    } finally {
+      setForgotLoading(false);
     }
   };
 
@@ -254,6 +327,15 @@ export default function LoginPage() {
               border-left: 2px solid var(--cyber-blue);
               border-right: 2px solid var(--cyber-blue);
               box-shadow: 0 0 40px rgba(52, 229, 235, 0.3);
+            }
+
+            @keyframes shake {
+              0%, 100% { transform: translateX(0); }
+              20%, 60% { transform: translateX(-5px); border-color: var(--cyber-red); box-shadow: 0 0 15px rgba(248, 113, 113, 0.4); }
+              40%, 80% { transform: translateX(5px); border-color: var(--cyber-red); box-shadow: 0 0 15px rgba(248, 113, 113, 0.4); }
+            }
+            .shake-animation {
+              animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
             }
             /* NOTIFICATION SYSTEM - CYBERPUNK STYLE */
             .message-box {
@@ -482,26 +564,23 @@ export default function LoginPage() {
             <input
               type="text"
               placeholder={t("login.usernamePlaceholder") as any}
-              className="cyber-input"
+              className={`cyber-input ${shakeFields.includes("register-name") ? "shake-animation" : ""}`}
               value={name}
               onChange={(e) => setName(e.target.value)}
-              required
             />
             <input
-              type="email"
+              type="text"
               placeholder="Email"
-              className="cyber-input"
+              className={`cyber-input ${shakeFields.includes("register-email") ? "shake-animation" : ""}`}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
             />
             <input
               type="password"
               placeholder={t("login.passwordPlaceholder") as any}
-              className="cyber-input"
+              className={`cyber-input ${shakeFields.includes("register-password") ? "shake-animation" : ""}`}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
             />
 
             <button
@@ -605,24 +684,22 @@ export default function LoginPage() {
           >
             <input
               type="text"
-              placeholder={t("login.usernamePlaceholder") as any}
-              className="cyber-input"
-              required
+              placeholder="Email"
+              className={`cyber-input ${shakeFields.includes("login-email") ? "shake-animation" : ""}`}
               value={email}
               onChange={(e) => setEmail(e.target.value)} // Cập nhật state
             />
             <input
               type="password"
               placeholder={t("login.passwordPlaceholder") as any}
-              className="cyber-input"
-              required
+              className={`cyber-input ${shakeFields.includes("login-password") ? "shake-animation" : ""}`}
               value={password}
               onChange={(e) => setPassword(e.target.value)} // Cập nhật state
             />
             <div style={{ textAlign: "right", marginTop: "-0.5rem" }}>
               <button
                 type="button"
-                onClick={handleForgotPassword}
+                onClick={triggerForgotPassword}
                 style={{
                   background: "none",
                   border: "none",
@@ -826,6 +903,108 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
+
+      {/* =========================================
+          FORGOT PASSWORD MODAL
+          ========================================= */}
+      {showForgotModal && (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 100,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "rgba(0, 0, 0, 0.6)",
+            backdropFilter: "blur(5px)",
+            animation: "map-reveal 0.3s ease-out",
+          }}
+        >
+          <div
+            style={{
+              width: "100%",
+              maxWidth: "450px",
+              padding: "2.5rem",
+              borderRadius: "16px",
+              background: "rgba(15, 23, 42, 0.9)",
+              border: "1px solid rgba(52, 229, 235, 0.4)",
+              boxShadow: "0 0 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(52, 229, 235, 0.1)",
+              display: "flex",
+              flexDirection: "column",
+              gap: "1.5rem",
+              position: "relative"
+            }}
+          >
+            <button 
+              onClick={() => setShowForgotModal(false)}
+              style={{
+                position: "absolute",
+                top: "1rem",
+                right: "1rem",
+                background: "transparent",
+                border: "none",
+                color: "var(--text-muted)",
+                cursor: "pointer",
+                fontSize: "1.5rem",
+                transition: "color 0.2s"
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.color = "var(--cyber-red)"}
+              onMouseLeave={(e) => e.currentTarget.style.color = "var(--text-muted)"}
+            >
+              ✕
+            </button>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <ShieldAlert size={30} color="var(--cyber-yellow)" />
+              <h3 style={{ margin: 0, fontSize: "1.8rem", color: "var(--cyber-yellow)", textShadow: "0 0 10px rgba(251, 191, 36, 0.4)" }}>
+                Reset Password
+              </h3>
+            </div>
+            
+            <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem", lineHeight: 1.5 }}>
+              Nhập email của bạn để nhận liên kết khôi phục mật khẩu.
+            </p>
+
+            {forgotMessage && (
+              <div className={`message-box ${forgotMessage.includes("Lỗi") || forgotMessage.includes("không hợp lệ") || forgotMessage.includes("invalid") ? "message-error" : "message-success"}`} style={{ marginBottom: "0.5rem" }}>
+                <span>{forgotMessage}</span>
+              </div>
+            )}
+
+            <form onSubmit={submitForgotPassword} style={{ display: "flex", flexDirection: "column", gap: "1.2rem" }}>
+              <input
+                type="text"
+                placeholder="Nhập email của bạn"
+                className={`cyber-input ${shakeFields.includes("forgot-email") ? "shake-animation" : ""}`}
+                value={forgotEmail}
+                onChange={(e) => setForgotEmail(e.target.value)}
+              />
+              <button
+                type="submit"
+                className="cyber-button"
+                disabled={forgotLoading}
+                style={{
+                  padding: "1.25rem",
+                  background: "var(--cyber-yellow)",
+                  color: "var(--cyber-black)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "10px",
+                  fontWeight: "bold",
+                  fontSize: "1.05rem",
+                  boxShadow: "0 0 20px rgba(251, 191, 36, 0.4)",
+                  border: "none",
+                  borderRadius: "8px",
+                  cursor: forgotLoading ? "not-allowed" : "pointer"
+                }}
+              >
+                {forgotLoading ? <Scan className="animate-spin" /> : "Gửi liên kết khôi phục"}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

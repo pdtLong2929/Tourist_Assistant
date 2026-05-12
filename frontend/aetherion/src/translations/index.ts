@@ -6,7 +6,7 @@ export const translations = {
       bookRide: "Book Ride",
       profile: "PROFILE",
       logout: "LOG OUT",
-      guestMode: "GUEST_MODE",
+      guestMode: "LOGIN/REGISTER",
     },
     footer: {
       description:
@@ -183,7 +183,7 @@ export const translations = {
       bookRide: "Đặt xe",
       profile: "HỒ SƠ",
       logout: "ĐĂNG XUẤT",
-      guestMode: "CHẾ ĐỘ KHÁCH",
+      guestMode: "ĐĂNG NHẬP/ĐĂNG KÝ",
     },
     footer: {
       description:

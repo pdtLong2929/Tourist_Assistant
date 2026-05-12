@@ -47,6 +47,8 @@ export default function Header() {
   const handleLogout = () => {
     localStorage.removeItem("cyber_user");
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("cyber_user_nickname");
+    localStorage.removeItem("cyber_user_age");
     setUser(null);
     setIsDropdownOpen(false);
     window.location.reload();

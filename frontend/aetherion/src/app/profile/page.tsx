@@ -47,6 +47,8 @@ export default function ProfilePage() {
     setTimeout(() => {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("cyber_user");
+      localStorage.removeItem("cyber_user_nickname");
+      localStorage.removeItem("cyber_user_age");
       window.dispatchEvent(new Event("userAuthChanged"));
       router.push("/");
     }, 1000);
