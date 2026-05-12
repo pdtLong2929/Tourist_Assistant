@@ -143,7 +143,14 @@ Gọi api weather_api và dự báo trong {date} ngày sau đó tìm ngày có �
   - Với xe ô tô, có rất nhiều feature nên ta có thể xét nhiều yếu tố trong bài toán regression, ví dụ: Torque, CC, HorsePower, Speed, HorsePower/Torque
   - Còn xe máy thì chỉ có yếu tố Power là quan trọng trong bài toán tính điểm phù hợp địa hình
 
-- 
+- Phần địa hình:
+Điểm difficulty của một tuyến đường được tính bằng cách kết hợp giữa yếu tố địa hình và thời tiết. Trước hết, hệ thống lấy thông tin thời tiết tại điểm cuối của tuyến đường theo vị trí (latitude, longitude) và ngày di chuyển để tạo ra weather_score. Sau đó, với từng điểm trên tuyến, hệ thống dự đoán các đặc trưng địa hình gồm độ cao (elevation), độ dốc (slope) và độ gồ ghề (roughness). Tiếp theo, khoảng cách giữa các điểm liên tiếp được tính bằng công thức Haversine để chuẩn hóa độ dốc theo từng đoạn. Từ đó, ta thu được các chỉ số quan trọng như độ dốc trung bình, độ dốc cực trị (95th percentile), độ gồ ghề trung bình và độ cao trung bình của toàn tuyến. Các giá trị này được chuẩn hóa về thang 0–1 để đảm bảo có thể so sánh. Điểm địa hình (terrain difficulty) được tính bằng tổng có trọng số: 0.3 cho độ dốc trung bình, 0.3 cho độ dốc lớn nhất, 0.3 cho độ gồ ghề và 0.1 cho độ cao. Cuối cùng, điểm khó khăn tổng thể của tuyến đường được xác định bằng cách kết hợp 40% địa hình và 60% thời tiết, tức là final difficulty = 0.4 × terrain difficulty + 0.6 × weather score.
+
+- Phần tính điểm rating:
+Hệ thống nhận đầu vào gồm thông tin người dùng, điểm đi, điểm đến, khoảng cách, ngân sách và thời tiết, sau đó tiền xử lý dữ liệu bằng cách mã hóa các biến phân loại và chuyển đổi thông tin địa lý, thời tiết thành các đặc trưng số. Tiếp theo, nó tạo danh sách các phương tiện ứng viên trong giới hạn ngân sách, đưa dữ liệu vào mô hình để dự đoán điểm “rating” cho từng phương tiện, rồi sắp xếp và trả về dataframe phương tiện phù hợp nhất cho người dùng.
+
+- Phần tính điểm cuối cùng:
+Ta lấy trọng số 0.6 cho rating và 0.4 cho điểm compability phần địa hình sau đó lọc ra top_k veh_id
 
 ## Reliability
 - Trong trường hợp ta chỉ xét một yếu tố, khách quan hoặc chủ quan, thì rất khó để có thể có khả
