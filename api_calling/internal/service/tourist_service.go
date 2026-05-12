@@ -6,6 +6,7 @@ import (
 	"context"
 	"encoding/json"
 	"time"
+	"log"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -35,22 +36,51 @@ func (s *touristService) GetLocationDetail(ctx context.Context, detail string) (
         }
     }
 
+    var lat, lon float64
+    displayName := detail
+    
+    allSuccessful := true
+
     mapData, err := s.mapClt.GetLocation(detail)
     if err != nil {
-        return nil, err
+        allSuccessful = false
+        log.Printf("Warning: Map lookup failed for '%s': %v. Proceeding without caching.", detail, err)
+    } else if len(mapData.Results) > 0 {
+        lat = mapData.Results[0].Geometry.Location.Lat
+        lon = mapData.Results[0].Geometry.Location.Lng
+        displayName = mapData.Results[0].FormattedAddress
+    } else {
+        allSuccessful = false // No results found in map client is also a failure
     }
 
-    lat := mapData.Results[0].Geometry.Location.Lat
-    lon := mapData.Results[0].Geometry.Location.Lng
-    displayName := mapData.Results[0].FormattedAddress
+    var temp float64 = 0.0  
+    desc := "DATA UNAVAILABLE: Failed to retrieve from external Weather API."
 
     wData, err := s.weatherClt.GetWeatherByCoords(lat, lon)
     if err != nil {
-        return nil, err
+        allSuccessful = false
+        log.Printf("Warning: Weather lookup failed for location '%s': %v. Proceeding without caching.", displayName, err)
+    } else if wData != nil {
+        extracted := false
+        if main, ok := wData["main"].(map[string]interface{}); ok {
+            if t, ok := main["temp"].(float64); ok {
+                temp = t
+                extracted = true
+            }
+        }
+        if weather, ok := wData["weather"].([]interface{}); ok && len(weather) > 0 {
+            if wInfo, ok := weather[0].(map[string]interface{}); ok {
+                if d, ok := wInfo["description"].(string); ok {
+                    desc = d
+                }
+            }
+        }
+        if !extracted {
+            allSuccessful = false // Failed to extract critical weather info
+        }
+    } else {
+        allSuccessful = false // Null data
     }
-
-    temp := wData["main"].(map[string]interface{})["temp"].(float64)
-    desc := wData["weather"].([]interface{})[0].(map[string]interface{})["description"].(string)
 
     advice := s.aiClt.GetTravelAdvice(detail, temp, desc)
 
@@ -62,8 +92,11 @@ func (s *touristService) GetLocationDetail(ctx context.Context, detail string) (
         Recommendation: advice,
     }
 
-    jsonData, _ := json.Marshal(finalResp)
-    s.rdb.Set(ctx, cacheKey, jsonData, 15*time.Minute)
+    // ONLY write cache into Redis if we successfully retrieved all external enrichment data
+    if allSuccessful {
+        jsonData, _ := json.Marshal(finalResp)
+        s.rdb.Set(ctx, cacheKey, jsonData, 15*time.Minute)
+    }
 
     return finalResp, nil
-}
+}
