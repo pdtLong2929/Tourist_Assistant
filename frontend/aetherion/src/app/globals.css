@@ -37,6 +37,11 @@
   box-sizing: border-box;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-header);
+  margin-top: 0;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -461,8 +466,6 @@ a {
   }
 }
 
-/* === THÊM VÀO CUỐI globals.css === */
-
 /* Neon text cho title */
 .neon-text-blue {
   color: var(--cyber-blue);
@@ -542,4 +545,3 @@ a {
   animation: cyber-focus-in 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.4s forwards;
   opacity: 0;
 }
-

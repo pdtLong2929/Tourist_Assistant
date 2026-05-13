@@ -2,7 +2,7 @@ name: Frontend CI/CD to GCP
 
 on:
   push:
-    branches: [ "main", "embedding" ]
+    branches: [ "main", "async" ]
     paths:
       - 'frontend/**'
       - '.github/workflows/frontend-cicd.yml'
@@ -65,7 +65,7 @@ jobs:
           touch rag/.env || true
 
       - name: Start services via Docker Compose
-        run: docker compose up -d --build --wait
+        run: docker compose up -d --build --wait frontend postgres mongodb
 
       - name: Wait for frontend to be ready
         run: |
@@ -85,12 +85,12 @@ jobs:
       - name: Verify PostgreSQL is healthy
         run: |
           docker compose exec -T postgres pg_isready -U tourist
-          echo "PostgreSQL is healthy"
+          echo "PostgreSQL is healthy ✅"
 
       - name: Verify MongoDB is healthy
         run: |
           docker compose exec -T mongodb mongosh --eval "db.adminCommand('ping')" -u tourist -p tourist_secret --authenticationDatabase admin
-          echo "MongoDB is healthy"
+          echo "MongoDB is healthy ✅"
 
       - name: Tear down
         if: always()

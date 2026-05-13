@@ -25,7 +25,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-tourist_secret}
       POSTGRES_DB: ${POSTGRES_DB:-tourist_assistant}
     ports:
-      - "${POSTGRES_PORT:-5433}:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -57,6 +57,21 @@ services:
     networks:
       - ta_network
 
+  # ─── Redis ───────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: ta_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+    networks:
+      - ta_network
+
   # ─── Express Login API ────────────────────────────────────────────────
   login:
     build:
@@ -67,7 +82,8 @@ services:
     ports:
       - "5036:5036"
     env_file:
-      - ./login/.env
+      - path: ./login/.env
+        required: false
     environment:
       NODE_ENV: production
       PORT: 5036
@@ -118,7 +134,8 @@ services:
     ports:
       - "8000:8000"
     env_file:
-      - ./rag/.env
+      - path: ./rag/.env
+        required: false
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-tourist}:${POSTGRES_PASSWORD:-tourist_secret}@postgres:5432/${POSTGRES_DB:-tourist_assistant}
       POSTGRES_URL: postgresql://${POSTGRES_USER:-tourist}:${POSTGRES_PASSWORD:-tourist_secret}@postgres:5432/${POSTGRES_DB:-tourist_assistant}
@@ -144,14 +161,118 @@ services:
       PORT: ${PORT:-80}
       FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
       LOGIN_API_URL: ${LOGIN_API_URL:-http://login:5036}
+      API_SERVICE_URL: ${API_SERVICE_URL:-http://api_service:8081}
+      NOTIFICATION_URL: ${NOTIFICATION_URL:-http://notification:8080}
       SSL_TOGGLE: ${SSL_TOGGLE:-on}
       HOST_HEADER: ${HOST_HEADER:-localhost}
       DNS_RESOLVER: ${DNS_RESOLVER:-127.0.0.11}
     depends_on:
       - frontend
       - login
+      - api_service
+      - notification
     networks:
       - ta_network
+
+  # ─── Go Notification Service ────────────────────────────────────────────
+  notification:
+    build:
+      context: ./notification
+      dockerfile: Dockerfile
+    container_name: ta_notification
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      PORT: 8080
+    networks:
+      - ta_network
+
+  # ─── Go API Service (Async tasks) ───────────────────────────────────────
+  api_service:
+    build:
+      context: ./api_service
+      dockerfile: Dockerfile
+    container_name: ta_api_service
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      PORT: 8081
+      PUBSUB_EMULATOR_HOST: pubsub:8085
+      GOOGLE_CLOUD_PROJECT: test-project
+    networks:
+      - ta_network
+
+  # ─── Go Worker Service ────────────────────────────────────────────────
+  worker_service:
+    build:
+      context: ./worker_service
+      dockerfile: Dockerfile
+    container_name: ta_worker_service
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    environment:
+      PORT: 8001
+      PUBSUB_EMULATOR_HOST: pubsub:8085
+      GOOGLE_CLOUD_PROJECT: test-project
+    networks:
+      - ta_network
+
+  # ─── API Calling Service ──────────────────────────────────────────────
+  api_calling:
+    build:
+      context: ./api_calling
+      dockerfile: Dockerfile
+    container_name: ta_api_calling
+    restart: unless-stopped
+    ports:
+      - "8083:8080"
+    environment:
+      PORT: 8080
+      REDIS_ADDR: ${REDIS_ADDR:-redis:6379}
+      PUBSUB_EMULATOR_HOST: pubsub:8085
+      GOOGLE_CLOUD_PROJECT: test-project
+    env_file:
+      - path: ./api_calling/.env
+        required: false
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - ta_network
+
+  # ─── Pub/Sub Emulator ──────────────────────────────────────────────────
+  pubsub:
+    image: gcr.io/google.com/cloudsdktool/cloud-sdk:emulators
+    container_name: ta_pubsub
+    command: gcloud beta emulators pubsub start --project=test-project --host-port=0.0.0.0:8085
+    ports:
+      - "8085:8085"
+    networks:
+      - ta_network
+
+  # ─── Pub/Sub Init ──────────────────────────────────────────────────────
+  pubsub-init:
+    image: curlimages/curl
+    container_name: ta_pubsub_init
+    depends_on:
+      - pubsub
+    networks:
+      - ta_network
+    command: >
+      sh -c "
+        echo 'Waiting for Pub/Sub to start...';
+        sleep 5;
+        curl -s -X PUT http://pubsub:8085/v1/projects/test-project/topics/ai-jobs;
+        curl -s -X PUT http://pubsub:8085/v1/projects/test-project/topics/task-enrich;
+        curl -s -X PUT http://pubsub:8085/v1/projects/test-project/topics/ai-results;
+        curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/api-calling-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/ai-jobs\",\"pushConfig\":{\"pushEndpoint\":\"http://api_calling:8080/pubsub/push\"}}';
+        curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/worker-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/task-enrich\",\"pushConfig\":{\"pushEndpoint\":\"http://worker_service:8001/pubsub/push\"}}';
+        curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/notification-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/ai-results\",\"pushConfig\":{\"pushEndpoint\":\"http://notification:8080/pubsub/results\"}}';
+        echo 'Pub/Sub Initialized!';
+      "
 
 # ─── Volumes ──────────────────────────────────────────────────────────────
 volumes:

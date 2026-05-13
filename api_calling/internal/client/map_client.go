@@ -41,6 +41,7 @@ func (c *MapClient) GetLocation(address string) (*GoongResponse, error) {
 	defer res.Body.Close()
 
 	if res.StatusCode != http.StatusOK {
+		fmt.Printf("MapClient Error: Received Status Code %d\n", res.StatusCode)
 		return nil, errs.ErrInvalidKey
 	}
 
