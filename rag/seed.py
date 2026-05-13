@@ -119,6 +119,9 @@ def generate_embeddings_batch(texts: list[str]) -> list[list[float]]:
                 or "502" in err_str
                 or "504" in err_str
                 or "500" in err_str
+                or "ConnectError" in err_str
+                or "hostname" in err_str.lower()
+                or "resolution" in err_str.lower()
             )
             if not is_retryable or attempt == EMBEDDING_MAX_RETRIES:
                 raise
