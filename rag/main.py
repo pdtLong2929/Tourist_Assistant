@@ -19,7 +19,7 @@ except Exception as e:
     print(f"Warning: Failed to initialize Gemini Client: {e}")
     client = None
 
-MODEL_ID = "gemini-1.5-flash"
+MODEL_ID = "gemini-2.5-flash"
 EMBEDDING_MODEL_ID = "gemini-embedding-001"
 EMBEDDING_DIMENSIONS = 768
 
