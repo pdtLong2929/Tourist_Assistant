@@ -19,9 +19,12 @@ except Exception as e:
     print(f"Warning: Failed to initialize Gemini Client: {e}")
     client = None
 
-MODEL_ID = "gemini-2.5-flash"
+MODEL_ID = "gemini-1.5-flash"
 EMBEDDING_MODEL_ID = "gemini-embedding-001"
 EMBEDDING_DIMENSIONS = 768
+
+def is_mock() -> bool:
+    return os.getenv("MOCK_EMBEDDING", "false").lower() == "true"
 
 DB_URL = os.getenv("DATABASE_URL") or os.getenv("POSTGRES_URL")
 
@@ -112,7 +115,7 @@ class SuggestRequest(BaseModel):
 
 @app.post("/rag/ingest")
 def ingest_knowledge(req: IngestRequest):
-    if not client:
+    if not client and not is_mock():
         raise HTTPException(status_code=500, detail="Gemini client not initialized")
 
     embed_text = (
@@ -123,12 +126,15 @@ def ingest_knowledge(req: IngestRequest):
     )
 
     try:
-        response = client.models.embed_content(
-            model=EMBEDDING_MODEL_ID,
-            contents=embed_text,
-            config=types.EmbedContentConfig(output_dimensionality=EMBEDDING_DIMENSIONS),
-        )
-        embedding = response.embeddings[0].values
+        if is_mock():
+            embedding = [0.1] * EMBEDDING_DIMENSIONS
+        else:
+            response = client.models.embed_content(
+                model=EMBEDDING_MODEL_ID,
+                contents=embed_text,
+                config=types.EmbedContentConfig(output_dimensionality=EMBEDDING_DIMENSIONS),
+            )
+            embedding = response.embeddings[0].values
 
         conn = get_db_connection()
         try:
@@ -167,7 +173,7 @@ def ingest_knowledge(req: IngestRequest):
 
 @app.post("/rag/suggest")
 def suggest_transport(req: SuggestRequest):
-    if not client:
+    if not client and not is_mock():
         raise HTTPException(status_code=500, detail="Gemini client not initialized")
 
     try:
@@ -178,12 +184,15 @@ def suggest_transport(req: SuggestRequest):
         if req.time_of_day:
             query_text += f" Trip starts at {req.time_of_day}."
 
-        embed_res = client.models.embed_content(
-            model=EMBEDDING_MODEL_ID,
-            contents=query_text,
-            config=types.EmbedContentConfig(output_dimensionality=EMBEDDING_DIMENSIONS),
-        )
-        query_embedding = embed_res.embeddings[0].values
+        if is_mock():
+            query_embedding = [0.1] * EMBEDDING_DIMENSIONS
+        else:
+            embed_res = client.models.embed_content(
+                model=EMBEDDING_MODEL_ID,
+                contents=query_text,
+                config=types.EmbedContentConfig(output_dimensionality=EMBEDDING_DIMENSIONS),
+            )
+            query_embedding = embed_res.embeddings[0].values
 
         conn = get_db_connection()
         try:
@@ -284,10 +293,15 @@ Task: Choose exactly one transport mode for the current conditions. Return the m
 
 Task: Choose exactly one transport method that best fits the current conditions. State the method name, then give a single sentence explaining why it is the best choice. Do not mention or compare the other options."""
 
-        llm_response = client.models.generate_content(
-            model=MODEL_ID,
-            contents=prompt,
-        )
+        if is_mock():
+            class MockResponse:
+                text = "transit. [MOCK] This is a simulated transport recommendation."
+            llm_response = MockResponse()
+        else:
+            llm_response = client.models.generate_content(
+                model=MODEL_ID,
+                contents=prompt,
+            )
 
         retrieved = [
             {
