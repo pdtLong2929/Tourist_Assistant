@@ -277,11 +277,11 @@ def suggest_transport(req: SuggestRequest):
 [Current travel conditions]:
 {query_text}
 
-Available modes: bike, motorbike, car, transit.
+Available modes: bike, motorbike, car, walk, bus, metro.
 
-Task: Evaluate and rate ALL 4 transport modes for the current conditions. For each mode, calculate a match percentage score (0-100).
+Task: Evaluate and rate ALL 6 transport modes for the current conditions. For each mode, calculate a match percentage score (0-100).
 Return the results as a JSON array of objects. Each object MUST contain:
-- "type": name of transport mode (must be exactly "bike", "motorbike", "car", or "transit")
+- "type": name of transport mode (must be exactly "bike", "motorbike", "car", "walk", "bus", or "metro")
 - "rating": a numeric score as a string (e.g. "95", "70") indicating suitability
 - "explanation": a single concise sentence explaining the recommendation logic.
 
@@ -305,11 +305,11 @@ Return ONLY valid JSON array. Do NOT include markdown code blocks."""
 [Current travel conditions]:
 {query_text}
 
-Available modes: bike, motorbike, car, transit.
+Available modes: bike, motorbike, car, walk, bus, metro.
 
-Task: Evaluate and rate ALL 4 transport modes for the current conditions. For each mode, calculate a match percentage score (0-100).
+Task: Evaluate and rate ALL 6 transport modes for the current conditions. For each mode, calculate a match percentage score (0-100).
 Return the results as a JSON array of objects. Each object MUST contain:
-- "type": name of transport mode (must be exactly "bike", "motorbike", "car", or "transit")
+- "type": name of transport mode (must be exactly "bike", "motorbike", "car", "walk", "bus", or "metro")
 - "rating": a numeric score as a string (e.g. "95", "70") indicating suitability
 - "explanation": a single concise sentence explaining why it is suitable or not.
 
@@ -317,7 +317,7 @@ Return ONLY valid JSON array. Do NOT include markdown code blocks."""
 
         if is_mock():
             class MockResponse:
-                text = '[{"type": "transit", "rating": "85", "explanation": "[MOCK] Transit is highly efficient today."}, {"type": "car", "rating": "60", "explanation": "[MOCK] Car is viable but affected by traffic."}]'
+                text = '[{"type": "metro", "rating": "90", "explanation": "[MOCK] Metro is extremely fast and traffic-immune."}, {"type": "bus", "rating": "80", "explanation": "[MOCK] Bus is reliable and affordable."}, {"type": "walk", "rating": "50", "explanation": "[MOCK] Walk is viable but slow for this distance."}]'
             llm_response = MockResponse()
         else:
             llm_response = client.models.generate_content(
