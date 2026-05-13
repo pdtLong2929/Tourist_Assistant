@@ -95,32 +95,47 @@ def retry_delay_from_error(error: Exception, fallback: float) -> float:
     return fallback
 
 
-def generate_embedding(text: str) -> list[float]:
+def generate_embeddings_batch(texts: list[str]) -> list[list[float]]:
+    if not texts:
+        return []
     delay = 5.0
     for attempt in range(1, EMBEDDING_MAX_RETRIES + 1):
         try:
             response = client.models.embed_content(
                 model=EMBEDDING_MODEL_ID,
-                contents=text,
+                contents=texts,
                 config=types.EmbedContentConfig(output_dimensionality=EMBEDDING_DIMENSIONS),
             )
             if EMBEDDING_DELAY_SECONDS > 0:
                 time.sleep(EMBEDDING_DELAY_SECONDS)
-            return response.embeddings[0].values
+            return [emb.values for emb in response.embeddings]
         except Exception as e:
-            is_rate_limit = "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e)
-            if not is_rate_limit or attempt == EMBEDDING_MAX_RETRIES:
+            err_str = str(e)
+            is_retryable = (
+                "429" in err_str
+                or "RESOURCE_EXHAUSTED" in err_str
+                or "503" in err_str
+                or "UNAVAILABLE" in err_str
+                or "502" in err_str
+                or "504" in err_str
+                or "500" in err_str
+            )
+            if not is_retryable or attempt == EMBEDDING_MAX_RETRIES:
                 raise
 
             sleep_for = retry_delay_from_error(e, delay)
             print(
-                f"Embedding quota hit; sleeping {sleep_for:.1f}s "
-                f"(attempt {attempt}/{EMBEDDING_MAX_RETRIES})..."
+                f"Embedding API error/quota hit (attempt {attempt}/{EMBEDDING_MAX_RETRIES}): {err_str[:100]}... "
+                f"Sleeping {sleep_for:.1f}s before retry..."
             )
             time.sleep(sleep_for)
             delay = min(delay * 2, 60.0)
 
-    raise RuntimeError("Embedding retry loop exited unexpectedly.")
+    raise RuntimeError("Embedding batch retry loop exited unexpectedly.")
+
+
+def generate_embedding(text: str) -> list[float]:
+    return generate_embeddings_batch([text])[0]
 
 
 def ensure_schema(conn):
@@ -192,61 +207,89 @@ def seed():
     try:
         ensure_schema(conn)
 
-        inserted = 0
+        # 1. Fetch existing scenario hashes in a single query
+        existing_hashes = set()
+        try:
+            existing_rows = conn.execute("SELECT scenario_hash FROM transport_scenarios").fetchall()
+            existing_hashes = {r[0] for r in existing_rows if r[0]}
+        except Exception as e:
+            print(f"Warning: Could not pre-fetch existing hashes: {e}")
+
+        # 2. Determine which rows need to be seeded
+        to_seed = []
         skipped = 0
-        for index, row in enumerate(rows, start=1):
+        for row in rows:
             embedding_text = row["serialized_with_label"]
             scenario_hash = content_hash(embedding_text, EMBEDDING_MODEL_ID)
-
-            existing = conn.execute(
-                "SELECT embedding_model FROM transport_scenarios WHERE scenario_hash = %s",
-                (scenario_hash,),
-            ).fetchone()
-            if existing:
+            if scenario_hash in existing_hashes:
                 skipped += 1
-                continue
+            else:
+                to_seed.append((row, scenario_hash))
 
-            print(f"Generating embedding for dataset row {index}/{len(rows)}...")
-            embedding = generate_embedding(embedding_text)
+        print(f"Found {len(to_seed)} new rows to seed, skipping {skipped} already seeded rows.")
 
-            conn.execute(
-                """
-                INSERT INTO transport_scenarios
-                    (scenario_hash, weather_condition, temperature, distance,
-                     traffic_condition, time_of_day, chosen_mode, reasoning,
-                     serialized_query, serialized_with_label, embedding,
-                     embedding_model, updated_at)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())
-                ON CONFLICT (scenario_hash) DO UPDATE SET
-                    weather_condition     = EXCLUDED.weather_condition,
-                    temperature           = EXCLUDED.temperature,
-                    distance              = EXCLUDED.distance,
-                    traffic_condition     = EXCLUDED.traffic_condition,
-                    time_of_day           = EXCLUDED.time_of_day,
-                    chosen_mode           = EXCLUDED.chosen_mode,
-                    reasoning             = EXCLUDED.reasoning,
-                    serialized_query      = EXCLUDED.serialized_query,
-                    serialized_with_label = EXCLUDED.serialized_with_label,
-                    embedding             = EXCLUDED.embedding,
-                    embedding_model       = EXCLUDED.embedding_model,
-                    updated_at            = NOW();
-                """,
-                (
-                    scenario_hash,
-                    row["weather_condition"],
-                    row["temperature"],
-                    row["distance"],
-                    row["traffic_condition"],
-                    row["time_of_day"],
-                    row["chosen_mode"],
-                    row["reasoning"],
-                    row["serialized_query"],
-                    row["serialized_with_label"],
-                    embedding,
-                    EMBEDDING_MODEL_ID,
-                ),
-            )
-            inserted += 1
+        # 3. Process remaining rows in batches
+        inserted = 0
+        batch_size = 50
+        for i in range(0, len(to_seed), batch_size):
+            chunk = to_seed[i : i + batch_size]
+            chunk_texts = [r[0]["serialized_with_label"] for r in chunk]
+
+            current_batch_idx = i // batch_size + 1
+            total_batches = (len(to_seed) + batch_size - 1) // batch_size
+            print(f"Generating embeddings for batch {current_batch_idx}/{total_batches} ({len(chunk)} rows)...")
+            
+            try:
+                embeddings = generate_embeddings_batch(chunk_texts)
+            except Exception as e:
+                print(f"Failed to generate embeddings for batch {current_batch_idx}: {e}")
+                raise
+
+            if len(embeddings) != len(chunk):
+                raise ValueError(
+                    f"Mismatch in embeddings generated: expected {len(chunk)}, got {len(embeddings)}"
+                )
+
+            print(f"Writing batch {current_batch_idx}/{total_batches} to database...")
+            for ((row, scenario_hash), embedding) in zip(chunk, embeddings):
+                conn.execute(
+                    """
+                    INSERT INTO transport_scenarios
+                        (scenario_hash, weather_condition, temperature, distance,
+                         traffic_condition, time_of_day, chosen_mode, reasoning,
+                         serialized_query, serialized_with_label, embedding,
+                         embedding_model, updated_at)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())
+                    ON CONFLICT (scenario_hash) DO UPDATE SET
+                        weather_condition     = EXCLUDED.weather_condition,
+                        temperature           = EXCLUDED.temperature,
+                        distance              = EXCLUDED.distance,
+                        traffic_condition     = EXCLUDED.traffic_condition,
+                        time_of_day           = EXCLUDED.time_of_day,
+                        chosen_mode           = EXCLUDED.chosen_mode,
+                        reasoning             = EXCLUDED.reasoning,
+                        serialized_query      = EXCLUDED.serialized_query,
+                        serialized_with_label = EXCLUDED.serialized_with_label,
+                        embedding             = EXCLUDED.embedding,
+                        embedding_model       = EXCLUDED.embedding_model,
+                        updated_at            = NOW();
+                    """,
+                    (
+                        scenario_hash,
+                        row["weather_condition"],
+                        row["temperature"],
+                        row["distance"],
+                        row["traffic_condition"],
+                        row["time_of_day"],
+                        row["chosen_mode"],
+                        row["reasoning"],
+                        row["serialized_query"],
+                        row["serialized_with_label"],
+                        embedding,
+                        EMBEDDING_MODEL_ID,
+                    ),
+                )
+                inserted += 1
 
         print(f"Seeding complete. Inserted {inserted}, skipped {skipped}.")
     finally:
