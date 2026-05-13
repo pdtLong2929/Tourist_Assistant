@@ -38,3 +38,6 @@ tsc.txt
 /vendor/
 *.exe
 *.log
+
+__pycache__/
+*.pyc
