@@ -98,6 +98,8 @@ def retry_delay_from_error(error: Exception, fallback: float) -> float:
 def generate_embeddings_batch(texts: list[str]) -> list[list[float]]:
     if not texts:
         return []
+    if os.getenv("MOCK_EMBEDDING", "false").lower() == "true":
+        return [[0.1] * EMBEDDING_DIMENSIONS for _ in texts]
     delay = 5.0
     for attempt in range(1, EMBEDDING_MAX_RETRIES + 1):
         try:
@@ -192,7 +194,8 @@ def seed():
     if not DB_URL:
         raise RuntimeError("DATABASE_URL or POSTGRES_URL must be set.")
 
-    if not client:
+    is_mock = os.getenv("MOCK_EMBEDDING", "false").lower() == "true"
+    if not client and not is_mock:
         print(
             "Warning: Gemini client not initialized — skipping seed. "
             "Run seed.py manually once GEMINI_API_KEY is set."

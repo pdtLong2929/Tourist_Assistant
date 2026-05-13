@@ -124,12 +124,10 @@ services:
       POSTGRES_URL: postgresql://${POSTGRES_USER:-tourist}:${POSTGRES_PASSWORD:-tourist_secret}@postgres:5432/${POSTGRES_DB:-tourist_assistant}
       DATASET_PATH: /app/dataset.csv
       PYTHONUNBUFFERED: "1"
+      MOCK_EMBEDDING: ${MOCK_EMBEDDING:-false}
     depends_on:
       postgres:
         condition: service_healthy
-    dns:
-      - 8.8.8.8
-      - 8.8.4.4
     networks:
       - ta_network
 
