@@ -99,11 +99,15 @@ class IngestRequest(BaseModel):
 
 
 class SuggestRequest(BaseModel):
-    weather_condition: str  # e.g. "heavy rain", "clear sky", "storm"
-    temperature: str        # e.g. "32°C hot", "18°C mild"
-    distance: str           # e.g. "2 km", "15 km cross-city"
-    traffic_condition: str  # e.g. "heavy", "moderate", "light"
-    time_of_day: Optional[str] = None  # e.g. "07:00 rush hour"
+    weather_condition: Optional[str] = None  # e.g. "heavy rain", "clear sky", "storm"
+    temperature: Optional[str] = None        # e.g. "32°C hot", "18°C mild"
+    distance: Optional[str] = None           # e.g. "2 km", "15 km cross-city"
+    traffic_condition: Optional[str] = None  # e.g. "heavy", "moderate", "light"
+    time_of_day: Optional[str] = None        # e.g. "07:00 rush hour"
+
+    # Raw fallback fields to handle unstructured inputs from Go workers or legacy clients
+    query: Optional[str] = None
+    weather: Optional[str] = None
 
     # Hard filters: eliminate options that are objectively unsafe before LLM reasoning.
     # e.g. exclude_weather_sensitive=true during a storm drops bike and walk entirely.
@@ -177,12 +181,16 @@ def suggest_transport(req: SuggestRequest):
         raise HTTPException(status_code=500, detail="Gemini client not initialized")
 
     try:
-        query_text = (
-            f"Weather is {req.weather_condition} with a temperature of {req.temperature}. "
-            f"Route distance is {req.distance} and traffic is {req.traffic_condition}."
-        )
-        if req.time_of_day:
-            query_text += f" Trip starts at {req.time_of_day}."
+        if req.query:
+            query_text = req.query
+        else:
+            weather_desc = req.weather_condition or req.weather or "unknown"
+            query_text = (
+                f"Weather is {weather_desc} with a temperature of {req.temperature or 'unknown'}. "
+                f"Route distance is {req.distance or 'unknown'} and traffic is {req.traffic_condition or 'unknown'}."
+            )
+            if req.time_of_day:
+                query_text += f" Trip starts at {req.time_of_day}."
 
         if is_mock():
             query_embedding = [0.1] * EMBEDDING_DIMENSIONS
@@ -271,7 +279,13 @@ def suggest_transport(req: SuggestRequest):
 
 Available modes: bike, motorbike, car, transit.
 
-Task: Choose exactly one transport mode for the current conditions. Return the mode name first, then one concise sentence explaining the decision."""
+Task: Evaluate and rate ALL 4 transport modes for the current conditions. For each mode, calculate a match percentage score (0-100).
+Return the results as a JSON array of objects. Each object MUST contain:
+- "type": name of transport mode (must be exactly "bike", "motorbike", "car", or "transit")
+- "rating": a numeric score as a string (e.g. "95", "70") indicating suitability
+- "explanation": a single concise sentence explaining the recommendation logic.
+
+Return ONLY valid JSON array. Do NOT include markdown code blocks."""
         else:
             context_lines = []
             for row in knowledge_results:
@@ -291,16 +305,27 @@ Task: Choose exactly one transport mode for the current conditions. Return the m
 [Current travel conditions]:
 {query_text}
 
-Task: Choose exactly one transport method that best fits the current conditions. State the method name, then give a single sentence explaining why it is the best choice. Do not mention or compare the other options."""
+Available modes: bike, motorbike, car, transit.
+
+Task: Evaluate and rate ALL 4 transport modes for the current conditions. For each mode, calculate a match percentage score (0-100).
+Return the results as a JSON array of objects. Each object MUST contain:
+- "type": name of transport mode (must be exactly "bike", "motorbike", "car", or "transit")
+- "rating": a numeric score as a string (e.g. "95", "70") indicating suitability
+- "explanation": a single concise sentence explaining why it is suitable or not.
+
+Return ONLY valid JSON array. Do NOT include markdown code blocks."""
 
         if is_mock():
             class MockResponse:
-                text = "transit. [MOCK] This is a simulated transport recommendation."
+                text = '[{"type": "transit", "rating": "85", "explanation": "[MOCK] Transit is highly efficient today."}, {"type": "car", "rating": "60", "explanation": "[MOCK] Car is viable but affected by traffic."}]'
             llm_response = MockResponse()
         else:
             llm_response = client.models.generate_content(
                 model=MODEL_ID,
                 contents=prompt,
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json"
+                )
             )
 
         retrieved = [
