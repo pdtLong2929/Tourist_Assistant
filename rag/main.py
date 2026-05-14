@@ -29,13 +29,26 @@ EMBEDDING_DIMENSIONS = 768
 redis_client = None
 try:
     redis_addr = os.getenv("REDIS_ADDR", "localhost:6379")
+    redis_password = os.getenv("REDIS_PASSWORD")
+    
     if "://" in redis_addr:
-        redis_client = redis.Redis.from_url(redis_addr, decode_responses=True, socket_timeout=1.0)
+        redis_client = redis.Redis.from_url(
+            redis_addr, 
+            password=redis_password, 
+            decode_responses=True, 
+            socket_timeout=1.0
+        )
     else:
         parts = redis_addr.split(":")
         host = parts[0]
         port = int(parts[1]) if len(parts) > 1 else 6379
-        redis_client = redis.Redis(host=host, port=port, decode_responses=True, socket_timeout=1.0)
+        redis_client = redis.Redis(
+            host=host, 
+            port=port, 
+            password=redis_password, 
+            decode_responses=True, 
+            socket_timeout=1.0
+        )
     redis_client.ping()
     print(f"RAG suggestion caching ENABLED via Redis at: {redis_addr}")
 except Exception as re:

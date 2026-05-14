@@ -48,8 +48,12 @@ func main() {
 	} else {
 		opt = &redis.Options{
 			Addr:     redisAddr,
-			Password: os.Getenv("REDIS_PASSWORD"),
 		}
+	}
+
+	// Enforce password from Secret Manager if provided as an independent environment variable
+	if secretPwd := os.Getenv("REDIS_PASSWORD"); secretPwd != "" {
+		opt.Password = secretPwd
 	}
 
 	rdb := redis.NewClient(opt)
