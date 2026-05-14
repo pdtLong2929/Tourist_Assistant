@@ -3,6 +3,7 @@ package client
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 
@@ -33,6 +34,7 @@ func NewMapClient(apiKey string) *MapClient {
 func (c *MapClient) GetLocation(address string) (*GoongResponse, error) {
 	encodedAddress := url.QueryEscape(address)
 	apiURL := fmt.Sprintf("https://rsapi.goong.io/geocode?address=%s&api_key=%s", encodedAddress, c.ApiKey)
+	log.Printf("[MapClient DEBUG] Outgoing Goong API URL: https://rsapi.goong.io/geocode?address=%s&api_key=REDACTED", encodedAddress)
 
 	res, err := http.Get(apiURL)
 	if err != nil {

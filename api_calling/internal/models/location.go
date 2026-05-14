@@ -11,6 +11,12 @@ type LocationResponse struct {
 	Coords         Coordinate  `json:"coordinates"`
 	Weather        WeatherInfo `json:"weather"`
 	Recommendation string      `json:"recommendation"`
+	Debug          *DebugInfo  `json:"debug,omitempty"`
+}
+
+type DebugInfo struct {
+	GoongURL   string `json:"goong_url,omitempty"`
+	WeatherURL string `json:"weather_url,omitempty"`
 }
 
 type Coordinate struct {

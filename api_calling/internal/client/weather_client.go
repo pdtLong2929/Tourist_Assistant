@@ -3,6 +3,7 @@ package client
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/pdtLong2929/Tourist_Assistant/pkg/errs"
@@ -18,6 +19,7 @@ func NewWeatherClient(apiKey string) *WeatherClient {
 
 func (c *WeatherClient) GetWeatherByCoords(lat, lon interface{}) (map[string]interface{}, error) {
 	apiURL := fmt.Sprintf("https://api.openweathermap.org/data/2.5/weather?lat=%v&lon=%v&appid=%s&units=metric", lat, lon, c.ApiKey)
+	log.Printf("[WeatherClient DEBUG] Outgoing Weather API URL: https://api.openweathermap.org/data/2.5/weather?lat=%v&lon=%v&appid=REDACTED&units=metric", lat, lon)
 
 	resp, err := http.Get(apiURL)
 	if err != nil {

@@ -86,15 +86,53 @@ export default function RentingSuggestion() {
     }, 100);
 
     const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || 'http://localhost';
+
     try {
-      const combinedQuery = `Journey: ${journey} | Start: ${startPos} | Destination: ${endPos}`;
-      await fetch(`${nginxUrl}/api/v1/jobs/submit`, {
+      let startLocation = null;
+      let destinationLocation = null;
+
+      // 1. Reuse API Calling backend by querying the /location/:name endpoint for Origin
+      if (startPos.trim()) {
+        try {
+          const res = await fetch(`${nginxUrl}/api/v1/location/${encodeURIComponent(startPos)}`);
+          const data = await res.json();
+          if (data.status === "success" && data.data) {
+            startLocation = data.data;
+          }
+        } catch (e) {
+          console.error("Error fetching location from backend for startPos:", e);
+        }
+      }
+
+      // 2. Reuse API Calling backend by querying the /location/:name endpoint for Destination
+      if (endPos.trim()) {
+        try {
+          const res = await fetch(`${nginxUrl}/api/v1/location/${encodeURIComponent(endPos)}`);
+          const data = await res.json();
+          if (data.status === "success" && data.data) {
+            destinationLocation = data.data;
+          }
+        } catch (e) {
+          console.error("Error fetching location from backend for endPos:", e);
+        }
+      }
+
+      // 3. Formulate a complete composite query to retain human-readable context for logs & models
+      const combinedQueryPayload = {
+        journey: journey,
+        start: startLocation ? { name: startPos, address: startLocation.full_address, coords: startLocation.coordinates } : { name: startPos },
+        destination: destinationLocation ? { name: endPos, address: destinationLocation.full_address, coords: destinationLocation.coordinates } : { name: endPos }
+      };
+
+      // 4. Directly send both resolved location query into api_calling to publish to task-enrichment Pub/Sub
+      await fetch(`${nginxUrl}/api/v1/jobs/enrich`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           userId: userId,
-          query: combinedQuery,
-          jobType: "vehicle_suggestion"
+          query: JSON.stringify(combinedQueryPayload),
+          jobType: "vehicle_suggestion",
+          destination: destinationLocation
         })
       });
     } catch (e) {
