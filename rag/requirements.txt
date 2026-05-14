@@ -5,3 +5,4 @@ psycopg[binary,pool]
 pgvector
 google-genai
 python-dotenv
+redis

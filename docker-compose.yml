@@ -142,8 +142,11 @@ services:
       DATASET_PATH: /app/dataset.csv
       PYTHONUNBUFFERED: "1"
       MOCK_EMBEDDING: ${MOCK_EMBEDDING:-false}
+      REDIS_ADDR: redis:6379
     depends_on:
       postgres:
+        condition: service_healthy
+      redis:
         condition: service_healthy
     networks:
       - ta_network
