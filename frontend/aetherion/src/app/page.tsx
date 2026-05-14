@@ -47,7 +47,7 @@ export default function LandingPage() {
             }
 
             .hud-glass-panel {
-              background: rgba(15, 23, 42, 0.65);
+              background: var(--cyber-surface-glass-light);
               backdrop-filter: blur(24px);
               -webkit-backdrop-filter: blur(24px);
               border: 1px solid rgba(52, 229, 235, 0.3);
@@ -66,7 +66,7 @@ export default function LandingPage() {
           inset: 0,
           zIndex: 0,
           pointerEvents: "none",
-          background: "#0f172a",
+          background: "var(--cyber-black)",
         }}
       >
         <style
@@ -116,8 +116,7 @@ export default function LandingPage() {
           style={{
             position: "absolute",
             inset: 0,
-            background:
-              "linear-gradient(180deg, rgba(15,23,42,0.5) 0%, rgba(30,41,59,0.6) 100%)",
+            background: "var(--bg-gradient)",
             zIndex: 2,
           }}
         />
@@ -141,8 +140,8 @@ export default function LandingPage() {
           style={{
             position: "absolute",
             inset: "-50%",
-            backgroundImage:
-              "linear-gradient(rgba(52, 229, 235, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(52, 229, 235, 0.1) 1px, transparent 1px)",
+            background:
+              "linear-gradient(var(--cyber-grid) 1px, transparent 1px), linear-gradient(90deg, var(--cyber-grid) 1px, transparent 1px)",
             backgroundSize: "80px 80px",
             animation: "grid-pan 4s linear infinite",
             transform: "perspective(1000px) rotateX(65deg) scale(1.2)",

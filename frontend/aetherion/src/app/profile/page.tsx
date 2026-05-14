@@ -166,7 +166,7 @@ export default function ProfilePage() {
               top: 50%;
               left: 50%;
               transform: translate(-50%, -50%);
-              background: rgba(15, 23, 42, 0.9);
+              background: var(--cyber-surface-glass);
               backdrop-filter: blur(20px);
               border: 1px solid var(--cyber-blue);
               padding: 2rem 3rem;
@@ -418,7 +418,7 @@ export default function ProfilePage() {
                 alignItems: "center",
                 gap: "1.5rem",
                 padding: "1rem",
-                background: "rgba(0,0,0,0.3)",
+                background: "var(--cyber-input-bg)",
                 borderRadius: "8px",
                 border: "1px solid rgba(255,255,255,0.05)",
               }}

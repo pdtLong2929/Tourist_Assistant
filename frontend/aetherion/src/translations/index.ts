@@ -7,6 +7,8 @@ export const translations = {
       profile: "PROFILE",
       logout: "LOG OUT",
       guestMode: "LOGIN/REGISTER",
+      language: "Language",
+      theme: "Theme",
     },
     footer: {
       description:
@@ -203,6 +205,8 @@ export const translations = {
       profile: "HỒ SƠ",
       logout: "ĐĂNG XUẤT",
       guestMode: "ĐĂNG NHẬP/ĐĂNG KÝ",
+      language: "Ngôn ngữ",
+      theme: "Giao diện",
     },
     footer: {
       description:

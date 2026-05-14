@@ -144,7 +144,7 @@ export default function BookingPage() {
 
             /* HUD SPECIFIC CSS */
             .hud-glass-panel {
-              background: rgba(15, 23, 42, 0.65);
+              background: var(--cyber-surface-glass-light);
               backdrop-filter: blur(24px);
               -webkit-backdrop-filter: blur(24px);
               border: 1px solid rgba(52, 229, 235, 0.3);
@@ -178,7 +178,7 @@ export default function BookingPage() {
           style={{
             position: "absolute",
             inset: 0,
-            background: "linear-gradient(180deg, #0f172a 0%, #1e293b 100%)",
+            background: "var(--bg-gradient)",
             opacity: 0.95,
           }}
         />
@@ -203,8 +203,8 @@ export default function BookingPage() {
           style={{
             position: "absolute",
             inset: "-50%" /* Mở rộng lưới để khi cuộn/xoay không hở góc */,
-            backgroundImage:
-              "linear-gradient(rgba(52, 229, 235, 0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(52, 229, 235, 0.12) 1px, transparent 1px)",
+            background:
+              "linear-gradient(var(--cyber-grid) 1px, transparent 1px), linear-gradient(90deg, var(--cyber-grid) 1px, transparent 1px)",
             backgroundSize: "80px 80px",
             animation: "grid-pan 4s linear infinite",
             transform: "perspective(1000px) rotateX(65deg) scale(1)",
@@ -303,7 +303,7 @@ export default function BookingPage() {
               style={{
                 width: 60,
                 height: 60,
-                background: "rgba(15, 23, 42, 0.9)",
+                background: "var(--cyber-input-bg)",
                 border: "3px solid var(--cyber-blue)",
                 borderRadius: "50%",
                 display: "flex",
@@ -324,7 +324,7 @@ export default function BookingPage() {
               width: "100px",
               textAlign: "center",
               padding: "4px 8px",
-              background: "rgba(15, 23, 42, 0.85)",
+              background: "var(--cyber-surface-glass)",
               border: "1px solid var(--cyber-blue)",
               color: "var(--cyber-blue)",
               fontSize: "0.75rem",
@@ -391,7 +391,7 @@ export default function BookingPage() {
                   background:
                     selectedDriver === driver.id
                       ? "var(--cyber-yellow)"
-                      : "rgba(15, 23, 42, 0.95)",
+                      : "var(--cyber-surface-glass)",
                   padding: "10px",
                   borderRadius: "50%",
                   border: `2px solid ${
@@ -421,7 +421,7 @@ export default function BookingPage() {
               <div
                 style={{
                   marginTop: "12px",
-                  background: "rgba(15, 23, 42, 0.9)",
+                  background: "var(--cyber-surface-glass)",
                   backdropFilter: "blur(8px)",
                   border: `1px solid ${
                     selectedDriver === driver.id
@@ -499,7 +499,7 @@ export default function BookingPage() {
         {/* Pick-up / Drop-off Tracking */}
         <div
           className="edgerunner-card reveal-text delay-2"
-          style={{ padding: "1.5rem", background: "rgba(30, 41, 59, 0.6)" }}
+          style={{ padding: "1.5rem", background: "var(--cyber-card-bg)" }}
         >
           <div
             style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
@@ -559,7 +559,7 @@ export default function BookingPage() {
                   type="text"
                   placeholder={t("booking.dropoffPlaceholder") as any}
                   style={{
-                    background: "rgba(15, 23, 42, 0.5)",
+                    background: "var(--cyber-input-bg)",
                     border: "1px solid var(--cyber-border)",
                     outline: "none",
                     color: "var(--text-main)",
@@ -626,11 +626,11 @@ export default function BookingPage() {
                 border:
                   selectedDriver === driver.id
                     ? "2px solid var(--cyber-yellow)"
-                    : "1px solid rgba(255, 255, 255, 0.1)",
+                    : "1px solid var(--cyber-border)",
                 background:
                   selectedDriver === driver.id
                     ? "var(--cyber-yellow-dim)"
-                    : "rgba(30, 41, 59, 0.6)",
+                    : "var(--cyber-card-bg)",
               }}
             >
               <div
@@ -654,7 +654,7 @@ export default function BookingPage() {
                       width: 52,
                       height: 52,
                       borderRadius: "12px",
-                      background: "rgba(15, 23, 42, 0.6)",
+                      background: "var(--cyber-input-bg)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",

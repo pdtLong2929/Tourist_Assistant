@@ -212,6 +212,13 @@ export default function PreferencesPage() {
 
     try {
       await new Promise((resolve) => setTimeout(resolve, 1500));
+      // TODO (Backend): Khi có API, xóa comment bên dưới và điền link vào
+      // const response = await fetch("https://YOUR_API_URL_HERE/api/preferences", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify(payload),
+      // });
+      // if (!response.ok) throw new Error("API error");
 
       try {
         const userStr = localStorage.getItem("cyber_user");
@@ -249,8 +256,7 @@ export default function PreferencesPage() {
           inset: 0,
           zIndex: 0,
           pointerEvents: "none",
-          background:
-            "linear-gradient(-45deg, #0f172a, #1e293b, #000000, #0f172a)",
+          background: "var(--bg-gradient)",
           backgroundSize: "400% 400%",
           animation: "gradientBG 15s ease infinite",
         }}
@@ -277,6 +283,7 @@ export default function PreferencesPage() {
           }}
         />
         <div
+          className="ambient-orb"
           style={{
             position: "absolute",
             top: "10%",
@@ -291,6 +298,7 @@ export default function PreferencesPage() {
           }}
         />
         <div
+          className="ambient-orb"
           style={{
             position: "absolute",
             bottom: "10%",
@@ -346,33 +354,6 @@ export default function PreferencesPage() {
         }}
       />
 
-      {/* Brand Preview Overlay (Logo) */}
-      {activeVisual && (
-        <div
-          style={{
-            position: "fixed",
-            bottom: "30px",
-            right: "30px",
-            width: "250px",
-            height: "150px",
-            borderRadius: "12px",
-            backgroundSize: "contain",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            opacity: 0.5,
-            filter: "brightness(1.2)",
-            pointerEvents: "none",
-            zIndex: 15,
-            transition: "all 0.5s ease",
-            backgroundImage: `url('https://logo.clearbit.com/${activeVisual.toLowerCase().replace(" ", "")}.com')`,
-            border: "1px solid rgba(52, 229, 235, 0.2)",
-            background: "rgba(15, 23, 42, 0.4)",
-            backdropFilter: "blur(5px)",
-            padding: "20px",
-          }}
-        />
-      )}
-
       {/* Vignette Layer */}
       <div
         style={{
@@ -406,7 +387,7 @@ export default function PreferencesPage() {
           className="form-column"
           style={{
             flex: "1 1 60%",
-            background: "rgba(15, 23, 42, 0.85)",
+            background: "var(--cyber-surface-glass)",
             border: "1px solid rgba(52, 229, 235, 0.3)",
             borderRadius: "16px",
             boxShadow: "0 0 50px rgba(0,0,0,0.6)",
@@ -489,10 +470,10 @@ export default function PreferencesPage() {
                     style={{
                       width: "100%",
                       padding: "1rem",
-                      background: "rgba(0,0,0,0.4)",
+                      background: "var(--cyber-input-bg)",
                       border: "1px solid rgba(251, 191, 36, 0.3)",
                       borderRadius: "8px",
-                      color: "white",
+                      color: "var(--text-main)",
                       outline: "none",
                       fontSize: "1rem",
                       transition: "border 0.3s",
@@ -525,10 +506,10 @@ export default function PreferencesPage() {
                     style={{
                       width: "100%",
                       padding: "1rem",
-                      background: "rgba(0,0,0,0.4)",
+                      background: "var(--cyber-input-bg)",
                       border: "1px solid rgba(251, 191, 36, 0.3)",
                       borderRadius: "8px",
-                      color: "white",
+                      color: "var(--text-main)",
                       outline: "none",
                       fontSize: "1rem",
                       transition: "border 0.3s",
@@ -593,11 +574,13 @@ export default function PreferencesPage() {
                         gap: "8px",
                         padding: "10px 16px",
                         borderRadius: "50px",
-                        border: `1px solid ${isSelected ? "var(--cyber-blue)" : "rgba(255,255,255,0.1)"}`,
+                        border: `1px solid ${isSelected ? "var(--cyber-blue)" : "var(--cyber-grid)"}`,
                         background: isSelected
                           ? "rgba(52, 229, 235, 0.15)"
-                          : "rgba(0,0,0,0.3)",
-                        color: isSelected ? "white" : "var(--text-muted)",
+                          : "var(--cyber-input-bg)",
+                        color: isSelected
+                          ? "var(--text-main)"
+                          : "var(--text-muted)",
                         cursor: "pointer",
                         transition: "all 0.2s ease",
                         fontSize: "0.95rem",
@@ -647,11 +630,13 @@ export default function PreferencesPage() {
                       style={{
                         padding: "10px 20px",
                         borderRadius: "8px",
-                        border: `1px solid ${isSelected ? "var(--cyber-purple)" : "rgba(255,255,255,0.1)"}`,
+                        border: `1px solid ${isSelected ? "var(--cyber-purple)" : "var(--cyber-grid)"}`,
                         background: isSelected
                           ? "rgba(167, 139, 250, 0.2)"
-                          : "rgba(0,0,0,0.3)",
-                        color: isSelected ? "white" : "var(--text-muted)",
+                          : "var(--cyber-input-bg)",
+                        color: isSelected
+                          ? "var(--text-main)"
+                          : "var(--text-muted)",
                         cursor: "pointer",
                         transition: "all 0.2s ease",
                         fontWeight: "bold",
@@ -701,11 +686,13 @@ export default function PreferencesPage() {
                       style={{
                         padding: "10px 20px",
                         borderRadius: "8px",
-                        border: `1px solid ${isSelected ? "#4ade80" : "rgba(255,255,255,0.1)"}`,
+                        border: `1px solid ${isSelected ? "#4ade80" : "var(--cyber-grid)"}`,
                         background: isSelected
                           ? "rgba(74, 222, 128, 0.2)"
-                          : "rgba(0,0,0,0.3)",
-                        color: isSelected ? "white" : "var(--text-muted)",
+                          : "var(--cyber-input-bg)",
+                        color: isSelected
+                          ? "var(--text-main)"
+                          : "var(--text-muted)",
                         cursor: "pointer",
                         transition: "all 0.2s ease",
                         fontWeight: "bold",
@@ -740,13 +727,15 @@ export default function PreferencesPage() {
                     padding: "0.9rem 1.5rem",
                     background: "transparent",
                     color: "var(--text-muted)",
-                    border: "1px solid rgba(255,255,255,0.2)",
+                    border: "1px solid var(--cyber-grid)",
                     borderRadius: "8px",
                     cursor: "pointer",
                     transition: "all 0.3s",
                     fontSize: "0.95rem",
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "white")}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.color = "var(--text-main)")
+                  }
                   onMouseLeave={(e) =>
                     (e.currentTarget.style.color = "var(--text-muted)")
                   }
@@ -768,6 +757,7 @@ export default function PreferencesPage() {
                     cursor: "pointer",
                     transition: "all 0.3s",
                     fontSize: "0.95rem",
+                    fontWeight: "700",
                   }}
                   onMouseEnter={(e) =>
                     (e.currentTarget.style.background =
@@ -791,13 +781,13 @@ export default function PreferencesPage() {
                   gap: "10px",
                   padding: "1rem 2.5rem",
                   background: "var(--cyber-blue)",
-                  color: "black",
+                  color: "#ffffff",
                   border: "none",
                   borderRadius: "8px",
                   fontWeight: "bold",
                   fontSize: "1.05rem",
                   cursor: isSubmitting ? "not-allowed" : "pointer",
-                  boxShadow: "0 0 20px rgba(52, 229, 235, 0.4)",
+                  boxShadow: "0 0 20px var(--cyber-blue-glow)",
                   transition: "all 0.3s",
                   opacity: isSubmitting ? 0.7 : 1,
                 }}
@@ -816,8 +806,8 @@ export default function PreferencesPage() {
           className="visual-panel"
           style={{
             flex: "1 1 40%",
-            background: "rgba(15, 23, 42, 0.6)",
-            border: "1px solid rgba(52, 229, 235, 0.2)",
+            background: "var(--cyber-surface-glass-light)",
+            border: "1px solid var(--cyber-grid)",
             borderRadius: "16px",
             position: "relative",
             overflow: "hidden",
@@ -840,7 +830,7 @@ export default function PreferencesPage() {
               height: "100%",
               borderRadius: "8px",
               overflow: "hidden",
-              border: "1px solid rgba(52, 229, 235, 0.1)",
+              border: "1px solid var(--cyber-grid)",
             }}
           >
             {/* Cross-fade images inside panel */}
@@ -907,23 +897,25 @@ export default function PreferencesPage() {
                 marginTop: "1.5rem",
                 width: "100%",
                 padding: "1rem",
-                background: "rgba(52, 229, 235, 0.1)",
-                borderLeft: "4px solid var(--cyber-blue)",
+                background: "var(--ai-badge-bg)",
+                borderLeft: "4px solid var(--cyber-yellow)",
                 fontFamily: "var(--font-mono)",
               }}
             >
               <div
                 style={{
-                  color: "var(--cyber-blue)",
-                  fontSize: "0.7rem",
-                  marginBottom: "0.2rem",
+                  color: "var(--cyber-yellow)",
+                  fontSize: "0.75rem",
+                  fontWeight: "bold",
+                  marginBottom: "0.4rem",
+                  letterSpacing: "0.05em",
                 }}
               >
                 INTELLIGENCE_ID: {activeVisual.toUpperCase()}
               </div>
               <div
                 style={{
-                  color: "white",
+                  color: "var(--text-main)",
                   fontSize: "1.2rem",
                   fontWeight: "bold",
                 }}
@@ -934,9 +926,11 @@ export default function PreferencesPage() {
               </div>
               <div
                 style={{
-                  color: "rgba(255,255,255,0.6)",
-                  fontSize: "0.8rem",
+                  color: "var(--text-secondary)",
+                  fontSize: "0.85rem",
+                  fontWeight: "600",
                   marginTop: "0.5rem",
+                  lineHeight: "1.4",
                 }}
               >
                 System analysis complete. Optimal profile mapped to user
@@ -963,8 +957,7 @@ export default function PreferencesPage() {
               pointer-events: none;
               border: 1px solid var(--cyber-blue);
               opacity: 0.1;
-              background: linear-gradient(rgba(52, 229, 235, 0.1) 1px, transparent 1px),
-                          linear-gradient(90deg, rgba(52, 229, 235, 0.1) 1px, transparent 1px);
+              background: linear-gradient(var(--cyber-grid) 1px, transparent 1px), linear-gradient(90deg, var(--cyber-grid) 1px, transparent 1px);
               background-size: 20px 20px;
             }
             .form-column::-webkit-scrollbar { width: 4px; }

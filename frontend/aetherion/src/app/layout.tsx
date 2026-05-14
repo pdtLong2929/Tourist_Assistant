@@ -3,6 +3,7 @@ import React from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { LanguageProvider } from "@/context/LanguageContext";
+import { ThemeProvider } from "@/context/ThemeContext";
 
 export const metadata = {
   title: "Tourist AI - Smart Travel Assistant",
@@ -32,13 +33,15 @@ export default function RootLayout({
           margin: 0,
         }}
       >
-        <LanguageProvider>
-          <Header />
-          <main style={{ flex: 1, position: "relative", zIndex: 1 }}>
-            {children}
-          </main>
-          <Footer />
-        </LanguageProvider>
+        <ThemeProvider>
+          <LanguageProvider>
+            <Header />
+            <main style={{ flex: 1, position: "relative", zIndex: 1 }}>
+              {children}
+            </main>
+            <Footer />
+          </LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

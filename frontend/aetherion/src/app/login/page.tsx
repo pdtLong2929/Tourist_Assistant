@@ -253,7 +253,7 @@ export default function LoginPage() {
             padding: "0.9rem",
             borderRadius: "8px",
             border: "1px solid rgba(52, 229, 235, 0.3)",
-            background: "rgba(15, 23, 42, 0.6)",
+            background: "var(--cyber-card-bg)",
             color: "var(--text-main)",
             cursor: "pointer",
             fontSize: "1.1rem",
@@ -337,8 +337,8 @@ export default function LoginPage() {
               font-size: 1.05rem;
               border-radius: 8px;
               border: 1px solid rgba(251, 191, 36, 0.2);
-              background: rgba(15, 23, 42, 0.7);
-              color: white;
+              background: var(--cyber-input-bg);
+              color: var(--text-main);
               outline: none;
               transition: all 0.3s ease;
               box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
@@ -346,11 +346,11 @@ export default function LoginPage() {
             .cyber-input:focus {
               border-color: var(--cyber-yellow);
               box-shadow: 0 0 15px rgba(251, 191, 36, 0.3), inset 0 0 10px rgba(0,0,0,0.5);
-              background: rgba(15, 23, 42, 0.9);
+              background: var(--cyber-input-bg);
             }
 
             .slider-gradient {
-              background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%);
+              background: var(--cyber-surface-glass);
               border-left: 2px solid var(--cyber-blue);
               border-right: 2px solid var(--cyber-blue);
               box-shadow: 0 0 40px rgba(52, 229, 235, 0.3);
@@ -385,7 +385,7 @@ export default function LoginPage() {
             }
 
             .message-error {
-              background: rgba(15, 23, 42, 0.8);
+              background: var(--cyber-surface-glass);
               border: 1px solid rgba(248, 113, 113, 0.2);
               border-left: 4px solid var(--cyber-red);
               color: var(--text-main);
@@ -393,7 +393,7 @@ export default function LoginPage() {
             }
 
             .message-success {
-              background: rgba(15, 23, 42, 0.8);
+              background: var(--cyber-surface-glass);
               border: 1px solid rgba(52, 229, 235, 0.2);
               border-left: 4px solid var(--cyber-blue);
               color: var(--text-main);
@@ -447,7 +447,7 @@ export default function LoginPage() {
           style={{
             position: "absolute",
             inset: 0,
-            background: "linear-gradient(180deg, #0f172a 0%, #1e293b 100%)",
+            background: "var(--bg-gradient)",
             opacity: 0.95,
           }}
         />
@@ -527,7 +527,7 @@ export default function LoginPage() {
           height: "750px", // Reduced height for smoother fit, original was 850px
           borderRadius: "1rem",
           overflow: "hidden",
-          background: "rgba(15, 23, 42, 0.75)",
+          background: "var(--cyber-surface-glass)",
           backdropFilter: "blur(24px)",
           border: "1px solid rgba(52, 229, 235, 0.3)",
           boxShadow: "0 0 60px rgba(0, 0, 0, 0.8)",
@@ -650,7 +650,7 @@ export default function LoginPage() {
                 marginTop: "0.5rem",
                 padding: "1.25rem",
                 background: "var(--cyber-purple)",
-                color: "white",
+                color: "var(--cyber-surface)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -848,7 +848,7 @@ export default function LoginPage() {
               className="glitch-yellow"
               style={{
                 fontSize: "3.2rem",
-                color: "white",
+                color: "var(--text-main)",
                 marginBottom: "1rem",
               }}
             >
@@ -874,7 +874,7 @@ export default function LoginPage() {
                 borderRadius: "50px",
                 border: "2px solid var(--cyber-blue)",
                 background: "rgba(52, 229, 235, 0.1)",
-                color: "white",
+                color: "var(--text-main)",
                 fontWeight: "bold",
                 cursor: "pointer",
                 transition: "all 0.3s ease",
@@ -883,11 +883,11 @@ export default function LoginPage() {
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = "var(--cyber-blue)";
-                e.currentTarget.style.color = "var(--cyber-black)";
+                e.currentTarget.style.color = "var(--cyber-surface)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.background = "rgba(52, 229, 235, 0.1)";
-                e.currentTarget.style.color = "white";
+                e.currentTarget.style.color = "var(--text-main)";
               }}
             >
               {t("login.switchToLogin") as any}
@@ -919,7 +919,7 @@ export default function LoginPage() {
               className="glitch-yellow"
               style={{
                 fontSize: "3.2rem",
-                color: "white",
+                color: "var(--text-main)",
                 marginBottom: "1rem",
               }}
             >
@@ -945,7 +945,7 @@ export default function LoginPage() {
                 borderRadius: "50px",
                 border: "2px solid var(--cyber-purple)",
                 background: "rgba(167, 139, 250, 0.1)",
-                color: "white",
+                color: "var(--text-main)",
                 fontWeight: "bold",
                 cursor: "pointer",
                 transition: "all 0.3s ease",
@@ -954,11 +954,11 @@ export default function LoginPage() {
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = "var(--cyber-purple)";
-                e.currentTarget.style.color = "white";
+                e.currentTarget.style.color = "var(--cyber-surface)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.background = "rgba(167, 139, 250, 0.1)";
-                e.currentTarget.style.color = "white";
+                e.currentTarget.style.color = "var(--text-main)";
               }}
             >
               {t("login.switchToRegister") as any}
@@ -979,7 +979,7 @@ export default function LoginPage() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            background: "rgba(0, 0, 0, 0.6)",
+            background: "var(--cyber-surface-glass)",
             backdropFilter: "blur(5px)",
             animation: "map-reveal 0.3s ease-out",
           }}
@@ -990,7 +990,7 @@ export default function LoginPage() {
               maxWidth: "450px",
               padding: "2.5rem",
               borderRadius: "16px",
-              background: "rgba(15, 23, 42, 0.9)",
+              background: "var(--cyber-surface-glass)",
               border: "1px solid rgba(52, 229, 235, 0.4)",
               boxShadow:
                 "0 0 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(52, 229, 235, 0.1)",

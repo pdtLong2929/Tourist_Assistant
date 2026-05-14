@@ -4,17 +4,20 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/context/LanguageContext";
+import { useTheme } from "@/context/ThemeContext";
+import { Settings, Moon, Sun } from "lucide-react";
 
 export default function Header() {
   const [user, setUser] = useState<{
     name: string;
     email?: string;
-    age?: string;
+    phone?: string;
   } | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const router = useRouter();
   const { t, language, setLanguage } = useLanguage();
+  const { theme, toggleTheme } = useTheme();
 
   // Kiểm tra xem có dữ liệu user trong trình duyệt không
   useEffect(() => {
@@ -24,12 +27,12 @@ export default function Header() {
         try {
           const userObj = JSON.parse(loggedInUser);
           const nickname = localStorage.getItem("cyber_user_nickname");
-          const age = localStorage.getItem("cyber_user_age");
+          const phone = localStorage.getItem("cyber_user_phone");
           if (nickname) {
             userObj.name = nickname;
           }
-          if (age) {
-            userObj.age = age;
+          if (phone) {
+            userObj.phone = phone;
           }
           setUser(userObj);
         } catch (e) {
@@ -56,7 +59,7 @@ export default function Header() {
     localStorage.removeItem("cyber_user");
     localStorage.removeItem("accessToken");
     localStorage.removeItem("cyber_user_nickname");
-    localStorage.removeItem("cyber_user_age");
+    localStorage.removeItem("cyber_user_phone");
     setUser(null);
     setIsDropdownOpen(false);
     window.location.reload();
@@ -151,12 +154,12 @@ export default function Header() {
             gap: "1.5rem",
           }}
         >
-          {/* Language Selector */}
+          {/* Settings Menu */}
           <div style={{ position: "relative" }}>
             <div
               className="user-badge"
               onClick={() => {
-                setIsLangDropdownOpen(!isLangDropdownOpen);
+                setIsSettingsOpen(!isSettingsOpen);
                 setIsDropdownOpen(false);
               }}
               style={{
@@ -165,103 +168,106 @@ export default function Header() {
                 background: "rgba(251, 191, 36, 0.1)",
                 display: "flex",
                 alignItems: "center",
-                gap: "8px",
-                padding: "6px 12px",
+                justifyContent: "center",
+                width: "42px",
+                height: "42px",
                 borderRadius: "8px",
+                padding: 0,
               }}
             >
-              <div
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "0.9rem",
-                  color: "var(--cyber-yellow)",
-                  fontWeight: "700",
-                }}
-              >
-                {language === "en" ? "EN" : "VI"} ▼
-              </div>
+              <Settings size={20} color="var(--cyber-yellow)" style={{ transition: "transform 0.3s", transform: isSettingsOpen ? "rotate(90deg)" : "rotate(0deg)" }} />
             </div>
 
-            {isLangDropdownOpen && (
+            {isSettingsOpen && (
               <div
                 style={{
                   position: "absolute",
                   top: "130%",
                   right: 0,
-                  background: "#0f172a",
-                  border: "1px solid rgba(168, 85, 247, 0.3)",
-                  borderRadius: "8px",
+                  background: "var(--cyber-black)",
+                  border: "1px solid var(--cyber-border)",
+                  borderRadius: "12px",
                   overflow: "hidden",
                   display: "flex",
                   flexDirection: "column",
-                  minWidth: "120px",
+                  minWidth: "220px",
+                  padding: "16px",
+                  gap: "16px",
                   boxShadow: "0 10px 25px rgba(0, 0, 0, 0.5)",
                   zIndex: 200,
                 }}
               >
-                <button
-                  onClick={() => {
-                    setLanguage("en");
-                    setIsLangDropdownOpen(false);
-                  }}
-                  style={{
-                    padding: "12px 16px",
-                    textAlign: "left",
-                    background:
-                      language === "en"
-                        ? "rgba(251, 191, 36, 0.2)"
-                        : "transparent",
-                    color: "white",
-                    border: "none",
-                    borderBottom: "1px solid rgba(255,255,255,0.05)",
-                    cursor: "pointer",
-                    fontFamily: "var(--font-mono)",
-                    transition: "all 0.2s ease",
-                  }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.background =
-                      "rgba(255,255,255,0.05)")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.background =
-                      language === "en"
-                        ? "rgba(251, 191, 36, 0.2)"
-                        : "transparent")
-                  }
-                >
-                  English
-                </button>
-                <button
-                  onClick={() => {
-                    setLanguage("vi");
-                    setIsLangDropdownOpen(false);
-                  }}
-                  style={{
-                    padding: "12px 16px",
-                    textAlign: "left",
-                    background:
-                      language === "vi"
-                        ? "rgba(251, 191, 36, 0.2)"
-                        : "transparent",
-                    color: "white",
-                    border: "none",
-                    cursor: "pointer",
-                    fontFamily: "var(--font-mono)",
-                    transition: "all 0.2s ease",
-                  }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.background =
-                      "rgba(255,255,255,0.05)")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.background =
-                      language === "vi"
-                        ? "rgba(251, 191, 36, 0.2)"
-                        : "transparent")
-                  }
-                >
-                  Tiếng Việt
-                </button>
+                {/* Language Toggle */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <span style={{ color: "var(--text-main)", fontSize: "0.95rem", fontWeight: "600" }}>{t("header.language" as any) || "Language"}</span>
+                  <div 
+                    onClick={() => setLanguage(language === "en" ? "vi" : "en")}
+                    style={{
+                      width: "64px",
+                      height: "32px",
+                      background: "rgba(0,0,0,0.3)",
+                      borderRadius: "16px",
+                      position: "relative",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      border: "1px solid var(--cyber-border)",
+                      transition: "all 0.3s ease",
+                    }}
+                  >
+                    <div style={{
+                      position: "absolute",
+                      left: language === "en" ? "4px" : "34px",
+                      width: "24px",
+                      height: "24px",
+                      background: "var(--cyber-yellow)",
+                      borderRadius: "50%",
+                      transition: "left 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                      boxShadow: "0 0 10px var(--cyber-yellow-glow)",
+                      zIndex: 1,
+                    }} />
+                    <span style={{ position: "absolute", left: "8px", fontSize: "0.65rem", fontWeight: "bold", color: "var(--text-muted)", zIndex: 0 }}>EN</span>
+                    <span style={{ position: "absolute", right: "8px", fontSize: "0.65rem", fontWeight: "bold", color: "var(--text-muted)", zIndex: 0 }}>VI</span>
+                  </div>
+                </div>
+
+                {/* Theme Toggle */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <span style={{ color: "var(--text-main)", fontSize: "0.95rem", fontWeight: "600" }}>{t("header.theme" as any) || "Theme"}</span>
+                  <div 
+                    onClick={toggleTheme}
+                    style={{
+                      width: "64px",
+                      height: "32px",
+                      background: "rgba(0,0,0,0.3)",
+                      borderRadius: "16px",
+                      position: "relative",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      border: "1px solid var(--cyber-border)",
+                      transition: "all 0.3s ease",
+                    }}
+                  >
+                    <div style={{
+                      position: "absolute",
+                      left: theme === "light" ? "34px" : "4px",
+                      width: "24px",
+                      height: "24px",
+                      background: theme === "light" ? "var(--cyber-blue)" : "var(--cyber-purple)",
+                      borderRadius: "50%",
+                      transition: "left 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                      boxShadow: theme === "light" ? "0 0 10px var(--cyber-blue-glow)" : "0 0 10px rgba(168, 139, 250, 0.5)",
+                      zIndex: 1,
+                    }} />
+                    <span style={{ position: "absolute", left: "8px", display: "flex", alignItems: "center", zIndex: 0 }}>
+                      <Moon size={14} color="var(--text-muted)" />
+                    </span>
+                    <span style={{ position: "absolute", right: "8px", display: "flex", alignItems: "center", zIndex: 0 }}>
+                      <Sun size={14} color="var(--text-muted)" />
+                    </span>
+                  </div>
+                </div>
               </div>
             )}
           </div>
@@ -273,7 +279,7 @@ export default function Header() {
                 className="user-badge"
                 onClick={() => {
                   setIsDropdownOpen(!isDropdownOpen);
-                  setIsLangDropdownOpen(false);
+                  setIsSettingsOpen(false);
                 }}
                 style={{
                   cursor: "pointer",

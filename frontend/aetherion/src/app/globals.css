@@ -31,6 +31,18 @@
   --cyber-border: rgba(251, 191, 36, 0.2);
   --cyber-grid: rgba(148, 163, 184, 0.08);
   --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.25);
+
+  --cyber-surface-glass: rgba(15, 23, 42, 0.85);
+  --cyber-surface-glass-light: rgba(15, 23, 42, 0.6);
+  --cyber-input-bg: rgba(0, 0, 0, 0.4);
+  --cyber-card-bg: rgba(30, 41, 59, 0.55);
+
+  --ai-badge-bg: rgba(52, 229, 235, 0.1);
+  --ai-badge-border: rgba(52, 229, 235, 0.3);
+  --ai-badge-color: var(--cyber-blue);
+
+  --bg-gradient: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+  --bg-grid-color: rgba(52, 229, 235, 0.1);
 }
 
 * {
@@ -112,7 +124,7 @@ body::after {
 }
 
 .edgerunner-card {
-  background: rgba(30, 41, 59, 0.75);
+  background: var(--cyber-card-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
 
@@ -375,7 +387,7 @@ a {
 .cyber-gauge-wrapper {
   position: relative;
   padding: 1.5rem;
-  background: rgba(30, 41, 59, 0.4);
+  background: var(--cyber-card-bg);
   border-radius: 50%;
   border: 1px solid var(--cyber-border);
   box-shadow:
@@ -473,7 +485,7 @@ a {
 
 /* GlassCard thay thế (nếu bạn vẫn muốn dùng component riêng thì bỏ qua) */
 .glass-card {
-  background: rgba(30, 41, 59, 0.75);
+  background: var(--cyber-card-bg);
   backdrop-filter: blur(20px);
   border: 1px solid var(--cyber-border);
   border-radius: 16px;
@@ -541,4 +553,106 @@ a {
 .animate-focus-3 {
   animation: cyber-focus-in 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.4s forwards;
   opacity: 0;
+}
+
+/* =========================================
+   LIGHT THEME OVERRIDES
+   ========================================= */
+body.theme-light {
+  --cyber-black: #94a3b8; /* Slate 400 - Darker gray for backgrounds */
+  --cyber-surface: #e2e8f0; /* Slate 200 - Medium gray for surfaces */
+  --cyber-surface-light: #cbd5e1; /* Slate 300 */
+
+  --text-main: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+
+  --cyber-border: rgba(251, 191, 36, 0.6); /* Stronger border for visibility */
+  --cyber-grid: rgba(71, 85, 105, 0.3); /* Slate 600 - Darker grid lines */
+  
+  /* Modern SaaS/AI palette for light bg */
+  --cyber-yellow: #0F766E; /* Teal accent (replaces orange) */
+  --cyber-yellow-glow: rgba(15, 118, 110, 0.3);
+  --cyber-blue: #1E3A5F; /* Navy modern */
+  --cyber-blue-glow: rgba(30, 58, 95, 0.3);
+  --cyber-green: #115E59; /* Dark Teal for prices/status */
+  --cyber-purple: #4F46E5; /* Indigo modern */
+
+  --cyber-surface-glass: rgba(255, 255, 255, 0.75);
+  --cyber-surface-glass-light: rgba(255, 255, 255, 0.5);
+  --cyber-input-bg: rgba(255, 255, 255, 0.65);
+  --cyber-card-bg: rgba(255, 255, 255, 0.7);
+
+  /* AI Concierge badge → Dark Teal in light mode for readability */
+  --ai-badge-bg: rgba(15, 118, 110, 0.1);
+  --ai-badge-border: rgba(15, 118, 110, 0.4);
+  --ai-badge-color: #134E4A; /* Teal 900 - much higher contrast */
+
+  --bg-gradient: linear-gradient(180deg, #cbd5e1 0%, #94a3b8 100%);
+  --bg-grid-color: rgba(71, 85, 105, 0.1);
+}
+
+body.theme-light .edgerunner-card {
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+}
+
+body.theme-light .cyber-gauge-wrapper {
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 30px rgba(30, 58, 95, 0.08);
+}
+
+body.theme-light .nav-container {
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+body.theme-light .user-badge {
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+body.theme-light .cyber-button {
+  color: #ffffff;
+}
+
+
+/* Status badge chips in suggestions/tour pages */
+body.theme-light .status-chip {
+  background: rgba(100, 116, 139, 0.4) !important;
+  border-color: rgba(71, 85, 105, 0.5) !important;
+}
+/* Card hover: module-label & ready-label in light mode */
+body.theme-light .edgerunner-card:hover .module-label {
+  color: var(--cyber-yellow);
+}
+
+body.theme-light .edgerunner-card:hover .ready-label {
+  color: var(--cyber-green);
+}
+
+/* Typography Overrides: Hierarchy & Depth */
+body.theme-light .glitch-yellow {
+  color: var(--text-main);
+  text-shadow: none;
+}
+
+body.theme-light .stat-number {
+  color: var(--text-main) !important;
+}
+
+/* Decorative Orbs - hide in light mode because blur() renders poorly on white */
+body.theme-light .ambient-orb {
+  display: none !important;
+}
+
+/* LIVE TRACKING / status-active in light mode */
+body.theme-light .status-active {
+  color: var(--cyber-yellow);
+  font-weight: 800; /* Makes small text bolder and easier to read */
+  letter-spacing: 0.05em;
+}
+
+body.theme-light .ready-label {
+  font-weight: 800;
 }

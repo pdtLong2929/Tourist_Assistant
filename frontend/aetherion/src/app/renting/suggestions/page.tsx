@@ -190,7 +190,7 @@ export default function RentingSuggestion() {
         }
         
         .input-group label { display: block; font-family: var(--font-mono); font-size: 1rem; letter-spacing: 1px; color: var(--cyber-yellow); margin-bottom: 0.75rem; font-weight: bold; text-transform: uppercase; text-shadow: 0 0 10px rgba(251, 191, 36, 0.3); }
-        .cyber-input { width: 100%; padding: 1.4rem 1.6rem; background: rgba(15,23,42,0.8); border: 1px solid var(--cyber-border); color: var(--text-main); border-radius: 12px; font-size: 1.4rem; outline: none; transition: all 0.3s ease; }
+        .cyber-input { width: 100%; padding: 1.4rem 1.6rem; background: var(--cyber-input-bg); border: 1px solid var(--cyber-border); color: var(--text-main); border-radius: 12px; font-size: 1.4rem; outline: none; transition: all 0.3s ease; }
         .cyber-input:focus { border-color: var(--cyber-blue); box-shadow: 0 0 15px rgba(52, 229, 235, 0.2); }
       `,
         }}
@@ -231,18 +231,18 @@ export default function RentingSuggestion() {
         >
           <div className="mb-6">
             <div
-              className="inline-flex items-center gap-3 mb-4"
+              className="inline-flex items-center gap-3 mb-4 ai-concierge-badge"
               style={{
                 padding: "0.75rem 2rem",
-                background: "rgba(52,229,235,0.1)",
-                border: "1px solid rgba(52,229,235,0.3)",
+                background: "var(--ai-badge-bg)",
+                border: "1px solid var(--ai-badge-border)",
                 borderRadius: "50px",
               }}
             >
-              <BrainCircuit size={28} color="var(--cyber-blue)" />
+              <BrainCircuit size={28} color="var(--ai-badge-color)" />
               <span
                 className="font-header text-xl font-bold"
-                style={{ color: "var(--cyber-blue)" }}
+                style={{ color: "var(--ai-badge-color)" }}
               >
                 {t("renting.aiConcierge" as any)}
               </span>
@@ -305,13 +305,14 @@ export default function RentingSuggestion() {
             ].map((item, i) => (
               <div
                 key={i}
+                className="status-chip"
                 style={{
                   display: "flex",
                   alignItems: "center",
                   gap: "8px",
                   padding: "8px 16px",
-                  background: "rgba(30,41,59,0.6)",
-                  border: `1px solid ${item.color}40`,
+                  background: "var(--cyber-card-bg)",
+                  border: `1px solid ${item.color}60`,
                   borderRadius: "8px",
                   color: "var(--text-secondary)",
                   backdropFilter: "blur(10px)",
@@ -535,11 +536,10 @@ export default function RentingSuggestion() {
                   <div
                     style={{
                       height: "8px",
-                      background: "rgba(255,255,255,0.05)",
+                      background: "var(--cyber-card-bg)",
                       borderRadius: "4px",
                       overflow: "hidden",
                       border: "1px solid rgba(52,229,235,0.1)",
-                      boxShadow: "inset 0 0 10px rgba(0,0,0,0.5)",
                     }}
                   >
                     <div
@@ -589,8 +589,7 @@ export default function RentingSuggestion() {
                   border: "1px solid var(--cyber-border)",
                   padding: "0",
                   overflow: "hidden",
-                  background:
-                    "linear-gradient(180deg, rgba(15,23,42,0.9) 0%, rgba(30,41,59,0.8) 100%)",
+                  background: "var(--cyber-surface-glass)",
                   transition: "transform 0.3s ease, box-shadow 0.3s ease",
                   cursor: "pointer",
                   position: "relative",
@@ -651,7 +650,8 @@ export default function RentingSuggestion() {
                       position: "absolute",
                       top: "1rem",
                       right: "1rem",
-                      background: "rgba(0,0,0,0.8)",
+                      background: "var(--cyber-surface-glass)",
+                      backdropFilter: "blur(8px)",
                       padding: "0.5rem 0.8rem",
                       borderRadius: "4px",
                       border: "1px solid var(--cyber-green)",
@@ -687,7 +687,7 @@ export default function RentingSuggestion() {
                   <h2
                     style={{
                       fontSize: "2rem",
-                      color: "#fff",
+                      color: "var(--text-main)",
                       fontWeight: "900",
                       marginBottom: "1.5rem",
                       textTransform: "capitalize",
@@ -699,7 +699,7 @@ export default function RentingSuggestion() {
                   <div
                     style={{
                       padding: "1.5rem",
-                      background: "rgba(0,0,0,0.3)",
+                      background: "var(--cyber-card-bg)",
                       borderRadius: "8px",
                       borderLeft: "3px solid var(--cyber-blue)",
                       minHeight: "150px",

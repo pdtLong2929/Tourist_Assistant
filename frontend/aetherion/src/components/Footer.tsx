@@ -9,11 +9,12 @@ export default function Footer() {
   return (
     <footer
       style={{
-        background: "rgba(15, 23, 42, 0.75)",
+        background: "var(--cyber-surface-glass)",
         backdropFilter: "blur(24px)",
         WebkitBackdropFilter: "blur(24px)",
         borderTop: "1px solid rgba(52, 229, 235, 0.3)",
-        boxShadow: "0 -20px 50px rgba(0, 0, 0, 0.6), inset 0 20px 20px -20px rgba(52, 229, 235, 0.1)",
+        boxShadow:
+          "0 -20px 50px rgba(0, 0, 0, 0.6), inset 0 20px 20px -20px rgba(52, 229, 235, 0.1)",
         padding: "3rem 2rem 2rem",
         marginTop: "auto",
         position: "relative",
@@ -170,7 +171,10 @@ export default function Footer() {
       </div>
 
       {/* Accent Line */}
-      <div className="cyber-bar" style={{ margin: "2rem auto 1rem", width: "100%" }} />
+      <div
+        className="cyber-bar"
+        style={{ margin: "2rem auto 1rem", width: "100%" }}
+      />
 
       <div
         style={{

@@ -92,7 +92,7 @@ export default function TourJudging() {
             }
 
             .hud-glass-panel {
-              background: rgba(15, 23, 42, 0.65);
+              background: var(--cyber-surface-glass-light);
               backdrop-filter: blur(24px);
               -webkit-backdrop-filter: blur(24px);
               border: 1px solid rgba(52, 229, 235, 0.3);
@@ -111,7 +111,7 @@ export default function TourJudging() {
           style={{
             position: "absolute",
             inset: 0,
-            background: "linear-gradient(180deg, #0f172a 0%, #1e293b 100%)",
+            background: "var(--bg-gradient)",
             opacity: 0.95,
           }}
         />
@@ -134,8 +134,8 @@ export default function TourJudging() {
           style={{
             position: "absolute",
             inset: "-50%",
-            backgroundImage:
-              "linear-gradient(rgba(52, 229, 235, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(52, 229, 235, 0.1) 1px, transparent 1px)",
+            background:
+              "linear-gradient(var(--cyber-grid) 1px, transparent 1px), linear-gradient(90deg, var(--cyber-grid) 1px, transparent 1px)",
             backgroundSize: "80px 80px",
             animation: "grid-pan 4s linear infinite",
             transform: "perspective(1000px) rotateX(65deg) scale(1.2)",
@@ -282,7 +282,7 @@ export default function TourJudging() {
             style={{
               padding: "1.5rem",
               borderRadius: "50%",
-              background: "rgba(15, 23, 42, 0.5)",
+              background: "var(--cyber-input-bg)",
               border: "1px solid rgba(52, 229, 235, 0.2)",
               boxShadow: "0 0 30px rgba(0,0,0,0.5)",
             }}
@@ -304,8 +304,8 @@ export default function TourJudging() {
           <div
             className="edgerunner-card reveal-text delay-3"
             style={{
-              background: "rgba(30, 41, 59, 0.5)",
-              border: "1px solid rgba(255,255,255,0.1)",
+              background: "var(--cyber-card-bg)",
+              border: "1px solid var(--cyber-border)",
               backdropFilter: "blur(4px)",
             }}
           >
@@ -347,8 +347,8 @@ export default function TourJudging() {
           <div
             className="edgerunner-card reveal-text delay-4"
             style={{
-              background: "rgba(30, 41, 59, 0.5)",
-              border: "1px solid rgba(255,255,255,0.1)",
+              background: "var(--cyber-card-bg)",
+              border: "1px solid var(--cyber-border)",
               backdropFilter: "blur(4px)",
             }}
           >
@@ -393,8 +393,8 @@ export default function TourJudging() {
           <div
             className="edgerunner-card reveal-text delay-5"
             style={{
-              background: "rgba(30, 41, 59, 0.5)",
-              border: "1px solid rgba(255,255,255,0.1)",
+              background: "var(--cyber-card-bg)",
+              border: "1px solid var(--cyber-border)",
               backdropFilter: "blur(4px)",
             }}
           >
