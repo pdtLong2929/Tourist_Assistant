@@ -1,36 +1,42 @@
-venv/
-env/
-.venv/
-.env
-
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
-*.so
 
+# Environments
+.env
+venv/
+.env.*
+.env.local
+.venv/
 
-gtfs-hcmc/
-gtfs_hn/
-*.txt
-!requirements.txt
-*.csv
-*.zip
-
+# Editor/IDE
 .vscode/
 .idea/
-*.swp
-*.swo
+*.sublime-project
+*.sublime-workspace
 
-
+# OS files
 .DS_Store
 Thumbs.db
 
-
+# Logs
 *.log
 
-.pytest_cache/
+# SQLite / local DB
+*.sqlite3
+*.db
+
+# Generated files / coverage
 htmlcov/
 .coverage
+.coverage.*
+.cache
+.pytest_cache/
 
-data/*
-!data/.gitkeep
+# macOS
+.AppleDouble
+.LSOverride
+
+# Node modules (if any)
+node_modules/

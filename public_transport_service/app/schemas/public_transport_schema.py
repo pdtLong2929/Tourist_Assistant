@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List, Optional
+from typing import List
 from enum import Enum
 
 class CityCode(str, Enum):
@@ -7,14 +7,14 @@ class CityCode(str, Enum):
     HCMC = "hcmc"
 
 class Location(BaseModel):
-    lat: float = Field(..., description="Latitude of the location")
-    lon: float = Field(..., description="Longitude of the location")
+    lat: float = Field(..., ge=-90, le=90, description="Latitude of the location")
+    lon: float = Field(..., ge=-180, le=180, description="Longitude of the location")
 
 class TransitRequest(BaseModel):
     city: CityCode = Field(..., description="Target city code (e.g., hcmc or hn)")
     locations: List[Location] = Field(..., min_length=2, description="List of waypoints for the journey")
-    top_k: int = Field(5, description="Maximum number of route suggestions to return")
-    max_walk_meters: float = Field(1000.0, description="Maximum acceptable walking distance in meters")
+    top_k: int = Field(5, ge=1, le=10, description="Maximum number of route suggestions to return")
+    max_walk_meters: float = Field(1000.0, ge=100, le=3000, description="Maximum acceptable walking distance in meters")
     combine_routes: bool = Field(True, description="Enable 1-transfer route combinations")
 
 class NearbyStop(BaseModel):
