@@ -45,7 +45,7 @@ export default function LoginPage() {
     return String(emailStr)
       .toLowerCase()
       .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       );
   };
 
@@ -61,7 +61,9 @@ export default function LoginPage() {
 
     if (isSignUp && !name.trim()) {
       newShakeFields.push("register-name");
-      if (!errorMsg) errorMsg = t("login.pleaseEnterName" as any) || "Vui lòng nhập tên của bạn";
+      if (!errorMsg)
+        errorMsg =
+          t("login.pleaseEnterName" as any) || "Vui lòng nhập tên của bạn";
     }
 
     if (!email.trim()) {
@@ -74,7 +76,8 @@ export default function LoginPage() {
 
     if (!password.trim()) {
       newShakeFields.push(isSignUp ? "register-password" : "login-password");
-      if (!errorMsg) errorMsg = "Vui lòng nhập mật khẩu / Please enter password";
+      if (!errorMsg)
+        errorMsg = "Vui lòng nhập mật khẩu / Please enter password";
     }
 
     if (newShakeFields.length > 0) {
@@ -87,8 +90,12 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      const endpoint = isSignUp ? "http://localhost:80/register" : "http://localhost:80/login";
-      const payload = isSignUp ? { name, email, password } : { email, password };
+      const endpoint = isSignUp
+        ? "http://localhost:80/register"
+        : "http://localhost:80/login";
+      const payload = isSignUp
+        ? { name, email, password }
+        : { email, password };
 
       const response = await fetch(endpoint, {
         method: "POST",
@@ -103,17 +110,36 @@ export default function LoginPage() {
         localStorage.setItem("accessToken", data.accessToken);
         if (data.user) {
           localStorage.setItem("cyber_user", JSON.stringify(data.user));
-          localStorage.removeItem("cyber_user_nickname");
-          localStorage.removeItem("cyber_user_age");
+        } else if (isSignUp) {
+          // Nếu đăng ký thành công mà server không trả về user, ta tự tạo object từ form
+          localStorage.setItem(
+            "cyber_user",
+            JSON.stringify({
+              name: name,
+              email: email,
+              id: "temp_" + Date.now(), // ID tạm thời nếu cần
+            }),
+          );
         }
+
+        // Luôn xóa thông tin cũ để bắt đầu phiên mới
+        localStorage.removeItem("cyber_user_nickname");
+        localStorage.removeItem("cyber_user_age");
 
         //Phát tín hiệu báo đã đăng nhập thành công
         window.dispatchEvent(new Event("userAuthChanged"));
 
-        setSuccessMessage(isSignUp ? "Registration successful. Welcome!" : "Login successful. Redirecting...");
-        
+        setSuccessMessage(
+          isSignUp
+            ? "Registration successful. Welcome!"
+            : "Login successful. Redirecting...",
+        );
+
         setTimeout(() => {
-          if (localStorage.getItem("hidePreferencesForm_" + data.user.id) === "true") {
+          const userId = data.user?.id || "guest";
+          if (
+            localStorage.getItem("hidePreferencesForm_" + userId) === "true"
+          ) {
             router.push("/");
           } else {
             router.push("/preferences");
@@ -150,19 +176,19 @@ export default function LoginPage() {
       setForgotMessage("Email không hợp lệ / Invalid email format");
       return;
     }
-    
+
     setForgotLoading(true);
     setForgotMessage("");
     try {
       const res = await fetch("http://localhost:80/forgot-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: forgotEmail })
+        body: JSON.stringify({ email: forgotEmail }),
       });
       const data = await res.json();
       setForgotMessage(data.message || "Đã gửi yêu cầu khôi phục mật khẩu!");
       if (res.ok) {
-         setTimeout(() => setShowForgotModal(false), 3000);
+        setTimeout(() => setShowForgotModal(false), 3000);
       }
     } catch (err) {
       setForgotMessage("Lỗi khi kết nối với máy chủ.");
@@ -214,9 +240,7 @@ export default function LoginPage() {
           }}
         ></div>
       </div>
-      <div
-        style={{ display: "grid", gridTemplateColumns: "1fr", gap: "1rem" }}
-      >
+      <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "1rem" }}>
         <button
           type="button"
           onClick={handleGoogleLogin}
@@ -253,10 +277,13 @@ export default function LoginPage() {
     </div>
   );
 
+  if (!mounted) return null;
+
   return (
     <main
+      className="boot-sequence"
       style={{
-        height: "calc(100vh - 72px)",
+        minHeight: "100vh",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -371,6 +398,38 @@ export default function LoginPage() {
               border-left: 4px solid var(--cyber-blue);
               color: var(--text-main);
               box-shadow: 0 0 15px rgba(52, 229, 235, 0.15);
+            }
+
+            .overlay-panel {
+              position: absolute;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              flex-direction: column;
+              padding: 0 40px;
+              text-align: center;
+              top: 0;
+              height: 100%;
+              width: 50%;
+              transform: translateX(0);
+              transition: transform 0.6s ease-in-out;
+              overflow: hidden;
+            }
+
+            .panel-image-bg {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              opacity: 0.2;
+              filter: blur(3px);
+              pointer-events: none;
+              z-index: 0;
+              background-size: cover;
+              background-position: center;
+              transition: all 0.5s ease;
+              background-image: url("/images/bg4.jpg");
             }
           `,
         }}
@@ -766,6 +825,7 @@ export default function LoginPage() {
 
           {/* Welcome Back (Shown when Login is hidden / Slider is on Right) */}
           <div
+            className="overlay-panel overlay-left"
             style={{
               position: "absolute",
               width: "100%",
@@ -783,6 +843,7 @@ export default function LoginPage() {
               pointerEvents: isSignUp ? "auto" : "none",
             }}
           >
+            <div className="panel-image-bg" />
             <h2
               className="glitch-yellow"
               style={{
@@ -835,6 +896,7 @@ export default function LoginPage() {
 
           {/* Join Us (Shown when Register is hidden / Slider is on Left) */}
           <div
+            className="overlay-panel overlay-right"
             style={{
               position: "absolute",
               width: "100%",
@@ -852,6 +914,7 @@ export default function LoginPage() {
               pointerEvents: isSignUp ? "none" : "auto",
             }}
           >
+            <div className="panel-image-bg" />
             <h2
               className="glitch-yellow"
               style={{
@@ -929,14 +992,15 @@ export default function LoginPage() {
               borderRadius: "16px",
               background: "rgba(15, 23, 42, 0.9)",
               border: "1px solid rgba(52, 229, 235, 0.4)",
-              boxShadow: "0 0 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(52, 229, 235, 0.1)",
+              boxShadow:
+                "0 0 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(52, 229, 235, 0.1)",
               display: "flex",
               flexDirection: "column",
               gap: "1.5rem",
-              position: "relative"
+              position: "relative",
             }}
           >
-            <button 
+            <button
               onClick={() => setShowForgotModal(false)}
               style={{
                 position: "absolute",
@@ -947,31 +1011,58 @@ export default function LoginPage() {
                 color: "var(--text-muted)",
                 cursor: "pointer",
                 fontSize: "1.5rem",
-                transition: "color 0.2s"
+                transition: "color 0.2s",
               }}
-              onMouseEnter={(e) => e.currentTarget.style.color = "var(--cyber-red)"}
-              onMouseLeave={(e) => e.currentTarget.style.color = "var(--text-muted)"}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.color = "var(--cyber-red)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.color = "var(--text-muted)")
+              }
             >
               ✕
             </button>
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
               <ShieldAlert size={30} color="var(--cyber-yellow)" />
-              <h3 style={{ margin: 0, fontSize: "1.8rem", color: "var(--cyber-yellow)", textShadow: "0 0 10px rgba(251, 191, 36, 0.4)" }}>
+              <h3
+                style={{
+                  margin: 0,
+                  fontSize: "1.8rem",
+                  color: "var(--cyber-yellow)",
+                  textShadow: "0 0 10px rgba(251, 191, 36, 0.4)",
+                }}
+              >
                 Reset Password
               </h3>
             </div>
-            
-            <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem", lineHeight: 1.5 }}>
+
+            <p
+              style={{
+                color: "var(--text-secondary)",
+                fontSize: "0.95rem",
+                lineHeight: 1.5,
+              }}
+            >
               Nhập email của bạn để nhận liên kết khôi phục mật khẩu.
             </p>
 
             {forgotMessage && (
-              <div className={`message-box ${forgotMessage.includes("Lỗi") || forgotMessage.includes("không hợp lệ") || forgotMessage.includes("invalid") ? "message-error" : "message-success"}`} style={{ marginBottom: "0.5rem" }}>
+              <div
+                className={`message-box ${forgotMessage.includes("Lỗi") || forgotMessage.includes("không hợp lệ") || forgotMessage.includes("invalid") ? "message-error" : "message-success"}`}
+                style={{ marginBottom: "0.5rem" }}
+              >
                 <span>{forgotMessage}</span>
               </div>
             )}
 
-            <form onSubmit={submitForgotPassword} style={{ display: "flex", flexDirection: "column", gap: "1.2rem" }}>
+            <form
+              onSubmit={submitForgotPassword}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "1.2rem",
+              }}
+            >
               <input
                 type="text"
                 placeholder="Nhập email của bạn"
@@ -996,10 +1087,14 @@ export default function LoginPage() {
                   boxShadow: "0 0 20px rgba(251, 191, 36, 0.4)",
                   border: "none",
                   borderRadius: "8px",
-                  cursor: forgotLoading ? "not-allowed" : "pointer"
+                  cursor: forgotLoading ? "not-allowed" : "pointer",
                 }}
               >
-                {forgotLoading ? <Scan className="animate-spin" /> : "Gửi liên kết khôi phục"}
+                {forgotLoading ? (
+                  <Scan className="animate-spin" />
+                ) : (
+                  "Gửi liên kết khôi phục"
+                )}
               </button>
             </form>
           </div>

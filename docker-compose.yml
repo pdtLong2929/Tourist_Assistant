@@ -17,7 +17,7 @@
 services:
   # ─── PostgreSQL ────────────────────────────────────────────────────────
   postgres:
-    image: postgres:16-alpine
+    image: pgvector/pgvector:pg16
     container_name: ta_postgres
     restart: unless-stopped
     environment:
@@ -29,7 +29,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-tourist}" ]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-tourist} -d ${POSTGRES_DB:-tourist_assistant}" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -57,6 +57,21 @@ services:
     networks:
       - ta_network
 
+  # ─── Redis ───────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: ta_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+    networks:
+      - ta_network
+
   # ─── Express Login API ────────────────────────────────────────────────
   login:
     build:
@@ -67,7 +82,8 @@ services:
     ports:
       - "5036:5036"
     env_file:
-      - ./login/.env
+      - path: ./login/.env
+        required: false
     environment:
       NODE_ENV: production
       PORT: 5036
@@ -108,6 +124,26 @@ services:
     networks:
       - ta_network
 
+  # ─── Python RAG Service ───────────────────────────────────────────────
+  rag:
+    build:
+      context: ./rag
+      dockerfile: Dockerfile
+    container_name: ta_rag
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    env_file:
+      - path: ./rag/.env
+        required: false
+    environment:
+      POSTGRES_URL: postgresql://${POSTGRES_USER:-tourist}:${POSTGRES_PASSWORD:-tourist_secret}@postgres:5432/${POSTGRES_DB:-tourist_assistant}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - ta_network
+
   # ─── Nginx API Gateway ────────────────────────────────────────────────
   nginx:
     build:
@@ -121,51 +157,123 @@ services:
       PORT: ${PORT:-80}
       FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
       LOGIN_API_URL: ${LOGIN_API_URL:-http://login:5036}
+      API_SERVICE_URL: ${API_SERVICE_URL:-http://api_service:8081}
+      NOTIFICATION_URL: ${NOTIFICATION_URL:-http://notification:8080}
       SSL_TOGGLE: ${SSL_TOGGLE:-on}
       HOST_HEADER: ${HOST_HEADER:-localhost}
       DNS_RESOLVER: ${DNS_RESOLVER:-127.0.0.11}
     depends_on:
       - frontend
       - login
+      - api_service
+      - notification
     networks:
       - ta_network
 
-  # ─── pgAdmin (Postgres Web UI) ────────────────────────────────────────
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    container_name: ta_pgadmin
+  # ─── Go Notification Service ────────────────────────────────────────────
+  notification:
+    build:
+      context: ./notification
+      dockerfile: Dockerfile
+    container_name: ta_notification
     restart: unless-stopped
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@tourist.dev}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
-      PGADMIN_LISTEN_PORT: 80
     ports:
-      - "${PGADMIN_PORT:-5050}:80"
-    depends_on:
-      postgres:
-        condition: service_healthy
-    volumes:
-      - pgadmin_data:/var/lib/pgadmin
+      - "8080:8080"
+    environment:
+      PORT: 8080
     networks:
       - ta_network
 
-  # ─── Mongo Express (MongoDB Web UI) ───────────────────────────────────
-  mongo-express:
-    image: mongo-express:1-20
-    container_name: ta_mongo_express
+  # ─── Go API Service (Async tasks) ───────────────────────────────────────
+  api_service:
+    build:
+      context: ./api_service
+      dockerfile: Dockerfile
+    container_name: ta_api_service
     restart: unless-stopped
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_USER:-tourist}
-      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_PASSWORD:-tourist_secret}
-      ME_CONFIG_MONGODB_URL: mongodb://${MONGO_USER:-tourist}:${MONGO_PASSWORD:-tourist_secret}@mongodb:27017/
-      ME_CONFIG_BASICAUTH: "false"
     ports:
-      - "${MONGO_EXPRESS_PORT:-8081}:8081"
+      - "8081:8081"
+    environment:
+      PORT: 8081
+      PUBSUB_EMULATOR_HOST: pubsub:8085
+      GOOGLE_CLOUD_PROJECT: test-project
+    networks:
+      - ta_network
+
+  # ─── Go Worker Service ────────────────────────────────────────────────
+  worker_service:
+    build:
+      context: ./worker_service
+      dockerfile: Dockerfile
+    container_name: ta_worker_service
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    environment:
+      PORT: 8001
+      PUBSUB_EMULATOR_HOST: pubsub:8085
+      GOOGLE_CLOUD_PROJECT: test-project
+    networks:
+      - ta_network
+
+  # ─── API Calling Service ──────────────────────────────────────────────
+  api_calling:
+    build:
+      context: ./api_calling
+      dockerfile: Dockerfile
+    container_name: ta_api_calling
+    restart: unless-stopped
+    ports:
+      - "8083:8080"
+    environment:
+      PORT: 8080
+      REDIS_ADDR: ${REDIS_ADDR:-redis:6379}
+      PUBSUB_EMULATOR_HOST: pubsub:8085
+      GOOGLE_CLOUD_PROJECT: test-project
+    env_file:
+      - path: ./api_calling/.env
+        required: false
     depends_on:
-      mongodb:
+      redis:
         condition: service_healthy
     networks:
       - ta_network
+
+  # ─── Pub/Sub Emulator ──────────────────────────────────────────────────
+  pubsub:
+    image: gcr.io/google.com/cloudsdktool/cloud-sdk:emulators
+    container_name: ta_pubsub
+    command: gcloud beta emulators pubsub start --project=test-project --host-port=0.0.0.0:8085
+    ports:
+      - "8085:8085"
+    networks:
+      - ta_network
+
+  # ─── Pub/Sub Init ──────────────────────────────────────────────────────
+  pubsub-init:
+    image: curlimages/curl
+    container_name: ta_pubsub_init
+    depends_on:
+      - pubsub
+    networks:
+      - ta_network
+    command: >
+      sh -c "
+        echo 'Waiting for Pub/Sub Emulator to be healthy...';
+        until curl -s http://pubsub:8085/; do
+          echo 'Emulator not ready, sleeping...';
+          sleep 2;
+        done;
+        echo 'Pub/Sub Emulator is UP. Creating topics...';
+        curl -s -X PUT http://pubsub:8085/v1/projects/test-project/topics/ai-jobs;
+        curl -s -X PUT http://pubsub:8085/v1/projects/test-project/topics/task-enrich;
+        curl -s -X PUT http://pubsub:8085/v1/projects/test-project/topics/ai-results;
+        echo 'Topics created. Creating subscriptions...';
+        curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/api-calling-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/ai-jobs\",\"pushConfig\":{\"pushEndpoint\":\"http://api_calling:8080/pubsub/push\"}}';
+        curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/worker-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/task-enrich\",\"pushConfig\":{\"pushEndpoint\":\"http://worker_service:8001/pubsub/push\"}}';
+        curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/notification-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/ai-results\",\"pushConfig\":{\"pushEndpoint\":\"http://notification:8080/pubsub/results\"}}';
+        echo 'Pub/Sub Initialized Successfully!';
+      "
 
 # ─── Volumes ──────────────────────────────────────────────────────────────
 volumes:

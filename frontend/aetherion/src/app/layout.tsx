@@ -1,14 +1,13 @@
 import "./globals.css";
 import React from "react";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { LanguageProvider } from "@/context/LanguageContext";
 
 export const metadata = {
   title: "Tourist AI - Smart Travel Assistant",
   description: "AI-powered travel planning and navigation platform.",
 };
-
-import Footer from "@/components/Footer";
-import { LanguageProvider } from "@/context/LanguageContext";
 
 export default function RootLayout({
   children,

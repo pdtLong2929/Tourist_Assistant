@@ -6,7 +6,11 @@ import { useRouter } from "next/navigation";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function Header() {
-  const [user, setUser] = useState<{ name: string } | null>(null);
+  const [user, setUser] = useState<{
+    name: string;
+    email?: string;
+    age?: string;
+  } | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
   const router = useRouter();
@@ -20,8 +24,12 @@ export default function Header() {
         try {
           const userObj = JSON.parse(loggedInUser);
           const nickname = localStorage.getItem("cyber_user_nickname");
+          const age = localStorage.getItem("cyber_user_age");
           if (nickname) {
             userObj.name = nickname;
+          }
+          if (age) {
+            userObj.age = age;
           }
           setUser(userObj);
         } catch (e) {
@@ -76,7 +84,7 @@ export default function Header() {
           margin: "0 auto",
         }}
       >
-        {/* Logo (Giữ nguyên) */}
+        {/* Logo */}
         <a
           href="/"
           style={{
@@ -121,7 +129,7 @@ export default function Header() {
           </div>
         </a>
 
-        {/* Navigation (Giữ nguyên) */}
+        {/* Navigation */}
         <nav className="nav-container">
           {[
             { name: t("header.explore" as any), href: "/tour-judging" },
@@ -199,7 +207,10 @@ export default function Header() {
                   style={{
                     padding: "12px 16px",
                     textAlign: "left",
-                    background: language === "en" ? "rgba(251, 191, 36, 0.2)" : "transparent",
+                    background:
+                      language === "en"
+                        ? "rgba(251, 191, 36, 0.2)"
+                        : "transparent",
                     color: "white",
                     border: "none",
                     borderBottom: "1px solid rgba(255,255,255,0.05)",
@@ -207,8 +218,16 @@ export default function Header() {
                     fontFamily: "var(--font-mono)",
                     transition: "all 0.2s ease",
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}
-                  onMouseLeave={(e) => (e.currentTarget.style.background = language === "en" ? "rgba(251, 191, 36, 0.2)" : "transparent")}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.background =
+                      "rgba(255,255,255,0.05)")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.background =
+                      language === "en"
+                        ? "rgba(251, 191, 36, 0.2)"
+                        : "transparent")
+                  }
                 >
                   English
                 </button>
@@ -220,21 +239,33 @@ export default function Header() {
                   style={{
                     padding: "12px 16px",
                     textAlign: "left",
-                    background: language === "vi" ? "rgba(251, 191, 36, 0.2)" : "transparent",
+                    background:
+                      language === "vi"
+                        ? "rgba(251, 191, 36, 0.2)"
+                        : "transparent",
                     color: "white",
                     border: "none",
                     cursor: "pointer",
                     fontFamily: "var(--font-mono)",
                     transition: "all 0.2s ease",
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}
-                  onMouseLeave={(e) => (e.currentTarget.style.background = language === "vi" ? "rgba(251, 191, 36, 0.2)" : "transparent")}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.background =
+                      "rgba(255,255,255,0.05)")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.background =
+                      language === "vi"
+                        ? "rgba(251, 191, 36, 0.2)"
+                        : "transparent")
+                  }
                 >
                   Tiếng Việt
                 </button>
               </div>
             )}
           </div>
+
           {user ? (
             /* ĐÃ ĐĂNG NHẬP */
             <div style={{ position: "relative" }}>
@@ -267,7 +298,7 @@ export default function Header() {
                     fontFamily: "var(--font-header)",
                   }}
                 >
-                  {user.name.charAt(0).toUpperCase()}
+                  {(user?.name || user?.email || "U").charAt(0).toUpperCase()}
                 </div>
                 <div style={{ textAlign: "right" }}>
                   <div
@@ -279,7 +310,7 @@ export default function Header() {
                       letterSpacing: "0.05em",
                     }}
                   >
-                    {user.name} ▼
+                    {user?.name || user?.email?.split("@")[0] || "Traveler"} ▼
                   </div>
                 </div>
               </div>
@@ -289,16 +320,15 @@ export default function Header() {
                 <div
                   style={{
                     position: "absolute",
-                    top: "130%" /* Đẩy xuống thấp một chút cho đỡ dính */,
+                    top: "130%",
                     right: 0,
                     background: "#0f172a",
                     border: "1px solid rgba(52, 229, 235, 0.3)",
-                    borderRadius: "12px" /* Bo góc to hơn */,
+                    borderRadius: "12px",
                     overflow: "hidden",
                     display: "flex",
                     flexDirection: "column",
-                    minWidth:
-                      "220px" /* CHỈNH Ở ĐÂY: Chiều rộng menu to ra (cũ là 160px) */,
+                    minWidth: "220px",
                     boxShadow: "0 10px 25px rgba(0, 0, 0, 0.5)",
                     zIndex: 200,
                   }}
@@ -320,8 +350,13 @@ export default function Header() {
                       fontFamily: "system-ui, sans-serif",
                       transition: "all 0.2s ease",
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}
-                    onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.background =
+                        "rgba(255,255,255,0.05)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.background = "transparent")
+                    }
                   >
                     {t("header.profile" as any)}
                   </button>
@@ -338,8 +373,13 @@ export default function Header() {
                       fontFamily: "system-ui, sans-serif",
                       transition: "all 0.2s ease",
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(239, 68, 68, 0.1)")}
-                    onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.background =
+                        "rgba(239, 68, 68, 0.1)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.background = "transparent")
+                    }
                   >
                     {t("header.logout" as any)}
                   </button>

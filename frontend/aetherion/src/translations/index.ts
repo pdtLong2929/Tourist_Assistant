@@ -123,6 +123,14 @@ export const translations = {
       btnAnalyze: "ANALYZE",
       btnProcessing: "PROCESSING",
       optimalMatch: "OPTIMAL MATCH FOUND",
+      startOrigin: "STARTING ORIGIN",
+      finalDestination: "FINAL DESTINATION",
+      journeyNarrative: "JOURNEY NARRATIVE & CONDITIONS",
+      placeholderOrigin: "Enter start coordinates or node...",
+      placeholderDestination: "Enter target destination...",
+      neuralProcessing: "NEURAL PROCESSING IN PROGRESS",
+      aiNote:
+        "Note: AI deep-reasoning may take up to 20 seconds for high-precision results.",
     },
     preferences: {
       title: "PERSONAL PROFILE",
@@ -130,8 +138,8 @@ export const translations = {
       personalInfo: "PERSONAL INFORMATION",
       nickname: "Nickname",
       nicknamePlaceholder: "Enter your nickname",
-      age: "Age",
-      agePlaceholder: "Enter your age",
+      phone: "Phone Number",
+      phonePlaceholder: "Enter your phone number",
       locationInfo: "LOCATION PREFERENCES",
       locationDesc: "Choose what you want to experience",
       selected: "Selected",
@@ -174,6 +182,17 @@ export const translations = {
       goods: "Abundant Goods",
       tea: "Tea / Coffee",
       fun: "Fun / Entertainment",
+      recent: "Recent Activity",
+    },
+    profile: {
+      title: "USER_PROFILE",
+      info: "USER INFORMATION",
+      username: "Username / Nickname",
+      email: "Email Address",
+      phone: "Phone Number",
+      logout: "LOG OUT",
+      loggingOut: "Logging out. See you soon!",
+      online: "Online",
     },
   },
   vi: {
@@ -298,6 +317,14 @@ export const translations = {
       btnAnalyze: "PHÂN TÍCH",
       btnProcessing: "ĐANG XỬ LÝ",
       optimalMatch: "ĐÃ TÌM THẤY PHƯƠNG TIỆN PHÙ HỢP",
+      startOrigin: "ĐIỂM XUẤT PHÁT",
+      finalDestination: "ĐIỂM ĐẾN CUỐI CÙNG",
+      journeyNarrative: "MÔ TẢ HÀNH TRÌNH & ĐIỀU KIỆN",
+      placeholderOrigin: "Nhập điểm bắt đầu...",
+      placeholderDestination: "Nhập điểm đến...",
+      neuralProcessing: "ĐANG XỬ LÝ NƠ-RON...",
+      aiNote:
+        "Lưu ý: Phân tích sâu của AI có thể mất tới 20 giây để có kết quả chính xác cao.",
     },
     preferences: {
       title: "HỒ SƠ CÁ NHÂN",
@@ -305,8 +332,8 @@ export const translations = {
       personalInfo: "THÔNG TIN CÁ NHÂN",
       nickname: "Tên Gọi / Nickname",
       nicknamePlaceholder: "Nhập tên gọi của bạn",
-      age: "Tuổi",
-      agePlaceholder: "Nhập tuổi của bạn",
+      phone: "Số điện thoại",
+      phonePlaceholder: "Nhập số điện thoại của bạn",
       locationInfo: "CHỌN ĐỊA ĐIỂM THEO SỞ THÍCH",
       locationDesc: "Chọn những gì bạn muốn trải nghiệm",
       selected: "Đã chọn",
@@ -349,6 +376,17 @@ export const translations = {
       goods: "Hàng hoá phong phú",
       tea: "Trà / Cà phê",
       fun: "Vui vẻ / Giải trí",
+      recent: "Hoạt động gần đây",
+    },
+    profile: {
+      title: "HỒ SƠ CÁ NHÂN",
+      info: "THÔNG TIN NGƯỜI DÙNG",
+      username: "Tên đăng nhập / Nickname",
+      email: "Địa chỉ Email",
+      phone: "Số điện thoại",
+      logout: "ĐĂNG XUẤT",
+      loggingOut: "Đang đăng xuất. Hẹn gặp lại bạn!",
+      online: "Đang hoạt động",
     },
   },
 };
@@ -363,4 +401,5 @@ export type TranslationKey =
   | `tourJudging.${keyof typeof translations.en.tourJudging}`
   | `renting.${keyof typeof translations.en.renting}`
   | `preferences.${keyof typeof translations.en.preferences}`
-  | `location.${keyof typeof translations.en.location}`;
+  | `location.${keyof typeof translations.en.location}`
+  | `profile.${keyof typeof translations.en.profile}`;

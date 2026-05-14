@@ -19,16 +19,77 @@ import {
 } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
+const aiIcons = [Cpu, Network, BrainCircuit, Database, Fingerprint, Sparkles];
+
 export default function RentingSuggestion() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<any[] | null>(null);
   const [mounted, setMounted] = useState(false);
   const [floatingIcons, setFloatingIcons] = useState<any[]>([]);
-  const [inputValue, setInputValue] = useState("");
+  const [journey, setJourney] = useState("");
+  const [startPos, setStartPos] = useState("");
+  const [endPos, setEndPos] = useState("");
   const [matchProgress, setMatchProgress] = useState(0);
+  const [statusIndex, setStatusIndex] = useState(0);
 
-  const aiIcons = [Cpu, Network, BrainCircuit, Database, Fingerprint, Sparkles];
+  const statusMessages =
+    language === "vi"
+      ? [
+          "ĐANG KHỞI TẠO LIÊN KẾT THẦN KINH...",
+          "TRUY CẬP CƠ SỞ KIẾN THỨC RAG...",
+          "TRUY XUẤT VECTƠ VẬN TẢI...",
+          "PHÂN TÍCH RÀNG BUỘC NGỮ CẢNH...",
+          "ĐANG TẠO LẬP LÝ LUẬN GEMINI...",
+          "ĐANG HOÀN TẤT GỢI Ý...",
+        ]
+      : [
+          "INITIALIZING NEURAL UPLINK...",
+          "ACCESSING RAG KNOWLEDGE BASE...",
+          "RETRIEVING TRANSPORT VECTORS...",
+          "ANALYZING CONTEXTUAL CONSTRAINTS...",
+          "GENERATING GEMINI REASONING...",
+          "FINALIZING RECOMMENDATIONS...",
+        ];
+
+  const [userId] = useState(() =>
+    typeof window !== "undefined"
+      ? `user_${Math.random().toString(36).substring(7)}`
+      : "",
+  );
+
+  useEffect(() => {
+    if (!userId) return;
+    const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || "http://localhost";
+    const wsUrl = nginxUrl.replace(/^http/, "ws") + `/ws?userId=${userId}`;
+    const ws = new WebSocket(wsUrl);
+
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        console.log("WebSocket Received:", data);
+        if (data.result) {
+          let parsed = [];
+          try {
+            parsed = JSON.parse(data.result);
+          } catch (pe) {
+            console.error("Could not parse result json from LLM", pe);
+          }
+          if (Array.isArray(parsed)) {
+            parsed.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+            setResult(parsed);
+          } else {
+            setResult([]);
+          }
+          setLoading(false);
+        }
+      } catch (e) {
+        console.error("Error parsing WS message:", e);
+      }
+    };
+
+    return () => ws.close();
+  }, [userId]);
 
   useEffect(() => {
     setMounted(true);
@@ -44,42 +105,44 @@ export default function RentingSuggestion() {
     setFloatingIcons(generatedIcons);
   }, []);
 
-  const handleSearch = () => {
-    if (!inputValue.trim()) return;
+  const handleSearch = async () => {
+    if (!journey.trim()) return;
     setLoading(true);
     setResult(null);
     setMatchProgress(0);
 
     const progressInterval = setInterval(() => {
-      setMatchProgress((prev) =>
-        prev >= 95 ? (clearInterval(progressInterval), 95) : prev + 5,
-      );
-    }, 100);
-
-    setTimeout(() => {
-      clearInterval(progressInterval);
-      setMatchProgress(100);
-      setResult({
-        vehicle: "Cyber SUV X",
-        category: "Premium All-Terrain",
-        reason:
-          "Advanced AWD system with terrain response control matches your highland requirements. Vehicle equipped with adaptive suspension for Da Lat's mountainous roads.",
-        matchScore: 98,
-        features: [
-          { label: "Terrain Match", score: 99 },
-          { label: "Weather Adapt", score: 95 },
-          { label: "Comfort Level", score: 98 },
-          { label: "Safety Rating", score: 97 },
-        ],
-        specs: {
-          power: "450 HP",
-          range: "500 km",
-          seats: "7",
-          drivetrain: "Intelligent AWD",
-        },
+      setMatchProgress((prev) => {
+        if (prev >= 98) {
+          return 98;
+        }
+        const increment = prev < 60 ? 4 : prev < 85 ? 1 : 0.2;
+        return Math.min(prev + increment, 98);
       });
+    }, 200);
+
+    const statusInterval = setInterval(() => {
+      setStatusIndex((prev) => (prev + 1) % statusMessages.length);
+    }, 1000);
+
+    const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || "http://localhost";
+    try {
+      const combinedQuery = `Journey: ${journey} | Start: ${startPos} | Destination: ${endPos}`;
+      await fetch(`${nginxUrl}/api/v1/jobs/submit`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: userId,
+          query: combinedQuery,
+          jobType: "vehicle_suggestion",
+        }),
+      });
+    } catch (e) {
+      console.error(e);
       setLoading(false);
-    }, 2500);
+      clearInterval(progressInterval);
+      clearInterval(statusInterval);
+    }
   };
 
   if (!mounted) return null;
@@ -96,7 +159,6 @@ export default function RentingSuggestion() {
         .floating-ai-icons-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; overflow: hidden; z-index: 0; pointer-events: none; }
         .cyber-floating-icon { position: absolute; color: var(--cyber-blue); animation: cascade-icons linear infinite; }
         
-        /* Giữ lại class reveal cho chữ vì nó hoạt động ổn ( Header, Badges) */
         .reveal-text { opacity: 0; animation: reveal-up 1s forwards; }
         @keyframes reveal-up { to { opacity: 1; transform: translateY(0); filter: blur(0); } }
         
@@ -108,7 +170,28 @@ export default function RentingSuggestion() {
           100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
         }
         .btn-ready { animation: cyber-pulse 2s infinite; }
+        .btn-loading { background: var(--cyber-blue) !important; color: #000 !important; box-shadow: 0 0 30px var(--cyber-blue); }
         .btn-disabled { opacity: 0.5; cursor: not-allowed !important; filter: grayscale(100%); }
+        
+        @keyframes spin-custom {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        .animate-spin-custom { animation: spin-custom 1s linear infinite; }
+        
+        @keyframes progress-shimmer {
+          0% { background-position: -200% 0; }
+          100% { background-position: 200% 0; }
+        }
+        .progress-bar-fill {
+          background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green), var(--cyber-blue));
+          background-size: 200% 100%;
+          animation: progress-shimmer 2s infinite linear;
+        }
+        
+        .input-group label { display: block; font-family: var(--font-mono); font-size: 1rem; letter-spacing: 1px; color: var(--cyber-yellow); margin-bottom: 0.75rem; font-weight: bold; text-transform: uppercase; text-shadow: 0 0 10px rgba(251, 191, 36, 0.3); }
+        .cyber-input { width: 100%; padding: 1.4rem 1.6rem; background: rgba(15,23,42,0.8); border: 1px solid var(--cyber-border); color: var(--text-main); border-radius: 12px; font-size: 1.4rem; outline: none; transition: all 0.3s ease; }
+        .cyber-input:focus { border-color: var(--cyber-blue); box-shadow: 0 0 15px rgba(52, 229, 235, 0.2); }
       `,
         }}
       />
@@ -132,13 +215,12 @@ export default function RentingSuggestion() {
       <div
         style={{
           padding: "4rem 2rem",
-          maxWidth: "1100px",
+          maxWidth: "1200px",
           margin: "0 auto",
           position: "relative",
           zIndex: 1,
         }}
       >
-        {/* HEADER SECTION - CHỮ THÌ DÙNG CLASS NHƯ CŨ (VÌ ÔN RỒI) */}
         <header
           className="reveal-text"
           style={{
@@ -162,7 +244,7 @@ export default function RentingSuggestion() {
                 className="font-header text-xl font-bold"
                 style={{ color: "var(--cyber-blue)" }}
               >
-                {t("renting.aiConcierge") as any}
+                {t("renting.aiConcierge" as any)}
               </span>
             </div>
           </div>
@@ -175,12 +257,11 @@ export default function RentingSuggestion() {
               lineHeight: 1.2,
             }}
           >
-            {t("renting.titleLine1") as any}
+            {t("renting.titleLine1" as any)}
             <br />
-            {t("renting.titleLine2") as any}
+            {t("renting.titleLine2" as any)}
           </h1>
 
-          {/* MỚI: Đoạn mô tả nhỏ về AI (Reveal sau 0.2s) */}
           <p
             className="reveal-text"
             style={{
@@ -192,10 +273,9 @@ export default function RentingSuggestion() {
               animationDelay: "0.2s",
             }}
           >
-            {t("renting.subtitle") as any}
+            {t("renting.subtitle" as any)}
           </p>
 
-          {/* BADGES CỦA ÔNG (MÀ ÔNG NÓI HIỆN ĐƯỢC THÌ GIỮ NGUYÊN) - Reveal sau 0.3s */}
           <div
             className="reveal-text"
             style={{
@@ -209,17 +289,17 @@ export default function RentingSuggestion() {
             {[
               {
                 icon: Activity,
-                label: "NEURAL v4.2.0",
+                label: "RAG-VECTOR ACTIVE",
                 color: "var(--cyber-blue)",
               },
               {
                 icon: ShieldCheck,
-                label: t("renting.badge2") as any,
+                label: t("renting.badge2" as any),
                 color: "var(--cyber-green)",
               },
               {
                 icon: Zap,
-                label: t("renting.badge3") as any,
+                label: t("renting.badge3" as any),
                 color: "var(--cyber-yellow)",
               },
             ].map((item, i) => (
@@ -252,158 +332,404 @@ export default function RentingSuggestion() {
           <div
             className={`edgerunner-card ${loading ? "scanning-card" : ""}`}
             style={{
-              padding: "2.5rem",
+              padding: "3rem",
               position: "relative",
               overflow: "hidden",
             }}
           >
             <div
-              className="module-label mb-3"
+              className="module-label mb-6"
               style={{
                 display: "flex",
                 alignItems: "center",
                 gap: "8px",
-                fontSize: "0.85rem",
+                fontSize: "0.9rem",
+                color: "var(--cyber-blue)",
               }}
             >
-              <MapPin size={16} color="var(--cyber-blue)" />{" "}
-              {t("renting.describeJourney") as any}
+              <MapPin size={16} /> {t("renting.describeJourney" as any)}
             </div>
+
             <div
-              style={{ display: "flex", gap: "1rem", alignItems: "stretch" }}
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr",
+                gap: "2rem",
+              }}
             >
-              <div style={{ flex: 1, position: "relative" }}>
-                <Sparkles
-                  size={20}
-                  style={{
-                    position: "absolute",
-                    left: "20px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    color: "var(--cyber-yellow)",
-                    opacity: inputValue ? 1 : 0.5,
-                  }}
-                />
-                <input
-                  type="text"
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  placeholder={t("renting.inputPlaceholder") as any}
-                  style={{
-                    width: "100%",
-                    padding: "1.4rem 1.5rem 1.4rem 55px",
-                    background: "rgba(15,23,42,0.8)",
-                    border: "2px solid var(--cyber-border)",
-                    color: "var(--text-main)",
-                    borderRadius: "12px",
-                    fontSize: "1.1rem",
-                    outline: "none",
-                  }}
-                  onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                />
-              </div>
-              <button
-                className={`cyber-button ${!inputValue.trim() || loading ? "btn-disabled" : "btn-ready"}`}
-                onClick={handleSearch}
-                disabled={loading || !inputValue.trim()}
+              <div
                 style={{
-                  padding: "1.4rem 3rem",
-                  fontSize: "1.1rem",
-                  minWidth: "200px",
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+                  gap: "2rem",
+                }}
+              >
+                <div className="input-group">
+                  <label>{t("renting.startOrigin" as any)}</label>
+                  <div style={{ position: "relative" }}>
+                    <MapPin
+                      size={18}
+                      style={{
+                        position: "absolute",
+                        left: "1rem",
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        color: "var(--cyber-blue)",
+                      }}
+                    />
+                    <input
+                      className="cyber-input"
+                      style={{ paddingLeft: "3rem" }}
+                      placeholder={t("renting.placeholderOrigin" as any)}
+                      value={startPos}
+                      onChange={(e) => setStartPos(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <div className="input-group">
+                  <label>{t("renting.finalDestination" as any)}</label>
+                  <div style={{ position: "relative" }}>
+                    <TrendingUp
+                      size={18}
+                      style={{
+                        position: "absolute",
+                        left: "1rem",
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        color: "var(--cyber-yellow)",
+                      }}
+                    />
+                    <input
+                      className="cyber-input"
+                      style={{ paddingLeft: "3rem" }}
+                      placeholder={t("renting.placeholderDestination" as any)}
+                      value={endPos}
+                      onChange={(e) => setEndPos(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="input-group">
+                <label>{t("renting.journeyNarrative" as any)}</label>
+                <div style={{ position: "relative" }}>
+                  <Sparkles
+                    size={18}
+                    style={{
+                      position: "absolute",
+                      left: "1rem",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      color: "var(--cyber-green)",
+                    }}
+                  />
+                  <input
+                    className="cyber-input"
+                    style={{ paddingLeft: "3rem" }}
+                    placeholder={t("renting.inputPlaceholder" as any)}
+                    value={journey}
+                    onChange={(e) => setJourney(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <button
+                className={`cyber-button ${!journey.trim() ? "btn-disabled" : loading ? "btn-loading" : "btn-ready"}`}
+                onClick={handleSearch}
+                disabled={loading || !journey.trim()}
+                style={{
+                  padding: "1.5rem 3rem",
+                  fontSize: "1.2rem",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  gap: "10px",
-                  transition: "all 0.4s ease",
+                  gap: "15px",
+                  marginTop: "1rem",
+                  position: "relative",
+                  overflow: "hidden",
+                  minHeight: "80px",
                 }}
               >
                 {loading ? (
-                  <>
-                    <Loader2 className="animate-spin" size={20} />
-                    <span>{t("renting.btnProcessing") as any}</span>
-                  </>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: "4px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "12px",
+                      }}
+                    >
+                      <Loader2
+                        className="animate-spin-custom"
+                        size={28}
+                        strokeWidth={3}
+                      />
+                      <span className="font-bold tracking-widest text-xl">
+                        {t("renting.btnProcessing" as any)}...
+                      </span>
+                    </div>
+                    <span
+                      style={{
+                        fontSize: "0.7rem",
+                        opacity: 0.8,
+                        fontFamily: "var(--font-mono)",
+                      }}
+                    >
+                      {statusMessages[statusIndex]}
+                    </span>
+                  </div>
                 ) : (
                   <>
                     <Cpu
-                      size={20}
-                      className={inputValue.trim() ? "text-slate-900" : ""}
+                      size={26}
+                      className={journey.trim() ? "text-slate-900" : ""}
                     />
-                    <span>{t("renting.btnAnalyze") as any}</span>
+                    <span className="font-bold">
+                      {t("renting.btnAnalyze" as any)}
+                    </span>
                   </>
                 )}
               </button>
+
+              {loading && (
+                <div style={{ marginTop: "2rem" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      marginBottom: "0.75rem",
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "0.85rem",
+                    }}
+                  >
+                    <span
+                      style={{
+                        color: "var(--cyber-blue)",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      <Activity size={16} className="animate-pulse" />
+                      {t("renting.neuralProcessing" as any)}
+                    </span>
+                    <span
+                      style={{
+                        color: "var(--cyber-yellow)",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {Math.floor(matchProgress)}%
+                    </span>
+                  </div>
+                  <div
+                    style={{
+                      height: "8px",
+                      background: "rgba(255,255,255,0.05)",
+                      borderRadius: "4px",
+                      overflow: "hidden",
+                      border: "1px solid rgba(52,229,235,0.1)",
+                      boxShadow: "inset 0 0 10px rgba(0,0,0,0.5)",
+                    }}
+                  >
+                    <div
+                      className="progress-bar-fill"
+                      style={{
+                        height: "100%",
+                        width: `${matchProgress}%`,
+                        transition: "width 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+                        boxShadow: "0 0 15px var(--cyber-blue)",
+                      }}
+                    />
+                  </div>
+                  <p
+                    style={{
+                      textAlign: "center",
+                      color: "var(--text-muted)",
+                      fontSize: "0.75rem",
+                      marginTop: "1rem",
+                      fontStyle: "italic",
+                    }}
+                  >
+                    {t("renting.aiNote" as any)}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
-        {/* RESULT CARD */}
+        {/* RESULT SECTION */}
         {result && !loading && (
           <div
             className="reveal-text"
-            style={{ marginTop: "3rem", animationDelay: "0s" }}
+            style={{
+              marginTop: "4rem",
+              animationDelay: "0s",
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+              gap: "2.5rem",
+            }}
           >
-            <div
-              className="edgerunner-card"
-              style={{
-                border: "1px solid var(--cyber-yellow)",
-                padding: "2rem",
-              }}
-            >
+            {result.map((item, idx) => (
               <div
-                style={{ display: "flex", alignItems: "center", gap: "2rem" }}
+                key={idx}
+                className="edgerunner-card"
+                style={{
+                  border: "1px solid var(--cyber-border)",
+                  padding: "0",
+                  overflow: "hidden",
+                  background:
+                    "linear-gradient(180deg, rgba(15,23,42,0.9) 0%, rgba(30,41,59,0.8) 100%)",
+                  transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                  cursor: "pointer",
+                  position: "relative",
+                  borderTop: "3px solid var(--cyber-blue)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-10px)";
+                  e.currentTarget.style.boxShadow =
+                    "0 15px 40px rgba(52,229,235,0.15)";
+                  e.currentTarget.style.borderColor = "var(--cyber-blue)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "none";
+                  e.currentTarget.style.borderColor = "var(--cyber-border)";
+                }}
               >
-                {/* Logo container: Thu nhỏ và căn giữa */}
+                {/* Image Header Section */}
                 <div
                   style={{
-                    flexShrink: 0,
-                    width: "80px",
-                    height: "80px",
-                    background: "rgba(251,191,36,0.1)",
-                    borderRadius: "16px",
-                    border: "1px solid var(--cyber-yellow)",
+                    height: "200px",
+                    position: "relative",
+                    background: "#000",
                     display: "flex",
-                    alignItems: "center",
                     justifyContent: "center",
-                    boxShadow: "0 0 20px var(--cyber-yellow-glow)",
+                    alignItems: "center",
+                    overflow: "hidden",
                   }}
                 >
-                  <Car size={40} color="var(--cyber-yellow)" />
-                </div>
-
-                {/* Text Content: Căn chỉnh thẳng hàng với Logo */}
-                <div style={{ flex: 1 }}>
                   <div
-                    className="module-label"
                     style={{
-                      color: "var(--cyber-yellow)",
-                      marginBottom: "4px",
+                      position: "absolute",
+                      inset: 0,
+                      opacity: 0.4,
+                      backgroundImage: `url(/transports/${item.type?.toLowerCase()}.png)`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      filter: "blur(8px)",
+                    }}
+                  />
+                  <img
+                    src={`/transports/${item.type?.toLowerCase()}.png`}
+                    alt={item.type}
+                    style={{
+                      zIndex: 2,
+                      maxHeight: "140px",
+                      objectFit: "contain",
+                      filter: "drop-shadow(0 0 20px rgba(52,229,235,0.4))",
+                    }}
+                    onError={(e) => {
+                      e.currentTarget.src =
+                        "https://via.placeholder.com/200x200/0f172a/34e5eb?text=VEHICLE";
+                    }}
+                  />
+                  {/* Match Percentage Overlay */}
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "1rem",
+                      right: "1rem",
+                      background: "rgba(0,0,0,0.8)",
+                      padding: "0.5rem 0.8rem",
+                      borderRadius: "4px",
+                      border: "1px solid var(--cyber-green)",
+                      zIndex: 3,
                     }}
                   >
-                    {t("renting.optimalMatch") as any}
+                    <span
+                      style={{
+                        color: "var(--cyber-green)",
+                        fontWeight: "bold",
+                        fontFamily: "var(--font-mono)",
+                      }}
+                    >
+                      {item.rating}%
+                    </span>
+                  </div>
+                </div>
+
+                {/* Content Section */}
+                <div style={{ padding: "2rem" }}>
+                  <div
+                    style={{
+                      textTransform: "uppercase",
+                      fontFamily: "var(--font-mono)",
+                      color: "var(--cyber-yellow)",
+                      fontSize: "0.8rem",
+                      letterSpacing: "2px",
+                      marginBottom: "0.5rem",
+                    }}
+                  >
+                    TRANSIT MODULE
                   </div>
                   <h2
                     style={{
-                      fontSize: "2.2rem",
-                      color: "white",
-                      fontWeight: "bold",
-                      margin: 0,
+                      fontSize: "2rem",
+                      color: "#fff",
+                      fontWeight: "900",
+                      marginBottom: "1.5rem",
+                      textTransform: "capitalize",
                     }}
                   >
-                    {result.vehicle}
+                    {item.type}
                   </h2>
-                  <p
+
+                  <div
                     style={{
-                      color: "var(--text-secondary)",
-                      marginTop: "8px",
-                      fontSize: "1.05rem",
-                      lineHeight: 1.5,
+                      padding: "1.5rem",
+                      background: "rgba(0,0,0,0.3)",
+                      borderRadius: "8px",
+                      borderLeft: "3px solid var(--cyber-blue)",
+                      minHeight: "150px",
                     }}
                   >
-                    {result.reason}
-                  </p>
+                    <h3
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                        fontSize: "0.9rem",
+                        color: "var(--cyber-blue)",
+                        marginBottom: "0.75rem",
+                      }}
+                    >
+                      <BrainCircuit size={16} /> AI LOGIC ANALYSIS
+                    </h3>
+                    <p
+                      style={{
+                        color: "#cbd5e1",
+                        lineHeight: "1.6",
+                        fontSize: "0.95rem",
+                      }}
+                    >
+                      {item.explanation}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
         )}
       </div>

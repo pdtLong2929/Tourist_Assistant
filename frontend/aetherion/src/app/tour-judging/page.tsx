@@ -20,7 +20,6 @@ export default function TourJudging() {
 
   useEffect(() => {
     setMounted(true);
-    // Vẫn giữ lại leaves normal như yêu cầu
     const generatedLeaves = Array.from({ length: 25 }).map((_, i) => ({
       id: i,
       left: `${Math.random() * 100}vw`,
@@ -104,14 +103,10 @@ export default function TourJudging() {
         }}
       />
 
-      {/* =========================================
-          BACKGROUND 3D GRID & SCANNER
-          ========================================= */}
       <div
         className="map-fade-in"
         style={{ position: "absolute", inset: 0, zIndex: 0 }}
       >
-        {/* Sky / deep gradient */}
         <div
           style={{
             position: "absolute",
@@ -121,7 +116,6 @@ export default function TourJudging() {
           }}
         />
 
-        {/* Global Laser Scan Line */}
         <div
           style={{
             position: "absolute",
@@ -136,7 +130,6 @@ export default function TourJudging() {
           }}
         />
 
-        {/* Animated 3D Grid */}
         <div
           style={{
             position: "absolute",
@@ -152,7 +145,6 @@ export default function TourJudging() {
           }}
         />
 
-        {/* Ambient Glows */}
         <div
           style={{
             position: "absolute",
@@ -183,9 +175,6 @@ export default function TourJudging() {
         />
       </div>
 
-      {/* =========================================
-          ENVIRONMENTAL FALLING LEAVES LAYER
-          ========================================= */}
       <div
         className="falling-leaves-container map-fade-in"
         style={{
@@ -210,9 +199,6 @@ export default function TourJudging() {
         ))}
       </div>
 
-      {/* =========================================
-          MAIN AUTHENTICATION/DATA PANEL
-          ========================================= */}
       <div
         className="card-drop-in hud-glass-panel"
         style={{
@@ -315,7 +301,6 @@ export default function TourJudging() {
             gap: "2rem",
           }}
         >
-          {/* Card 1 */}
           <div
             className="edgerunner-card reveal-text delay-3"
             style={{
@@ -355,11 +340,10 @@ export default function TourJudging() {
                 opacity: 0.8,
               }}
             >
-              &gt; {t("tourJudging.weatherSrc")}
+              &gt; {t("tourJudging.weatherSrc") as any}
             </p>
           </div>
 
-          {/* Card 2 */}
           <div
             className="edgerunner-card reveal-text delay-4"
             style={{
@@ -406,7 +390,6 @@ export default function TourJudging() {
             </p>
           </div>
 
-          {/* Card 3 */}
           <div
             className="edgerunner-card reveal-text delay-5"
             style={{

@@ -1,9 +1,8 @@
 name: Login API CI/CD to GCP
 
-#test
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "async" ]
     paths:
       - 'login/**'
       - '.github/workflows/login-cicd.yml'
@@ -65,7 +64,11 @@ jobs:
           cp login/.env.example login/.env
 
       - name: Start services via Docker Compose
+<<<<<<< HEAD
         run: docker compose up -d --build --wait
+=======
+        run: docker compose up -d --build --wait login postgres mongodb
+>>>>>>> async
 
       - name: Wait for Login API to be ready
         run: |

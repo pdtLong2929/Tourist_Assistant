@@ -2,16 +2,26 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { UserCircle, LogOut, Shield, Mail, Cpu, CheckCircle } from "lucide-react";
+import {
+  UserCircle,
+  LogOut,
+  Shield,
+  Mail,
+  Cpu,
+  CheckCircle,
+  Phone,
+} from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface CyberUser {
   id: string;
   email: string;
   name: string;
-  age?: string;
+  phone?: string;
 }
 
 export default function ProfilePage() {
+  const { t } = useLanguage();
   const [mounted, setMounted] = useState(false);
   const [user, setUser] = useState<CyberUser | null>(null);
   const [logoutMessage, setLogoutMessage] = useState("");
@@ -25,11 +35,11 @@ export default function ProfilePage() {
       try {
         const userObj = JSON.parse(storedUser);
         const nickname = localStorage.getItem("cyber_user_nickname");
-        const age = localStorage.getItem("cyber_user_age");
-        
+        const phone = localStorage.getItem("cyber_user_phone");
+
         if (nickname) userObj.name = nickname;
-        if (age) userObj.age = age;
-        
+        if (phone) userObj.phone = phone;
+
         setUser(userObj);
       } catch (error) {
         console.error("Failed to parse user data", error);
@@ -41,14 +51,14 @@ export default function ProfilePage() {
   }, [router]);
 
   const handleLogout = () => {
-    setLogoutMessage("Logging out. See you soon!");
-    
+    setLogoutMessage(t("profile.loggingOut" as any));
+
     // Giả lập độ trễ logout cho ngầu
     setTimeout(() => {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("cyber_user");
       localStorage.removeItem("cyber_user_nickname");
-      localStorage.removeItem("cyber_user_age");
+      localStorage.removeItem("cyber_user_phone");
       window.dispatchEvent(new Event("userAuthChanged"));
       router.push("/");
     }, 1000);
@@ -229,7 +239,8 @@ export default function ProfilePage() {
             borderRadius: "50%",
             opacity: 0.15,
             filter: "blur(80px)",
-            background: "radial-gradient(circle, var(--cyber-blue) 0%, transparent 70%)",
+            background:
+              "radial-gradient(circle, var(--cyber-blue) 0%, transparent 70%)",
           }}
         />
         <div
@@ -242,7 +253,8 @@ export default function ProfilePage() {
             borderRadius: "50%",
             opacity: 0.15,
             filter: "blur(80px)",
-            background: "radial-gradient(circle, var(--cyber-purple) 0%, transparent 70%)",
+            background:
+              "radial-gradient(circle, var(--cyber-purple) 0%, transparent 70%)",
           }}
         />
       </div>
@@ -253,7 +265,14 @@ export default function ProfilePage() {
       {logoutMessage && (
         <div className="logout-message">
           <Cpu className="animate-pulse" size={40} color="var(--cyber-blue)" />
-          <h3 className="glitch-yellow" style={{ fontSize: "1.5rem", margin: 0, color: "var(--cyber-blue)" }}>
+          <h3
+            className="glitch-yellow"
+            style={{
+              fontSize: "1.5rem",
+              margin: 0,
+              color: "var(--cyber-blue)",
+            }}
+          >
             {logoutMessage}
           </h3>
         </div>
@@ -277,7 +296,15 @@ export default function ProfilePage() {
         }}
       >
         {/* Header Section */}
-        <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", borderBottom: "1px solid var(--cyber-border)", paddingBottom: "2rem" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "1.5rem",
+            borderBottom: "1px solid var(--cyber-border)",
+            paddingBottom: "2rem",
+          }}
+        >
           <div
             style={{
               width: "100px",
@@ -294,53 +321,145 @@ export default function ProfilePage() {
             <UserCircle size={60} color="var(--cyber-blue)" />
           </div>
           <div>
-            <h1 className="glitch-yellow" style={{ fontSize: "2.2rem", margin: "0 0 0.5rem 0", color: "var(--text-main)" }}>
+            <h1
+              className="glitch-yellow"
+              style={{
+                fontSize: "2.2rem",
+                margin: "0 0 0.5rem 0",
+                color: "var(--text-main)",
+              }}
+            >
               {user.name}
             </h1>
             <div className="ready-label">
               <CheckCircle size={16} color="var(--cyber-green)" />
-              <span className="status-active">Online</span>
+              <span className="status-active">
+                {t("profile.online" as any)}
+              </span>
             </div>
           </div>
         </div>
 
         {/* Info Section */}
         <div>
-          <h3 style={{ color: "var(--text-muted)", fontFamily: "var(--font-mono)", fontSize: "0.9rem", letterSpacing: "0.1em", marginBottom: "1rem" }}>
-            User Information
+          <h3
+            style={{
+              color: "var(--text-muted)",
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.9rem",
+              letterSpacing: "0.1em",
+              marginBottom: "1rem",
+            }}
+          >
+            {t("profile.info" as any)}
           </h3>
-          
+
           <div className="info-row">
-            <Shield size={24} color="var(--cyber-purple)" style={{ opacity: 0.8 }} />
+            <Shield
+              size={24}
+              color="var(--cyber-purple)"
+              style={{ opacity: 0.8 }}
+            />
             <div style={{ flex: 1 }}>
-              <div style={{ fontSize: "0.8rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>Username / Nickname</div>
-              <div style={{ fontSize: "1.1rem", fontWeight: 600, color: "var(--text-main)" }}>{user.name}</div>
+              <div
+                style={{
+                  fontSize: "0.8rem",
+                  color: "var(--text-muted)",
+                  fontFamily: "var(--font-mono)",
+                }}
+              >
+                {t("profile.username" as any)}
+              </div>
+              <div
+                style={{
+                  fontSize: "1.1rem",
+                  fontWeight: 600,
+                  color: "var(--text-main)",
+                }}
+              >
+                {user.name}
+              </div>
             </div>
           </div>
 
           <div className="info-row">
-            <Mail size={24} color="var(--cyber-blue)" style={{ opacity: 0.8 }} />
+            <Mail
+              size={24}
+              color="var(--cyber-blue)"
+              style={{ opacity: 0.8 }}
+            />
             <div style={{ flex: 1 }}>
-              <div style={{ fontSize: "0.8rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>Email Address</div>
-              <div style={{ fontSize: "1.1rem", fontWeight: 600, color: "var(--text-main)" }}>{user.email}</div>
+              <div
+                style={{
+                  fontSize: "0.8rem",
+                  color: "var(--text-muted)",
+                  fontFamily: "var(--font-mono)",
+                }}
+              >
+                {t("profile.email" as any)}
+              </div>
+              <div
+                style={{
+                  fontSize: "1.1rem",
+                  fontWeight: 600,
+                  color: "var(--text-main)",
+                }}
+              >
+                {user.email}
+              </div>
             </div>
           </div>
-          
-          {user.age && (
-            <div className="info-row">
-              <UserCircle size={24} color="var(--cyber-yellow)" style={{ opacity: 0.8 }} />
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: "0.8rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>Tuổi</div>
-                <div style={{ fontSize: "1.1rem", fontWeight: 600, color: "var(--text-main)" }}>{user.age}</div>
+
+          {user.phone && (
+            <div
+              className="info-item"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "1.5rem",
+                padding: "1rem",
+                background: "rgba(0,0,0,0.3)",
+                borderRadius: "8px",
+                border: "1px solid rgba(255,255,255,0.05)",
+              }}
+            >
+              <div style={{ color: "var(--cyber-blue)" }}>
+                <Phone size={24} />
+              </div>
+              <div>
+                <p
+                  style={{
+                    color: "var(--text-muted)",
+                    fontSize: "0.8rem",
+                    textTransform: "uppercase",
+                    letterSpacing: "1px",
+                  }}
+                >
+                  {t("profile.phone" as any)}
+                </p>
+                <p
+                  style={{
+                    color: "white",
+                    fontSize: "1.1rem",
+                    fontWeight: "bold",
+                    fontFamily: "var(--font-mono)",
+                  }}
+                >
+                  {user.phone}
+                </p>
               </div>
             </div>
           )}
         </div>
 
         {/* Action Section */}
-        <button onClick={handleLogout} className="logout-btn" disabled={!!logoutMessage}>
+        <button
+          onClick={handleLogout}
+          className="logout-btn"
+          disabled={!!logoutMessage}
+        >
           <LogOut size={20} />
-          Logout
+          {t("profile.logout" as any)}
         </button>
       </div>
     </main>

@@ -1,0 +1,153 @@
+name: API Calling Service CI/CD to GCP
+
+on:
+  push:
+    branches: [ "main", "async" ]
+    paths:
+      - 'api_calling/**'
+      - '.github/workflows/api-calling-cicd.yml'
+      - 'docker-compose.yml'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'api_calling/**'
+      - '.github/workflows/api-calling-cicd.yml'
+
+env:
+  PROJECT_ID: 'touristassistant-29-03-2026'
+  REGION: 'asia-southeast1'
+  GAR_REPO: 'tourism-frontend'
+  SERVICE_NAME: 'tourism-api-calling'
+  IMAGE_NAME: 'api-calling'
+
+permissions:
+  contents: 'read'
+  id-token: 'write'
+
+jobs:
+  # ── Job 1 : Build & Validation ──────────────────────────────────────────
+  validate:
+    name: Go Build & Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.26.1'
+          cache-dependency-path: api_calling/go.sum
+
+      - name: Download dependencies
+        working-directory: ./api_calling
+        run: go mod tidy
+
+      - name: Build binary
+        working-directory: ./api_calling
+        run: go build -o api_calling ./cmd/main.go
+
+      - name: Run vet
+        working-directory: ./api_calling
+        run: go vet ./...
+
+  # ── Job 2 : Docker Compose Integration Test ──────────────────────────────
+  integration-test:
+    name: Integration Test (Docker Compose)
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create .env from defaults
+        run: |
+          cp .env.example .env || true
+          cp login/.env.example login/.env || true
+          touch rag/.env || true
+
+      - name: Start services via Docker Compose
+        run: docker compose up -d --build --wait api_calling redis pubsub
+
+      - name: Wait for API Calling Service to be ready
+        run: |
+          echo "Waiting for API Calling Service to respond on port 8083..."
+          for i in $(seq 1 30); do
+            if docker compose ps api_calling | grep -q "Up"; then
+              echo "API Calling container is running (attempt $i/30)"
+              # Try a POST to confirm readiness
+              STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
+                -H "Content-Type: application/json" \
+                -d '{"message": {"data": "e30="}}' \
+                http://localhost:8083/pubsub/push 2>&1 || true)
+              if [ "$STATUS" != "000" ]; then
+                echo "API Calling Service responded with HTTP $STATUS — it's up!"
+                exit 0
+              fi
+            fi
+            echo "  attempt $i/30 — not ready yet, retrying in 5s..."
+            sleep 5
+          done
+          echo "API Calling Service failed to start in time."
+          docker compose logs api_calling
+          exit 1
+
+      - name: Verify Redis is healthy
+        run: |
+          docker compose exec -T redis redis-cli ping | grep PONG
+          echo "Redis is healthy"
+
+      - name: Tear down
+        if: always()
+        run: docker compose down -v
+
+  # ── Job 3 : Build & Deploy ──────────────────────────────────────────────
+  deploy:
+    name: Build & Deploy to Cloud Run
+    needs: integration-test
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 1. Authenticate to GCP via WIF
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          token_format: 'access_token'
+          workload_identity_provider: '${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}'
+          service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      # 2. Configure Docker to use GCP Artifact Registry
+      - name: Configure Docker Auth
+        run: |-
+          gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
+
+      # 3. Build & Push using the API Calling Dockerfile
+      - name: Build and Push Docker Image
+        working-directory: ./api_calling
+        run: |-
+          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPO }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
+          docker build -t $DOCKER_TAG .
+          docker push $DOCKER_TAG
+
+      # 4. Deploy to Cloud Run
+      - name: Deploy to Cloud Run
+        run: |-
+          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPO }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
+          gcloud run deploy ${{ env.SERVICE_NAME }} \
+            --image $DOCKER_TAG \
+            --region ${{ env.REGION }} \
+            --allow-unauthenticated \
+            --set-env-vars="GOOGLE_CLOUD_PROJECT=${{ env.PROJECT_ID }}" \
+            --set-secrets="\
+          REDIS_ADDR=REDIS_ADDR:latest,\
+          REDIS_PASSWORD=REDIS_PASSWORD:latest,\
+          WEATHER_API_KEY=WEATHER_API_KEY:latest,\
+          LOCATION_API_KEY=LOCATION_API_KEY:latest"
