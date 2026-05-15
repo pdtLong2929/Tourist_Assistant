@@ -146,6 +146,7 @@ class SuggestRequest(BaseModel):
     exclude_weather_sensitive: bool = False
     exclude_traffic_sensitive: bool = False
 
+    # Scenario retrieval uses this as examples per chosen_mode for balanced context.
     top_k: int = 2
 
 
@@ -228,8 +229,11 @@ def suggest_transport(req: SuggestRequest):
         cache_key = None
         if redis_client:
             try:
-                # Deterministic identification formula including filters and query text
-                cache_str = f"{query_text}|k={req.top_k}|w={req.exclude_weather_sensitive}|t={req.exclude_traffic_sensitive}"
+                # Deterministic identification formula including filters, retrieval mode, and query text
+                cache_str = (
+                    f"{query_text}|retrieval=balanced|k_per_mode={req.top_k}"
+                    f"|w={req.exclude_weather_sensitive}|t={req.exclude_traffic_sensitive}"
+                )
                 query_hash = hashlib.sha256(cache_str.encode("utf-8")).hexdigest()
                 cache_key = f"rag:suggest:{query_hash}"
                 
@@ -254,6 +258,25 @@ def suggest_transport(req: SuggestRequest):
         try:
             scenario_results = conn.execute(
                 """
+                WITH ranked_scenarios AS (
+                    SELECT
+                        weather_condition,
+                        temperature,
+                        distance,
+                        traffic_condition,
+                        time_of_day,
+                        chosen_mode,
+                        reasoning,
+                        serialized_query,
+                        serialized_with_label,
+                        embedding <=> %s::vector AS similarity_distance,
+                        ROW_NUMBER() OVER (
+                            PARTITION BY chosen_mode
+                            ORDER BY embedding <=> %s::vector ASC
+                        ) AS mode_rank
+                    FROM transport_scenarios
+                    WHERE embedding IS NOT NULL
+                )
                 SELECT
                     weather_condition,
                     temperature,
@@ -264,11 +287,11 @@ def suggest_transport(req: SuggestRequest):
                     reasoning,
                     serialized_query,
                     serialized_with_label,
-                    embedding <=> %s::vector AS similarity_distance
-                FROM transport_scenarios
-                WHERE embedding IS NOT NULL
-                ORDER BY embedding <=> %s::vector ASC
-                LIMIT %s;
+                    similarity_distance,
+                    mode_rank
+                FROM ranked_scenarios
+                WHERE mode_rank <= %s
+                ORDER BY mode_rank ASC, similarity_distance ASC, chosen_mode ASC;
                 """,
                 (query_embedding, query_embedding, req.top_k),
             ).fetchall()
@@ -364,6 +387,7 @@ def suggest_transport(req: SuggestRequest):
                 "time_of_day": row[4],
                 "chosen_mode": row[5],
                 "similarity_distance": round(row[9], 4),
+                "balanced_rank": row[10],
             }
             for row in scenario_results
         ] or [
