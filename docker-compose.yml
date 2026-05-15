@@ -142,8 +142,11 @@ services:
       DATASET_PATH: /app/dataset.csv
       PYTHONUNBUFFERED: "1"
       MOCK_EMBEDDING: ${MOCK_EMBEDDING:-false}
+      REDIS_ADDR: redis:6379
     depends_on:
       postgres:
+        condition: service_healthy
+      redis:
         condition: service_healthy
     networks:
       - ta_network
@@ -163,6 +166,7 @@ services:
       LOGIN_API_URL: ${LOGIN_API_URL:-http://login:5036}
       API_SERVICE_URL: ${API_SERVICE_URL:-http://api_service:8081}
       NOTIFICATION_URL: ${NOTIFICATION_URL:-http://notification:8080}
+      API_CALLING_URL: ${API_CALLING_URL:-http://api_calling:8080}
       SSL_TOGGLE: ${SSL_TOGGLE:-on}
       HOST_HEADER: ${HOST_HEADER:-localhost}
       DNS_RESOLVER: ${DNS_RESOLVER:-127.0.0.11}
@@ -171,6 +175,7 @@ services:
       - login
       - api_service
       - notification
+      - api_calling
     networks:
       - ta_network
 

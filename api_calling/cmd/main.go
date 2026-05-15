@@ -28,11 +28,18 @@ type PubSubMessage struct {
 	Subscription string `json:"subscription"`
 }
 
+type DirectEnrichRequest struct {
+	UserID      string                  `json:"userId" binding:"required"`
+	Query       string                  `json:"query" binding:"required"`
+	JobType     string                  `json:"jobType"`
+	Destination *model.LocationResponse `json:"destination"`
+}
+
 func main() {
 	cfg := config.LoadConfig()
 
 	// 1. Khởi tạo Redis Client
-	redisAddr := os.Getenv("REDIS_ADDR")
+	redisAddr := strings.TrimSpace(os.Getenv("REDIS_ADDR"))
 	if redisAddr == "" {
 		redisAddr = "localhost:6379"
 	}
@@ -48,8 +55,12 @@ func main() {
 	} else {
 		opt = &redis.Options{
 			Addr:     redisAddr,
-			Password: os.Getenv("REDIS_PASSWORD"),
 		}
+	}
+
+	// Enforce password from Secret Manager if provided as an independent environment variable
+	if secretPwd := strings.TrimSpace(os.Getenv("REDIS_PASSWORD")); secretPwd != "" {
+		opt.Password = secretPwd
 	}
 
 	rdb := redis.NewClient(opt)
@@ -89,6 +100,47 @@ func main() {
 	v1 := r.Group("/api/v1")
 	{
 		v1.GET("/location/:name", lHandler.HandleGetLocation)
+		
+		// Directly publish enriched job payload to Pub/Sub task-enrich
+		v1.POST("/jobs/enrich", func(c *gin.Context) {
+			var req DirectEnrichRequest
+			if err := c.ShouldBindJSON(&req); err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+				return
+			}
+
+			jobID := fmt.Sprintf("job-%s", req.UserID)
+
+			// Build already-enriched payload using the passed destination data
+			enrichedPayload := model.EnrichedJobPayload{
+				JobPayload: model.JobPayload{
+					JobID:   jobID,
+					UserID:  req.UserID,
+					Query:   req.Query,
+					JobType: req.JobType,
+				},
+				LocationData: req.Destination,
+			}
+
+			enrichedBytes, _ := json.Marshal(enrichedPayload)
+
+			// Publish directly to 'task-enrich' Pub/Sub topic
+			result := enrichTopic.Publish(ctx, &pubsub.Message{
+				Data: enrichedBytes,
+			})
+
+			_, err := result.Get(ctx)
+			if err != nil {
+				log.Println("Error publishing directly to task-enrich:", err)
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to publish task"})
+				return
+			}
+
+			c.JSON(http.StatusAccepted, gin.H{
+				"message": "Direct enriched job queued successfully",
+				"jobId":   jobID,
+			})
+		})
 	}
 
 	// Added Pub/Sub Push Endpoint

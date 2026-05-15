@@ -1,6 +1,9 @@
+import hashlib
+import json
 import os
 
 import psycopg
+import redis
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from google import genai
@@ -19,9 +22,38 @@ except Exception as e:
     print(f"Warning: Failed to initialize Gemini Client: {e}")
     client = None
 
-MODEL_ID = "gemini-1.5-flash"
-EMBEDDING_MODEL_ID = "gemini-embedding-001"
+MODEL_ID = "gemini-3.1-flash-lite"
+EMBEDDING_MODEL_ID = "gemini-embedding-2"
 EMBEDDING_DIMENSIONS = 768
+
+redis_client = None
+try:
+    redis_addr = os.getenv("REDIS_ADDR", "localhost:6379")
+    redis_password = os.getenv("REDIS_PASSWORD")
+    
+    if "://" in redis_addr:
+        redis_client = redis.Redis.from_url(
+            redis_addr, 
+            password=redis_password, 
+            decode_responses=True, 
+            socket_timeout=1.0
+        )
+    else:
+        parts = redis_addr.split(":")
+        host = parts[0]
+        port = int(parts[1]) if len(parts) > 1 else 6379
+        redis_client = redis.Redis(
+            host=host, 
+            port=port, 
+            password=redis_password, 
+            decode_responses=True, 
+            socket_timeout=1.0
+        )
+    redis_client.ping()
+    print(f"RAG suggestion caching ENABLED via Redis at: {redis_addr}")
+except Exception as re:
+    print(f"Warning: Redis caching disabled/unavailable ({re}). RAG suggestion responses will NOT be cached.")
+    redis_client = None
 
 def is_mock() -> bool:
     return os.getenv("MOCK_EMBEDDING", "false").lower() == "true"
@@ -99,18 +131,22 @@ class IngestRequest(BaseModel):
 
 
 class SuggestRequest(BaseModel):
-    weather_condition: str  # e.g. "heavy rain", "clear sky", "storm"
-    temperature: str        # e.g. "32°C hot", "18°C mild"
-    distance: str           # e.g. "2 km", "15 km cross-city"
-    traffic_condition: str  # e.g. "heavy", "moderate", "light"
-    time_of_day: Optional[str] = None  # e.g. "07:00 rush hour"
+    weather_condition: Optional[str] = None  # e.g. "heavy rain", "clear sky", "storm"
+    temperature: Optional[str] = None        # e.g. "32°C hot", "18°C mild"
+    distance: Optional[str] = None           # e.g. "2 km", "15 km cross-city"
+    traffic_condition: Optional[str] = None  # e.g. "heavy", "moderate", "light"
+    time_of_day: Optional[str] = None        # e.g. "07:00 rush hour"
+
+    # Raw fallback fields to handle unstructured inputs from Go workers or legacy clients
+    query: Optional[str] = None
+    weather: Optional[str] = None
 
     # Hard filters: eliminate options that are objectively unsafe before LLM reasoning.
     # e.g. exclude_weather_sensitive=true during a storm drops bike and walk entirely.
     exclude_weather_sensitive: bool = False
     exclude_traffic_sensitive: bool = False
 
-    top_k: int = 5
+    top_k: int = 2
 
 
 @app.post("/rag/ingest")
@@ -177,12 +213,32 @@ def suggest_transport(req: SuggestRequest):
         raise HTTPException(status_code=500, detail="Gemini client not initialized")
 
     try:
-        query_text = (
-            f"Weather is {req.weather_condition} with a temperature of {req.temperature}. "
-            f"Route distance is {req.distance} and traffic is {req.traffic_condition}."
-        )
-        if req.time_of_day:
-            query_text += f" Trip starts at {req.time_of_day}."
+        if req.query:
+            query_text = req.query
+        else:
+            weather_desc = req.weather_condition or req.weather or "unknown"
+            query_text = (
+                f"Weather is {weather_desc} with a temperature of {req.temperature or 'unknown'}. "
+                f"Route distance is {req.distance or 'unknown'} and traffic is {req.traffic_condition or 'unknown'}."
+            )
+            if req.time_of_day:
+                query_text += f" Trip starts at {req.time_of_day}."
+
+        # Check Redis Cache before invoking LLM or Embedding API
+        cache_key = None
+        if redis_client:
+            try:
+                # Deterministic identification formula including filters and query text
+                cache_str = f"{query_text}|k={req.top_k}|w={req.exclude_weather_sensitive}|t={req.exclude_traffic_sensitive}"
+                query_hash = hashlib.sha256(cache_str.encode("utf-8")).hexdigest()
+                cache_key = f"rag:suggest:{query_hash}"
+                
+                cached_val = redis_client.get(cache_key)
+                if cached_val:
+                    print(f"Cache HIT [0 Tokens]: Returning suggestion for query hash {query_hash[:8]}")
+                    return json.loads(cached_val)
+            except Exception as ce:
+                print(f"Warning: Suggestion cache check encountered an error: {ce}")
 
         if is_mock():
             query_embedding = [0.1] * EMBEDDING_DIMENSIONS
@@ -239,9 +295,10 @@ def suggest_transport(req: SuggestRequest):
                         embedding <=> %s::vector AS distance
                     FROM transport_knowledge
                     {where_sql}
-                    ORDER BY distance ASC;
+                    ORDER BY distance ASC
+                    LIMIT %s;
                     """,
-                    (query_embedding,),
+                    (query_embedding, req.top_k),
                 ).fetchall()
         finally:
             conn.close()
@@ -253,54 +310,49 @@ def suggest_transport(req: SuggestRequest):
             )
 
         if scenario_results:
-            context_lines = []
-            for row in scenario_results:
-                context_lines.append(
-                    f"- Similar trip: {row[7]}\n"
-                    f"  Recommended mode: {row[5]}\n"
-                    f"  Reasoning: {row[6]}"
-                )
+            # Token Saving: Create tight, dense context blocks instead of verbose multiliners
+            context_lines = [
+                f"Q:{r[7]}|M:{r[5]}|R:{r[6]}" for r in scenario_results
+            ]
             context_str = "\n".join(context_lines)
-            prompt = f"""You are a transport planning expert for a Southeast Asian city.
-
-[Similar labeled trips retrieved from the dataset]:
+            
+            prompt = f"""[SCENARIOS]
 {context_str}
 
-[Current travel conditions]:
-{query_text}
-
-Available modes: bike, motorbike, car, transit.
-
-Task: Choose exactly one transport mode for the current conditions. Return the mode name first, then one concise sentence explaining the decision."""
+[QUERY]
+{query_text}"""
+            
+            sys_inst = "Expert SE Asia transport planner. Modes: bike, motorbike, car, walk, bus, metro. Rate all 6 for current query. Return ONLY a JSON array: [{'type': '...', 'rating': '0-100', 'explanation': 'concise sentence'}]."
         else:
-            context_lines = []
-            for row in knowledge_results:
-                context_lines.append(
-                    f"- {row[0]}: {row[1]}\n"
-                    f"  Good for: {row[2]}\n"
-                    f"  Bad for: {row[3]}\n"
-                    f"  Constraints: {row[4]}\n"
-                    f"  Weather sensitivity: {row[5]} | Traffic sensitivity: {row[6]}"
-                )
+            context_lines = [
+                f"{r[0]}: {r[1]}|Good:{r[2]}|Bad:{r[3]}|Const:{r[4]}|WSen:{r[5]}|TSen:{r[6]}"
+                for r in knowledge_results
+            ]
             context_str = "\n".join(context_lines)
-            prompt = f"""You are a practical travel assistant.
-
-[Available transport options]:
+            
+            prompt = f"""[MODES]
 {context_str}
 
-[Current travel conditions]:
-{query_text}
-
-Task: Choose exactly one transport method that best fits the current conditions. State the method name, then give a single sentence explaining why it is the best choice. Do not mention or compare the other options."""
+[QUERY]
+{query_text}"""
+            
+            sys_inst = "Practical travel assistant. Modes: bike, motorbike, car, walk, bus, metro. Rate all 6 for current conditions. Return ONLY JSON array: [{'type': '...', 'rating': '0-100', 'explanation': 'concise sentence'}]."
 
         if is_mock():
             class MockResponse:
-                text = "transit. [MOCK] This is a simulated transport recommendation."
+                text = '[{"type": "metro", "rating": "90", "explanation": "[MOCK] Metro is traffic-immune."}, {"type": "bus", "rating": "80", "explanation": "[MOCK] Bus is affordable."}]'
             llm_response = MockResponse()
         else:
+            # Token Saving: Utilize system_instruction and constrain output size to strictly prevent runaway tokens
             llm_response = client.models.generate_content(
                 model=MODEL_ID,
                 contents=prompt,
+                config=types.GenerateContentConfig(
+                    system_instruction=sys_inst,
+                    response_mime_type="application/json",
+                    max_output_tokens=512,
+                    temperature=0.1  # Higher determinism for structured format
+                )
             )
 
         retrieved = [
@@ -322,7 +374,7 @@ Task: Choose exactly one transport method that best fits the current conditions.
             for row in knowledge_results[:req.top_k]
         ]
 
-        return {
+        final_response = {
             "suggestion": llm_response.text,
             "retrieved": retrieved,
             "filters_applied": {
@@ -330,6 +382,15 @@ Task: Choose exactly one transport method that best fits the current conditions.
                 "exclude_traffic_sensitive": req.exclude_traffic_sensitive,
             },
         }
+
+        # Write completed recommendation back to Redis with a 24-hour TTL
+        if cache_key and redis_client:
+            try:
+                redis_client.setex(cache_key, 86400, json.dumps(final_response))
+            except Exception as ce:
+                print(f"Warning: Failed writing suggestion to cache: {ce}")
+
+        return final_response
 
     except HTTPException:
         raise

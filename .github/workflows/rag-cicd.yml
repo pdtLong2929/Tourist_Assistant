@@ -128,4 +128,4 @@ jobs:
             --allow-unauthenticated \
             --set-secrets="GEMINI_API_KEY=GEMINI_API_KEY:latest,POSTGRES_URL=POSTGRES_URL:latest" \
             --command="sh" \
-            --args="-c","python seed.py & uvicorn main:app --host 0.0.0.0 --port \$PORT"
+            --args="-c","python seed.py && uvicorn main:app --host 0.0.0.0 --port \$PORT"

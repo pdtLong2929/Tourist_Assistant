@@ -4,6 +4,7 @@ import os
 import re
 import time
 from pathlib import Path
+from concurrent.futures import ThreadPoolExecutor
 
 import psycopg
 from dotenv import load_dotenv
@@ -19,7 +20,7 @@ except Exception as e:
     print(f"Warning: Failed to initialize Gemini Client: {e}")
     client = None
 
-EMBEDDING_MODEL_ID = "gemini-embedding-001"
+EMBEDDING_MODEL_ID = "gemini-embedding-2"
 EMBEDDING_DIMENSIONS = 768
 DB_URL = os.getenv("DATABASE_URL") or os.getenv("POSTGRES_URL")
 EMBEDDING_DELAY_SECONDS = float(os.getenv("EMBEDDING_DELAY_SECONDS", "0.75"))
@@ -38,8 +39,8 @@ REQUIRED_COLUMNS = {
 }
 
 
-def content_hash(text: str, model: str) -> str:
-    return hashlib.sha256(f"{model}::{text}".encode("utf-8")).hexdigest()
+def content_hash(text: str) -> str:
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
 def wait_for_db(url: str, retries: int = 10, delay: float = 2.0):
@@ -95,22 +96,21 @@ def retry_delay_from_error(error: Exception, fallback: float) -> float:
     return fallback
 
 
-def generate_embeddings_batch(texts: list[str]) -> list[list[float]]:
-    if not texts:
-        return []
-    if os.getenv("MOCK_EMBEDDING", "false").lower() == "true":
-        return [[0.1] * EMBEDDING_DIMENSIONS for _ in texts]
-    delay = 5.0
+def generate_single_embedding(text: str) -> list[float]:
+    delay = 2.0
     for attempt in range(1, EMBEDDING_MAX_RETRIES + 1):
         try:
             response = client.models.embed_content(
                 model=EMBEDDING_MODEL_ID,
-                contents=texts,
+                contents=text,
                 config=types.EmbedContentConfig(output_dimensionality=EMBEDDING_DIMENSIONS),
             )
-            if EMBEDDING_DELAY_SECONDS > 0:
-                time.sleep(EMBEDDING_DELAY_SECONDS)
-            return [emb.values for emb in response.embeddings]
+            if hasattr(response, 'embeddings') and len(response.embeddings) > 0:
+                return response.embeddings[0].values
+            # Some newer variations return it directly on the base level or via value
+            if hasattr(response, 'embedding') and hasattr(response.embedding, 'values'):
+                return response.embedding.values
+            raise RuntimeError("Could not parse valid embedding values from response.")
         except Exception as e:
             err_str = str(e)
             is_retryable = (
@@ -129,18 +129,29 @@ def generate_embeddings_batch(texts: list[str]) -> list[list[float]]:
                 raise
 
             sleep_for = retry_delay_from_error(e, delay)
-            print(
-                f"Embedding API error/quota hit (attempt {attempt}/{EMBEDDING_MAX_RETRIES}): {err_str[:100]}... "
-                f"Sleeping {sleep_for:.1f}s before retry..."
-            )
             time.sleep(sleep_for)
             delay = min(delay * 2, 60.0)
+    raise RuntimeError("Embedding retry loop exited unexpectedly.")
 
-    raise RuntimeError("Embedding batch retry loop exited unexpectedly.")
+
+def generate_embeddings_batch(texts: list[str]) -> list[list[float]]:
+    if not texts:
+        return []
+    if os.getenv("MOCK_EMBEDDING", "false").lower() == "true":
+        return [[0.1] * EMBEDDING_DIMENSIONS for _ in texts]
+    
+    # Call concurrently using ThreadPoolExecutor to maximize speed and bypass SDK batch mismatches
+    with ThreadPoolExecutor(max_workers=8) as executor:
+        results = list(executor.map(generate_single_embedding, texts))
+    
+    if EMBEDDING_DELAY_SECONDS > 0:
+        time.sleep(EMBEDDING_DELAY_SECONDS)
+        
+    return results
 
 
 def generate_embedding(text: str) -> list[float]:
-    return generate_embeddings_batch([text])[0]
+    return generate_single_embedding(text)
 
 
 def ensure_schema(conn):
@@ -226,7 +237,7 @@ def seed():
         skipped = 0
         for row in rows:
             embedding_text = row["serialized_with_label"]
-            scenario_hash = content_hash(embedding_text, EMBEDDING_MODEL_ID)
+            scenario_hash = content_hash(embedding_text)
             if scenario_hash in existing_hashes:
                 skipped += 1
             else:
@@ -247,55 +258,56 @@ def seed():
             
             try:
                 embeddings = generate_embeddings_batch(chunk_texts)
+                if len(embeddings) != len(chunk):
+                    raise ValueError(
+                        f"Mismatch in embeddings generated: expected {len(chunk)}, got {len(embeddings)}"
+                    )
+
+                print(f"Writing batch {current_batch_idx}/{total_batches} to database...")
+                for ((row, scenario_hash), embedding) in zip(chunk, embeddings):
+                    conn.execute(
+                        """
+                        INSERT INTO transport_scenarios
+                            (scenario_hash, weather_condition, temperature, distance,
+                             traffic_condition, time_of_day, chosen_mode, reasoning,
+                             serialized_query, serialized_with_label, embedding,
+                             embedding_model, updated_at)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())
+                        ON CONFLICT (scenario_hash) DO UPDATE SET
+                            weather_condition     = EXCLUDED.weather_condition,
+                            temperature           = EXCLUDED.temperature,
+                            distance              = EXCLUDED.distance,
+                            traffic_condition     = EXCLUDED.traffic_condition,
+                            time_of_day           = EXCLUDED.time_of_day,
+                            chosen_mode           = EXCLUDED.chosen_mode,
+                            reasoning             = EXCLUDED.reasoning,
+                            serialized_query      = EXCLUDED.serialized_query,
+                            serialized_with_label = EXCLUDED.serialized_with_label,
+                            embedding             = EXCLUDED.embedding,
+                            embedding_model       = EXCLUDED.embedding_model,
+                            updated_at            = NOW();
+                        """,
+                        (
+                            scenario_hash,
+                            row["weather_condition"],
+                            row["temperature"],
+                            row["distance"],
+                            row["traffic_condition"],
+                            row["time_of_day"],
+                            row["chosen_mode"],
+                            row["reasoning"],
+                            row["serialized_query"],
+                            row["serialized_with_label"],
+                            embedding,
+                            EMBEDDING_MODEL_ID,
+                        ),
+                    )
+                    inserted += 1
             except Exception as e:
-                print(f"Failed to generate embeddings for batch {current_batch_idx}: {e}")
-                raise
-
-            if len(embeddings) != len(chunk):
-                raise ValueError(
-                    f"Mismatch in embeddings generated: expected {len(chunk)}, got {len(embeddings)}"
+                print(
+                    f"CRITICAL WARNING: Failed to process batch {current_batch_idx}. "
+                    f"Skipping these {len(chunk)} rows to prevent container crash-loops! Error: {e}"
                 )
-
-            print(f"Writing batch {current_batch_idx}/{total_batches} to database...")
-            for ((row, scenario_hash), embedding) in zip(chunk, embeddings):
-                conn.execute(
-                    """
-                    INSERT INTO transport_scenarios
-                        (scenario_hash, weather_condition, temperature, distance,
-                         traffic_condition, time_of_day, chosen_mode, reasoning,
-                         serialized_query, serialized_with_label, embedding,
-                         embedding_model, updated_at)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())
-                    ON CONFLICT (scenario_hash) DO UPDATE SET
-                        weather_condition     = EXCLUDED.weather_condition,
-                        temperature           = EXCLUDED.temperature,
-                        distance              = EXCLUDED.distance,
-                        traffic_condition     = EXCLUDED.traffic_condition,
-                        time_of_day           = EXCLUDED.time_of_day,
-                        chosen_mode           = EXCLUDED.chosen_mode,
-                        reasoning             = EXCLUDED.reasoning,
-                        serialized_query      = EXCLUDED.serialized_query,
-                        serialized_with_label = EXCLUDED.serialized_with_label,
-                        embedding             = EXCLUDED.embedding,
-                        embedding_model       = EXCLUDED.embedding_model,
-                        updated_at            = NOW();
-                    """,
-                    (
-                        scenario_hash,
-                        row["weather_condition"],
-                        row["temperature"],
-                        row["distance"],
-                        row["traffic_condition"],
-                        row["time_of_day"],
-                        row["chosen_mode"],
-                        row["reasoning"],
-                        row["serialized_query"],
-                        row["serialized_with_label"],
-                        embedding,
-                        EMBEDDING_MODEL_ID,
-                    ),
-                )
-                inserted += 1
 
         print(f"Seeding complete. Inserted {inserted}, skipped {skipped}.")
     finally:
