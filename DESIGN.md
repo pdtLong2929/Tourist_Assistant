@@ -1,327 +1,295 @@
-# Vietnam Tourism Recommendation System - Design Document
+# Smart Travel App Repository Design
 
-## Overview
+## Purpose
 
-This repository contains the backend infrastructure for a tourism recommendation system focused on Vietnam, particularly Ho Chi Minh City and Hanoi. The system provides personalized trip planning, destination recommendations, and multi-modal transportation options including public transit (GTFS), ride hailing, and other services.
+This repository documents and prototypes the data layer for a smart travelling
+application focused on Vietnam, especially Ho Chi Minh City and Hanoi. The branch
+is primarily a database documentation branch: it contains the PostgreSQL schema,
+seed data, ETL scripts, generated data artifacts, and a standalone RAG service
+for transportation recommendation.
 
-### Key Features
+The system is designed to support these product capabilities:
 
-- **User Management**: Authentication with local and OAuth providers
-- **Trip Planning**: Create and manage multi-destination trips with transportation routing
-- **Destination Discovery**: POI database with reviews and aspect-based recommendations
-- **Transportation Integration**: GTFS data for public transit, ride hailing APIs, and custom providers
-- **Recommendation Engine**: Aspect-based scoring using review text analysis (triples)
-- **Real-time Routing**: Route options with cost, duration, and scoring factors
+- Destination discovery from scraped POI and review data.
+- User preference storage for personalized recommendations.
+- Public transport lookup through GTFS feeds.
+- Ride-hailing and rental option discovery.
+- Trip planning with route requests, route options, and scoring.
+- RAG-assisted transportation advice using weather, traffic, distance, and time
+  context.
 
-## Architecture
+## Repository Map
 
-### High-Level Architecture
+| Path | Role |
+| --- | --- |
+| `schema.sql` | PostgreSQL dump defining the main `trip_db` schema. |
+| `data.sql` | Seed snapshot for destinations, transport modes, providers, and feed metadata. |
+| `DATA_MODEL_ETL_REPORT.md` | Existing summary of data model and ETL design. |
+| `mvp_with_tech.md` | English MVP writeup for the database-backed smart travel app. |
+| `mvp_with_tech_vn.md` | Vietnamese MVP writeup. |
+| `rag/` | FastAPI RAG service for transportation recommendations. |
+| `public transport/vietnam-gtfs/` | Python scraper/builder/loader for OSM-derived GTFS bus data. |
+| `vn-train-metro-scraper/` | Python scraper/builder for OSM-derived metro and urban rail GTFS data. |
+| `public transport/referenced datasets/` | Example/reference GTFS datasets and routing artifacts. |
+| `destinations & reviews/` | Destination/review scraping references and loaders for triples/preferences. |
+| `renting service/` | CSV datasets for rental shops, vehicles, inventory, and flat recommendations. |
+| `ride hailing/` | JSON fare/service metadata and Grab farefeed reference notes. |
 
-```
-[External Data Sources]
-    ↓
-[Scrapers & Loaders] → [PostgreSQL Database] ← [Recommendation Service]
-    ↓
-[API Layer] → [Frontend/Client Apps]
-```
+Generated caches such as `__pycache__/` and generated GTFS output directories
+are implementation artifacts, not design sources.
 
-### Components
+## Logical Architecture
 
-#### 1. Database Layer
-- **Technology**: PostgreSQL with pgvector extension
-- **Schema**: trip_db schema with core tables and GTFS tables
-- **Key Tables**:
-  - User management: `users`, `user_preferences`
-  - Content: `destinations`, `reviews`, `destination_triples`, `destination_aspects`
-  - Trip planning: `trips`, `trip_destinations`
-  - Routing: `route_requests`, `route_options`, `trip_scores`
-  - Transportation: `transport_modes`, `transport_providers`, `gtfs_*` tables
-
-#### 2. Data Ingestion Layer
-- **GTFS Loader** (`gtfs_loader.py`): Imports GTFS feeds for public transit data
-- **Triples Loader** (`triples_loader.py`): Loads aspect-based triples from review analysis
-- **Scrapers**:
-  - Google Maps scraper (external repo)
-  - Google Reviews scraper (external repo)
-  - Overpass API scraper for OSM data
-  - Ride hailing API integrations
-
-#### 3. Core Services
-- **Recommendation Service**: Uses destination triples for aspect-based matching
-- **Routing Service**: Combines GTFS, ride hailing, and other transport modes
-- **Scoring Service**: Applies weather, traffic, cost, and comfort factors
-
-#### 4. API Layer
-- RESTful APIs for trip management, routing, and recommendations
-- Authentication endpoints
-- Data export/import endpoints
-
-## Database Schema
-
-### Core Entities
-
-#### Users & Preferences
-```sql
-
-users (
-    id SERIAL PRIMARY KEY,
-
-    name VARCHAR(255) NOT NULL,
-
-    email VARCHAR(255) NOT NULL UNIQUE,
-
-    password VARCHAR(255),
-
-    "googleId" VARCHAR(255) UNIQUE,
-
-    "resetPasswordToken" VARCHAR(255),
-
-    "resetPasswordExpires" TIMESTAMP,
-
-    "refreshToken" TEXT,
-
-    "createdAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    "updatedAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-)
-
-user_preferences (
-    user_id char(10) PRIMARY KEY REFERENCES users,
-    preferred_transport_modes jsonb,
-    preferred_destination_tags jsonb,
-    preferred_food_tags jsonb,
-    avoid_tags jsonb,
-    budget_min numeric(12,2),
-    budget_max numeric(12,2)
-)
+```text
+External / Generated Sources
+  |
+  | Google Maps destination data
+  | Google review data
+  | OpenStreetMap / Overpass transit data
+  | Rental CSV datasets
+  | Ride-hailing service metadata
+  | RAG scenario dataset
+  v
+ETL and Loaders
+  |
+  | schema.sql / data.sql
+  | gtfs_loader.py
+  | triples_loader.py
+  | importnewusrpref.py
+  | rag/seed.py
+  v
+Storage
+  |
+  | PostgreSQL trip_db schema
+  | PostgreSQL + pgvector RAG tables
+  | CSV / JSON file-backed datasets
+  | Optional Redis RAG response cache
+  v
+Application Capabilities
+  |
+  | destination discovery
+  | public transport lookup
+  | rental and ride-hailing option discovery
+  | route option persistence
+  | route scoring
+  | RAG transport recommendation
 ```
 
-#### Destinations & Reviews
-```sql
-destinations (
-    destination_id char(10) PRIMARY KEY,
-    name varchar(150),
-    category varchar(50),
-    address text,
-    latitude numeric(10,7),
-    longitude numeric(10,7),
-    rating_avg numeric(3,2),
-    is_active boolean DEFAULT true
-)
+## Main Data Store
 
-reviews (
-    user_id char(10) REFERENCES users,
-    destination_id char(10) REFERENCES destinations,
-    rating integer CHECK (rating >=1 AND rating <=5),
-    comment text,
-    PRIMARY KEY (user_id, destination_id)
-)
+The main database schema is `trip_db` in PostgreSQL. It is defined by
+`schema.sql` and organized into five domains.
+
+### Identity and Preferences
+
+| Table | Responsibility |
+| --- | --- |
+| `users` | Stores user identity, email, phone, authentication provider, and password hash. |
+| `user_preferences` | Stores JSONB preference payloads, budget range, destination tags, and avoid tags. |
+
+`user_preferences.user_id` is currently `text`, while `users.user_id` is
+`character(10)`. PostgreSQL allows the FK in the dump, but application code
+should normalize IDs before insert to avoid padding surprises.
+
+### Destinations and Reviews
+
+| Table | Responsibility |
+| --- | --- |
+| `destinations` | Stores POIs with category, address, coordinates, description, and average rating. |
+| `reviews` | Stores per-user destination ratings and comments. |
+| `destination_triples` | Stores aspect/recommendation triples as JSONB per destination. |
+
+Destination data is loaded from scraped Google Maps style data. Review-derived
+triples are loaded from `destinations & reviews/final_destination_triples.json`
+through `triples_loader.py`.
+
+### Public Transport
+
+| Table | Responsibility |
+| --- | --- |
+| `gtfs_feeds` | Registry for each imported feed. |
+| `gtfs_agency` | GTFS agency records per feed. |
+| `gtfs_routes` | Route definitions. |
+| `gtfs_stops` | Stop/station coordinates. |
+| `gtfs_trips` | Trip instances per route and service calendar. |
+| `gtfs_stop_times` | Stop sequence and arrival/departure intervals. |
+| `gtfs_calendar` | Service-day calendars. |
+
+Two helper query surfaces are provided:
+
+- `v_route_stops` flattens route, trip, stop time, and stop data into route-stop
+  rows.
+- `nearest_stops(lat, lon, feed_id, limit)` returns closest stops using a
+  spherical distance formula without requiring PostGIS.
+
+### Transport Providers and Route Planning
+
+| Table | Responsibility |
+| --- | --- |
+| `transport_modes` | Canonical mode list: bus, metro, train, ferry, walk, ride-hailing, rental modes. |
+| `transport_providers` | Provider metadata linked to a transport mode. |
+| `route_requests` | Origin/destination requests created during planning. |
+| `route_options` | Candidate options with cost, duration, distance, mode, provider, and GTFS references. |
+| `trip_scores` | Weather, traffic, cost, comfort, and overall scoring for route options. |
+
+Route options are intentionally generic so they can represent GTFS options,
+ride-hailing estimates, walking segments, or rentals.
+
+### Trips
+
+| Table | Responsibility |
+| --- | --- |
+| `trips` | User trip shell with origin, time window, budget, and status. |
+| `trip_destinations` | Ordered destination visits inside a trip. |
+
+Trip statuses are constrained to `DRAFT`, `PLANNED`, `COMPLETED`, or
+`CANCELLED`.
+
+
+## File-Backed Data Domains
+
+### Rental Service
+
+The `renting service/` folder stores rental data as CSV:
+
+| File | Rows excluding header | Purpose |
+| --- | ---: | --- |
+| `rental_shops.csv` | 12 | Shop identity, city, district, coordinates, tier, and supported vehicle types. |
+| `vehicles_cars.csv` | 1,768 | Car catalog. |
+| `vehicles_motorbikes.csv` | 38,772 | Motorbike catalog. |
+| `shop_inventory.csv` | 18,133 | Vehicle-shop availability and daily rental price. |
+| `rental_recommendations_flat.csv` | 18,133 | Denormalized recommendation-ready join. |
+
+This data is not normalized into `trip_db` in the current branch. The intended
+MVP boundary is to serve or query the flat CSV directly, then promote it to
+relational tables only if transactional inventory management becomes necessary.
+
+### Ride-Hailing
+
+The `ride hailing/` folder contains:
+
+- `services.json`: 28 active service definitions with provider, city, vehicle
+  category, base fare, base distance, and per-kilometer fare.
+- `promo_codes.json`: 20 promotional code definitions.
+- `reference.md`: notes for Grab's farefeed estimate API shape.
+
+The main schema also has `transport_providers`, so the JSON files act as service
+catalog inputs for a future ride-hailing estimator or provider API adapter.
+
+## ETL Design
+
+### Destination and Review ETL
+
+```text
+Google Maps / review scraping
+  -> normalized destination records in data.sql
+  -> review/aspect processing
+  -> final_destination_triples.json
+  -> triples_loader.py
+  -> trip_db.destination_triples
 ```
 
-#### Trip Planning
-```sql
-trips (
-    trip_id char(10) PRIMARY KEY,
-    user_id char(10) REFERENCES users,
-    title varchar(150),
-    origin_name varchar(150),
-    origin_latitude numeric(10,7),
-    origin_longitude numeric(10,7),
-    start_time timestamptz,
-    end_time timestamptz,
-    total_estimated_budget numeric(12,2),
-    status varchar(20)
-)
+Current supporting files:
 
-trip_destinations (
-    trip_id char(10) REFERENCES trips,
-    destination_id char(10) REFERENCES destinations,
-    visit_order integer,
-    arrival_time timestamptz,
-    departure_time timestamptz,
-    note text,
-    PRIMARY KEY (trip_id, destination_id)
-)
+- `destinations & reviews/where_scrape.md` records scraper sources.
+- `destinations & reviews/triples_loader.py` upserts triples in chunks.
+- `destinations & reviews/importnewusrpref.py` imports user preference JSON.
+- `destinations & reviews/updated_user_preferences.json` contains 1,000
+  preference records.
+- `destinations & reviews/final_destination_triples.json` contains 481
+  destination triple records.
+
+### GTFS ETL
+
+```text
+OpenStreetMap / Overpass
+  -> scraper route and stop extraction
+  -> GTFS builder
+  -> output/<city>/gtfs/*.txt
+  -> gtfs_loader.py
+  -> trip_db.gtfs_* tables
 ```
 
-#### Transportation & Routing
-```sql
-transport_modes (
-    mode_id char(10) PRIMARY KEY,
-    code varchar(30) UNIQUE,
-    name varchar(100),
-    is_gtfs boolean,
-    gtfs_route_type smallint
-)
+There are two related GTFS generators:
 
-transport_providers (
-    provider_id char(10) PRIMARY KEY,
-    mode_id char(10) REFERENCES transport_modes,
-    name varchar(100) UNIQUE,
-    provider_type varchar(30),
-    website_url text,
-    app_deep_link text,
-    is_active boolean
-)
+- `public transport/vietnam-gtfs/`: bus-focused GTFS generation and loader.
+- `vn-train-metro-scraper/`: metro and urban rail GTFS generation.
 
-route_requests (
-    request_id char(10) PRIMARY KEY,
-    user_id char(10) REFERENCES users,
-    trip_id char(10) REFERENCES trips,
-    origin_name varchar(150),
-    origin_latitude numeric(10,7) NOT NULL,
-    origin_longitude numeric(10,7) NOT NULL,
-    destination_name varchar(150),
-    destination_latitude numeric(10,7) NOT NULL,
-    destination_longitude numeric(10,7) NOT NULL,
-    requested_at timestamptz
-)
+Both are OSM/Overpass based. Timetable completeness depends on available source
+data or generated assumptions.
 
-route_options (
-    option_id char(10) PRIMARY KEY,
-    request_id char(10) REFERENCES route_requests,
-    mode_id char(10) REFERENCES transport_modes,
-    provider_id char(10) REFERENCES transport_providers,
-    gtfs_feed_id char(10),
-    gtfs_route_ids jsonb,
-    gtfs_stop_ids jsonb,
-    option_name varchar(150),
-    estimated_cost numeric(12,2),
-    estimated_duration_min integer,
-    distance_km numeric(10,2),
-    transfer_count integer,
-    score numeric(4,2)
-)
-```
+## Cross-Domain Design
 
-#### Recommendation Data
-```sql
-destination_triples (
-    destination_id char(10) PRIMARY KEY REFERENCES destinations,
-    triples jsonb,
-    generated_at timestamptz
-)
+The long-term route recommendation flow is:
 
-destination_aspects (
-    aspect_id serial PRIMARY KEY,
-    aspect_key varchar(50) UNIQUE,
-    display_name varchar(100),
-    popularity_rank smallint
-)
-```
+1. The user selects or enters trip origin, destination, budget, and time.
+2. The system creates a `route_requests` row.
+3. Candidate options are assembled from:
+   - GTFS public transport tables.
+   - Ride-hailing JSON/API estimates.
+   - Rental flat data.
+   - Walking or other local rules.
+4. Candidates are persisted in `route_options`.
+5. Scores are persisted in `trip_scores`.
+6. The RAG service can provide contextual recommendation language or structured
+   mode ratings using weather, traffic, distance, and time.
+7. The selected option can be attached to trip planning UI or downstream
+   itinerary generation.
 
-### GTFS Tables
-Standard GTFS schema with feed_id prefixing for multi-city support:
-- `gtfs_feeds`
-- `gtfs_agency`
-- `gtfs_calendar`
-- `gtfs_routes`
-- `gtfs_stops`
-- `gtfs_trips`
-- `gtfs_stop_times`
+## Quality and Integrity
 
-## Data Flow
+Implemented database safeguards:
 
-### Trip Planning Flow
-1. User creates trip with origin and destinations
-2. System generates route requests between consecutive points
-3. For each request, routing service queries:
-   - GTFS data for public transit options
-   - External APIs for ride hailing estimates
-   - Custom providers for rentals
-4. Scoring service applies factors (weather, traffic, cost, comfort)
-5. User selects preferred options
+- Primary keys on core entities.
+- Unique constraints on user email, user phone, transport mode code, provider
+  name, and trip visit order.
+- Foreign keys across users, trips, route requests/options, GTFS children, and
+  destinations.
+- Check constraints for rating ranges, score ranges, non-negative route values,
+  trip status, trip time ordering, and transport mode/provider enums.
+- Indexes for common lookup paths such as destination category/name, GTFS route
+  and stop lookup, route option filtering, and user/trip access.
 
-### Recommendation Flow
-1. User specifies preferences (budget, transport modes, aspects)
-2. System queries destination_triples for aspect matching
-3. Destinations ranked by triple scores and user preferences
-4. Results filtered by budget and transport feasibility
+Current gaps:
 
-## Data Ingestion
+- Some file-backed datasets have no database constraints.
+- RAG schema is created by service code rather than shared migrations.
+- `importnewusrpref.py` includes a hardcoded local database password and should
+  be converted to environment-based configuration before sharing or deployment.
+- Generated files and Python caches are present in the repository.
 
-### GTFS Data
-- **Source**: Official transit agency feeds and OSM-derived GTFS
-- **Loader**: `gtfs_loader.py` with upsert logic
-- **Cities**: Hanoi (Transerco), Ho Chi Minh City (HCMC Bus)
-- **Update Frequency**: Manual re-run on feed updates
+## Deployment View
 
-### Destination Data
-- **Source**: Google Maps scraper (external)
-- **Processing**: Review text analysis for aspect triples
-- **Loader**: `triples_loader.py`
-- **Format**: JSON with aspect-based sentiment scores
+The repository does not define one unified production deployment. It currently
+contains deployable or runnable units:
 
-### Transportation Providers
-- **Ride Hailing**: Grab API integration
-- **Rentals**: Placeholder for bike/car rental providers
-- **Public Transit**: GTFS feeds
+- PostgreSQL schema and seed scripts for the main `trip_db` database.
+- Python GTFS loaders and scrapers.
+- Python destination/review JSON loaders.
+- FastAPI RAG service with Dockerfile.
+- Go/Python scraper subprojects that are useful as data acquisition tools.
 
-## APIs & Integrations
+## Design Decisions
 
-### External APIs
-- **Grab Fare Feed**: Ride hailing estimates
-- **OpenStreetMap Overpass**: Transit infrastructure data
-- **Google Maps/Reviews**: POI and review data (via scrapers)
+- PostgreSQL is the source of truth for stable relational travel data.
+- GTFS keeps standard transit semantics instead of inventing custom route
+  tables.
+- JSONB is used where data is recommendation-oriented and schema may evolve:
+  preferences, route references, external snapshots, and destination triples.
+- Rental and ride-hailing data remain file-backed while the MVP validates query
+  behavior.
+- RAG is isolated from the main schema so model/provider experimentation does
+  not destabilize core trip data.
+- The nearest-stop utility avoids PostGIS for MVP simplicity, accepting lower
+  geospatial precision and fewer spatial indexing features.
 
-### Internal APIs
-- Trip CRUD operations
-- Route calculation
-- Recommendation queries
-- User management
+## Open Issues
 
-## Deployment & Operations
-
-### Environment Setup
-- Python 3.8+ for loaders and scrapers
-- PostgreSQL 13+ with pgvector
-- Virtual environment recommended
-
-### Data Loading
-```bash
-# Load GTFS data
-python gtfs_loader.py --feed-id FEED000001 --gtfs-dir ./hanoi_gtfs --city "Hanoi" --dsn "postgresql://..."
-
-# Load destination triples
-python triples_loader.py --file ./final_destination_triples.json --dsn "postgresql://..."
-```
-
-### Monitoring
-- Database performance on complex queries
-- External API rate limits
-- GTFS feed freshness
-- Triple generation recency
-
-## Future Enhancements
-
-### Short Term
-- Real-time GTFS-RT integration
-- Enhanced scoring with ML models
-- Mobile app deep linking
-
-### Long Term
-- Multi-city expansion
-- Advanced recommendation algorithms
-- Real-time traffic integration
-- Social features (trip sharing, reviews)
-
-## Development Guidelines
-
-### Code Organization
-- Loaders in root directory
-- Scrapers in dedicated subfolders
-- Database schema in `schema.sql`
-- Mock data in `data.sql`
-
-### Data Quality
-- Referential integrity enforced
-- JSONB for flexible preferences
-- GIN indexes on searchable fields
-- Validation triggers for data consistency
-
-### Security
-- Password hashing for local auth
-- API key management for external services
-- Input validation on all endpoints
-- Audit logging for sensitive operations</content>
-<parameter name="filePath">/home/baothieu1661/Documents/DB_Docs/DESIGN.md
+- Decide whether rental and ride-hailing catalogs should be normalized into
+  `trip_db`.
+- Reconcile RAG output modes (`walk`, `bus`, `metro`) with the current scenario
+  dataset labels (`bike`, `motorbike`, `car`, `transit`).
+- Replace service-created RAG tables with versioned migrations.
+- Move local credentials out of scripts.
+- Add repository-level setup scripts and CI checks.
+- Add validation for generated GTFS quality and route completeness before load.
