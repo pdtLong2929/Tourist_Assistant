@@ -32,5 +32,9 @@ Thumbs.db
 # Project-specific temporary files
 *.txt
 
+# Python cache
+__pycache__/
+*.py[cod]
+
 # Agents
 /.agents
