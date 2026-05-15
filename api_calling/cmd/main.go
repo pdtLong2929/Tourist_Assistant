@@ -39,7 +39,7 @@ func main() {
 	cfg := config.LoadConfig()
 
 	// 1. Khởi tạo Redis Client
-	redisAddr := os.Getenv("REDIS_ADDR")
+	redisAddr := strings.TrimSpace(os.Getenv("REDIS_ADDR"))
 	if redisAddr == "" {
 		redisAddr = "localhost:6379"
 	}
@@ -59,7 +59,7 @@ func main() {
 	}
 
 	// Enforce password from Secret Manager if provided as an independent environment variable
-	if secretPwd := os.Getenv("REDIS_PASSWORD"); secretPwd != "" {
+	if secretPwd := strings.TrimSpace(os.Getenv("REDIS_PASSWORD")); secretPwd != "" {
 		opt.Password = secretPwd
 	}
 

@@ -60,35 +60,60 @@ export default function RentingSuggestion() {
 
   useEffect(() => {
     if (!userId) return;
-    const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || "http://localhost";
-    const wsUrl = nginxUrl.replace(/^http/, "ws") + `/ws?userId=${userId}`;
-    const ws = new WebSocket(wsUrl);
+    let ws: WebSocket | null = null;
+    let reconnectTimeout: NodeJS.Timeout;
 
-    ws.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data);
-        console.log("WebSocket Received:", data);
-        if (data.result) {
-          let parsed = [];
-          try {
-            parsed = JSON.parse(data.result);
-          } catch (pe) {
-            console.error("Could not parse result json from LLM", pe);
+    const connectWS = () => {
+      const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || "http://localhost";
+      const wsUrl = nginxUrl.replace(/^http/, "ws") + `/ws?userId=${userId}`;
+      console.log("Connecting WebSocket for user:", userId);
+      ws = new WebSocket(wsUrl);
+
+      ws.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          console.log("WebSocket Received:", data);
+          if (data.result) {
+            let parsed = [];
+            try {
+              parsed = JSON.parse(data.result);
+            } catch (pe) {
+              console.error("Could not parse result json from LLM", pe);
+            }
+            if (Array.isArray(parsed)) {
+              parsed.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+              setResult(parsed);
+            } else {
+              setResult([]);
+            }
+            setLoading(false);
           }
-          if (Array.isArray(parsed)) {
-            parsed.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-            setResult(parsed);
-          } else {
-            setResult([]);
-          }
-          setLoading(false);
+        } catch (e) {
+          console.error("Error parsing WS message:", e);
         }
-      } catch (e) {
-        console.error("Error parsing WS message:", e);
-      }
+      };
+
+      ws.onclose = (event) => {
+        console.log("WebSocket closed, attempting reconnect in 3s... Code:", event.code);
+        reconnectTimeout = setTimeout(() => {
+          connectWS();
+        }, 3000);
+      };
+
+      ws.onerror = () => {
+        ws?.close();
+      };
     };
 
-    return () => ws.close();
+    connectWS();
+
+    return () => {
+      if (ws) {
+        ws.onclose = null;
+        ws.close();
+      }
+      clearTimeout(reconnectTimeout);
+    };
   }, [userId]);
 
   useEffect(() => {
