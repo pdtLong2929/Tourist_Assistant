@@ -19,7 +19,7 @@ router.post('/preferences', verifyToken, updatePreferences);
 router.get('/me', verifyToken, async (req, res) => {
   try {
     const user = await User.findByPk(req.user.userId, {
-      attributes: ['id', 'email', 'name', 'hidePreferencesForm', 'createdAt'] 
+      attributes: ['id', 'email', 'name', 'hidePreferencesForm', 'preferencesData', 'createdAt'] 
     });
     
     if (!user) {
