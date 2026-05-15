@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from app.schemas.efm_schemas import PredictionRequest, RecommendRequest
-from app.services.efm_logic import calculate_cold_start_score, state, generate_ai_explanation, get_user_interests, get_destination_features, validate_location_in_city
+from app.services.efm_logic import calculate_cold_start_score, get_user_context, state, generate_ai_explanation, get_user_interests, get_destination_features, validate_location_in_city
 router = APIRouter()
 
 @router.post("/api/predict")
@@ -10,7 +10,7 @@ def predict(req: PredictionRequest):
     """
     results = []
     # Get internal user index from ID mapping
-    user_interests = get_user_interests(req.user_id)
+    user_interests = get_user_context(req.user_id)
     u_idx = state["uid_map"].get(req.user_id, None)
     
     
