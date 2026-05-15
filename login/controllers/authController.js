@@ -50,7 +50,11 @@ exports.register = async (req, res) => {
       path: '/api/auth/refresh'
     });
 
-    res.status(201).json({ accessToken, message: 'User registered successfully' });
+    res.status(201).json({ 
+      accessToken, 
+      message: 'User registered successfully',
+      user: { id: user.id, name: user.name, email: user.email, hidePreferencesForm: user.hidePreferencesForm }
+    });
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
@@ -99,7 +103,7 @@ exports.login = async (req, res) => {
 
     res.json({ 
       accessToken,
-      user: { id: user.id, name: user.name, email: user.email }
+      user: { id: user.id, name: user.name, email: user.email, hidePreferencesForm: user.hidePreferencesForm }
     });
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
@@ -151,7 +155,7 @@ exports.googleLogin = async (req, res) => {
 
     res.json({
       accessToken,
-      user: { id: user.id, name: user.name, email: user.email }
+      user: { id: user.id, name: user.name, email: user.email, hidePreferencesForm: user.hidePreferencesForm }
     });
 
   } catch (error) {
@@ -299,5 +303,29 @@ exports.resetPassword = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error when resetting password' });
+  }
+};
+
+exports.updatePreferences = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const preferencesPayload = req.body;
+
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    user.hidePreferencesForm = true;
+    user.preferencesData = preferencesPayload;
+    await user.save();
+
+    res.status(200).json({ 
+      message: 'Preferences updated successfully', 
+      hidePreferencesForm: true 
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error when updating preferences' });
   }
 };

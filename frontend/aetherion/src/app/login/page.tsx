@@ -148,10 +148,7 @@ function LoginPage() {
         );
 
         setTimeout(() => {
-          const userId = data.user?.id || "guest";
-          if (
-            localStorage.getItem("hidePreferencesForm_" + userId) === "true"
-          ) {
+          if (data.user?.hidePreferencesForm) {
             router.push("/");
           } else {
             router.push("/preferences");
@@ -246,8 +243,7 @@ function LoginPage() {
         setSuccessMessage("Google Authentication Successful. Welcome!");
 
         setTimeout(() => {
-          const userId = data.user?.id || "guest";
-          if (localStorage.getItem("hidePreferencesForm_" + userId) === "true") {
+          if (data.user?.hidePreferencesForm) {
             router.push("/");
           } else {
             router.push("/preferences");
