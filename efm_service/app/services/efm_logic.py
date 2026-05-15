@@ -1,6 +1,7 @@
 import os
 import pickle
 import glob
+import random
 import cornac
 import numpy as np
 from app.schemas.efm_schemas import CityRegion
@@ -68,18 +69,19 @@ def get_user_context(user_id: str):
     # --- TRƯỜNG HỢP NEW USER (Lấy từ Database) ---
     if u_idx is None:
         # Giả lập lệnh SELECT trả về JSON
-        db_tags_json = {
-            "tokyo": 0.5358,
-            "street": 0.4606,
-            "shop": 0.3612,
-            "layout": 0.3579,
-            "area": 0.3257
-        }
-        
+        personalities = [
+        {"park": 0.9, "nature": 0.8, "quiet": 0.7, "view": 0.6},
+        {"food": 0.9, "restaurant": 0.8, "street food": 0.7, "local taste": 0.6},
+        {"shop": 0.9, "mall": 0.8, "souvenir": 0.7, "fashion": 0.6},
+        {"history": 0.9, "culture": 0.8, "architecture": 0.7, "museum": 0.6},
+        {"nightlife": 0.9, "bar": 0.8, "vibrant": 0.7, "music": 0.6} ]
+
+        db_tags = random.choice(personalities)
+        db_tags["service"] = 0.5
+        db_tags["atmosphere"] = 0.5
         # CHUẨN HÓA: Trả về một List of Tuples: [(tag, weight), (tag, weight)]
-        sorted_tags = sorted(db_tags_json.items(), key=lambda x: x[1], reverse=True)
-        return sorted_tags[:5] # Lấy Top 5
-        
+        sorted_tags = sorted(db_tags.items(), key=lambda x: x[1], reverse=True)
+        return sorted_tags        
     # --- TRƯỜNG HỢP USER CŨ (Lấy từ EFM) ---
     else:
         # get_user_interests hiện tại trả về List of Strings: ["food", "price"]
