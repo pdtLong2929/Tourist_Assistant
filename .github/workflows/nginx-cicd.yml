@@ -13,10 +13,6 @@ on:
     paths:
       - 'nginx/**'
       - '.github/workflows/nginx-cicd.yml'
-  workflow_run:
-    workflows: ["Login API CI/CD to GCP", "API Calling Service CI/CD to GCP"]
-    types:
-      - completed
 
 env:
   PROJECT_ID: 'touristassistant-29-03-2026'
