@@ -25,19 +25,6 @@ export default function LoginPageWrapper() {
 }
 
 function LoginPage() {
-  import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-
-  export default function LoginPageWrapper() {
-    const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "";
-
-    return (
-      <GoogleOAuthProvider clientId={googleClientId}>
-        <LoginPage />
-      </GoogleOAuthProvider>
-    );
-  }
-
-  function LoginPage() {
     const { t } = useLanguage();
     const [mounted, setMounted] = useState(false);
     const [isSignUp, setIsSignUp] = useState(false);
@@ -273,8 +260,6 @@ function LoginPage() {
       }
     };
 
-    if (!mounted) return null;
-
     const SocialButtons = () => (
       <div style={{ marginTop: "2rem", width: "100%" }}>
         <div
@@ -322,22 +307,11 @@ function LoginPage() {
             size="large"
             width="340"
           />
-          <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
-            <GoogleLogin
-              onSuccess={handleGoogleLoginSuccess}
-              onError={() => {
-                setErrorMessage("Google Login Failed");
-              }}
-              theme="filled_black"
-              shape="pill"
-              size="large"
-              width="340"
-            />
-          </div>
         </div>
-        );
+      </div>
+    );
 
-        if (!mounted) return null;
+    if (!mounted) return null;
 
         return (
         <main
