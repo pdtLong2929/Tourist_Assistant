@@ -16,7 +16,7 @@ export function DataRing({ score, label }: { score: number, label: string }) {
         width={radius * 2}
        >
         <circle
-          stroke="rgba(255,255,255,0.1)"
+          stroke="var(--cyber-border)"
           fill="transparent"
           strokeWidth={stroke}
           r={normalizedRadius}
@@ -38,7 +38,7 @@ export function DataRing({ score, label }: { score: number, label: string }) {
           y="50%" 
           textAnchor="middle" 
           dy=".3em" 
-          fill="#fff" 
+          fill="var(--text-main)" 
           fontSize="3rem"
           fontFamily="var(--font-outfit)"
         >

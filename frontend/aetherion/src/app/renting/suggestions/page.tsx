@@ -17,10 +17,12 @@ import {
   Gauge,
   Loader2,
 } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 const aiIcons = [Cpu, Network, BrainCircuit, Database, Fingerprint, Sparkles];
 
 export default function RentingSuggestion() {
+  const { t, language } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any[] | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -29,12 +31,37 @@ export default function RentingSuggestion() {
   const [startPos, setStartPos] = useState("");
   const [endPos, setEndPos] = useState("");
   const [matchProgress, setMatchProgress] = useState(0);
-  const [userId] = useState(() => typeof window !== 'undefined' ? `user_${Math.random().toString(36).substring(7)}` : '');
+  const [statusIndex, setStatusIndex] = useState(0);
+
+  const statusMessages =
+    language === "vi"
+      ? [
+          "ĐANG KHỞI TẠO LIÊN KẾT THẦN KINH...",
+          "TRUY CẬP CƠ SỞ KIẾN THỨC RAG...",
+          "TRUY XUẤT VECTƠ VẬN TẢI...",
+          "PHÂN TÍCH RÀNG BUỘC NGỮ CẢNH...",
+          "ĐANG TẠO LẬP LÝ LUẬN GEMINI...",
+          "ĐANG HOÀN TẤT GỢI Ý...",
+        ]
+      : [
+          "INITIALIZING NEURAL UPLINK...",
+          "ACCESSING RAG KNOWLEDGE BASE...",
+          "RETRIEVING TRANSPORT VECTORS...",
+          "ANALYZING CONTEXTUAL CONSTRAINTS...",
+          "GENERATING GEMINI REASONING...",
+          "FINALIZING RECOMMENDATIONS...",
+        ];
+
+  const [userId] = useState(() =>
+    typeof window !== "undefined"
+      ? `user_${Math.random().toString(36).substring(7)}`
+      : "",
+  );
 
   useEffect(() => {
     if (!userId) return;
-    const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || 'http://localhost';
-    const wsUrl = nginxUrl.replace(/^http/, 'ws') + `/ws?userId=${userId}`;
+    const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || "http://localhost";
+    const wsUrl = nginxUrl.replace(/^http/, "ws") + `/ws?userId=${userId}`;
     const ws = new WebSocket(wsUrl);
 
     ws.onmessage = (event) => {
@@ -44,11 +71,16 @@ export default function RentingSuggestion() {
         if (data.result) {
           let parsed = [];
           try {
-             parsed = JSON.parse(data.result);
+            parsed = JSON.parse(data.result);
           } catch (pe) {
-             console.error("Could not parse result json from LLM", pe);
+            console.error("Could not parse result json from LLM", pe);
           }
-          setResult(Array.isArray(parsed) ? parsed : []);
+          if (Array.isArray(parsed)) {
+            parsed.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+            setResult(parsed);
+          } else {
+            setResult([]);
+          }
           setLoading(false);
         }
       } catch (e) {
@@ -80,12 +112,21 @@ export default function RentingSuggestion() {
     setMatchProgress(0);
 
     const progressInterval = setInterval(() => {
-      setMatchProgress((prev) =>
-        prev >= 95 ? (clearInterval(progressInterval), 95) : prev + 5,
-      );
-    }, 100);
+      setMatchProgress((prev) => {
+        if (prev >= 98) {
+          clearInterval(progressInterval);
+          return 98;
+        }
+        const increment = prev < 60 ? 4 : prev < 85 ? 1 : 0.2;
+        return Math.min(prev + increment, 98);
+      });
+    }, 200);
 
-    const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || 'http://localhost';
+    const statusInterval = setInterval(() => {
+      setStatusIndex((prev) => (prev + 1) % statusMessages.length);
+    }, 1000);
+
+    const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || "http://localhost";
 
     try {
       let startLocation = null;
@@ -126,8 +167,8 @@ export default function RentingSuggestion() {
 
       // 4. Directly send both resolved location query into api_calling to publish to task-enrichment Pub/Sub
       await fetch(`${nginxUrl}/api/v1/jobs/enrich`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           userId: userId,
           query: JSON.stringify(combinedQueryPayload),
@@ -139,6 +180,7 @@ export default function RentingSuggestion() {
       console.error(e);
       setLoading(false);
       clearInterval(progressInterval);
+      clearInterval(statusInterval);
     }
   };
 
@@ -167,10 +209,27 @@ export default function RentingSuggestion() {
           100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
         }
         .btn-ready { animation: cyber-pulse 2s infinite; }
+        .btn-loading { background: var(--cyber-blue) !important; color: #000 !important; box-shadow: 0 0 30px var(--cyber-blue); }
         .btn-disabled { opacity: 0.5; cursor: not-allowed !important; filter: grayscale(100%); }
         
-        .input-group label { display: block; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 0.5rem; font-weight: bold; text-transform: uppercase; }
-        .cyber-input { width: 100%; padding: 1.2rem 1.5rem; background: rgba(15,23,42,0.8); border: 1px solid var(--cyber-border); color: var(--text-main); borderRadius: 12px; fontSize: 1rem; outline: none; transition: all 0.3s ease; }
+        @keyframes spin-custom {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        .animate-spin-custom { animation: spin-custom 1s linear infinite; }
+        
+        @keyframes progress-shimmer {
+          0% { background-position: -200% 0; }
+          100% { background-position: 200% 0; }
+        }
+        .progress-bar-fill {
+          background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green), var(--cyber-blue));
+          background-size: 200% 100%;
+          animation: progress-shimmer 2s infinite linear;
+        }
+        
+        .input-group label { display: block; font-family: var(--font-mono); font-size: 1rem; letter-spacing: 1px; color: var(--cyber-yellow); margin-bottom: 0.75rem; font-weight: bold; text-transform: uppercase; text-shadow: 0 0 10px rgba(251, 191, 36, 0.3); }
+        .cyber-input { width: 100%; padding: 1.4rem 1.6rem; background: var(--cyber-input-bg); border: 1px solid var(--cyber-border); color: var(--text-main); border-radius: 12px; font-size: 1.4rem; outline: none; transition: all 0.3s ease; }
         .cyber-input:focus { border-color: var(--cyber-blue); box-shadow: 0 0 15px rgba(52, 229, 235, 0.2); }
       `,
         }}
@@ -211,20 +270,20 @@ export default function RentingSuggestion() {
         >
           <div className="mb-6">
             <div
-              className="inline-flex items-center gap-3 mb-4"
+              className="inline-flex items-center gap-3 mb-4 ai-concierge-badge"
               style={{
                 padding: "0.75rem 2rem",
-                background: "rgba(52,229,235,0.1)",
-                border: "1px solid rgba(52,229,235,0.3)",
+                background: "var(--ai-badge-bg)",
+                border: "1px solid var(--ai-badge-border)",
                 borderRadius: "50px",
               }}
             >
-              <BrainCircuit size={28} color="var(--cyber-blue)" />
+              <BrainCircuit size={28} color="var(--ai-badge-color)" />
               <span
                 className="font-header text-xl font-bold"
-                style={{ color: "var(--cyber-blue)" }}
+                style={{ color: "var(--ai-badge-color)" }}
               >
-                AI CONCIERGE
+                {t("renting.aiConcierge" as any)}
               </span>
             </div>
           </div>
@@ -237,9 +296,9 @@ export default function RentingSuggestion() {
               lineHeight: 1.2,
             }}
           >
-            INTELLIGENT TRANSIT
+            {t("renting.titleLine1" as any)}
             <br />
-            RECOMMENDER
+            {t("renting.titleLine2" as any)}
           </h1>
 
           <p
@@ -253,7 +312,7 @@ export default function RentingSuggestion() {
               animationDelay: "0.2s",
             }}
           >
-            Neural routing network dynamically evaluating all logistics via contextual data.
+            {t("renting.subtitle" as any)}
           </p>
 
           <div
@@ -274,24 +333,25 @@ export default function RentingSuggestion() {
               },
               {
                 icon: ShieldCheck,
-                label: "GLOBAL POSITIONING",
+                label: t("renting.badge2" as any),
                 color: "var(--cyber-green)",
               },
               {
                 icon: Zap,
-                label: "REAL-TIME SYNC",
+                label: t("renting.badge3" as any),
                 color: "var(--cyber-yellow)",
               },
             ].map((item, i) => (
               <div
                 key={i}
+                className="status-chip"
                 style={{
                   display: "flex",
                   alignItems: "center",
                   gap: "8px",
                   padding: "8px 16px",
-                  background: "rgba(30,41,59,0.6)",
-                  border: `1px solid ${item.color}40`,
+                  background: "var(--cyber-card-bg)",
+                  border: `1px solid ${item.color}60`,
                   borderRadius: "8px",
                   color: "var(--text-secondary)",
                   backdropFilter: "blur(10px)",
@@ -324,59 +384,98 @@ export default function RentingSuggestion() {
                 alignItems: "center",
                 gap: "8px",
                 fontSize: "0.9rem",
-                color: 'var(--cyber-blue)'
+                color: "var(--cyber-blue)",
               }}
             >
-              <MapPin size={16} /> ROUTE CONFIGURATION SYSTEM
+              <MapPin size={16} /> {t("renting.describeJourney" as any)}
             </div>
-            
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '2rem' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr",
+                gap: "2rem",
+              }}
+            >
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+                  gap: "2rem",
+                }}
+              >
                 <div className="input-group">
-                   <label>Starting Origin</label>
-                   <div style={{ position: 'relative' }}>
-                     <MapPin size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--cyber-blue)' }}/>
-                     <input 
-                       className="cyber-input"
-                       style={{ paddingLeft: '3rem' }}
-                       placeholder="Enter start coordinates or node..."
-                       value={startPos}
-                       onChange={e => setStartPos(e.target.value)}
-                     />
-                   </div>
+                  <label>{t("renting.startOrigin" as any)}</label>
+                  <div style={{ position: "relative" }}>
+                    <MapPin
+                      size={18}
+                      style={{
+                        position: "absolute",
+                        left: "1rem",
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        color: "var(--cyber-blue)",
+                      }}
+                    />
+                    <input
+                      className="cyber-input"
+                      style={{ paddingLeft: "3rem" }}
+                      placeholder={t("renting.placeholderOrigin" as any)}
+                      value={startPos}
+                      onChange={(e) => setStartPos(e.target.value)}
+                    />
+                  </div>
                 </div>
 
                 <div className="input-group">
-                   <label>Final Destination</label>
-                   <div style={{ position: 'relative' }}>
-                     <TrendingUp size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--cyber-yellow)' }}/>
-                     <input 
-                       className="cyber-input"
-                       style={{ paddingLeft: '3rem' }}
-                       placeholder="Enter target destination..."
-                       value={endPos}
-                       onChange={e => setEndPos(e.target.value)}
-                     />
-                   </div>
+                  <label>{t("renting.finalDestination" as any)}</label>
+                  <div style={{ position: "relative" }}>
+                    <TrendingUp
+                      size={18}
+                      style={{
+                        position: "absolute",
+                        left: "1rem",
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        color: "var(--cyber-yellow)",
+                      }}
+                    />
+                    <input
+                      className="cyber-input"
+                      style={{ paddingLeft: "3rem" }}
+                      placeholder={t("renting.placeholderDestination" as any)}
+                      value={endPos}
+                      onChange={(e) => setEndPos(e.target.value)}
+                    />
+                  </div>
                 </div>
               </div>
 
               <div className="input-group">
-                 <label>Journey Narrative & Conditions</label>
-                 <div style={{ position: 'relative' }}>
-                   <Sparkles size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--cyber-green)' }}/>
-                   <input 
-                     className="cyber-input"
-                     style={{ paddingLeft: '3rem' }}
-                     placeholder="e.g. Traveling with luggage in light rain, need maximum luxury..."
-                     value={journey}
-                     onChange={e => setJourney(e.target.value)}
-                   />
-                 </div>
+                <label>{t("renting.journeyNarrative" as any)}</label>
+                <div style={{ position: "relative" }}>
+                  <Sparkles
+                    size={18}
+                    style={{
+                      position: "absolute",
+                      left: "1rem",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      color: "var(--cyber-green)",
+                    }}
+                  />
+                  <input
+                    className="cyber-input"
+                    style={{ paddingLeft: "3rem" }}
+                    placeholder={t("renting.inputPlaceholder" as any)}
+                    value={journey}
+                    onChange={(e) => setJourney(e.target.value)}
+                  />
+                </div>
               </div>
 
               <button
-                className={`cyber-button ${!journey.trim() || loading ? "btn-disabled" : "btn-ready"}`}
+                className={`cyber-button ${!journey.trim() ? "btn-disabled" : loading ? "btn-loading" : "btn-ready"}`}
                 onClick={handleSearch}
                 disabled={loading || !journey.trim()}
                 style={{
@@ -385,36 +484,140 @@ export default function RentingSuggestion() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  gap: "12px",
-                  marginTop: '1rem'
+                  gap: "15px",
+                  marginTop: "1rem",
+                  position: "relative",
+                  overflow: "hidden",
+                  minHeight: "80px",
                 }}
               >
                 {loading ? (
-                  <>
-                    <Loader2 className="animate-spin" size={20} />
-                    <span>CALCULATING ROUTES</span>
-                  </>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: "4px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "12px",
+                      }}
+                    >
+                      <Loader2
+                        className="animate-spin-custom"
+                        size={28}
+                        strokeWidth={3}
+                      />
+                      <span className="font-bold tracking-widest text-xl">
+                        {t("renting.btnProcessing" as any)}...
+                      </span>
+                    </div>
+                    <span
+                      style={{
+                        fontSize: "0.7rem",
+                        opacity: 0.8,
+                        fontFamily: "var(--font-mono)",
+                      }}
+                    >
+                      {statusMessages[statusIndex]}
+                    </span>
+                  </div>
                 ) : (
                   <>
-                    <Cpu size={22} className={journey.trim() ? "text-slate-900" : ""} />
-                    <span>GENERATE RECOMMENDATIONS</span>
+                    <Cpu
+                      size={26}
+                      className={journey.trim() ? "text-slate-900" : ""}
+                    />
+                    <span className="font-bold">
+                      {t("renting.btnAnalyze" as any)}
+                    </span>
                   </>
                 )}
               </button>
+
+              {loading && (
+                <div style={{ marginTop: "2rem" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      marginBottom: "0.75rem",
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "0.85rem",
+                    }}
+                  >
+                    <span
+                      style={{
+                        color: "var(--cyber-blue)",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      <Activity size={16} className="animate-pulse" />
+                      {t("renting.neuralProcessing" as any)}
+                    </span>
+                    <span
+                      style={{
+                        color: "var(--cyber-yellow)",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {Math.floor(matchProgress)}%
+                    </span>
+                  </div>
+                  <div
+                    style={{
+                      height: "8px",
+                      background: "var(--cyber-card-bg)",
+                      borderRadius: "4px",
+                      overflow: "hidden",
+                      border: "1px solid rgba(52,229,235,0.1)",
+                    }}
+                  >
+                    <div
+                      className="progress-bar-fill"
+                      style={{
+                        height: "100%",
+                        width: `${matchProgress}%`,
+                        transition: "width 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+                        boxShadow: "0 0 15px var(--cyber-blue)",
+                      }}
+                    />
+                  </div>
+                  <p
+                    style={{
+                      textAlign: "center",
+                      color: "var(--text-muted)",
+                      fontSize: "0.75rem",
+                      marginTop: "1rem",
+                      fontStyle: "italic",
+                    }}
+                  >
+                    {t("renting.aiNote" as any)}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
-        {/* RENDER 3 BOXES RESULT GRID */}
+        {/* RESULT SECTION */}
         {result && !loading && (
           <div
             className="reveal-text"
-            style={{ 
-              marginTop: "4rem", 
+            style={{
+              marginTop: "4rem",
               animationDelay: "0s",
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-              gap: '2.5rem'
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+              gap: "2.5rem",
             }}
           >
             {result.map((item, idx) => (
@@ -425,108 +628,143 @@ export default function RentingSuggestion() {
                   border: "1px solid var(--cyber-border)",
                   padding: "0",
                   overflow: "hidden",
-                  background: "linear-gradient(180deg, rgba(15,23,42,0.9) 0%, rgba(30,41,59,0.8) 100%)",
-                  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                  cursor: 'pointer',
-                  position: 'relative',
-                  borderTop: '3px solid var(--cyber-blue)'
+                  background: "var(--cyber-surface-glass)",
+                  transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                  cursor: "pointer",
+                  position: "relative",
+                  borderTop: "3px solid var(--cyber-blue)",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-10px)';
-                  e.currentTarget.style.boxShadow = '0 15px 40px rgba(52,229,235,0.15)';
-                  e.currentTarget.style.borderColor = 'var(--cyber-blue)';
+                  e.currentTarget.style.transform = "translateY(-10px)";
+                  e.currentTarget.style.boxShadow =
+                    "0 15px 40px rgba(52,229,235,0.15)";
+                  e.currentTarget.style.borderColor = "var(--cyber-blue)";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'none';
-                  e.currentTarget.style.borderColor = 'var(--cyber-border)';
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "none";
+                  e.currentTarget.style.borderColor = "var(--cyber-border)";
                 }}
               >
                 {/* Image Header Section */}
-                <div style={{ 
-                  height: '200px', 
-                  position: 'relative', 
-                  background: '#000',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  overflow: 'hidden'
-                }}>
-                  <div style={{ 
-                    position: 'absolute', 
-                    inset: 0, 
-                    opacity: 0.4,
-                    backgroundImage: `url(/transports/${item.type?.toLowerCase()}.png)`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    filter: 'blur(8px)'
-                  }} />
-                  <img 
-                    src={`/transports/${item.type?.toLowerCase()}.png`} 
+                <div
+                  style={{
+                    height: "200px",
+                    position: "relative",
+                    background: "#000",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    overflow: "hidden",
+                  }}
+                >
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      opacity: 0.4,
+                      backgroundImage: `url(/transports/${item.type?.toLowerCase()}.png)`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      filter: "blur(8px)",
+                    }}
+                  />
+                  <img
+                    src={`/transports/${item.type?.toLowerCase()}.png`}
                     alt={item.type}
                     style={{
                       zIndex: 2,
-                      maxHeight: '140px',
-                      objectFit: 'contain',
-                      filter: 'drop-shadow(0 0 20px rgba(52,229,235,0.4))'
+                      maxHeight: "140px",
+                      objectFit: "contain",
+                      filter: "drop-shadow(0 0 20px rgba(52,229,235,0.4))",
                     }}
                     onError={(e) => {
-                      // Fallback in case the png path is broken
-                      e.currentTarget.src = "https://via.placeholder.com/200x200/0f172a/34e5eb?text=VEHICLE";
+                      e.currentTarget.src =
+                        "https://via.placeholder.com/200x200/0f172a/34e5eb?text=VEHICLE";
                     }}
                   />
                   {/* Match Percentage Overlay */}
-                  <div style={{
-                    position: 'absolute',
-                    top: '1rem',
-                    right: '1rem',
-                    background: 'rgba(0,0,0,0.8)',
-                    padding: '0.5rem 0.8rem',
-                    borderRadius: '4px',
-                    border: '1px solid var(--cyber-green)',
-                    zIndex: 3
-                  }}>
-                    <span style={{ color: 'var(--cyber-green)', fontWeight: 'bold', fontFamily: 'var(--font-mono)' }}>
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "1rem",
+                      right: "1rem",
+                      background: "var(--cyber-surface-glass)",
+                      backdropFilter: "blur(8px)",
+                      padding: "0.5rem 0.8rem",
+                      borderRadius: "4px",
+                      border: "1px solid var(--cyber-green)",
+                      zIndex: 3,
+                    }}
+                  >
+                    <span
+                      style={{
+                        color: "var(--cyber-green)",
+                        fontWeight: "bold",
+                        fontFamily: "var(--font-mono)",
+                      }}
+                    >
                       {item.rating}%
                     </span>
                   </div>
                 </div>
 
                 {/* Content Section */}
-                <div style={{ padding: '2rem' }}>
-                  <div style={{ 
-                    textTransform: 'uppercase', 
-                    fontFamily: 'var(--font-mono)', 
-                    color: 'var(--cyber-yellow)', 
-                    fontSize: '0.8rem',
-                    letterSpacing: '2px',
-                    marginBottom: '0.5rem'
-                  }}>
+                <div style={{ padding: "2rem" }}>
+                  <div
+                    style={{
+                      textTransform: "uppercase",
+                      fontFamily: "var(--font-mono)",
+                      color: "var(--cyber-yellow)",
+                      fontSize: "0.8rem",
+                      letterSpacing: "2px",
+                      marginBottom: "0.5rem",
+                    }}
+                  >
                     TRANSIT MODULE
                   </div>
-                  <h2 style={{ 
-                    fontSize: '2rem', 
-                    color: '#fff', 
-                    fontWeight: '900', 
-                    marginBottom: '1.5rem',
-                    textTransform: 'capitalize'
-                  }}>
+                  <h2
+                    style={{
+                      fontSize: "2rem",
+                      color: "var(--text-main)",
+                      fontWeight: "900",
+                      marginBottom: "1.5rem",
+                      textTransform: "capitalize",
+                    }}
+                  >
                     {item.type}
                   </h2>
 
-                  <div style={{ 
-                    padding: '1.5rem', 
-                    background: 'rgba(0,0,0,0.3)', 
-                    borderRadius: '8px',
-                    borderLeft: '3px solid var(--cyber-blue)',
-                    minHeight: '150px'
-                  }}>
-                     <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.9rem', color: 'var(--cyber-blue)', marginBottom: '0.75rem' }}>
-                       <BrainCircuit size={16}/> AI LOGIC ANALYSIS
-                     </h3>
-                     <p style={{ color: '#cbd5e1', lineHeight: '1.6', fontSize: '0.95rem' }}>
-                       {item.explanation}
-                     </p>
+                  <div
+                    style={{
+                      padding: "1.5rem",
+                      background: "var(--cyber-card-bg)",
+                      borderRadius: "8px",
+                      borderLeft: "3px solid var(--cyber-blue)",
+                      minHeight: "150px",
+                    }}
+                  >
+                    <h3
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                        fontSize: "0.9rem",
+                        color: "var(--cyber-blue)",
+                        marginBottom: "0.75rem",
+                      }}
+                    >
+                      <BrainCircuit size={16} /> AI LOGIC ANALYSIS
+                    </h3>
+                    <p
+                      style={{
+                        color: "#cbd5e1",
+                        lineHeight: "1.6",
+                        fontSize: "0.95rem",
+                      }}
+                    >
+                      {item.explanation}
+                    </p>
                   </div>
                 </div>
               </div>

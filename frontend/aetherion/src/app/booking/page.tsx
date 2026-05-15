@@ -1,6 +1,16 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Navigation, Car, MapPin, Crosshair, Zap, Activity, Scan, Target } from "lucide-react";
+import {
+  Navigation,
+  Car,
+  MapPin,
+  Crosshair,
+  Zap,
+  Activity,
+  Scan,
+  Target,
+} from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 const MOCK_DRIVERS = [
   {
@@ -33,6 +43,7 @@ const MOCK_DRIVERS = [
 ];
 
 export default function BookingPage() {
+  const { t } = useLanguage();
   const [selectedDriver, setSelectedDriver] = useState<string | null>(null);
   const [isDispatching, setIsDispatching] = useState<boolean>(false);
   const [mounted, setMounted] = useState(false);
@@ -133,7 +144,7 @@ export default function BookingPage() {
 
             /* HUD SPECIFIC CSS */
             .hud-glass-panel {
-              background: rgba(15, 23, 42, 0.65);
+              background: var(--cyber-surface-glass-light);
               backdrop-filter: blur(24px);
               -webkit-backdrop-filter: blur(24px);
               border: 1px solid rgba(52, 229, 235, 0.3);
@@ -158,13 +169,16 @@ export default function BookingPage() {
       {/* =========================================
           MAP AREA (BACKGROUND)
           ========================================= */}
-      <main className="map-fade-in" style={{ position: "absolute", inset: 0, zIndex: 0 }}>
+      <main
+        className="map-fade-in"
+        style={{ position: "absolute", inset: 0, zIndex: 0 }}
+      >
         {/* Deep background color */}
         <div
           style={{
             position: "absolute",
             inset: 0,
-            background: "linear-gradient(180deg, #0f172a 0%, #1e293b 100%)",
+            background: "var(--bg-gradient)",
             opacity: 0.95,
           }}
         />
@@ -188,9 +202,9 @@ export default function BookingPage() {
         <div
           style={{
             position: "absolute",
-            inset: "-50%", /* Mở rộng lưới để khi cuộn/xoay không hở góc */
-            backgroundImage:
-              "linear-gradient(rgba(52, 229, 235, 0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(52, 229, 235, 0.12) 1px, transparent 1px)",
+            inset: "-50%" /* Mở rộng lưới để khi cuộn/xoay không hở góc */,
+            background:
+              "linear-gradient(var(--cyber-grid) 1px, transparent 1px), linear-gradient(90deg, var(--cyber-grid) 1px, transparent 1px)",
             backgroundSize: "80px 80px",
             animation: "grid-pan 4s linear infinite",
             transform: "perspective(1000px) rotateX(65deg) scale(1)",
@@ -202,7 +216,16 @@ export default function BookingPage() {
 
         {/* Connection Route Line (Animated SVG SVG Laser) */}
         {selectedData && (
-          <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", zIndex: 15, pointerEvents: "none" }}>
+          <svg
+            style={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              zIndex: 15,
+              pointerEvents: "none",
+            }}
+          >
             <line
               x1="65%" /* Điểm Client */
               y1="55%" /* Điểm Client */
@@ -211,10 +234,17 @@ export default function BookingPage() {
               stroke="var(--cyber-yellow)"
               strokeWidth="4"
               className="path-line"
-              style={{ filter: "drop-shadow(0 0 10px rgba(251, 191, 36, 0.8))" }}
+              style={{
+                filter: "drop-shadow(0 0 10px rgba(251, 191, 36, 0.8))",
+              }}
             />
             {/* Vòng nối tại xe */}
-            <circle cx={`${selectedData.x}%`} cy={`${selectedData.y}%`} r="6" fill="var(--cyber-yellow)" />
+            <circle
+              cx={`${selectedData.x}%`}
+              cy={`${selectedData.y}%`}
+              r="6"
+              fill="var(--cyber-yellow)"
+            />
           </svg>
         )}
 
@@ -223,25 +253,57 @@ export default function BookingPage() {
           className="marker-drop"
           style={{
             position: "absolute",
-            top: "55%", /* Tương ứng x1, y1 ở SVG Path */
-            left: "65%", /* Đặt sang phải để chừa chỗ cho HUD */
+            top: "55%" /* Tương ứng x1, y1 ở SVG Path */,
+            left: "65%" /* Đặt sang phải để chừa chỗ cho HUD */,
             width: 0,
             height: 0,
-            animationDelay: "0.8s", /* Rớt xuống chậm rãi */
+            animationDelay: "0.8s" /* Rớt xuống chậm rãi */,
             zIndex: 20,
             pointerEvents: "none",
           }}
         >
-          <div style={{ position: "absolute", left: 0, top: 0, transform: "translate(-50%, -50%)", width: "150px", height: "150px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <div
+            style={{
+              position: "absolute",
+              left: 0,
+              top: 0,
+              transform: "translate(-50%, -50%)",
+              width: "150px",
+              height: "150px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             {/* Radar Pings */}
-            <div style={{ position: "absolute", width: "100px", height: "100px", border: "2px solid var(--cyber-blue)", borderRadius: "50%", animation: "radar-ping 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) infinite" }} />
-            <div style={{ position: "absolute", width: "100px", height: "100px", border: "2px solid var(--cyber-blue)", borderRadius: "50%", animation: "radar-ping 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) infinite 1.25s" }} />
+            <div
+              style={{
+                position: "absolute",
+                width: "100px",
+                height: "100px",
+                border: "2px solid var(--cyber-blue)",
+                borderRadius: "50%",
+                animation:
+                  "radar-ping 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) infinite",
+              }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                width: "100px",
+                height: "100px",
+                border: "2px solid var(--cyber-blue)",
+                borderRadius: "50%",
+                animation:
+                  "radar-ping 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) infinite 1.25s",
+              }}
+            />
 
             <div
               style={{
                 width: 60,
                 height: 60,
-                background: "rgba(15, 23, 42, 0.9)",
+                background: "var(--cyber-input-bg)",
                 border: "3px solid var(--cyber-blue)",
                 borderRadius: "50%",
                 display: "flex",
@@ -262,7 +324,7 @@ export default function BookingPage() {
               width: "100px",
               textAlign: "center",
               padding: "4px 8px",
-              background: "rgba(15, 23, 42, 0.85)",
+              background: "var(--cyber-surface-glass)",
               border: "1px solid var(--cyber-blue)",
               color: "var(--cyber-blue)",
               fontSize: "0.75rem",
@@ -273,7 +335,7 @@ export default function BookingPage() {
               backdropFilter: "blur(4px)",
             }}
           >
-            YOU ARE HERE
+            {t("booking.youAreHere") as any}
           </div>
         </div>
 
@@ -303,7 +365,8 @@ export default function BookingPage() {
                 flexDirection: "column",
                 alignItems: "center",
                 cursor: "pointer",
-                transition: "transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+                transition:
+                  "transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
                 transform: `translate(-50%, -50%) ${selectedDriver === driver.id ? "scale(1.2)" : "scale(1)"}`,
               }}
             >
@@ -328,11 +391,13 @@ export default function BookingPage() {
                   background:
                     selectedDriver === driver.id
                       ? "var(--cyber-yellow)"
-                      : "rgba(15, 23, 42, 0.95)",
+                      : "var(--cyber-surface-glass)",
                   padding: "10px",
                   borderRadius: "50%",
                   border: `2px solid ${
-                    selectedDriver === driver.id ? "var(--cyber-yellow)" : "rgba(167, 139, 250, 0.5)"
+                    selectedDriver === driver.id
+                      ? "var(--cyber-yellow)"
+                      : "rgba(167, 139, 250, 0.5)"
                   }`,
                   boxShadow:
                     selectedDriver === driver.id
@@ -344,7 +409,11 @@ export default function BookingPage() {
               >
                 <Navigation
                   size={24}
-                  color={selectedDriver === driver.id ? "var(--cyber-black)" : "var(--cyber-purple)"}
+                  color={
+                    selectedDriver === driver.id
+                      ? "var(--cyber-black)"
+                      : "var(--cyber-purple)"
+                  }
                   fill="currentColor"
                 />
               </div>
@@ -352,17 +421,22 @@ export default function BookingPage() {
               <div
                 style={{
                   marginTop: "12px",
-                  background: "rgba(15, 23, 42, 0.9)",
+                  background: "var(--cyber-surface-glass)",
                   backdropFilter: "blur(8px)",
                   border: `1px solid ${
-                    selectedDriver === driver.id ? "var(--cyber-yellow)" : "var(--cyber-border)"
+                    selectedDriver === driver.id
+                      ? "var(--cyber-yellow)"
+                      : "var(--cyber-border)"
                   }`,
                   padding: "4px 12px",
                   borderRadius: "6px",
                   fontSize: "0.8rem",
                   fontWeight: "700",
                   fontFamily: "var(--font-mono)",
-                  color: selectedDriver === driver.id ? "var(--cyber-yellow)" : "var(--text-main)",
+                  color:
+                    selectedDriver === driver.id
+                      ? "var(--cyber-yellow)"
+                      : "var(--text-main)",
                   boxShadow: "0 0 15px rgba(0,0,0,0.5)",
                   whiteSpace: "nowrap",
                 }}
@@ -392,7 +466,14 @@ export default function BookingPage() {
           zIndex: 200,
         }}
       >
-        <div className="reveal-text delay-1" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div
+          className="reveal-text delay-1"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           <h2
             className="glitch-yellow"
             style={{
@@ -405,16 +486,24 @@ export default function BookingPage() {
             }}
           >
             <Activity size={26} color="var(--cyber-yellow)" />
-            DISPATCH CENTER
+            {t("booking.dispatchCenter") as any}
           </h2>
-          <span className="status-active" style={{ fontFamily: "var(--font-mono)", fontSize: "0.85rem" }}>
-            ● LIVE NETWORK
+          <span
+            className="status-active"
+            style={{ fontFamily: "var(--font-mono)", fontSize: "0.85rem" }}
+          >
+            ● {t("booking.liveTracking") as any}
           </span>
         </div>
 
         {/* Pick-up / Drop-off Tracking */}
-        <div className="edgerunner-card reveal-text delay-2" style={{ padding: "1.5rem", background: "rgba(30, 41, 59, 0.6)" }}>
-          <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+        <div
+          className="edgerunner-card reveal-text delay-2"
+          style={{ padding: "1.5rem", background: "var(--cyber-card-bg)" }}
+        >
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+          >
             <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
               <div
                 style={{
@@ -426,8 +515,16 @@ export default function BookingPage() {
                 }}
               />
               <div style={{ flex: 1 }}>
-                <div className="module-label" style={{ marginBottom: "2px" }}>SCANNED PICKUP</div>
-                <div style={{ fontSize: "1.05rem", fontWeight: "600", color: "var(--text-main)" }}>
+                <div className="module-label" style={{ marginBottom: "2px" }}>
+                  {t("booking.scannedPickup") as any}
+                </div>
+                <div
+                  style={{
+                    fontSize: "1.05rem",
+                    fontWeight: "600",
+                    color: "var(--text-main)",
+                  }}
+                >
                   Downtown District, Sector 4
                 </div>
               </div>
@@ -437,7 +534,8 @@ export default function BookingPage() {
               style={{
                 width: "2px",
                 height: "28px",
-                background: "linear-gradient(to bottom, var(--cyber-blue), var(--cyber-purple))",
+                background:
+                  "linear-gradient(to bottom, var(--cyber-blue), var(--cyber-purple))",
                 marginLeft: "5px",
                 opacity: 0.6,
               }}
@@ -454,12 +552,14 @@ export default function BookingPage() {
                 }}
               />
               <div style={{ flex: 1 }}>
-                <div className="module-label" style={{ marginBottom: "2px" }}>TARGET DESTINATION</div>
+                <div className="module-label" style={{ marginBottom: "2px" }}>
+                  {t("booking.targetDestination") as any}
+                </div>
                 <input
                   type="text"
-                  placeholder="Enter drop-off coords..."
+                  placeholder={t("booking.dropoffPlaceholder") as any}
                   style={{
-                    background: "rgba(15, 23, 42, 0.5)",
+                    background: "var(--cyber-input-bg)",
                     border: "1px solid var(--cyber-border)",
                     outline: "none",
                     color: "var(--text-main)",
@@ -470,17 +570,34 @@ export default function BookingPage() {
                     fontFamily: "var(--font-mono)",
                     transition: "all 0.3s ease",
                   }}
-                  onFocus={(e) => (e.target.style.borderColor = "var(--cyber-blue)")}
-                  onBlur={(e) => (e.target.style.borderColor = "var(--cyber-border)")}
+                  onFocus={(e) =>
+                    (e.target.style.borderColor = "var(--cyber-blue)")
+                  }
+                  onBlur={(e) =>
+                    (e.target.style.borderColor = "var(--cyber-border)")
+                  }
                 />
               </div>
             </div>
           </div>
         </div>
 
-        <div className="reveal-text delay-3" style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "10px" }}>
+        <div
+          className="reveal-text delay-3"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            marginTop: "10px",
+          }}
+        >
           <Scan size={18} color="var(--cyber-blue)" />
-          <h3 className="module-label" style={{ margin: 0, color: "var(--cyber-blue)" }}>AVAILABLE ASSETS IN REGION</h3>
+          <h3
+            className="module-label"
+            style={{ margin: 0, color: "var(--cyber-blue)" }}
+          >
+            {t("booking.availableAssets") as any}
+          </h3>
         </div>
 
         {/* Drivers List */}
@@ -506,8 +623,14 @@ export default function BookingPage() {
                 borderRadius: "12px",
                 position: "relative",
                 overflow: "hidden",
-                border: selectedDriver === driver.id ? "2px solid var(--cyber-yellow)" : "1px solid rgba(255, 255, 255, 0.1)",
-                background: selectedDriver === driver.id ? "var(--cyber-yellow-dim)" : "rgba(30, 41, 59, 0.6)",
+                border:
+                  selectedDriver === driver.id
+                    ? "2px solid var(--cyber-yellow)"
+                    : "1px solid var(--cyber-border)",
+                background:
+                  selectedDriver === driver.id
+                    ? "var(--cyber-yellow-dim)"
+                    : "var(--cyber-card-bg)",
               }}
             >
               <div
@@ -519,37 +642,66 @@ export default function BookingPage() {
                   zIndex: 1,
                 }}
               >
-                <div style={{ display: "flex", alignItems: "center", gap: "1.25rem" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "1.25rem",
+                  }}
+                >
                   <div
                     style={{
                       width: 52,
                       height: 52,
                       borderRadius: "12px",
-                      background: "rgba(15, 23, 42, 0.6)",
+                      background: "var(--cyber-input-bg)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       border: `1px solid ${selectedDriver === driver.id ? "var(--cyber-yellow)" : "transparent"}`,
                     }}
                   >
-                    <Car size={28} color={selectedDriver === driver.id ? "var(--cyber-yellow)" : "var(--cyber-blue)"} />
+                    <Car
+                      size={28}
+                      color={
+                        selectedDriver === driver.id
+                          ? "var(--cyber-yellow)"
+                          : "var(--cyber-blue)"
+                      }
+                    />
                   </div>
                   <div>
                     <h4
                       style={{
                         margin: 0,
                         fontSize: "1.15rem",
-                        color: selectedDriver === driver.id ? "var(--cyber-yellow)" : "var(--text-main)",
+                        color:
+                          selectedDriver === driver.id
+                            ? "var(--cyber-yellow)"
+                            : "var(--text-main)",
                         fontWeight: "700",
                         letterSpacing: "0.02em",
                       }}
                     >
                       {driver.type}
                     </h4>
-                    <div style={{ display: "flex", alignItems: "center", gap: "6px", marginTop: "4px" }}>
-                      <p className="module-label" style={{ margin: 0 }}>UNIT {driver.id}</p>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "6px",
+                        marginTop: "4px",
+                      }}
+                    >
+                      <p className="module-label" style={{ margin: 0 }}>
+                        {t("booking.unit") as any} {driver.id}
+                      </p>
                       {selectedDriver === driver.id && (
-                        <Zap size={12} color="var(--cyber-yellow)" style={{ animation: "twinkle 1s infinite" }} />
+                        <Zap
+                          size={12}
+                          color="var(--cyber-yellow)"
+                          style={{ animation: "twinkle 1s infinite" }}
+                        />
                       )}
                     </div>
                   </div>
@@ -561,12 +713,22 @@ export default function BookingPage() {
                       fontWeight: "800",
                       fontFamily: "var(--font-header)",
                       lineHeight: 1,
-                      color: selectedDriver === driver.id ? "var(--cyber-yellow)" : "var(--text-main)",
+                      color:
+                        selectedDriver === driver.id
+                          ? "var(--cyber-yellow)"
+                          : "var(--text-main)",
                     }}
                   >
                     {driver.eta}
                   </div>
-                  <div style={{ color: "var(--cyber-green)", fontWeight: "600", fontSize: "1.1rem", marginTop: "2px" }}>
+                  <div
+                    style={{
+                      color: "var(--cyber-green)",
+                      fontWeight: "600",
+                      fontSize: "1.1rem",
+                      marginTop: "2px",
+                    }}
+                  >
                     ${driver.price}
                   </div>
                 </div>
@@ -595,15 +757,15 @@ export default function BookingPage() {
             {isDispatching ? (
               <>
                 <Scan size={20} className="animate-spin" />
-                INITIATING NEURAL LINK...
+                {t("booking.initiating") as any}
               </>
             ) : selectedDriver ? (
               <>
                 <Zap size={20} />
-                CONFIRM DISPATCH FOR {selectedDriver}
+                {t("booking.confirmDispatch")} {selectedDriver}
               </>
             ) : (
-              "SELECT AN AVAILABLE ASSET"
+              (t("booking.selectAsset") as any)
             )}
           </button>
         </div>

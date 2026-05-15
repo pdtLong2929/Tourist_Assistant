@@ -2,8 +2,10 @@
 
 import CountUp from "@/components/CountUp";
 import RevealOnScroll from "@/components/RevealOnScroll";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function LandingPage() {
+  const { t } = useLanguage();
   return (
     <main
       style={{
@@ -45,7 +47,7 @@ export default function LandingPage() {
             }
 
             .hud-glass-panel {
-              background: rgba(15, 23, 42, 0.65);
+              background: var(--cyber-surface-glass-light);
               backdrop-filter: blur(24px);
               -webkit-backdrop-filter: blur(24px);
               border: 1px solid rgba(52, 229, 235, 0.3);
@@ -56,7 +58,7 @@ export default function LandingPage() {
         }}
       />
 
-      {/* BACKGROUND 3D GRID & SCANNER */}
+      {/* DYNAMIC ANIMATED BACKGROUND WITH IMAGES */}
       <div
         className="map-fade-in"
         style={{
@@ -64,15 +66,58 @@ export default function LandingPage() {
           inset: 0,
           zIndex: 0,
           pointerEvents: "none",
+          background: "var(--cyber-black)",
         }}
       >
-        {/* Sky / deep gradient */}
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+          @keyframes fadeSlide1 {
+            0%, 25%, 100% { opacity: 1; transform: scale(1); }
+            33%, 92% { opacity: 0; transform: scale(1.05); }
+          }
+          @keyframes fadeSlide2 {
+            0%, 25%, 92%, 100% { opacity: 0; transform: scale(1.05); }
+            33%, 58% { opacity: 1; transform: scale(1); }
+          }
+          @keyframes fadeSlide3 {
+            0%, 58%, 100% { opacity: 0; transform: scale(1.05); }
+            66%, 92% { opacity: 1; transform: scale(1); }
+          }
+          .bg-slide {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+            mix-blend-mode: overlay;
+          }
+          .bg-slide-1 { background-image: url('/images/bg1.jpg'); animation: fadeSlide1 24s infinite; }
+          .bg-slide-2 { background-image: url('/images/bg2.jpg'); animation: fadeSlide2 24s infinite; }
+          .bg-slide-3 { background-image: url('/images/bg3.jpg'); animation: fadeSlide3 24s infinite; }
+          
+          @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+          }
+        `,
+          }}
+        />
+
+        {/* IMAGE SLIDESHOW */}
+        <div className="bg-slide bg-slide-1" />
+        <div className="bg-slide bg-slide-2" />
+        <div className="bg-slide bg-slide-3" />
+
+        {/* DARK GRADIENT OVERLAY SO TEXT IS READABLE */}
         <div
           style={{
             position: "absolute",
             inset: 0,
-            background: "linear-gradient(180deg, #0f172a 0%, #1e293b 100%)",
-            opacity: 0.95,
+            background: "var(--bg-gradient)",
+            zIndex: 2,
           }}
         />
 
@@ -95,43 +140,13 @@ export default function LandingPage() {
           style={{
             position: "absolute",
             inset: "-50%",
-            backgroundImage:
-              "linear-gradient(rgba(52, 229, 235, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(52, 229, 235, 0.1) 1px, transparent 1px)",
+            background:
+              "linear-gradient(var(--cyber-grid) 1px, transparent 1px), linear-gradient(90deg, var(--cyber-grid) 1px, transparent 1px)",
             backgroundSize: "80px 80px",
             animation: "grid-pan 4s linear infinite",
             transform: "perspective(1000px) rotateX(65deg) scale(1.2)",
             transformOrigin: "center top",
-            zIndex: 1,
-          }}
-        />
-
-        {/* Ambient Glows */}
-        <div
-          style={{
-            position: "absolute",
-            top: "25%",
-            left: "-5rem",
-            width: "30rem",
-            height: "30rem",
-            borderRadius: "50%",
-            opacity: 0.2,
-            filter: "blur(80px)",
-            background:
-              "radial-gradient(circle, var(--cyber-blue) 0%, transparent 70%)",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            bottom: "10%",
-            right: "-5rem",
-            width: "30rem",
-            height: "30rem",
-            borderRadius: "50%",
-            opacity: 0.2,
-            filter: "blur(80px)",
-            background:
-              "radial-gradient(circle, var(--cyber-purple) 0%, transparent 70%)",
+            zIndex: 3,
           }}
         />
       </div>
@@ -170,9 +185,9 @@ export default function LandingPage() {
                 lineHeight: 1.1,
               }}
             >
-              Your AI Travel
+              {t("landing.heroTitleLine1" as any)}
               <br />
-              Companion
+              {t("landing.heroTitleLine2" as any)}
             </div>
           </div>
           <p
@@ -185,8 +200,7 @@ export default function LandingPage() {
               marginBottom: "2.5rem",
             }}
           >
-            Discover hidden gems, get instant recommendations, and navigate like
-            a local. Powered by advanced AI to make every journey effortless.
+            {t("landing.heroDesc" as any)}
           </p>
 
           <div
@@ -202,7 +216,7 @@ export default function LandingPage() {
               className="cyber-button"
               onClick={() => (window.location.href = "/renting/suggestions")}
             >
-              Try AI Assistant
+              {t("landing.tryAi" as any)}
             </button>
             <button
               style={{
@@ -227,7 +241,7 @@ export default function LandingPage() {
                 e.currentTarget.style.color = "var(--text-main)";
               }}
             >
-              Explore Destinations
+              {t("landing.exploreDest" as any)}
             </button>
           </div>
 
@@ -260,7 +274,7 @@ export default function LandingPage() {
                   letterSpacing: "0.05em",
                 }}
               >
-                Happy Travelers
+                {t("landing.statHappy" as any)}
               </div>
             </div>
 
@@ -283,7 +297,7 @@ export default function LandingPage() {
                   letterSpacing: "0.05em",
                 }}
               >
-                Satisfaction Rate
+                {t("landing.statSatisfaction" as any)}
               </div>
             </div>
 
@@ -306,7 +320,7 @@ export default function LandingPage() {
                   letterSpacing: "0.05em",
                 }}
               >
-                AI Support
+                {t("landing.statSupport" as any)}
               </div>
             </div>
           </div>
@@ -324,7 +338,7 @@ export default function LandingPage() {
               color: "var(--text-main)",
             }}
           >
-            How Tourist AI Helps You
+            {t("landing.featuresTitle" as any)}
           </h2>
           <p
             style={{
@@ -336,7 +350,7 @@ export default function LandingPage() {
               margin: "0 auto 3rem",
             }}
           >
-            Everything you need for seamless travel planning and navigation
+            {t("landing.featuresSubtitle" as any)}
           </p>
 
           <div
@@ -354,7 +368,7 @@ export default function LandingPage() {
                     className="module-label"
                     style={{ marginBottom: "1rem" }}
                   >
-                    AI-Powered
+                    {t("landing.feat1Tag" as any)}
                   </div>
 
                   <h3
@@ -366,7 +380,7 @@ export default function LandingPage() {
                       color: "var(--cyber-yellow)",
                     }}
                   >
-                    Smart Recommendations
+                    {t("landing.feat1Title" as any)}
                   </h3>
 
                   <p
@@ -377,12 +391,12 @@ export default function LandingPage() {
                       marginBottom: "1.5rem",
                     }}
                   >
-                    Ask anything about your destination. Get personalized
-                    suggestions for restaurants, attractions, and hidden gems
-                    based on your preferences.
+                    {t("landing.feat1Desc" as any)}
                   </p>
 
-                  <div className="ready-label">✓ Always Learning</div>
+                  <div className="ready-label">
+                    {t("landing.feat1Check" as any)}
+                  </div>
                 </div>
               </a>
             </RevealOnScroll>
@@ -394,7 +408,7 @@ export default function LandingPage() {
                     className="module-label"
                     style={{ marginBottom: "1rem" }}
                   >
-                    Real-Time
+                    {t("landing.feat2Tag" as any)}
                   </div>
 
                   <h3
@@ -406,7 +420,7 @@ export default function LandingPage() {
                       color: "var(--cyber-blue)",
                     }}
                   >
-                    Instant Transportation
+                    {t("landing.feat2Title" as any)}
                   </h3>
 
                   <p
@@ -417,11 +431,12 @@ export default function LandingPage() {
                       marginBottom: "1.5rem",
                     }}
                   >
-                    Book rides with live tracking, estimated arrival times, and
-                    multiple vehicle options. Your journey, your way.
+                    {t("landing.feat2Desc" as any)}
                   </p>
 
-                  <div className="ready-label">✓ Live GPS Tracking</div>
+                  <div className="ready-label">
+                    {t("landing.feat2Check" as any)}
+                  </div>
                 </div>
               </a>
             </RevealOnScroll>
@@ -433,7 +448,7 @@ export default function LandingPage() {
                     className="module-label"
                     style={{ marginBottom: "1rem" }}
                   >
-                    Data-Driven
+                    {t("landing.feat3Tag" as any)}
                   </div>
 
                   <h3
@@ -445,7 +460,7 @@ export default function LandingPage() {
                       color: "var(--cyber-purple)",
                     }}
                   >
-                    Smart Route Planning
+                    {t("landing.feat3Title" as any)}
                   </h3>
 
                   <p
@@ -456,11 +471,12 @@ export default function LandingPage() {
                       marginBottom: "1.5rem",
                     }}
                   >
-                    Analyze weather, safety, and traffic patterns to suggest the
-                    best times and routes for your adventures.
+                    {t("landing.feat3Desc" as any)}
                   </p>
 
-                  <div className="ready-label">✓ Predictive Analytics</div>
+                  <div className="ready-label">
+                    {t("landing.feat3Check" as any)}
+                  </div>
                 </div>
               </a>
             </RevealOnScroll>
@@ -486,7 +502,7 @@ export default function LandingPage() {
                 color: "var(--text-main)",
               }}
             >
-              Getting Started is Easy
+              {t("landing.stepsTitle" as any)}
             </h2>
 
             <div
@@ -501,18 +517,18 @@ export default function LandingPage() {
               {[
                 {
                   step: "1",
-                  title: "Tell Us Your Plans",
-                  desc: "Share your destination, dates, and interests",
+                  title: t("landing.step1Title" as any),
+                  desc: t("landing.step1Desc" as any),
                 },
                 {
                   step: "2",
-                  title: "Get AI Recommendations",
-                  desc: "Receive personalized suggestions instantly",
+                  title: t("landing.step2Title" as any),
+                  desc: t("landing.step2Desc" as any),
                 },
                 {
                   step: "3",
-                  title: "Book & Navigate",
-                  desc: "Reserve rides and explore with confidence",
+                  title: t("landing.step3Title" as any),
+                  desc: t("landing.step3Desc" as any),
                 },
               ].map((item, i) => (
                 <RevealOnScroll key={i} delay={i * 200}>
@@ -581,7 +597,7 @@ export default function LandingPage() {
                 color: "var(--cyber-yellow)",
               }}
             >
-              Ready to Transform Your Travel?
+              {t("landing.ctaTitle" as any)}
             </h2>
             <p
               style={{
@@ -592,15 +608,14 @@ export default function LandingPage() {
                 margin: "0 auto 2rem",
               }}
             >
-              Join thousands of travelers who trust Tourist AI for smarter
-              journeys
+              {t("landing.ctaDesc" as any)}
             </p>
             <button
               className="cyber-button"
               onClick={() => (window.location.href = "/renting/suggestions")}
               style={{ fontSize: "1.1rem", padding: "1.25rem 2.5rem" }}
             >
-              Start Your Journey
+              {t("landing.startJourney" as any)}
             </button>
           </section>
         </RevealOnScroll>
