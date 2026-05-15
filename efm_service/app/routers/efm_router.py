@@ -10,7 +10,7 @@ def predict(req: PredictionRequest):
     """
     results = []
     # Get internal user index from ID mapping
-    user_interests = get_user_interests(req.user_id)
+    user_interests = get_user_context(req.user_id)
     u_idx = state["uid_map"].get(req.user_id, None)
     
     
