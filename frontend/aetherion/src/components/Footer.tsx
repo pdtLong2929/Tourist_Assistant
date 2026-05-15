@@ -15,7 +15,7 @@ export default function Footer() {
         borderTop: "1px solid rgba(52, 229, 235, 0.3)",
         boxShadow:
           "0 -20px 50px rgba(0, 0, 0, 0.6), inset 0 20px 20px -20px rgba(52, 229, 235, 0.1)",
-        padding: "3rem 2rem 2rem",
+        padding: "clamp(2rem, 5vw, 3rem) clamp(1rem, 3vw, 2rem) 2rem",
         marginTop: "auto",
         position: "relative",
         zIndex: 10,
@@ -29,7 +29,7 @@ export default function Footer() {
           justifyContent: "space-between",
           alignItems: "flex-start",
           flexWrap: "wrap",
-          gap: "3rem",
+          gap: "clamp(1.5rem, 4vw, 3rem)",
         }}
       >
         {/* Brand Info */}

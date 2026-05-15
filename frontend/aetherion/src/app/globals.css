@@ -200,7 +200,6 @@ a {
 }
 
 .nav-container {
-  display: flex;
   align-items: center;
   gap: 0.25rem;
   padding: 0.4rem;

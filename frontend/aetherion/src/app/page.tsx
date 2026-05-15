@@ -156,7 +156,7 @@ export default function LandingPage() {
         style={{
           position: "relative",
           zIndex: 10,
-          padding: "4rem 2rem",
+          padding: "clamp(2rem, 5vw, 4rem) clamp(1rem, 3vw, 2rem)",
           maxWidth: "1400px",
           margin: "0 auto",
         }}
@@ -169,8 +169,8 @@ export default function LandingPage() {
             flexDirection: "column",
             alignItems: "center",
             textAlign: "center",
-            marginBottom: "6rem",
-            padding: "3rem 2rem",
+            marginBottom: "clamp(3rem, 10vw, 6rem)",
+            padding: "clamp(1.5rem, 5vw, 3rem) clamp(1rem, 4vw, 2rem)",
             marginTop: "1rem",
           }}
         >
@@ -249,8 +249,8 @@ export default function LandingPage() {
           <div
             style={{
               display: "flex",
-              gap: "3rem",
-              marginTop: "3rem",
+              gap: "clamp(1.5rem, 4vw, 3rem)",
+              marginTop: "clamp(2rem, 5vw, 3rem)",
               flexWrap: "wrap",
               justifyContent: "center",
             }}
@@ -356,8 +356,8 @@ export default function LandingPage() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
-              gap: "2rem",
+              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 300px), 1fr))",
+              gap: "1.5rem",
             }}
           >
             {/* Feature Card 1 */}
@@ -508,8 +508,8 @@ export default function LandingPage() {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-                gap: "3rem",
+                gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 250px), 1fr))",
+                gap: "clamp(1.5rem, 5vw, 3rem)",
                 maxWidth: "1000px",
                 margin: "0 auto",
               }}

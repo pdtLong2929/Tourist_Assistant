@@ -87,6 +87,7 @@ export const translations = {
       signingIn: "SIGNING IN...",
     },
     booking: {
+      dispatch: "DISPATCH",
       dispatchCenter: "DISPATCH CENTER",
       liveTracking: "LIVE TRACKING",
       youAreHere: "YOU ARE HERE",
@@ -284,6 +285,7 @@ export const translations = {
       signingIn: "ĐANG ĐĂNG NHẬP...",
     },
     booking: {
+      dispatch: "ĐIỀU PHỐI",
       dispatchCenter: "TRUNG TÂM ĐIỀU PHỐI",
       liveTracking: "THEO DÕI TRỰC TIẾP",
       youAreHere: "VỊ TRÍ CỦA BẠN",

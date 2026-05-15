@@ -17,8 +17,8 @@ const MOCK_DRIVERS = [
     id: "D-801",
     type: "Cyber SUV",
     eta: "3 mins",
-    x: 48,
-    y: 35,
+    x: 45,
+    y: 20,
     heading: 45,
     price: "12.50",
   },
@@ -26,8 +26,8 @@ const MOCK_DRIVERS = [
     id: "D-442",
     type: "Aero Sedan",
     eta: "7 mins",
-    x: 75,
-    y: 20,
+    x: 85,
+    y: 25,
     heading: 120,
     price: "8.20",
   },
@@ -35,8 +35,8 @@ const MOCK_DRIVERS = [
     id: "D-99X",
     type: "Hypercar",
     eta: "12 mins",
-    x: 82,
-    y: 75,
+    x: 65,
+    y: 80,
     heading: 270,
     price: "25.00",
   },
@@ -69,12 +69,14 @@ export default function BookingPage() {
     <div
       style={{
         display: "flex",
+        flexDirection: "column",
         height: "calc(100vh - 72px)",
         width: "100vw",
         overflow: "hidden",
         position: "relative",
         background: "var(--cyber-black)",
       }}
+      className="md:flex-row"
     >
       <style
         dangerouslySetInnerHTML={{
@@ -83,10 +85,15 @@ export default function BookingPage() {
             .hud-slide-in {
               animation: hud-slide 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
               opacity: 0;
-              transform: translateX(-50px);
+              transform: translateY(30px);
+            }
+            @media (min-width: 768px) {
+              .hud-slide-in {
+                transform: translateX(-50px);
+              }
             }
             @keyframes hud-slide {
-              to { opacity: 1; transform: translateX(0); }
+              to { opacity: 1; transform: translate(0); }
             }
 
             .map-fade-in {
@@ -162,6 +169,31 @@ export default function BookingPage() {
               box-shadow: -5px 0 20px rgba(52, 229, 235, 0.2);
               border-color: var(--cyber-blue);
             }
+
+            @media (max-width: 767px) {
+              .mobile-map-height {
+                height: 35vh !important;
+                position: relative !important;
+                flex-shrink: 0;
+              }
+              .mobile-hud-panel {
+                position: relative !important;
+                top: 0 !important;
+                left: 0 !important;
+                bottom: 0 !important;
+                width: 100% !important;
+                height: 65vh !important;
+                border-radius: 20px 20px 0 0 !important;
+                margin-top: -15px;
+                padding: 1rem 0.75rem !important;
+                overflow-y: auto;
+                gap: 0.75rem !important;
+              }
+              .desktop-only { display: none !important; }
+              .responsive-marker-scale { transform: translate(-50%, -50%) scale(0.7) !important; }
+              .responsive-target-size { width: 44px !important; height: 44px !important; }
+              .responsive-driver-scale { transform: translate(-50%, -50%) scale(0.8) !important; }
+            }
           `,
         }}
       />
@@ -170,7 +202,7 @@ export default function BookingPage() {
           MAP AREA (BACKGROUND)
           ========================================= */}
       <main
-        className="map-fade-in"
+        className="map-fade-in mobile-map-height"
         style={{ position: "absolute", inset: 0, zIndex: 0 }}
       >
         {/* Deep background color */}
@@ -227,8 +259,8 @@ export default function BookingPage() {
             }}
           >
             <line
-              x1="65%" /* Điểm Client */
-              y1="55%" /* Điểm Client */
+              x1={typeof window !== 'undefined' && window.innerWidth < 768 ? "50%" : "65%"} /* Điểm Client */
+              y1={typeof window !== 'undefined' && window.innerWidth < 768 ? "35%" : "55%"} /* Điểm Client */
               x2={`${selectedData.x}%`} /* Điểm Driver */
               y2={`${selectedData.y}%`} /* Điểm Driver */
               stroke="var(--cyber-yellow)"
@@ -253,11 +285,11 @@ export default function BookingPage() {
           className="marker-drop"
           style={{
             position: "absolute",
-            top: "55%" /* Tương ứng x1, y1 ở SVG Path */,
-            left: "65%" /* Đặt sang phải để chừa chỗ cho HUD */,
+            top: typeof window !== 'undefined' && window.innerWidth < 768 ? "35%" : "55%",
+            left: typeof window !== 'undefined' && window.innerWidth < 768 ? "50%" : "65%",
             width: 0,
             height: 0,
-            animationDelay: "0.8s" /* Rớt xuống chậm rãi */,
+            animationDelay: "0.8s",
             zIndex: 20,
             pointerEvents: "none",
           }}
@@ -274,6 +306,7 @@ export default function BookingPage() {
               justifyContent: "center",
               alignItems: "center",
             }}
+            className="responsive-marker-scale"
           >
             {/* Radar Pings */}
             <div
@@ -311,6 +344,7 @@ export default function BookingPage() {
                 justifyContent: "center",
                 boxShadow: "0 0 30px var(--cyber-blue-glow)",
               }}
+              className="responsive-target-size"
             >
               <Target size={30} color="var(--cyber-blue)" />
             </div>
@@ -334,6 +368,7 @@ export default function BookingPage() {
               boxShadow: "0 0 10px rgba(52, 229, 235, 0.4)",
               backdropFilter: "blur(4px)",
             }}
+            className="desktop-only"
           >
             {t("booking.youAreHere") as any}
           </div>
@@ -351,11 +386,10 @@ export default function BookingPage() {
               left: `${driver.x}%`,
               width: 0,
               height: 0,
-              animationDelay: `${0.9 + index * 0.2}s`, // Staggered drop-in
+              animationDelay: `${0.9 + index * 0.2}s`,
               zIndex: selectedDriver === driver.id ? 100 : 50,
             }}
           >
-            {/* Nested container for hover scales (avoid overriding keyframe translate) */}
             <div
               style={{
                 position: "absolute",
@@ -369,22 +403,8 @@ export default function BookingPage() {
                   "transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
                 transform: `translate(-50%, -50%) ${selectedDriver === driver.id ? "scale(1.2)" : "scale(1)"}`,
               }}
+              className="responsive-driver-scale"
             >
-              {selectedDriver === driver.id && (
-                <div
-                  style={{
-                    position: "absolute",
-                    width: 60,
-                    height: 60,
-                    border: "2px dashed var(--cyber-yellow)",
-                    borderRadius: "50%",
-                    animation: "spin-slow 8s linear infinite",
-                    top: "-10px",
-                    zIndex: -1,
-                  }}
-                />
-              )}
-
               <div
                 style={{
                   transform: `rotate(${driver.heading}deg)`,
@@ -440,6 +460,7 @@ export default function BookingPage() {
                   boxShadow: "0 0 15px rgba(0,0,0,0.5)",
                   whiteSpace: "nowrap",
                 }}
+                className="desktop-only"
               >
                 {driver.id} • {driver.eta}
               </div>
@@ -452,17 +473,17 @@ export default function BookingPage() {
           FLOATING HUD PANEL
           ========================================= */}
       <aside
-        className="hud-glass-panel hud-slide-in"
+        className="hud-glass-panel hud-slide-in mobile-hud-panel"
         style={{
           position: "absolute",
-          top: "2.5rem",
-          left: "2.5rem",
-          bottom: "2.5rem",
-          width: "440px",
-          padding: "2rem",
+          top: "2rem",
+          left: "2rem",
+          bottom: "2rem",
+          width: "420px",
+          padding: "1.5rem",
           display: "flex",
           flexDirection: "column",
-          gap: "1.5rem",
+          gap: "1rem",
           zIndex: 200,
         }}
       >
@@ -480,52 +501,62 @@ export default function BookingPage() {
               margin: 0,
               display: "flex",
               alignItems: "center",
-              gap: "12px",
-              fontSize: "1.4rem",
+              gap: "10px",
+              fontSize: "1.3rem",
               textShadow: "0 0 20px var(--cyber-yellow-glow)",
             }}
           >
-            <Activity size={26} color="var(--cyber-yellow)" />
-            {t("booking.dispatchCenter") as any}
+            <Activity size={24} color="var(--cyber-yellow)" />
+            <span className="md:inline hidden">
+              {t("booking.dispatchCenter" as any)}
+            </span>
+            <span className="md:hidden inline">
+              {t("booking.dispatch" as any)}
+            </span>
           </h2>
           <span
             className="status-active"
-            style={{ fontFamily: "var(--font-mono)", fontSize: "0.85rem" }}
+            style={{ fontFamily: "var(--font-mono)", fontSize: "0.8rem" }}
           >
-            ● {t("booking.liveTracking") as any}
+            ● {t("booking.liveTracking" as any)}
           </span>
         </div>
 
         {/* Pick-up / Drop-off Tracking */}
         <div
           className="edgerunner-card reveal-text delay-2"
-          style={{ padding: "1.5rem", background: "var(--cyber-card-bg)" }}
+          style={{ padding: "1rem", background: "var(--cyber-card-bg)" }}
         >
           <div
-            style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+            style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}
           >
-            <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+            <div
+              style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}
+            >
               <div
                 style={{
-                  width: 12,
-                  height: 12,
+                  width: 10,
+                  height: 10,
                   borderRadius: "50%",
                   background: "var(--cyber-blue)",
-                  boxShadow: "0 0 15px var(--cyber-blue)",
+                  boxShadow: "0 0 10px var(--cyber-blue)",
                 }}
               />
               <div style={{ flex: 1 }}>
-                <div className="module-label" style={{ marginBottom: "2px" }}>
-                  {t("booking.scannedPickup") as any}
+                <div
+                  className="module-label"
+                  style={{ fontSize: "0.65rem", marginBottom: "2px" }}
+                >
+                  {t("booking.scannedPickup" as any)}
                 </div>
                 <div
                   style={{
-                    fontSize: "1.05rem",
+                    fontSize: "0.9rem",
                     fontWeight: "600",
                     color: "var(--text-main)",
                   }}
                 >
-                  Downtown District, Sector 4
+                  Downtown, Sector 4
                 </div>
               </div>
             </div>
@@ -533,39 +564,44 @@ export default function BookingPage() {
             <div
               style={{
                 width: "2px",
-                height: "28px",
+                height: "15px",
                 background:
                   "linear-gradient(to bottom, var(--cyber-blue), var(--cyber-purple))",
-                marginLeft: "5px",
+                marginLeft: "4px",
                 opacity: 0.6,
               }}
             />
 
-            <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+            <div
+              style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}
+            >
               <div
                 style={{
-                  width: 12,
-                  height: 12,
+                  width: 10,
+                  height: 10,
                   borderRadius: "50%",
                   background: "var(--cyber-purple)",
-                  boxShadow: "0 0 15px var(--cyber-purple)",
+                  boxShadow: "0 0 10px var(--cyber-purple)",
                 }}
               />
               <div style={{ flex: 1 }}>
-                <div className="module-label" style={{ marginBottom: "2px" }}>
-                  {t("booking.targetDestination") as any}
+                <div
+                  className="module-label"
+                  style={{ fontSize: "0.65rem", marginBottom: "2px" }}
+                >
+                  {t("booking.targetDestination" as any)}
                 </div>
                 <input
                   type="text"
-                  placeholder={t("booking.dropoffPlaceholder") as any}
+                  placeholder={t("booking.dropoffPlaceholder" as any)}
                   style={{
                     background: "var(--cyber-input-bg)",
                     border: "1px solid var(--cyber-border)",
                     outline: "none",
                     color: "var(--text-main)",
                     width: "100%",
-                    fontSize: "1rem",
-                    padding: "8px 12px",
+                    fontSize: "0.9rem",
+                    padding: "6px 10px",
                     borderRadius: "6px",
                     fontFamily: "var(--font-mono)",
                     transition: "all 0.3s ease",
@@ -588,15 +624,21 @@ export default function BookingPage() {
             display: "flex",
             alignItems: "center",
             gap: "10px",
-            marginTop: "10px",
+            marginTop: "0px",
           }}
         >
           <Scan size={18} color="var(--cyber-blue)" />
           <h3
             className="module-label"
-            style={{ margin: 0, color: "var(--cyber-blue)" }}
+            style={{
+              margin: 0,
+              color: "var(--cyber-blue)",
+              fontSize: "0.85rem",
+              fontWeight: "700",
+              letterSpacing: "1px",
+            }}
           >
-            {t("booking.availableAssets") as any}
+            {t("booking.availableAssets" as any)}
           </h3>
         </div>
 
@@ -608,8 +650,9 @@ export default function BookingPage() {
             overflowY: "auto",
             display: "flex",
             flexDirection: "column",
-            gap: "1rem",
-            paddingRight: "6px",
+            gap: "0.6rem",
+            paddingRight: "4px",
+            minHeight: "150px",
           }}
         >
           {MOCK_DRIVERS.map((driver) => (
@@ -619,8 +662,8 @@ export default function BookingPage() {
               className="edgerunner-card driver-card-fx"
               style={{
                 cursor: "pointer",
-                padding: "1.25rem",
-                borderRadius: "12px",
+                padding: "1rem",
+                borderRadius: "10px",
                 position: "relative",
                 overflow: "hidden",
                 border:
@@ -646,14 +689,14 @@ export default function BookingPage() {
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    gap: "1.25rem",
+                    gap: "1rem",
                   }}
                 >
                   <div
                     style={{
-                      width: 52,
-                      height: 52,
-                      borderRadius: "12px",
+                      width: 44,
+                      height: 44,
+                      borderRadius: "10px",
                       background: "var(--cyber-input-bg)",
                       display: "flex",
                       alignItems: "center",
@@ -662,7 +705,7 @@ export default function BookingPage() {
                     }}
                   >
                     <Car
-                      size={28}
+                      size={24}
                       color={
                         selectedDriver === driver.id
                           ? "var(--cyber-yellow)"
@@ -674,42 +717,25 @@ export default function BookingPage() {
                     <h4
                       style={{
                         margin: 0,
-                        fontSize: "1.15rem",
+                        fontSize: "1rem",
                         color:
                           selectedDriver === driver.id
                             ? "var(--cyber-yellow)"
                             : "var(--text-main)",
                         fontWeight: "700",
-                        letterSpacing: "0.02em",
                       }}
                     >
                       {driver.type}
                     </h4>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "6px",
-                        marginTop: "4px",
-                      }}
-                    >
-                      <p className="module-label" style={{ margin: 0 }}>
-                        {t("booking.unit") as any} {driver.id}
-                      </p>
-                      {selectedDriver === driver.id && (
-                        <Zap
-                          size={12}
-                          color="var(--cyber-yellow)"
-                          style={{ animation: "twinkle 1s infinite" }}
-                        />
-                      )}
-                    </div>
+                    <p className="module-label" style={{ margin: 0, fontSize: "0.6rem" }}>
+                      {driver.id}
+                    </p>
                   </div>
                 </div>
                 <div style={{ textAlign: "right" }}>
                   <div
                     style={{
-                      fontSize: "1.45rem",
+                      fontSize: "1.2rem",
                       fontWeight: "800",
                       fontFamily: "var(--font-header)",
                       lineHeight: 1,
@@ -725,7 +751,7 @@ export default function BookingPage() {
                     style={{
                       color: "var(--cyber-green)",
                       fontWeight: "600",
-                      fontSize: "1.1rem",
+                      fontSize: "0.9rem",
                       marginTop: "2px",
                     }}
                   >
@@ -745,23 +771,24 @@ export default function BookingPage() {
             disabled={!selectedDriver || isDispatching}
             style={{
               width: "100%",
-              padding: "1.3rem",
+              padding: "1rem",
               opacity: !selectedDriver ? 0.5 : 1,
               filter: !selectedDriver ? "grayscale(100%)" : "none",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
               gap: "10px",
+              fontSize: "0.9rem",
             }}
           >
             {isDispatching ? (
               <>
-                <Scan size={20} className="animate-spin" />
+                <Scan size={18} className="animate-spin" />
                 {t("booking.initiating") as any}
               </>
             ) : selectedDriver ? (
               <>
-                <Zap size={20} />
+                <Zap size={18} />
                 {t("booking.confirmDispatch")} {selectedDriver}
               </>
             ) : (
