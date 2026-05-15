@@ -89,10 +89,11 @@ export default function LoginPage() {
 
     setIsLoading(true);
 
+    const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || "http://localhost";
     try {
       const endpoint = isSignUp
-        ? "http://localhost:80/register"
-        : "http://localhost:80/login";
+        ? `${nginxUrl}/register`
+        : `${nginxUrl}/login`;
       const payload = isSignUp
         ? { name, email, password }
         : { email, password };
@@ -179,8 +180,9 @@ export default function LoginPage() {
 
     setForgotLoading(true);
     setForgotMessage("");
+    const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || "http://localhost";
     try {
-      const res = await fetch("http://localhost:80/forgot-password", {
+      const res = await fetch(`${nginxUrl}/forgot-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: forgotEmail }),

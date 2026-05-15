@@ -35,10 +35,12 @@ type FrontendQueryPayload struct {
 }
 
 type LocationDetail struct {
-	Name             string  `json:"name"`
-	Lat              float64 `json:"lat,omitempty"`
-	Lon              float64 `json:"lon,omitempty"`
-	FormattedAddress string  `json:"formatted_address,omitempty"`
+	Name    string `json:"name"`
+	Address string `json:"address,omitempty"`
+	Coords  struct {
+		Lat float64 `json:"lat"`
+		Lon float64 `json:"lon"`
+	} `json:"coords,omitempty"`
 }
 
 func (s *touristService) GetLocationDetail(ctx context.Context, detail string) (*model.LocationResponse, error) {
@@ -50,10 +52,10 @@ func (s *touristService) GetLocationDetail(ctx context.Context, detail string) (
 	var payload FrontendQueryPayload
 	if err := json.Unmarshal([]byte(detail), &payload); err == nil && payload.Destination.Name != "" {
 		// 1. If coordinates were already resolved by the frontend via Goong API, use them directly
-		if payload.Destination.Lat != 0 && payload.Destination.Lon != 0 {
-			lat = payload.Destination.Lat
-			lon = payload.Destination.Lon
-			displayName = payload.Destination.FormattedAddress
+		if payload.Destination.Coords.Lat != 0 && payload.Destination.Coords.Lon != 0 {
+			lat = payload.Destination.Coords.Lat
+			lon = payload.Destination.Coords.Lon
+			displayName = payload.Destination.Address
 			if displayName == "" {
 				displayName = payload.Destination.Name
 			}
@@ -62,6 +64,16 @@ func (s *touristService) GetLocationDetail(ctx context.Context, detail string) (
 			// 2. If not pre-resolved, target just the Destination's textual name for backend Geocoding
 			detail = payload.Destination.Name
 			displayName = detail
+		}
+	}
+
+	// --- 0. CHECK CACHED COMPLETED LOCATION RESPONSE FIRST ---
+	responseCacheKey := "succeeded_loc:" + detail
+	if cachedResponse, err := s.rdb.Get(ctx, responseCacheKey).Result(); err == nil {
+		var finalResp model.LocationResponse
+		if err := json.Unmarshal([]byte(cachedResponse), &finalResp); err == nil {
+			log.Printf("Debug: Successfully retrieved fully compiled LocationResponse from Redis for '%s'", detail)
+			return &finalResp, nil
 		}
 	}
 
@@ -90,7 +102,8 @@ func (s *touristService) GetLocationDetail(ctx context.Context, detail string) (
 
 			// [Resiliency Strategy] Cache valid map results independently. Even if downstream weather or AI API calls fail later, we preserve this success.
 			if mapJson, err := json.Marshal(mapData); err == nil {
-				if rdbErr := s.rdb.Set(ctx, mapKey, mapJson, 24*time.Hour).Err(); rdbErr != nil {
+				// Atomically check existence before writing to prevent concurrent overrides
+				if rdbErr := s.rdb.SetNX(ctx, mapKey, mapJson, 24*time.Hour).Err(); rdbErr != nil {
 					log.Printf("Warning: Failed to write map cache to Redis for '%s': %v", detail, rdbErr)
 				} else {
 					log.Printf("Debug: Successfully cached map coordinates for '%s' in Redis", detail)
@@ -146,7 +159,8 @@ func (s *touristService) GetLocationDetail(ctx context.Context, detail string) (
 				// [Resiliency Strategy] Cache weather results independently. 
 				if extracted {
 					if wJson, err := json.Marshal(wData); err == nil {
-						if rdbErr := s.rdb.Set(ctx, weatherKey, wJson, 15*time.Minute).Err(); rdbErr != nil {
+						// Atomically check existence before writing to prevent concurrent overrides
+						if rdbErr := s.rdb.SetNX(ctx, weatherKey, wJson, 15*time.Minute).Err(); rdbErr != nil {
 							log.Printf("Warning: Failed to write weather cache to Redis for '%s': %v", displayName, rdbErr)
 						} else {
 							log.Printf("Debug: Successfully cached weather data for '%s' in Redis", displayName)
@@ -168,7 +182,7 @@ func (s *touristService) GetLocationDetail(ctx context.Context, detail string) (
 		weatherDebugURL = fmt.Sprintf("https://api.openweathermap.org/data/2.5/weather?lat=%v&lon=%v&appid=REDACTED&units=metric", lat, lon)
 	}
 
-	return &model.LocationResponse{
+	finalResponse := &model.LocationResponse{
 		Destination:    detail,
 		FullAddress:    displayName,
 		Coords:         model.Coordinate{Lat: lat, Lon: lon},
@@ -178,5 +192,19 @@ func (s *touristService) GetLocationDetail(ctx context.Context, detail string) (
 			GoongURL:   goongDebugURL,
 			WeatherURL: weatherDebugURL,
 		},
-	}, nil
+	}
+
+	if mapDataFound {
+		if respJson, err := json.Marshal(finalResponse); err == nil {
+			// Atomically check existence before writing to prevent concurrent overrides
+			// Cache the fully compiled LocationResponse (including LLM advice) for 15 minutes to match weather TTL
+			if rdbErr := s.rdb.SetNX(ctx, responseCacheKey, respJson, 15*time.Minute).Err(); rdbErr != nil {
+				log.Printf("Warning: Failed to cache successful LocationResponse to Redis for '%s': %v", detail, rdbErr)
+			} else {
+				log.Printf("Debug: Successfully cached completed LocationResponse for '%s' in Redis (key: %s)", detail, responseCacheKey)
+			}
+		}
+	}
+
+	return finalResponse, nil
 }
