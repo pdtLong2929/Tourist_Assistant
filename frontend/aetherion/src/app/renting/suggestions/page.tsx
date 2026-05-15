@@ -129,8 +129,8 @@ export default function RentingSuggestion() {
     const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || "http://localhost";
 
     try {
-      let startLocation = null;
-      let destinationLocation = null;
+      let startLocation: any = null;
+      let destinationLocation: any = null;
 
       // Fetch both location contexts in parallel to slash overall response latency in half
       const fetchTasks = [];
