@@ -132,30 +132,38 @@ export default function RentingSuggestion() {
       let startLocation = null;
       let destinationLocation = null;
 
-      // 1. Reuse API Calling backend by querying the /location/:name endpoint for Origin
+      // Fetch both location contexts in parallel to slash overall response latency in half
+      const fetchTasks = [];
+
       if (startPos.trim()) {
-        try {
-          const res = await fetch(`${nginxUrl}/api/v1/location/${encodeURIComponent(startPos)}`);
-          const data = await res.json();
-          if (data.status === "success" && data.data) {
-            startLocation = data.data;
-          }
-        } catch (e) {
-          console.error("Error fetching location from backend for startPos:", e);
-        }
+        fetchTasks.push(
+          fetch(`${nginxUrl}/api/v1/location/${encodeURIComponent(startPos)}`)
+            .then(res => res.json())
+            .then(data => {
+              if (data.status === "success" && data.data) {
+                startLocation = data.data;
+              }
+            })
+            .catch(e => console.error("Error fetching location from backend for startPos:", e))
+        );
       }
 
-      // 2. Reuse API Calling backend by querying the /location/:name endpoint for Destination
       if (endPos.trim()) {
-        try {
-          const res = await fetch(`${nginxUrl}/api/v1/location/${encodeURIComponent(endPos)}`);
-          const data = await res.json();
-          if (data.status === "success" && data.data) {
-            destinationLocation = data.data;
-          }
-        } catch (e) {
-          console.error("Error fetching location from backend for endPos:", e);
-        }
+        fetchTasks.push(
+          fetch(`${nginxUrl}/api/v1/location/${encodeURIComponent(endPos)}`)
+            .then(res => res.json())
+            .then(data => {
+              if (data.status === "success" && data.data) {
+                destinationLocation = data.data;
+              }
+            })
+            .catch(e => console.error("Error fetching location from backend for endPos:", e))
+        );
+      }
+
+      // Execute parallel fetches synchronously
+      if (fetchTasks.length > 0) {
+        await Promise.all(fetchTasks);
       }
 
       // 3. Formulate a complete composite query to retain human-readable context for logs & models
