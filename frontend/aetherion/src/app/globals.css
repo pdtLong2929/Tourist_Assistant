@@ -41,7 +41,7 @@
   --ai-badge-border: rgba(52, 229, 235, 0.3);
   --ai-badge-color: var(--cyber-blue);
 
-  --bg-gradient: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+  --bg-gradient: linear-gradient(180deg, rgba(15, 23, 42, 0.85) 0%, rgba(30, 41, 59, 0.9) 100%);
   --bg-grid-color: rgba(52, 229, 235, 0.1);
 }
 
@@ -125,8 +125,8 @@ body::after {
 
 .edgerunner-card {
   background: var(--cyber-card-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(12px); /* Reduced from 24px for performance */
+  -webkit-backdrop-filter: blur(12px);
 
   border: 1px solid var(--cyber-border);
   border-radius: 12px;
@@ -136,6 +136,7 @@ body::after {
   transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   backface-visibility: hidden;
   transform: translateZ(0);
+  will-change: transform, opacity, border-color; /* Optimization */
   box-shadow: var(--shadow-soft);
 }
 
@@ -485,11 +486,12 @@ a {
 /* GlassCard thay thế (nếu bạn vẫn muốn dùng component riêng thì bỏ qua) */
 .glass-card {
   background: var(--cyber-card-bg);
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(12px); /* Reduced for performance */
   border: 1px solid var(--cyber-border);
   border-radius: 16px;
   padding: 2rem;
   box-shadow: var(--shadow-soft);
+  will-change: transform, opacity;
 }
 
 /* Match score glow */
@@ -555,84 +557,133 @@ a {
 }
 
 /* =========================================
-   LIGHT THEME OVERRIDES
+   PREMIUM LIGHT THEME (GLASSMORPHISM)
    ========================================= */
 body.theme-light {
-  --cyber-black: #94a3b8; /* Slate 400 - Darker gray for backgrounds */
-  --cyber-surface: #e2e8f0; /* Slate 200 - Medium gray for surfaces */
-  --cyber-surface-light: #cbd5e1; /* Slate 300 */
+  /* Core Backgrounds - Bright, clean, cool-toned */
+  --cyber-black: #f8fafc;
+  --cyber-surface: #f1f5f9;
+  --cyber-surface-light: #e2e8f0;
 
+  /* Typography - High contrast slate */
   --text-main: #0f172a;
   --text-secondary: #334155;
   --text-muted: #64748b;
 
-  --cyber-border: rgba(251, 191, 36, 0.6); /* Stronger border for visibility */
-  --cyber-grid: rgba(71, 85, 105, 0.3); /* Slate 600 - Darker grid lines */
-  
-  /* Modern SaaS/AI palette for light bg */
-  --cyber-yellow: #0F766E; /* Teal accent (replaces orange) */
-  --cyber-yellow-glow: rgba(15, 118, 110, 0.3);
-  --cyber-blue: #1E3A5F; /* Navy modern */
-  --cyber-blue-glow: rgba(30, 58, 95, 0.3);
-  --cyber-green: #115E59; /* Dark Teal for prices/status */
-  --cyber-purple: #4F46E5; /* Indigo modern */
+  /* Accents - Vibrant and Premium */
+  --cyber-yellow: #f59e0b; /* Amber/Gold */
+  --cyber-yellow-dim: rgba(245, 158, 11, 0.15);
+  --cyber-yellow-glow: rgba(245, 158, 11, 0.4);
 
-  --cyber-surface-glass: rgba(255, 255, 255, 0.75);
+  --cyber-blue: #3b82f6; /* Vibrant Blue */
+  --cyber-blue-dim: rgba(59, 130, 246, 0.15);
+  --cyber-blue-glow: rgba(59, 130, 246, 0.4);
+
+  --cyber-green: #10b981; /* Emerald */
+  --cyber-red: #ef4444; /* Rose/Red */
+  --cyber-purple: #8b5cf6; /* Violet */
+
+  /* Borders and Grids */
+  --cyber-border: rgba(148, 163, 184, 0.3);
+  --cyber-grid: rgba(148, 163, 184, 0.15);
+
+  /* Glassmorphism Surfaces */
+  --cyber-surface-glass: rgba(255, 255, 255, 0.7);
   --cyber-surface-glass-light: rgba(255, 255, 255, 0.5);
-  --cyber-input-bg: rgba(255, 255, 255, 0.65);
-  --cyber-card-bg: rgba(255, 255, 255, 0.7);
+  --cyber-input-bg: rgba(255, 255, 255, 0.85);
+  --cyber-card-bg: rgba(255, 255, 255, 0.65);
 
-  /* AI Concierge badge → Dark Teal in light mode for readability */
-  --ai-badge-bg: rgba(15, 118, 110, 0.1);
-  --ai-badge-border: rgba(15, 118, 110, 0.4);
-  --ai-badge-color: #134E4A; /* Teal 900 - much higher contrast */
+  /* AI Badge */
+  --ai-badge-bg: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+  --ai-badge-border: rgba(99, 102, 241, 0.3);
+  --ai-badge-color: #4f46e5;
 
-  --bg-gradient: linear-gradient(180deg, #cbd5e1 0%, #94a3b8 100%);
-  --bg-grid-color: rgba(71, 85, 105, 0.1);
+  /* Premium Shadows */
+  --shadow-soft: 0 10px 40px -10px rgba(15, 23, 42, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.9);
+  
+  /* Background Overlay - Semi-transparent to show animated images subtly */
+  --bg-gradient: linear-gradient(180deg, rgba(248, 250, 252, 0.85) 0%, rgba(226, 232, 240, 0.95) 100%);
+  --bg-grid-color: rgba(148, 163, 184, 0.15);
 }
 
+/* Background overrides */
+body.theme-light {
+  background: var(--cyber-black);
+}
+
+body.theme-light::after {
+  background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.08) 0%, transparent 60%);
+}
+
+/* Premium Glassmorphism Cards */
 body.theme-light .edgerunner-card {
-  background: rgba(255, 255, 255, 0.75);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+  background: var(--cyber-card-bg);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(16px); /* Balanced for light mode */
+  -webkit-backdrop-filter: blur(16px);
 }
 
-body.theme-light .cyber-gauge-wrapper {
-  background: rgba(255, 255, 255, 0.7);
-  box-shadow: 0 0 30px rgba(30, 58, 95, 0.08);
+body.theme-light .edgerunner-card:hover {
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow: 0 20px 40px -10px rgba(59, 130, 246, 0.15), inset 0 0 0 1px rgba(255, 255, 255, 0.9);
+  transform: translateY(-4px);
 }
 
+body.theme-light .edgerunner-card::before {
+  background: radial-gradient(circle at 100% 0%, rgba(59, 130, 246, 0.08) 0%, transparent 50%);
+}
+
+body.theme-light .edgerunner-card:hover h2,
+body.theme-light .edgerunner-card:hover h3 {
+  color: var(--cyber-blue);
+}
+
+/* Navigation */
 body.theme-light .nav-container {
-  background: rgba(0, 0, 0, 0.04);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
 }
 
-body.theme-light .user-badge {
-  background: rgba(0, 0, 0, 0.03);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+body.theme-light .nav-link {
+  color: var(--text-secondary);
+}
+body.theme-light .nav-link:hover {
+  color: var(--cyber-blue);
+  background: rgba(59, 130, 246, 0.08);
+}
+body.theme-light .nav-link::after {
+  background: var(--cyber-blue);
 }
 
+/* Primary Buttons */
 body.theme-light .cyber-button {
+  background: linear-gradient(135deg, var(--cyber-blue), #2563eb);
   color: #ffffff;
+  border: none;
+  box-shadow: 0 8px 20px -4px var(--cyber-blue-glow);
+}
+body.theme-light .cyber-button:hover {
+  box-shadow: 0 12px 25px -4px rgba(37, 99, 235, 0.5);
+  transform: translateY(-2px);
 }
 
-
-/* Status badge chips in suggestions/tour pages */
-body.theme-light .status-chip {
-  background: rgba(100, 116, 139, 0.4) !important;
-  border-color: rgba(71, 85, 105, 0.5) !important;
+/* User Profile Badge */
+body.theme-light .user-badge {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03);
 }
-/* Card hover: module-label & ready-label in light mode */
-body.theme-light .edgerunner-card:hover .module-label {
-  color: var(--cyber-yellow);
-}
-
-body.theme-light .edgerunner-card:hover .ready-label {
-  color: var(--cyber-green);
+body.theme-light .user-badge:hover {
+  border-color: rgba(59, 130, 246, 0.3);
+  background: #ffffff;
+  box-shadow: 0 4px 15px var(--cyber-blue-dim);
 }
 
-/* Typography Overrides: Hierarchy & Depth */
+/* Typography & Labels Overrides */
 body.theme-light .glitch-yellow {
-  color: var(--text-main);
+  color: var(--cyber-blue);
   text-shadow: none;
 }
 
@@ -640,18 +691,64 @@ body.theme-light .stat-number {
   color: var(--text-main) !important;
 }
 
-/* Decorative Orbs - hide in light mode because blur() renders poorly on white */
-body.theme-light .ambient-orb {
-  display: none !important;
+body.theme-light .module-label {
+  color: var(--text-muted);
+}
+body.theme-light .edgerunner-card:hover .module-label {
+  color: var(--cyber-blue);
 }
 
-/* LIVE TRACKING / status-active in light mode */
+body.theme-light .data-display {
+  color: var(--cyber-blue);
+  font-weight: 700;
+}
+
 body.theme-light .status-active {
-  color: var(--cyber-yellow);
-  font-weight: 800; /* Makes small text bolder and easier to read */
-  letter-spacing: 0.05em;
+  color: var(--cyber-blue);
+  font-weight: 800;
+}
+
+body.theme-light .status-danger {
+  color: var(--cyber-red);
 }
 
 body.theme-light .ready-label {
-  font-weight: 800;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+body.theme-light .edgerunner-card:hover .ready-label {
+  color: var(--cyber-blue);
+}
+
+/* Gauges & Badges */
+body.theme-light .cyber-gauge-wrapper {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+}
+
+body.theme-light .cyber-gauge-wrapper::before {
+  border-color: var(--cyber-blue);
+  opacity: 0.2;
+}
+
+body.theme-light .cyber-gauge-wrapper::after {
+  border-color: var(--cyber-yellow);
+  opacity: 0.15;
+}
+
+body.theme-light .status-chip {
+  background: rgba(59, 130, 246, 0.08) !important;
+  border-color: rgba(59, 130, 246, 0.2) !important;
+  color: var(--cyber-blue) !important;
+}
+
+body.theme-light .match-glow {
+  animation: none;
+  color: var(--cyber-blue);
+}
+
+/* Hide orbs in light mode as blur renders poorly on white */
+body.theme-light .ambient-orb {
+  display: none !important;
 }

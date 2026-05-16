@@ -6,8 +6,10 @@ import { useRouter } from "next/navigation";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
 import { Settings, Moon, Sun, Menu, X } from "lucide-react";
+import AuthModal from "./AuthModal";
 
 export default function Header() {
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [user, setUser] = useState<{
     name: string;
     email?: string;
@@ -159,9 +161,25 @@ export default function Header() {
           }}
         >
           {navLinks.map((link) => (
-            <a key={link.name} href={link.href} className="nav-link">
+            <button 
+              key={link.name} 
+              onClick={() => {
+                if (!user) {
+                  setIsAuthModalOpen(true);
+                } else {
+                  router.push(link.href);
+                }
+              }} 
+              className="nav-link"
+              style={{
+                background: "transparent",
+                border: "none",
+                cursor: "pointer",
+                outline: "none"
+              }}
+            >
               {link.name}
-            </a>
+            </button>
           ))}
           <style jsx global>{`
             @media (min-width: 768px) {
@@ -426,9 +444,16 @@ export default function Header() {
           }}
         >
           {navLinks.map((link) => (
-            <a
+            <button
               key={link.name}
-              href={link.href}
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                if (!user) {
+                  setIsAuthModalOpen(true);
+                } else {
+                  router.push(link.href);
+                }
+              }}
               style={{
                 padding: "1rem",
                 borderRadius: "8px",
@@ -438,15 +463,18 @@ export default function Header() {
                 fontWeight: "600",
                 textTransform: "uppercase",
                 background: "rgba(255,255,255,0.03)",
-                textDecoration: "none",
+                border: "none",
+                textAlign: "left",
+                cursor: "pointer",
+                width: "100%"
               }}
-              onClick={() => setIsMobileMenuOpen(false)}
             >
               {link.name}
-            </a>
+            </button>
           ))}
         </div>
       )}
+      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
     </header>
   );
 }

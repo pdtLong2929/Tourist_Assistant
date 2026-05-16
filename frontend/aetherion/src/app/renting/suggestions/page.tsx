@@ -196,21 +196,6 @@ export default function RentingSuggestion() {
         }}
       />
 
-      <div className="floating-ai-icons-container">
-        {floatingIcons.map((item) => (
-          <div
-            key={item.id}
-            className="cyber-floating-icon"
-            style={{
-              left: item.left,
-              animationDuration: item.durationFall,
-              animationDelay: item.delay,
-            }}
-          >
-            <item.Icon size={item.size} />
-          </div>
-        ))}
-      </div>
 
       <div
         style={{

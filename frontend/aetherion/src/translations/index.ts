@@ -53,7 +53,7 @@ export const translations = {
       feat3Tag: "Data-Driven",
       feat3Title: "Smart Route Planning",
       feat3Desc:
-        "Analyze weather, safety, and traffic patterns to suggest the best times and routes for your adventures.",
+        "Analyze weather, safety, and traffic patterns to suggest the best routes for your adventures.",
       feat3Check: "✓ Predictive Analytics",
       stepsTitle: "Getting Started is Easy",
       step1Title: "Tell Us Your Plans",
@@ -99,6 +99,7 @@ export const translations = {
       initiating: "INITIATING NEURAL LINK...",
       confirmDispatch: "CONFIRM DISPATCH FOR",
       selectAsset: "SELECT AN AVAILABLE ASSET",
+      loginRequired: "Authentication Required: Please login to access this feature.",
     },
     tourJudging: {
       title: "ENVIRONMENTAL SCORING",
@@ -252,7 +253,7 @@ export const translations = {
       feat3Tag: "Dựa Trên Dữ Liệu",
       feat3Title: "Lập Lộ Trình Thông Minh",
       feat3Desc:
-        "Phân tích thời tiết, an toàn và giao thông để đề xuất thời gian và tuyến đường tốt nhất cho các chuyến phiêu lưu của bạn.",
+        "Phân tích thời tiết, an toàn và giao thông để đề xuất tuyến đường tốt nhất cho các chuyến phiêu lưu của bạn.",
       feat3Check: "✓ Phân Tích Dự Đoán",
       stepsTitle: "Bắt Đầu Rất Dễ Dàng",
       step1Title: "Chia Sẻ Kế Hoạch",
@@ -297,6 +298,7 @@ export const translations = {
       initiating: "ĐANG KHỞI TẠO LIÊN KẾT...",
       confirmDispatch: "XÁC NHẬN ĐIỀU ĐỘNG",
       selectAsset: "CHỌN MỘT PHƯƠNG TIỆN KHẢ DỤNG",
+      loginRequired: "Yêu cầu đăng nhập: Vui lòng đăng nhập để sử dụng tính năng này.",
     },
     tourJudging: {
       title: "ĐÁNH GIÁ MÔI TRƯỜNG",

@@ -659,9 +659,13 @@ export default function LoginPage() {
               }}
             >
               {isLoading ? <Scan className="animate-spin" /> : <UserPlus />}
-              {isLoading
-                ? (t("login.creatingAcc") as any)
-                : (t("login.createAccountBtn") as any)}
+              {isLoading ? (
+                (t("login.creatingAcc") as any)
+              ) : (
+                <span style={{ fontWeight: 700 }}>
+                  {t("login.createAccountBtn") as any}
+                </span>
+              )}
             </button>
           </form>
           <SocialButtons />
