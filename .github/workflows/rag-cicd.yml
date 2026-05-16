@@ -2,7 +2,7 @@ name: RAG Service CI/CD to GCP
 
 on:
   push:
-    branches: [ "main", "async" ]
+    branches: [ "main" ]
     paths:
       - 'rag/**'
       - '.github/workflows/rag-cicd.yml'
@@ -55,9 +55,12 @@ jobs:
         run: |
           cp .env.example .env || true
           cp login/.env.example login/.env || true
-          echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" > rag/.env
+          echo "GEMINI_API_KEY=mock-key-not-used" > rag/.env
+          echo "MOCK_EMBEDDING=true" >> rag/.env
 
       - name: Start services via Docker Compose
+        env:
+          MOCK_EMBEDDING: "true"
         run: docker compose up -d --build --wait rag postgres
 
       - name: Wait for RAG service to be ready
@@ -123,4 +126,6 @@ jobs:
             --image $DOCKER_TAG \
             --region ${{ env.REGION }} \
             --allow-unauthenticated \
-            --set-secrets="GEMINI_API_KEY=GEMINI_API_KEY:latest,POSTGRES_URL=POSTGRES_URL:latest"
+            --set-secrets="GEMINI_API_KEY=GEMINI_API_KEY:latest,POSTGRES_URL=POSTGRES_URL:latest" \
+            --command="sh" \
+            --args="-c","python seed.py && uvicorn main:app --host 0.0.0.0 --port \$PORT"

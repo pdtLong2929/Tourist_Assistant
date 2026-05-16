@@ -12,8 +12,22 @@ import {
   CheckCircle,
 } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 
-export default function LoginPage() {
+export default function LoginPageWrapper() {
+  const { language } = useLanguage();
+  const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "";
+
+  console.log("Current Google Auth Language:", language);
+
+  return (
+    <GoogleOAuthProvider key={language} clientId={googleClientId} locale={language}>
+      <LoginPage />
+    </GoogleOAuthProvider>
+  );
+}
+
+function LoginPage() {
   const { t } = useLanguage();
   const [mounted, setMounted] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
@@ -89,10 +103,9 @@ export default function LoginPage() {
 
     setIsLoading(true);
 
+    const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || "http://localhost";
     try {
-      const endpoint = isSignUp
-        ? "http://localhost:80/register"
-        : "http://localhost:80/login";
+      const endpoint = isSignUp ? `${nginxUrl}/register` : `${nginxUrl}/login`;
       const payload = isSignUp
         ? { name, email, password }
         : { email, password };
@@ -136,10 +149,7 @@ export default function LoginPage() {
         );
 
         setTimeout(() => {
-          const userId = data.user?.id || "guest";
-          if (
-            localStorage.getItem("hidePreferencesForm_" + userId) === "true"
-          ) {
+          if (data.user?.hidePreferencesForm) {
             router.push("/");
           } else {
             router.push("/preferences");
@@ -179,8 +189,9 @@ export default function LoginPage() {
 
     setForgotLoading(true);
     setForgotMessage("");
+    const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || "http://localhost";
     try {
-      const res = await fetch("http://localhost:80/forgot-password", {
+      const res = await fetch(`${nginxUrl}/forgot-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: forgotEmail }),
@@ -197,15 +208,61 @@ export default function LoginPage() {
     }
   };
 
-  const handleGoogleLogin = () => {
-    alert("Chức năng Google Login đang được phát triển. Vui lòng thử lại sau!");
-    // TODO: Chèn logic OAuth thực tế vào đây sau.
+  const handleGoogleLoginSuccess = async (credentialResponse: any) => {
+    const tokenId = credentialResponse.credential;
+    if (!tokenId) {
+      setErrorMessage("Invalid Google response");
+      return;
+    }
+
+    setIsLoading(true);
+    setErrorMessage("");
+    setSuccessMessage("");
+
+    const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || "http://localhost";
+    try {
+      const response = await fetch(`${nginxUrl}/google`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ tokenId }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        localStorage.setItem("accessToken", data.accessToken);
+        if (data.user) {
+          localStorage.setItem("cyber_user", JSON.stringify(data.user));
+        }
+
+        localStorage.removeItem("cyber_user_nickname");
+        localStorage.removeItem("cyber_user_age");
+
+        window.dispatchEvent(new Event("userAuthChanged"));
+
+        setSuccessMessage("Google Authentication Successful. Welcome!");
+
+        setTimeout(() => {
+          if (data.user?.hidePreferencesForm) {
+            router.push("/");
+          } else {
+            router.push("/preferences");
+          }
+        }, 800);
+      } else {
+        setErrorMessage(data.message || "Google Authentication Failed!");
+        setTimeout(() => setErrorMessage(""), 3000);
+      }
+    } catch (error) {
+      setErrorMessage("SYSTEM OFFLINE: CHECK GATEWAY CONNECTION");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  if (!mounted) return null;
-
   const SocialButtons = () => (
-    <div style={{ marginTop: "2rem", width: "100%" }}>
+    <div className="auth-social" style={{ marginTop: "2rem", width: "100%" }}>
       <div
         style={{
           position: "relative",
@@ -222,6 +279,7 @@ export default function LoginPage() {
           }}
         ></div>
         <span
+          className="auth-divider-text"
           style={{
             padding: "0 1.5rem",
             fontSize: "0.85rem",
@@ -240,39 +298,20 @@ export default function LoginPage() {
           }}
         ></div>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "1rem" }}>
-        <button
-          type="button"
-          onClick={handleGoogleLogin}
-          className="social-btn"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "0.75rem",
-            padding: "0.9rem",
-            borderRadius: "8px",
-            border: "1px solid rgba(52, 229, 235, 0.3)",
-            background: "var(--cyber-card-bg)",
-            color: "var(--text-main)",
-            cursor: "pointer",
-            fontSize: "1.1rem",
-            fontWeight: "600",
-            transition: "all 0.3s ease",
+      <div
+        className="auth-google-wrap"
+        style={{ display: "flex", justifyContent: "center", width: "100%" }}
+      >
+        <GoogleLogin
+          onSuccess={handleGoogleLoginSuccess}
+          onError={() => {
+            setErrorMessage("Google Login Failed");
           }}
-        >
-          <svg
-            style={{ width: "1.2rem", height: "1.2rem" }}
-            viewBox="0 0 24 24"
-            fill="currentColor"
-          >
-            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-          </svg>
-          Google
-        </button>
+          theme="filled_black"
+          shape="pill"
+          size="large"
+          width="340"
+        />
       </div>
     </div>
   );
@@ -281,7 +320,7 @@ export default function LoginPage() {
 
   return (
     <main
-      className="boot-sequence"
+      className="boot-sequence auth-page"
       style={{
         minHeight: "100vh",
         display: "flex",
@@ -322,6 +361,11 @@ export default function LoginPage() {
               10% { opacity: 1; }
               90% { opacity: 1; }
               100% { top: 110%; opacity: 0; }
+            }
+
+            @keyframes grid-pan {
+              from { background-position: 0 0; }
+              to { background-position: 0 80px; }
             }
 
             /* COMPONENT STYLES */
@@ -431,6 +475,137 @@ export default function LoginPage() {
               transition: all 0.5s ease;
               background-image: url("/images/bg4.jpg");
             }
+
+            @media (max-width: 720px) and (orientation: portrait), (max-width: 520px) {
+              .auth-page {
+                min-height: calc(100dvh - 64px) !important;
+                align-items: flex-start !important;
+                padding: 1rem 0.75rem 1.5rem !important;
+                overflow-x: hidden !important;
+                overflow-y: auto !important;
+              }
+
+              .auth-card {
+                max-width: 430px !important;
+                height: auto !important;
+                min-height: 0 !important;
+                display: block !important;
+                overflow: hidden !important;
+                border-radius: 14px !important;
+              }
+
+              .auth-form-panel {
+                position: relative !important;
+                inset: auto !important;
+                width: 100% !important;
+                height: auto !important;
+                min-height: 0 !important;
+                padding: 2rem 1.15rem 1.25rem !important;
+                transform: none !important;
+                transition: opacity 0.25s ease !important;
+              }
+
+              .auth-form-panel.is-hidden {
+                display: none !important;
+              }
+
+              .auth-form-panel.is-active {
+                display: flex !important;
+                opacity: 1 !important;
+                z-index: 10 !important;
+                pointer-events: auto !important;
+              }
+
+              .auth-title-row {
+                gap: 0.7rem !important;
+                margin-bottom: 1.2rem !important;
+              }
+
+              .auth-title-row svg {
+                width: 34px !important;
+                height: 34px !important;
+              }
+
+              .auth-form-title {
+                font-size: clamp(2rem, 11vw, 2.45rem) !important;
+              }
+
+              .cyber-input {
+                padding: 1rem 1.1rem !important;
+                font-size: 1rem !important;
+              }
+
+              .auth-social {
+                margin-top: 1.35rem !important;
+              }
+
+              .auth-divider-text {
+                padding: 0 0.75rem !important;
+                font-size: 0.72rem !important;
+                white-space: nowrap !important;
+              }
+
+              .auth-google-wrap,
+              .auth-google-wrap > div,
+              .auth-google-wrap iframe {
+                max-width: 100% !important;
+              }
+
+              .auth-google-wrap iframe {
+                width: min(340px, calc(100vw - 3.5rem)) !important;
+              }
+
+              .auth-slider {
+                position: relative !important;
+                top: auto !important;
+                left: auto !important;
+                width: 100% !important;
+                height: auto !important;
+                min-height: 190px !important;
+                transform: none !important;
+                border-left: 0 !important;
+                border-right: 0 !important;
+                border-top: 1px solid var(--cyber-blue) !important;
+              }
+
+              .auth-overlay-panel {
+                position: relative !important;
+                width: 100% !important;
+                height: auto !important;
+                min-height: 190px !important;
+                padding: 1.4rem 1.1rem 1.6rem !important;
+                transform: none !important;
+              }
+
+              .auth-overlay-panel.is-hidden {
+                display: none !important;
+              }
+
+              .auth-overlay-panel.is-active {
+                display: flex !important;
+                opacity: 1 !important;
+                pointer-events: auto !important;
+              }
+
+              .auth-overlay-title {
+                font-size: clamp(1.85rem, 10vw, 2.45rem) !important;
+                margin-bottom: 0.55rem !important;
+              }
+
+              .auth-overlay-copy {
+                font-size: 0.98rem !important;
+                line-height: 1.45 !important;
+                margin-bottom: 1.15rem !important;
+              }
+
+              .auth-switch-button {
+                width: 100% !important;
+                max-width: 250px !important;
+                padding: 0.9rem 1.2rem !important;
+                font-size: 0.85rem !important;
+                letter-spacing: 1.5px !important;
+              }
+            }
           `,
         }}
       />
@@ -458,10 +633,10 @@ export default function LoginPage() {
             position: "absolute",
             left: 0,
             right: 0,
-            height: "4px",
+            height: "2px",
             background: "var(--cyber-blue)",
-            boxShadow: "0 0 20px 5px var(--cyber-blue-glow)",
-            animation: "scanning-laser 6s linear infinite",
+            boxShadow: "0 0 15px 2px var(--cyber-blue-glow)",
+            animation: "scanning-laser 12s linear infinite",
             zIndex: 5,
             pointerEvents: "none",
           }}
@@ -473,9 +648,9 @@ export default function LoginPage() {
             position: "absolute",
             inset: "-50%",
             backgroundImage:
-              "linear-gradient(rgba(52, 229, 235, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(52, 229, 235, 0.1) 1px, transparent 1px)",
+              "linear-gradient(rgba(52, 229, 235, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(52, 229, 235, 0.03) 1px, transparent 1px)",
             backgroundSize: "80px 80px",
-            animation: "grid-pan 4s linear infinite",
+            animation: "grid-pan 12s linear infinite",
             transform: "perspective(1000px) rotateX(65deg) scale(1.2)",
             transformOrigin: "center top",
             zIndex: 1,
@@ -518,7 +693,7 @@ export default function LoginPage() {
           AUTHENTICATION CARD SUITE
           ========================================= */}
       <div
-        className="card-drop-in"
+        className="card-drop-in auth-card"
         style={{
           position: "relative",
           zIndex: 10,
@@ -550,6 +725,7 @@ export default function LoginPage() {
 
         {/* --- FORM 1 : REGISTRATION --- */}
         <div
+          className={`auth-form-panel auth-form-register ${isSignUp ? "is-active" : "is-hidden"}`}
           style={{
             position: "absolute",
             top: 0,
@@ -569,6 +745,7 @@ export default function LoginPage() {
           }}
         >
           <div
+            className="auth-title-row"
             style={{
               display: "flex",
               alignItems: "center",
@@ -578,7 +755,7 @@ export default function LoginPage() {
           >
             <Fingerprint size={45} color="var(--cyber-purple)" />
             <h2
-              className="glitch-yellow"
+              className="glitch-yellow auth-form-title"
               style={{
                 fontSize: "2.8rem",
                 margin: 0,
@@ -673,6 +850,7 @@ export default function LoginPage() {
 
         {/* --- FORM 2 : LOGIN --- */}
         <div
+          className={`auth-form-panel auth-form-login ${isSignUp ? "is-hidden" : "is-active"}`}
           style={{
             position: "absolute",
             top: 0,
@@ -692,6 +870,7 @@ export default function LoginPage() {
           }}
         >
           <div
+            className="auth-title-row"
             style={{
               display: "flex",
               alignItems: "center",
@@ -701,7 +880,7 @@ export default function LoginPage() {
           >
             <ShieldCheck size={45} color="var(--cyber-blue)" />
             <h2
-              className="glitch-yellow"
+              className="glitch-yellow auth-form-title"
               style={{
                 fontSize: "2.8rem",
                 margin: 0,
@@ -804,7 +983,7 @@ export default function LoginPage() {
 
         {/* --- DYNAMIC OVERLAY SLIDER --- */}
         <div
-          className="slider-gradient"
+          className="slider-gradient auth-slider"
           style={{
             position: "absolute",
             top: 0,
@@ -829,7 +1008,7 @@ export default function LoginPage() {
 
           {/* Welcome Back (Shown when Login is hidden / Slider is on Right) */}
           <div
-            className="overlay-panel overlay-left"
+            className={`overlay-panel overlay-left auth-overlay-panel ${isSignUp ? "is-active" : "is-hidden"}`}
             style={{
               position: "absolute",
               width: "100%",
@@ -849,7 +1028,7 @@ export default function LoginPage() {
           >
             <div className="panel-image-bg" />
             <h2
-              className="glitch-yellow"
+              className="glitch-yellow auth-overlay-title"
               style={{
                 fontSize: "3.2rem",
                 color: "var(--text-main)",
@@ -859,6 +1038,7 @@ export default function LoginPage() {
               {t("login.welcomeBack") as any}
             </h2>
             <p
+              className="auth-overlay-copy"
               style={{
                 color: "var(--text-secondary)",
                 marginBottom: "2.5rem",
@@ -871,6 +1051,7 @@ export default function LoginPage() {
               {t("login.welcomeDesc")}
             </p>
             <button
+              className="auth-switch-button"
               onClick={() => setIsSignUp(false)}
               style={{
                 padding: "1.2rem 4rem",
@@ -900,7 +1081,7 @@ export default function LoginPage() {
 
           {/* Join Us (Shown when Register is hidden / Slider is on Left) */}
           <div
-            className="overlay-panel overlay-right"
+            className={`overlay-panel overlay-right auth-overlay-panel ${isSignUp ? "is-hidden" : "is-active"}`}
             style={{
               position: "absolute",
               width: "100%",
@@ -920,7 +1101,7 @@ export default function LoginPage() {
           >
             <div className="panel-image-bg" />
             <h2
-              className="glitch-yellow"
+              className="glitch-yellow auth-overlay-title"
               style={{
                 fontSize: "3.2rem",
                 color: "var(--text-main)",
@@ -930,6 +1111,7 @@ export default function LoginPage() {
               {t("login.helloTraveler") as any}
             </h2>
             <p
+              className="auth-overlay-copy"
               style={{
                 color: "var(--text-secondary)",
                 marginBottom: "2.5rem",
@@ -942,6 +1124,7 @@ export default function LoginPage() {
               {t("login.helloDesc") as any}
             </p>
             <button
+              className="auth-switch-button"
               onClick={() => setIsSignUp(true)}
               style={{
                 padding: "1.2rem 4rem",

@@ -65,7 +65,7 @@ services:
     ports:
       - "6379:6379"
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: [ "CMD", "redis-cli", "ping" ]
       interval: 5s
       timeout: 3s
       retries: 3
@@ -107,6 +107,9 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_GOOGLE_CLIENT_ID: ${NEXT_PUBLIC_GOOGLE_CLIENT_ID}
+        NEXT_PUBLIC_NGINX_URL: ${NEXT_PUBLIC_NGINX_URL}
     container_name: ta_frontend
     restart: unless-stopped
     ports:
@@ -137,9 +140,16 @@ services:
       - path: ./rag/.env
         required: false
     environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-tourist}:${POSTGRES_PASSWORD:-tourist_secret}@postgres:5432/${POSTGRES_DB:-tourist_assistant}
       POSTGRES_URL: postgresql://${POSTGRES_USER:-tourist}:${POSTGRES_PASSWORD:-tourist_secret}@postgres:5432/${POSTGRES_DB:-tourist_assistant}
+      DATASET_PATH: /app/dataset.csv
+      PYTHONUNBUFFERED: "1"
+      MOCK_EMBEDDING: ${MOCK_EMBEDDING:-false}
+      REDIS_ADDR: redis:6379
     depends_on:
       postgres:
+        condition: service_healthy
+      redis:
         condition: service_healthy
     networks:
       - ta_network
@@ -159,6 +169,7 @@ services:
       LOGIN_API_URL: ${LOGIN_API_URL:-http://login:5036}
       API_SERVICE_URL: ${API_SERVICE_URL:-http://api_service:8081}
       NOTIFICATION_URL: ${NOTIFICATION_URL:-http://notification:8080}
+      API_CALLING_URL: ${API_CALLING_URL:-http://api_calling:8080}
       SSL_TOGGLE: ${SSL_TOGGLE:-on}
       HOST_HEADER: ${HOST_HEADER:-localhost}
       DNS_RESOLVER: ${DNS_RESOLVER:-127.0.0.11}
@@ -167,6 +178,7 @@ services:
       - login
       - api_service
       - notification
+      - api_calling
     networks:
       - ta_network
 
@@ -259,20 +271,15 @@ services:
       - ta_network
     command: >
       sh -c "
-        echo 'Waiting for Pub/Sub Emulator to be healthy...';
-        until curl -s http://pubsub:8085/; do
-          echo 'Emulator not ready, sleeping...';
-          sleep 2;
-        done;
-        echo 'Pub/Sub Emulator is UP. Creating topics...';
+        echo 'Waiting for Pub/Sub to start...';
+        sleep 5;
         curl -s -X PUT http://pubsub:8085/v1/projects/test-project/topics/ai-jobs;
         curl -s -X PUT http://pubsub:8085/v1/projects/test-project/topics/task-enrich;
         curl -s -X PUT http://pubsub:8085/v1/projects/test-project/topics/ai-results;
-        echo 'Topics created. Creating subscriptions...';
         curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/api-calling-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/ai-jobs\",\"pushConfig\":{\"pushEndpoint\":\"http://api_calling:8080/pubsub/push\"}}';
         curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/worker-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/task-enrich\",\"pushConfig\":{\"pushEndpoint\":\"http://worker_service:8001/pubsub/push\"}}';
         curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/notification-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/ai-results\",\"pushConfig\":{\"pushEndpoint\":\"http://notification:8080/pubsub/results\"}}';
-        echo 'Pub/Sub Initialized Successfully!';
+        echo 'Pub/Sub Initialized!';
       "
 
 # ─── Volumes ──────────────────────────────────────────────────────────────

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"net/url"
 	"time"
 
 	"github.com/pdtLong2929/Tourist_Assistant/internal/client"
@@ -27,10 +28,54 @@ func NewTouristService(m *client.MapClient, w *client.WeatherClient, a *client.A
 	return touristService{mapClt: m, weatherClt: w, aiClt: a, rdb: r}
 }
 
+type FrontendQueryPayload struct {
+	Journey     string         `json:"journey"`
+	Start       LocationDetail `json:"start"`
+	Destination LocationDetail `json:"destination"`
+}
+
+type LocationDetail struct {
+	Name    string `json:"name"`
+	Address string `json:"address,omitempty"`
+	Coords  struct {
+		Lat float64 `json:"lat"`
+		Lon float64 `json:"lon"`
+	} `json:"coords,omitempty"`
+}
+
 func (s *touristService) GetLocationDetail(ctx context.Context, detail string) (*model.LocationResponse, error) {
 	var lat, lon float64
 	displayName := detail
 	mapDataFound := false
+
+	// Check if detail is a JSON structured query from the frontend
+	var payload FrontendQueryPayload
+	if err := json.Unmarshal([]byte(detail), &payload); err == nil && payload.Destination.Name != "" {
+		// 1. If coordinates were already resolved by the frontend via Goong API, use them directly
+		if payload.Destination.Coords.Lat != 0 && payload.Destination.Coords.Lon != 0 {
+			lat = payload.Destination.Coords.Lat
+			lon = payload.Destination.Coords.Lon
+			displayName = payload.Destination.Address
+			if displayName == "" {
+				displayName = payload.Destination.Name
+			}
+			mapDataFound = true
+		} else {
+			// 2. If not pre-resolved, target just the Destination's textual name for backend Geocoding
+			detail = payload.Destination.Name
+			displayName = detail
+		}
+	}
+
+	// --- 0. CHECK CACHED COMPLETED LOCATION RESPONSE FIRST ---
+	responseCacheKey := "succeeded_loc:" + detail
+	if cachedResponse, err := s.rdb.Get(ctx, responseCacheKey).Result(); err == nil {
+		var finalResp model.LocationResponse
+		if err := json.Unmarshal([]byte(cachedResponse), &finalResp); err == nil {
+			log.Printf("Debug: Successfully retrieved fully compiled LocationResponse from Redis for '%s'", detail)
+			return &finalResp, nil
+		}
+	}
 
 	// --- 1. GET MAP COORDINATES (CHECK CACHE FIRST) ---
 	mapKey := "map:" + detail
@@ -55,9 +100,14 @@ func (s *touristService) GetLocationDetail(ctx context.Context, detail string) (
 			displayName = mapData.Results[0].FormattedAddress
 			mapDataFound = true
 
-			// Cache valid map result
+			// [Resiliency Strategy] Cache valid map results independently. Even if downstream weather or AI API calls fail later, we preserve this success.
 			if mapJson, err := json.Marshal(mapData); err == nil {
-				s.rdb.Set(ctx, mapKey, mapJson, 24*time.Hour) // Coordinates don't change often
+				// Atomically check existence before writing to prevent concurrent overrides
+				if rdbErr := s.rdb.SetNX(ctx, mapKey, mapJson, 24*time.Hour).Err(); rdbErr != nil {
+					log.Printf("Warning: Failed to write map cache to Redis for '%s': %v", detail, rdbErr)
+				} else {
+					log.Printf("Debug: Successfully cached map coordinates for '%s' in Redis", detail)
+				}
 			}
 		}
 	}
@@ -67,7 +117,7 @@ func (s *touristService) GetLocationDetail(ctx context.Context, detail string) (
 	desc := "DATA UNAVAILABLE: Failed to retrieve from external Weather API."
 	weatherDataFound := false
 
-	// Only perform weather lookup if we secured location coords
+	// [Decoupling logic] We only perform weather lookup if we successfully secured location coordinates (either via direct input, map cache, or API).
 	if mapDataFound {
 		weatherKey := fmt.Sprintf("weather:%.3f:%.3f", lat, lon)
 		if cachedWeather, err := s.rdb.Get(ctx, weatherKey).Result(); err == nil {
@@ -87,7 +137,8 @@ func (s *touristService) GetLocationDetail(ctx context.Context, detail string) (
 		if !weatherDataFound {
 			wData, err := s.weatherClt.GetWeatherByCoords(lat, lon)
 			if err != nil {
-				log.Printf("Warning: Weather lookup failed for %s: %v.", displayName, err)
+				// [Soft-Failure Strategy] Log the failure, but DO NOT panic or error out the request. The system persists and returns the successful Goong data.
+				log.Printf("Warning: Weather lookup failed for %s: %v. Continuing with fallback weather values.", displayName, err)
 			} else if wData != nil {
 				// Safely pull output
 				extracted := false
@@ -105,10 +156,15 @@ func (s *touristService) GetLocationDetail(ctx context.Context, detail string) (
 					}
 				}
 
-				// Only cache if extraction fully succeeded
+				// [Resiliency Strategy] Cache weather results independently. 
 				if extracted {
 					if wJson, err := json.Marshal(wData); err == nil {
-						s.rdb.Set(ctx, weatherKey, wJson, 15*time.Minute) // Cache shorter expiration for climate
+						// Atomically check existence before writing to prevent concurrent overrides
+						if rdbErr := s.rdb.SetNX(ctx, weatherKey, wJson, 15*time.Minute).Err(); rdbErr != nil {
+							log.Printf("Warning: Failed to write weather cache to Redis for '%s': %v", displayName, rdbErr)
+						} else {
+							log.Printf("Debug: Successfully cached weather data for '%s' in Redis", displayName)
+						}
 					}
 				}
 			}
@@ -119,11 +175,36 @@ func (s *touristService) GetLocationDetail(ctx context.Context, detail string) (
 	advice := s.aiClt.GetTravelAdvice(detail, temp, desc)
 
 	// --- 4. COMPILE FINAL RESPONSE ---
-	return &model.LocationResponse{
+	// [Production Debugging Safety] Mask sensitive tokens securely before allowing strings to surface to client APIs.
+	goongDebugURL := fmt.Sprintf("https://rsapi.goong.io/geocode?address=%s&api_key=REDACTED", url.QueryEscape(detail))
+	weatherDebugURL := "N/A (Location not secured)"
+	if mapDataFound {
+		weatherDebugURL = fmt.Sprintf("https://api.openweathermap.org/data/2.5/weather?lat=%v&lon=%v&appid=REDACTED&units=metric", lat, lon)
+	}
+
+	finalResponse := &model.LocationResponse{
 		Destination:    detail,
 		FullAddress:    displayName,
 		Coords:         model.Coordinate{Lat: lat, Lon: lon},
 		Weather:        model.WeatherInfo{Temp: temp, Description: desc},
 		Recommendation: advice,
-	}, nil
+		Debug: &model.DebugInfo{
+			GoongURL:   goongDebugURL,
+			WeatherURL: weatherDebugURL,
+		},
+	}
+
+	if mapDataFound {
+		if respJson, err := json.Marshal(finalResponse); err == nil {
+			// Atomically check existence before writing to prevent concurrent overrides
+			// Cache the fully compiled LocationResponse (including LLM advice) for 15 minutes to match weather TTL
+			if rdbErr := s.rdb.SetNX(ctx, responseCacheKey, respJson, 15*time.Minute).Err(); rdbErr != nil {
+				log.Printf("Warning: Failed to cache successful LocationResponse to Redis for '%s': %v", detail, rdbErr)
+			} else {
+				log.Printf("Debug: Successfully cached completed LocationResponse for '%s' in Redis (key: %s)", detail, responseCacheKey)
+			}
+		}
+	}
+
+	return finalResponse, nil
 }

@@ -121,11 +121,27 @@ export default function TourJudging() {
             position: "absolute",
             left: 0,
             right: 0,
-            height: "4px",
+            height: "2px",
             background: "var(--cyber-blue)",
-            boxShadow: "0 0 20px 5px var(--cyber-blue-glow)",
-            animation: "scanning-laser 6s linear infinite",
+            boxShadow: "0 0 15px 2px var(--cyber-blue-glow)",
+            animation: "scanning-laser 12s linear infinite",
             zIndex: 5,
+            pointerEvents: "none",
+          }}
+        />
+        
+        {/* Animated 3D Grid */}
+        <div
+          style={{
+            position: "absolute",
+            inset: "-50%",
+            backgroundImage:
+              "linear-gradient(var(--cyber-grid) 1px, transparent 1px), linear-gradient(90deg, var(--cyber-grid) 1px, transparent 1px)",
+            backgroundSize: "80px 80px",
+            animation: "grid-pan 12s linear infinite",
+            transform: "perspective(1000px) rotateX(65deg) scale(1.2)",
+            transformOrigin: "center top",
+            zIndex: 1,
             pointerEvents: "none",
           }}
         />

@@ -154,6 +154,11 @@ export const translations = {
       submit: "COMPLETE & GO TO HOME",
       submitting: "SAVING DATA...",
       errorMsg: "An error occurred while submitting data!",
+      edit: "EDIT PREFERENCES",
+      emptyTitle: "No preferences saved yet",
+      emptyDesc:
+        "Add your travel interests and preferred vehicle brands to receive more relevant recommendations.",
+      initialize: "SET UP PREFERENCES",
     },
     location: {
       market: "Market / Bazaar",
@@ -352,6 +357,11 @@ export const translations = {
       submit: "HOÀN THÀNH & TỚI TRANG CHÍNH",
       submitting: "ĐANG LƯU DỮ LIỆU...",
       errorMsg: "Đã xảy ra lỗi khi gửi dữ liệu!",
+      edit: "CHỈNH SỬA SỞ THÍCH",
+      emptyTitle: "Chưa có sở thích đã lưu",
+      emptyDesc:
+        "Thêm sở thích du lịch và thương hiệu phương tiện ưu tiên để nhận gợi ý phù hợp hơn.",
+      initialize: "THIẾT LẬP SỞ THÍCH",
     },
     location: {
       market: "Chợ / Bazaar",

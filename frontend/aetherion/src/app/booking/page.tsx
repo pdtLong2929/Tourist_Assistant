@@ -221,10 +221,10 @@ export default function BookingPage() {
             position: "absolute",
             left: 0,
             right: 0,
-            height: "4px",
+            height: "2px",
             background: "var(--cyber-blue)",
-            boxShadow: "0 0 20px 5px var(--cyber-blue-glow)",
-            animation: "scanning-laser 5s linear infinite",
+            boxShadow: "0 0 15px 2px var(--cyber-blue-glow)",
+            animation: "scanning-laser 12s linear infinite",
             zIndex: 5,
             pointerEvents: "none",
           }}
@@ -238,7 +238,7 @@ export default function BookingPage() {
             background:
               "linear-gradient(var(--cyber-grid) 1px, transparent 1px), linear-gradient(90deg, var(--cyber-grid) 1px, transparent 1px)",
             backgroundSize: "80px 80px",
-            animation: "grid-pan 4s linear infinite",
+            animation: "grid-pan 12s linear infinite",
             transform: "perspective(1000px) rotateX(65deg) scale(1)",
             transformOrigin: "center top",
             zIndex: 1,
@@ -627,15 +627,16 @@ export default function BookingPage() {
             marginTop: "0px",
           }}
         >
-          <Scan size={18} color="var(--cyber-blue)" />
+          <Scan size={22} color="var(--cyber-blue)" />
           <h3
             className="module-label"
             style={{
               margin: 0,
               color: "var(--cyber-blue)",
-              fontSize: "0.85rem",
-              fontWeight: "700",
-              letterSpacing: "1px",
+              fontSize: "1.1rem",
+              fontWeight: "800",
+              letterSpacing: "2px",
+              textTransform: "uppercase",
             }}
           >
             {t("booking.availableAssets" as any)}

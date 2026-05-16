@@ -2,7 +2,7 @@ name: Frontend CI/CD to GCP
 
 on:
   push:
-    branches: [ "main", "async" ]
+    branches: [ "main" ]
     paths:
       - 'frontend/**'
       - '.github/workflows/frontend-cicd.yml'
@@ -60,20 +60,12 @@ jobs:
 
       - name: Create .env from defaults
         run: |
-<<<<<<< HEAD
-          cp .env.example .env
-          cp login/.env.example login/.env
-
-      - name: Start services via Docker Compose
-        run: docker compose up -d --build --wait
-=======
           cp .env.example .env || true
           cp login/.env.example login/.env || true
           touch rag/.env || true
 
       - name: Start services via Docker Compose
         run: docker compose up -d --build --wait frontend postgres mongodb
->>>>>>> async
 
       - name: Wait for frontend to be ready
         run: |
@@ -93,20 +85,12 @@ jobs:
       - name: Verify PostgreSQL is healthy
         run: |
           docker compose exec -T postgres pg_isready -U tourist
-<<<<<<< HEAD
-          echo "PostgreSQL is healthy"
-=======
           echo "PostgreSQL is healthy ✅"
->>>>>>> async
 
       - name: Verify MongoDB is healthy
         run: |
           docker compose exec -T mongodb mongosh --eval "db.adminCommand('ping')" -u tourist -p tourist_secret --authenticationDatabase admin
-<<<<<<< HEAD
-          echo "MongoDB is healthy"
-=======
           echo "MongoDB is healthy ✅"
->>>>>>> async
 
       - name: Tear down
         if: always()
@@ -135,22 +119,31 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
-      # 2. Configure Docker to use GCP Artifact Registry
+      # 2. Fetch Google Client ID from GSM for Build-Time Injection
+      - name: Get Google Client ID from Secret Manager
+        id: secrets
+        uses: google-github-actions/get-secretmanager-secrets@v2
+        with:
+          secrets: |-
+            GOOGLE_CLIENT_ID:${{ env.PROJECT_ID }}/GOOGLE_CLIENT_ID
+
+      # 3. Configure Docker to use GCP Artifact Registry
       - name: Configure Docker Auth
         run: |-
           gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
 
-      # 3. Build & Push using the multi-stage Dockerfile
+      # 4. Build & Push using the multi-stage Dockerfile
       - name: Build and Push Docker Image
         working-directory: ./frontend
         run: |-
           DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPO }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
           docker build \
             --build-arg NEXT_PUBLIC_NGINX_URL=${{ env.NGINX_URL }} \
+            --build-arg NEXT_PUBLIC_GOOGLE_CLIENT_ID=${{ steps.secrets.outputs.GOOGLE_CLIENT_ID }} \
             -t $DOCKER_TAG .
           docker push $DOCKER_TAG
 
-      # 4. Deploy to Cloud Run
+      # 5. Deploy to Cloud Run
       - name: Deploy to Cloud Run
         run: |-
           DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPO }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"

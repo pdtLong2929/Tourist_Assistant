@@ -60,49 +60,64 @@ export default function RentingSuggestion() {
 
   useEffect(() => {
     if (!userId) return;
-    const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || "http://localhost";
-    const wsUrl = nginxUrl.replace(/^http/, "ws") + `/ws?userId=${userId}`;
-    const ws = new WebSocket(wsUrl);
+    let ws: WebSocket | null = null;
+    let reconnectTimeout: NodeJS.Timeout;
 
-    ws.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data);
-        console.log("WebSocket Received:", data);
-        if (data.result) {
-          let parsed = [];
-          try {
-            parsed = JSON.parse(data.result);
-          } catch (pe) {
-            console.error("Could not parse result json from LLM", pe);
+    const connectWS = () => {
+      const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || "http://localhost";
+      const wsUrl = nginxUrl.replace(/^http/, "ws") + `/ws?userId=${userId}`;
+      console.log("Connecting WebSocket for user:", userId);
+      ws = new WebSocket(wsUrl);
+
+      ws.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          console.log("WebSocket Received:", data);
+          if (data.result) {
+            let parsed = [];
+            try {
+              parsed = JSON.parse(data.result);
+            } catch (pe) {
+              console.error("Could not parse result json from LLM", pe);
+            }
+            if (Array.isArray(parsed)) {
+              parsed.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+              setResult(parsed);
+            } else {
+              setResult([]);
+            }
+            setLoading(false);
           }
-          if (Array.isArray(parsed)) {
-            parsed.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-            setResult(parsed);
-          } else {
-            setResult([]);
-          }
-          setLoading(false);
+        } catch (e) {
+          console.error("Error parsing WS message:", e);
         }
-      } catch (e) {
-        console.error("Error parsing WS message:", e);
-      }
+      };
+
+      ws.onclose = (event) => {
+        console.log("WebSocket closed, attempting reconnect in 3s... Code:", event.code);
+        reconnectTimeout = setTimeout(() => {
+          connectWS();
+        }, 3000);
+      };
+
+      ws.onerror = () => {
+        ws?.close();
+      };
     };
 
-    return () => ws.close();
+    connectWS();
+
+    return () => {
+      if (ws) {
+        ws.onclose = null;
+        ws.close();
+      }
+      clearTimeout(reconnectTimeout);
+    };
   }, [userId]);
 
   useEffect(() => {
     setMounted(true);
-
-    const generatedIcons = Array.from({ length: 25 }).map((_, i) => ({
-      id: i,
-      left: `${Math.random() * 100}vw`,
-      durationFall: `${Math.random() * 20 + 15}s`,
-      delay: `-${Math.random() * 20}s`,
-      Icon: aiIcons[Math.floor(Math.random() * aiIcons.length)],
-      size: Math.floor(Math.random() * 24) + 14,
-    }));
-    setFloatingIcons(generatedIcons);
   }, []);
 
   const handleSearch = async () => {
@@ -114,6 +129,7 @@ export default function RentingSuggestion() {
     const progressInterval = setInterval(() => {
       setMatchProgress((prev) => {
         if (prev >= 98) {
+          clearInterval(progressInterval);
           return 98;
         }
         const increment = prev < 60 ? 4 : prev < 85 ? 1 : 0.2;
@@ -126,16 +142,62 @@ export default function RentingSuggestion() {
     }, 1000);
 
     const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || "http://localhost";
+
     try {
-      const combinedQuery = `Journey: ${journey} | Start: ${startPos} | Destination: ${endPos}`;
-      await fetch(`${nginxUrl}/api/v1/jobs/submit`, {
+      let startLocation: any = null;
+      let destinationLocation: any = null;
+
+      // Fetch both location contexts in parallel to slash overall response latency in half
+      const fetchTasks = [];
+
+      if (startPos.trim()) {
+        fetchTasks.push(
+          fetch(`${nginxUrl}/api/v1/location/${encodeURIComponent(startPos)}`)
+            .then(res => res.json())
+            .then(data => {
+              if (data.status === "success" && data.data) {
+                startLocation = data.data;
+              }
+            })
+            .catch(e => console.error("Error fetching location from backend for startPos:", e))
+        );
+      }
+
+      if (endPos.trim()) {
+        fetchTasks.push(
+          fetch(`${nginxUrl}/api/v1/location/${encodeURIComponent(endPos)}`)
+            .then(res => res.json())
+            .then(data => {
+              if (data.status === "success" && data.data) {
+                destinationLocation = data.data;
+              }
+            })
+            .catch(e => console.error("Error fetching location from backend for endPos:", e))
+        );
+      }
+
+      // Execute parallel fetches synchronously
+      if (fetchTasks.length > 0) {
+        await Promise.all(fetchTasks);
+      }
+
+      // 3. Formulate a complete composite query to retain human-readable context for logs & models
+      const combinedQueryPayload = {
+        journey: journey,
+        start: startLocation ? { name: startPos, address: startLocation.full_address, coords: startLocation.coordinates } : { name: startPos },
+        destination: destinationLocation ? { name: endPos, address: destinationLocation.full_address, coords: destinationLocation.coordinates } : { name: endPos }
+      };
+
+      // 4. Directly send both resolved location query into api_calling to publish to task-enrichment Pub/Sub
+      await fetch(`${nginxUrl}/api/v1/jobs/enrich`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           userId: userId,
-          query: combinedQuery,
+          query: JSON.stringify(combinedQueryPayload),
           jobType: "vehicle_suggestion",
-        }),
+          destination: destinationLocation
+        })
       });
     } catch (e) {
       console.error(e);
@@ -152,16 +214,21 @@ export default function RentingSuggestion() {
       <style
         dangerouslySetInnerHTML={{
           __html: `
-        @keyframes cascade-icons { 0% { top: -10%; transform: rotate(0deg); opacity: 0.08; } 100% { top: 110%; transform: rotate(360deg); opacity: 0; } }
-        @keyframes scan-line { 0% { top: 0%; opacity: 0; } 50% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        
-        .floating-ai-icons-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; overflow: hidden; z-index: 0; pointer-events: none; }
-        .cyber-floating-icon { position: absolute; color: var(--cyber-blue); animation: cascade-icons linear infinite; }
-        
         .reveal-text { opacity: 0; animation: reveal-up 1s forwards; }
         @keyframes reveal-up { to { opacity: 1; transform: translateY(0); filter: blur(0); } }
         
+        .scanning-laser-line {
+          position: fixed;
+          left: 0;
+          right: 0;
+          height: 2px;
+          background: var(--cyber-blue);
+          box-shadow: 0 0 15px 2px var(--cyber-blue-glow);
+          animation: scan-line 12s linear infinite;
+          z-index: 5;
+          pointer-events: none;
+        }
+
         .scanning-card::after { content: ""; position: absolute; left: 0; width: 100%; height: 3px; background: var(--cyber-blue); box-shadow: 0 0 20px var(--cyber-blue); animation: scan-line 2s linear infinite; z-index: 5; }
         
         @keyframes cyber-pulse {
@@ -197,6 +264,7 @@ export default function RentingSuggestion() {
       />
 
 
+      <div className="scanning-laser-line" />
       <div
         style={{
           padding: "4rem 2rem",

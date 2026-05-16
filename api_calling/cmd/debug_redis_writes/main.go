@@ -24,7 +24,7 @@ func main() {
 	locKey := os.Getenv("LOCATION_API_KEY")
 	weaKey := os.Getenv("WEATHER_API_KEY")
 
-	fmt.Printf("Keys loaded -> Location: %s, Weather: %s\n", locKey, weaKey)
+	fmt.Printf("Keys loaded -> Location Key Length: %d, Weather Key Length: %d\n", len(locKey), len(weaKey))
 
 	mClient := client.NewMapClient(locKey)
 	wClient := client.NewWeatherClient(weaKey)

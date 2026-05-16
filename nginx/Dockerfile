@@ -12,4 +12,4 @@ COPY conf.d/default.conf /etc/nginx/default.conf.template
 
 EXPOSE 80
 
-CMD ["/bin/sh", "-c", "envsubst '${PORT} ${LOGIN_API_URL} ${API_SERVICE_URL} ${NOTIFICATION_URL} ${FRONTEND_URL} ${SSL_TOGGLE} ${HOST_HEADER} ${DNS_RESOLVER}' < /etc/nginx/default.conf.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"]
+CMD ["/bin/sh", "-c", "envsubst '${PORT} ${LOGIN_API_URL} ${API_SERVICE_URL} ${NOTIFICATION_URL} ${FRONTEND_URL} ${SSL_TOGGLE} ${HOST_HEADER} ${DNS_RESOLVER} ${API_CALLING_URL}' < /etc/nginx/default.conf.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"]
