@@ -175,15 +175,30 @@ export default function PreferencesPage() {
     );
   };
 
-  const handleSkip = (hideForever: boolean) => {
+  const handleSkip = async (hideForever: boolean) => {
     if (hideForever) {
       try {
+        const token = localStorage.getItem("accessToken");
+        const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || "http://localhost";
+        
+        await fetch(`${nginxUrl}/preferences`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify({ skipped: true }),
+        });
+
         const userStr = localStorage.getItem("cyber_user");
         if (userStr) {
           const user = JSON.parse(userStr);
-          localStorage.setItem("hidePreferencesForm_" + user.id, "true");
+          user.hidePreferencesForm = true;
+          localStorage.setItem("cyber_user", JSON.stringify(user));
         }
-      } catch (e) {}
+      } catch (e) {
+        console.error("Error setting forever skip", e);
+      }
     }
     router.push("/");
   };
@@ -207,24 +222,27 @@ export default function PreferencesPage() {
       motorbikes: selectedMotorbikes,
     };
 
-    console.log("=== GỬI DỮ LIỆU ĐIỀN FORM TỚI LINKTEST ===");
-    console.log(payload);
-
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      // TODO (Backend): Khi có API, xóa comment bên dưới và điền link vào
-      // const response = await fetch("https://YOUR_API_URL_HERE/api/preferences", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(payload),
-      // });
-      // if (!response.ok) throw new Error("API error");
+      const token = localStorage.getItem("accessToken");
+      const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || "http://localhost";
+
+      const response = await fetch(`${nginxUrl}/preferences`, {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(payload),
+      });
+      
+      if (!response.ok) throw new Error("API error");
 
       try {
         const userStr = localStorage.getItem("cyber_user");
         if (userStr) {
           const user = JSON.parse(userStr);
-          localStorage.setItem("hidePreferencesForm_" + user.id, "true");
+          user.hidePreferencesForm = true;
+          localStorage.setItem("cyber_user", JSON.stringify(user));
         }
       } catch (e) {}
 

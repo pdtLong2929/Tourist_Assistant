@@ -36,6 +36,14 @@ const User = sequelize.define('User', {
   refreshToken: {
     type: DataTypes.TEXT,
     allowNull: true,
+  },
+  hidePreferencesForm: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
+  preferencesData: {
+    type: DataTypes.JSON,
+    allowNull: true,
   }
  }, {
   tableName: 'users',

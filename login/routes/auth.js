@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { register, login, googleLogin, logout, refresh, forgotPassword, resetPassword } = require('../controllers/authController');
+const { register, login, googleLogin, logout, refresh, forgotPassword, resetPassword, updatePreferences } = require('../controllers/authController');
 const verifyToken = require('../middleware/authMiddleware');
 const User = require('../models/User');
 
@@ -13,11 +13,13 @@ router.post('/refresh', refresh);
 router.post('/forgot-password', forgotPassword);
 router.post('/reset-password/:token', resetPassword);
 
+router.post('/preferences', verifyToken, updatePreferences);
+
 // get profile
 router.get('/me', verifyToken, async (req, res) => {
   try {
     const user = await User.findByPk(req.user.userId, {
-      attributes: ['id', 'email', 'name', 'createdAt'] 
+      attributes: ['id', 'email', 'name', 'hidePreferencesForm', 'preferencesData', 'createdAt'] 
     });
     
     if (!user) {
