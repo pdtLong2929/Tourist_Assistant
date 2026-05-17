@@ -138,11 +138,12 @@ jobs:
             --allow-unauthenticated \
             --cpu=2 \
             --memory=2Gi \
+            --add-cloudsql-instances="tourist-assistant-6710f:asia-southeast1:tourist-assistant-6710f-instance" \
             --set-secrets="\
               DATABASE_URL=FIREBASE_URL:latest,\
               FIREBASE_STORAGE_BUCKET=FIREBASE_STORAGE_BUCKET:latest,\
               REDIS_ADDR=REDIS_ADDR:latest,\
               REDIS_PASSWORD=REDIS_PASSWORD:latest" \
-            --set-env-vars="PUBSUB_ENABLE_PULL_SUBSCRIBER=false,PUBSUB_OUTPUT_TOPIC_ID=ai-results,PUBSUB_ERROR_TOPIC_ID=ai-results" \
+            --set-env-vars="PUBSUB_ENABLE_PULL_SUBSCRIBER=false,PUBSUB_OUTPUT_TOPIC_ID=ai-results,PUBSUB_ERROR_TOPIC_ID=ai-results,PYTHONUNBUFFERED=1" \
             --timeout=3600
 
