@@ -18,6 +18,14 @@ type JobRequest struct {
 	JobType   string `json:"jobType"`
 }
 
+type RecommendRequest struct {
+	UserID      string `json:"userId" binding:"required"`
+	Origin      string `json:"origin" binding:"required"`
+	Destination string `json:"destination" binding:"required"`
+	Date        int    `json:"date" binding:"required"`
+}
+
+
 func main() {
 	r := gin.Default()
 
@@ -35,6 +43,7 @@ func main() {
 	defer client.Close()
 
 	topic := client.Topic("ai-jobs")
+	recommendTopic := client.Topic("recommend-job")
 
 	// Endpoint to receive requests from Frontend
 	r.POST("/api/v1/jobs/submit", func(c *gin.Context) {
@@ -73,6 +82,44 @@ func main() {
 			"jobId":   jobID,
 		})
 	})
+
+	// New Endpoint for Vehicle Recommendation
+	r.POST("/api/v1/jobs/recommend", func(c *gin.Context) {
+		var req RecommendRequest
+		if err := c.ShouldBindJSON(&req); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		jobID := fmt.Sprintf("rec-job-%s", req.UserID)
+
+		jobPayload := map[string]interface{}{
+			"jobId":       jobID,
+			"userId":      req.UserID,
+			"origin":      req.Origin,
+			"destination": req.Destination,
+			"date":        req.Date,
+		}
+
+		payloadBytes, _ := json.Marshal(jobPayload)
+
+		result := recommendTopic.Publish(ctx, &pubsub.Message{
+			Data: payloadBytes,
+		})
+
+		_, err := result.Get(ctx)
+		if err != nil {
+			log.Println("Error publishing to recommend-job:", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to queue recommendation job"})
+			return
+		}
+
+		c.JSON(http.StatusAccepted, gin.H{
+			"message": "Recommendation job queued successfully",
+			"jobId":   jobID,
+		})
+	})
+
 
 	port := os.Getenv("PORT")
 	if port == "" {
