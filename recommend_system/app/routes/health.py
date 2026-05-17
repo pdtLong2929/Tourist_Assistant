@@ -4,8 +4,8 @@ router = APIRouter()
 
 
 
-@router.get("/")
-def root():
+@router.get("/health")
+def health():
     return {
         "status": "This vehicle recommendation system is running"
     }
