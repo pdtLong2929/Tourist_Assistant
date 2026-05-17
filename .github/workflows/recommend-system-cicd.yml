@@ -14,7 +14,7 @@ on:
       - '.github/workflows/recommend-system-cicd.yml'
 
 env:
-  PROJECT_ID: 'tourist-assistant-6710f'
+  PROJECT_ID: 'touristassistant-29-03-2026'
   REGION: 'asia-southeast1'
   GAR_REPO: 'tourism-frontend'
   SERVICE_NAME: 'tourism-recommend-system'
