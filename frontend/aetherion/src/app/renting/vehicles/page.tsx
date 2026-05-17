@@ -10,8 +10,9 @@ import {
   TrendingUp, 
   ShieldCheck, 
   Zap, 
-  Wallet,
-  Star
+  Star,
+  Loader2,
+  Cpu
 } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -22,9 +23,34 @@ export default function VehicleListPage() {
   
   const [vehicles, setVehicles] = useState<any[]>([]);
   const [mounted, setMounted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [loadingStep, setLoadingStep] = useState(0);
+
+  const loadingSteps = [
+    "ESTABLISHING SECURE CONNECTION TO COGNITIVE CORE...",
+    "EXTRACTING ROUTE GEOMETRY & ROAD GRAPH...",
+    "CROSS-REFERENCING FORECASTED WEATHER MATRICES...",
+    "RETRIEVING VEHICLE ATTRIBUTES FROM CLOUD SQL...",
+    "COMPUTING COSINE COMPATIBILITY MATRIX...",
+    "RANKING MODULE COMPATIBILITY VIA KNN REGRESSION..."
+  ];
 
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  // Cycling the futuristic loading status logs
+  useEffect(() => {
+    if (!loading) return;
+    const interval = setInterval(() => {
+      setLoadingStep(prev => (prev + 1) % loadingSteps.length);
+    }, 1800);
+    return () => clearInterval(interval);
+  }, [loading]);
+
+  useEffect(() => {
+    if (!mounted) return;
+    
     const data = localStorage.getItem("last_recommendations");
     if (data) {
       const parsed = JSON.parse(data);
@@ -33,8 +59,57 @@ export default function VehicleListPage() {
       } else {
         setVehicles(parsed.bikes || []);
       }
+      setLoading(false);
+    } else {
+      // Recommendations not fetched yet, wait via WebSocket
+      setLoading(true);
+      
+      const userId = localStorage.getItem("renting_userId");
+      if (!userId) {
+        setLoading(false);
+        return;
+      }
+      
+      const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || "http://localhost";
+      const wsUrl = nginxUrl.replace(/^http/, "ws") + `/ws?userId=${userId}`;
+      console.log("Connecting WebSocket from Vehicle List page for user:", userId);
+      const ws = new WebSocket(wsUrl);
+
+      ws.onmessage = (event) => {
+        try {
+          const wsData = JSON.parse(event.data);
+          console.log("Vehicle List WS Received:", wsData);
+          if (wsData.result) {
+            const parsed = JSON.parse(wsData.result);
+            if (parsed && (parsed.cars || parsed.bikes)) {
+              localStorage.setItem('last_recommendations', JSON.stringify(parsed));
+              if (type === "car") {
+                setVehicles(parsed.cars || []);
+              } else {
+                setVehicles(parsed.bikes || []);
+              }
+              setLoading(false);
+              ws.close();
+            }
+          }
+        } catch (e) {
+          console.error("Error parsing WS message in Vehicle List:", e);
+        }
+      };
+
+      ws.onerror = (err) => {
+        console.error("Vehicle List WS error:", err);
+      };
+
+      ws.onclose = () => {
+        console.log("Vehicle List WS closed.");
+      };
+
+      return () => {
+        ws.close();
+      };
     }
-  }, [type]);
+  }, [type, mounted]);
 
   if (!mounted) return null;
 
@@ -119,8 +194,81 @@ export default function VehicleListPage() {
           </div>
         </div>
 
-        {/* List Section */}
-        {vehicles.length > 0 ? (
+        {/* Dynamic State Selection */}
+        {loading ? (
+          <div 
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "7rem 2rem",
+              background: "rgba(15, 23, 42, 0.4)",
+              borderRadius: "24px",
+              border: "1px solid rgba(255,255,255,0.05)",
+              backdropFilter: "blur(12px)",
+              position: "relative",
+              overflow: "hidden"
+            }}
+            className="scanning-card"
+          >
+            {/* Core Scanner Ring */}
+            <div style={{
+              width: "120px",
+              height: "120px",
+              borderRadius: "50%",
+              border: `2px solid ${isCar ? "rgba(52,229,235,0.2)" : "rgba(251,191,36,0.2)"}`,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              position: "relative",
+              marginBottom: "2.5rem",
+              boxShadow: `0 0 30px ${isCar ? "rgba(52,229,235,0.1)" : "rgba(251,191,36,0.1)"}`
+            }}>
+              {/* Spinning scanning arc */}
+              <div style={{
+                position: "absolute",
+                inset: "-6px",
+                borderRadius: "50%",
+                border: "2px solid transparent",
+                borderTopColor: isCar ? "var(--cyber-blue)" : "var(--cyber-yellow)",
+                animation: "spin-custom 1s linear infinite"
+              }} />
+              
+              {isCar ? (
+                <Car size={48} className="animate-pulse" color="var(--cyber-blue)" />
+              ) : (
+                <Bike size={48} className="animate-pulse" color="var(--cyber-yellow)" />
+              )}
+            </div>
+
+            <h2 style={{
+              fontSize: "1.6rem",
+              fontWeight: "900",
+              textTransform: "uppercase",
+              letterSpacing: "3px",
+              marginBottom: "0.75rem",
+              color: "#fff"
+            }}>
+              Syncing AI Recommendations
+            </h2>
+
+            <div style={{ 
+              display: "flex", 
+              alignItems: "center", 
+              gap: "8px", 
+              color: isCar ? "var(--cyber-blue)" : "var(--cyber-yellow)",
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.85rem",
+              letterSpacing: "1px",
+              textShadow: `0 0 10px ${isCar ? "rgba(52,229,235,0.3)" : "rgba(251,191,36,0.3)"}`,
+              minHeight: "20px"
+            }}>
+              <Cpu size={14} className="animate-spin-custom" />
+              {loadingSteps[loadingStep]}
+            </div>
+          </div>
+        ) : vehicles.length > 0 ? (
           <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "1.5rem" }}>
             {vehicles.map((v, idx) => (
               <div
@@ -354,6 +502,29 @@ export default function VehicleListPage() {
         }
         .animate-spin-custom {
           animation: spin-custom 2s linear infinite;
+        }
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.4; }
+        }
+        .animate-pulse {
+          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        .scanning-card::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          width: 100%;
+          height: 3px;
+          background: ${isCar ? "var(--cyber-blue)" : "var(--cyber-yellow)"};
+          box-shadow: 0 0 20px ${isCar ? "var(--cyber-blue)" : "var(--cyber-yellow)"};
+          animation: scan-line 2.5s linear infinite;
+          z-index: 5;
+        }
+        @keyframes scan-line {
+          0% { top: 0%; opacity: 0; }
+          50% { opacity: 1; }
+          100% { top: 100%; opacity: 0; }
         }
       `}</style>
     </div>

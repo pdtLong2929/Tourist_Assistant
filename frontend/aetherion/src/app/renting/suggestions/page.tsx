@@ -325,23 +325,21 @@ export default function RentingSuggestion() {
     }
   };
 
-  const handleVehicleClick = async (type: string) => {
+  const handleVehicleClick = (type: string) => {
     const normalizedType = type?.toLowerCase();
     const isVehicle = ['car', 'motorbike', 'bike', 'ô tô', 'xe máy'].includes(normalizedType);
     
     if (isVehicle) {
-      // If we already have results, persist them and navigate
+      const routeType = (normalizedType === 'car' || normalizedType === 'ô tô') ? 'car' : 'motorbike';
+      
+      // If we already have results, persist them in localStorage
       if (specificVehicles) {
         localStorage.setItem('last_recommendations', JSON.stringify(specificVehicles));
-        const routeType = (normalizedType === 'car' || normalizedType === 'ô tô') ? 'car' : 'motorbike';
-        window.location.href = `/renting/vehicles?type=${routeType}`;
-        return;
-      }
-      
-      console.log("Manual trigger for vehicle recommendations:", type);
-      const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || "http://localhost";
-      try {
-        await fetch(`${nginxUrl}/api/v1/jobs/recommend`, {
+      } else {
+        // Fire manual recommendation trigger in the background (fire-and-forget)
+        console.log("Triggering background vehicle recommendation job:", type);
+        const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || "http://localhost";
+        fetch(`${nginxUrl}/api/v1/jobs/recommend`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -350,10 +348,11 @@ export default function RentingSuggestion() {
             date: 5,
             userId: userId,
           }),
-        });
-      } catch (e) {
-        console.error("Failed to fire manual vehicle recommendation job:", e);
+        }).catch(e => console.error("Failed background vehicle job trigger:", e));
       }
+      
+      // REDIRECT IMMEDIATELY - DO NOT WAIT!
+      window.location.href = `/renting/vehicles?type=${routeType}`;
     }
   };
 
