@@ -41,6 +41,9 @@ def _configure_credentials() -> None:
 
     credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
     if not credentials_path:
+        # In GCP environments like Cloud Run, we use Application Default Credentials (ADC) automatically
+        if os.getenv("K_SERVICE"):
+            return
         raise EnvironmentError(
             "Missing environment variable: GOOGLE_APPLICATION_CREDENTIALS"
         )

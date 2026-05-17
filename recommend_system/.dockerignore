@@ -3,8 +3,8 @@
 .env.*
 
 # Exclude heavy raw geospatial CSV files (already uploaded to Firebase Storage)
-data/NodesnEdges/Nodes/*.csv
-data/NodesnEdges/Edges/*.csv
+# data/NodesnEdges/Nodes/*.csv
+# data/NodesnEdges/Edges/*.csv
 
 # Exclude local serialized graphs (unless you want to pack them in the image)
 # data/serialized_graphs/*.pkl.gz
