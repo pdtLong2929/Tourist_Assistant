@@ -832,8 +832,9 @@ export default function RentingSuggestion() {
             </div>
             <div
               style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "center",
                 gap: "2.5rem",
               }}
             >
@@ -842,6 +843,8 @@ export default function RentingSuggestion() {
                 key={idx}
                 className="edgerunner-card"
                 style={{
+                  flex: "1 1 340px",
+                  maxWidth: "400px",
                   border: "1px solid var(--cyber-border)",
                   padding: "0",
                   overflow: "hidden",
