@@ -2,7 +2,7 @@ name: API Service CI/CD to GCP
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "async" ]
     paths:
       - 'api_service/**'
       - '.github/workflows/api-service-cicd.yml'

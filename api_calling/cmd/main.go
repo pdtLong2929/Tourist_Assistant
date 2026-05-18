@@ -35,6 +35,14 @@ type DirectEnrichRequest struct {
 	Destination *model.LocationResponse `json:"destination"`
 }
 
+type RecommendJobPayload struct {
+	JobID       string `json:"jobId"`
+	UserID      string `json:"userId"`
+	Origin      string `json:"origin"`
+	Destination string `json:"destination"`
+	Date        int    `json:"date"`
+}
+
 func main() {
 	cfg := config.LoadConfig()
 
@@ -84,6 +92,7 @@ func main() {
 
 	enrichTopic := psClient.Topic("task-enrich")
 	resultsTopic := psClient.Topic("ai-results")
+	recommendEnrichTopic := psClient.Topic("recommend-enrich")
 
 	// 2. Khởi tạo các Clients
 	mClient := client.NewMapClient(cfg.Location_API_Key)
@@ -198,6 +207,99 @@ func main() {
 		}
 
 		log.Printf("Successfully published enriched job %s to task-enrich", job.JobID)
+		c.Status(http.StatusOK)
+	})
+
+	// Added Pub/Sub Push Endpoint for Recommendation Jobs
+	r.POST("/pubsub/recommend-push", func(c *gin.Context) {
+		var msg PubSubMessage
+		if err := c.ShouldBindJSON(&msg); err != nil {
+			log.Println("Invalid recommend push payload:", err)
+			c.Status(http.StatusBadRequest)
+			return
+		}
+
+		var job RecommendJobPayload
+		if err := json.Unmarshal(msg.Message.Data, &job); err != nil {
+			log.Println("Error unmarshaling recommend job data:", err)
+			c.Status(http.StatusOK)
+			return
+		}
+
+		log.Printf("Processing recommend job %s for user %s", job.JobID, job.UserID)
+
+		// Get Origin coordinates
+		var originLat, originLon float64
+		originData, err := mClient.GetLocation(job.Origin)
+		if err == nil && originData != nil && len(originData.Results) > 0 {
+			originLat = originData.Results[0].Geometry.Location.Lat
+			originLon = originData.Results[0].Geometry.Location.Lng
+			log.Printf("Resolved Origin '%s' to [%f, %f]", job.Origin, originLat, originLon)
+		} else {
+			log.Printf("Failed to get origin coordinates for %s: %v", job.Origin, err)
+		}
+
+		// Get Destination coordinates
+		var destLat, destLon float64
+		destData, err := mClient.GetLocation(job.Destination)
+		if err == nil && destData != nil && len(destData.Results) > 0 {
+			destLat = destData.Results[0].Geometry.Location.Lat
+			destLon = destData.Results[0].Geometry.Location.Lng
+			log.Printf("Resolved Destination '%s' to [%f, %f]", job.Destination, destLat, destLon)
+		} else {
+			log.Printf("Failed to get destination coordinates for %s: %v", job.Destination, err)
+		}
+
+		if originLat == 0 || originLon == 0 || destLat == 0 || destLon == 0 {
+			log.Printf("Aborting recommend job: Invalid coordinates for '%s' -> '%s'", job.Origin, job.Destination)
+			c.JSON(http.StatusOK, gin.H{"status": "error", "message": "Could not resolve locations to coordinates"})
+			return
+		}
+
+		// Mock budget since preferences DB is not hooked up here yet
+		budget := 500000.0
+
+		recommendPayload := map[string]interface{}{
+			"job_id":  job.JobID,
+			"user_id": job.UserID,
+			"action":  "recommend_vehicle",
+			"payload": map[string]interface{}{
+				"origin": map[string]interface{}{
+					"lat": originLat,
+					"lon": originLon,
+				},
+				"destination": map[string]interface{}{
+					"lat": destLat,
+					"lon": destLon,
+				},
+				"date": job.Date,
+				"user": map[string]interface{}{
+					"user_id": job.UserID,
+					"budget":  budget,
+				},
+			},
+		}
+
+		enrichedBytes, _ := json.Marshal(recommendPayload)
+		publishRes := recommendEnrichTopic.Publish(ctx, &pubsub.Message{
+			Data: enrichedBytes,
+		})
+
+		_, err = publishRes.Get(ctx)
+		if err != nil {
+			log.Printf("Failed to publish to recommend-enrich: %v", err)
+			errPayload := map[string]interface{}{
+				"jobId":  job.JobID,
+				"userId": job.UserID,
+				"status": "error",
+				"result": "Failed to dispatch vehicle recommendation.",
+			}
+			errBytes, _ := json.Marshal(errPayload)
+			resultsTopic.Publish(ctx, &pubsub.Message{Data: errBytes})
+		} else {
+			log.Printf("Successfully published enriched job %s to recommend-enrich", job.JobID)
+		}
+
 		c.Status(http.StatusOK)
 	})
 

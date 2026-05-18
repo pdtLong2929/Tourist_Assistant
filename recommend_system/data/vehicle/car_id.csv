@@ -1,0 +1,1769 @@
+vehicle_id,model
+CAR_0000,Sf90 Stradale
+CAR_0001,Phantom
+CAR_0002,Phantom
+CAR_0003,Phantom
+CAR_0004,Ka+
+CAR_0005,Gt 63 S
+CAR_0006,Audi R8 Gt
+CAR_0007,Mclaren 720S
+CAR_0008,Vantage F1
+CAR_0009,Continental Gt Azure
+CAR_0010,Veneno Roadster
+CAR_0011,Veneno Roadster
+CAR_0012,Veneno Roadster
+CAR_0013,F8 Tributo
+CAR_0014,F8 Tributo
+CAR_0015,F8 Tributo
+CAR_0016,812 Gts
+CAR_0017,Portofino
+CAR_0018,Portofino
+CAR_0019,Portofino
+CAR_0020,Roma
+CAR_0021,Monza Sp2
+CAR_0022,F8 Spider
+CAR_0023,Portofino M
+CAR_0024,Portofino M
+CAR_0025,Portofino M
+CAR_0026,Roma Spider
+CAR_0027,Gr Supra
+CAR_0028,Gr Supra
+CAR_0029,Gr Supra
+CAR_0030,Toyota 86
+CAR_0031,Toyota  Gr86
+CAR_0032,Toyota Land Cruiser
+CAR_0033,Toyota Sequoia
+CAR_0034,Toyota Sequoia
+CAR_0035,Toyota Sequoia
+CAR_0036,Gt-R
+CAR_0037,370Z
+CAR_0038,Z Proto
+CAR_0039,Altima
+CAR_0040,Altima
+CAR_0041,Altima
+CAR_0042,Maxima
+CAR_0043,Sentra
+CAR_0044,Rogue
+CAR_0045,Rogue
+CAR_0046,Rogue
+CAR_0047,Pathfinder
+CAR_0048,Frontier
+CAR_0049,Titan
+CAR_0050,Valkyrie
+CAR_0051,Valhalla
+CAR_0052,Dbs Superleggera
+CAR_0053,Db11
+CAR_0054,Vantage
+CAR_0055,Vantage
+CAR_0056,Vantage
+CAR_0057,Dbx
+CAR_0058,Dbx
+CAR_0059,Dbx
+CAR_0060,Rapide Amr
+CAR_0061,Rapide Amr
+CAR_0062,Rapide Amr
+CAR_0063,Vanquish
+CAR_0064,Lagonda Taraf
+CAR_0065,Lagonda Taraf
+CAR_0066,Lagonda Taraf
+CAR_0067,Victor
+CAR_0068,Sian
+CAR_0069,Aventador Svj
+CAR_0070,Aventador Svj
+CAR_0071,Aventador Svj
+CAR_0072,Huracan Performante
+CAR_0073,Huracan Evo
+CAR_0074,Huracan Evo
+CAR_0075,Huracan Evo
+CAR_0076,Aventador Sv
+CAR_0077,Urus
+CAR_0078,Huracan Spyder
+CAR_0079,Aventador Roadster
+CAR_0080,Huracan  Performante Spyder
+CAR_0081,Aventador S
+CAR_0082,Huracan Evo Spyder
+CAR_0083,Huracan Evo Spyder
+CAR_0084,Huracan Evo Spyder
+CAR_0085,Urus Performante
+CAR_0086,Urus Performante
+CAR_0087,Urus Performante
+CAR_0088,Aventador Ultimae
+CAR_0089,Huracan Evo Rwd
+CAR_0090,Aventador Svj Roadster
+CAR_0091,Urus S
+CAR_0092,Huracan Sto
+CAR_0093,Aventador Lp 780-4 Ultimate
+CAR_0094,Aventador Lp 780-4 Ultimate
+CAR_0095,Aventador Lp 780-4 Ultimate
+CAR_0096,Huracan Evo Rwd Spyder
+CAR_0097,Aventador Svj Xago
+CAR_0098,Urus Graphite Capsule
+CAR_0099,Urus Graphite Capsule
+CAR_0100,Urus Graphite Capsule
+CAR_0101,Huracan Sto Evo
+CAR_0102,Aventador Lp 780-4 Ultimate Roadster
+CAR_0103,Ghost
+CAR_0104,Wraith
+CAR_0105,Dawn
+CAR_0106,Cullinan
+CAR_0107,Phantom Extended
+CAR_0108,Ghost Extended
+CAR_0109,Wraith Black Badge
+CAR_0110,Dawn Black Badge
+CAR_0111,Cullinan Black Badge
+CAR_0112,Phantom Coupe
+CAR_0113,Ghost Coupe
+CAR_0114,Wraith Coupe
+CAR_0115,Wraith Coupe
+CAR_0116,Wraith Coupe
+CAR_0117,Dawn Convertible
+CAR_0118,Cullinan Suv
+CAR_0119,Cullinan Suv
+CAR_0120,Cullinan Suv
+CAR_0121,Benz S-Class S 580
+CAR_0122,Benz E-Class E 63 S
+CAR_0123,Benz Cla 45 Amg
+CAR_0124,Benz Cla 45 Amg
+CAR_0125,Benz Cla 45 Amg
+CAR_0126,Benz Gle 63 S
+CAR_0127,Benz S-Class S 500
+CAR_0128,Benz S-Class S 500
+CAR_0129,Benz S-Class S 500
+CAR_0130,Benz E-Class E 450
+CAR_0131,Benz Cls 450
+CAR_0132,Benz Gt 53
+CAR_0133,Benz Gt 53
+CAR_0134,Benz Gt 53
+CAR_0135,Benz Gle 450
+CAR_0136,Benz Gle 450
+CAR_0137,Benz Gle 450
+CAR_0138,Benz A-Class A 45 S
+CAR_0139,Benz A-Class A 45 S
+CAR_0140,Benz A-Class A 45 S
+CAR_0141,Benz C-Class C 43
+CAR_0142,Benz E-Class E 350
+CAR_0143,Benz Gle 350
+CAR_0144,Benz Glc 43
+CAR_0145,Benz Gla 45
+CAR_0146,Benz Glc 350
+CAR_0147,Benz Glc 350
+CAR_0148,Benz Glc 350
+CAR_0149,Benz Gle 53
+CAR_0150,Benz S-Class S 350
+CAR_0151,Benz Eqs 53
+CAR_0152,Benz Maybach S 680
+CAR_0153,M5 Cs
+CAR_0154,M4 Gts
+CAR_0155,M3 Competition
+CAR_0156,M2 Cs
+CAR_0157,X5 M Competition
+CAR_0158,X5 M Competition
+CAR_0159,X5 M Competition
+CAR_0160,X3 M Competition
+CAR_0161,M8 Gran Coupe
+CAR_0162,M850I Drive Coupe
+CAR_0163,M850I Drive Coupe
+CAR_0164,M850I Drive Coupe
+CAR_0165,Dawn Black Badge Volante
+CAR_0166,Cullinan Black Badge Suv
+CAR_0167,Phatom Tranquility
+CAR_0168,Phatom Tranquility
+CAR_0169,Phatom Tranquility
+CAR_0170,Ghost Zenith
+CAR_0171,Wraith Eagle Viii
+CAR_0172,Phatom Orchid
+CAR_0173,Ghost Azure
+CAR_0174,Wraith Kryptos
+CAR_0175,Dawn Silver Bullet
+CAR_0176,Dawn Silver Bullet
+CAR_0177,Dawn Silver Bullet
+CAR_0178,Cullinan Fux Orange
+CAR_0179,Phantom Celestial
+CAR_0180,Ghost Mysore
+CAR_0181,Wraith Luminary
+CAR_0182,Dawn Black Badge Adamas
+CAR_0183,Cullinan Red Diamond
+CAR_0184,R8 V10 Plus
+CAR_0185,R8 V10 Plus
+CAR_0186,R8 V10 Plus
+CAR_0187,Rs7 Sportback
+CAR_0188,S8
+CAR_0189,Rs6 Avant
+CAR_0190,S7 Sportback
+CAR_0191,A8
+CAR_0192,S5 Coupe
+CAR_0193,Sq5
+CAR_0194,S4 Sedan
+CAR_0195,S3 Sedan
+CAR_0196,Q7
+CAR_0197,Q5
+CAR_0198,A7
+CAR_0199,A6
+CAR_0200,A6
+CAR_0201,A6
+CAR_0202,A5 Coupe
+CAR_0203,A5 Coupe
+CAR_0204,A5 Coupe
+CAR_0205,A4
+CAR_0206,Q3
+CAR_0207,Q3
+CAR_0208,Q3
+CAR_0209,E-Tron
+CAR_0210,E-Tron Sportback
+CAR_0211,Tt Coupe
+CAR_0212,I8 Roadster
+CAR_0213,330I
+CAR_0214,M340I Xdrive
+CAR_0215,430I Coupe
+CAR_0216,430I Coupe
+CAR_0217,430I Coupe
+CAR_0218,M4 Competition
+CAR_0219,530I
+CAR_0220,M550I Xdrive
+CAR_0221,M550I Xdrive
+CAR_0222,M550I Xdrive
+CAR_0223,118I
+CAR_0224,128Ti
+CAR_0225,M135I Xdrive
+CAR_0226,116D
+CAR_0227,120D Xdrive
+CAR_0228,116I
+CAR_0229,118D
+CAR_0230,118D
+CAR_0231,118D
+CAR_0232,120I
+CAR_0233,120I
+CAR_0234,120I
+CAR_0235,125I
+CAR_0236,114D
+CAR_0237,114I
+CAR_0238,125D
+CAR_0239,118I Xdrive
+CAR_0240,116D Efficientdynamics
+CAR_0241,118I Sportline
+CAR_0242,118I Sportline
+CAR_0243,118I Sportline
+CAR_0244,118I M Sport
+CAR_0245,118I M Sport
+CAR_0246,118I M Sport
+CAR_0247,120I M Sport
+CAR_0248,116I Efficientdynamics
+CAR_0249,116D Advantage
+CAR_0250,120D Efficientdynamics
+CAR_0251,120D Efficientdynamics
+CAR_0252,120D Efficientdynamics
+CAR_0253,118I Shadow Line
+CAR_0254,118D Sport Line
+CAR_0255,120I Xdrive
+CAR_0256,114D Sport Line
+CAR_0257,118I Urban Line
+CAR_0258,Xc90
+CAR_0259,Xc90
+CAR_0260,Xc90
+CAR_0261,Xc60
+CAR_0262,S90
+CAR_0263,S90
+CAR_0264,S90
+CAR_0265,Sportage Lx
+CAR_0266,Sportage Lx
+CAR_0267,Sportage Lx
+CAR_0268,Sportage Ex
+CAR_0269,Sportage Gt-Line
+CAR_0270,Sportage Sx Turbo
+CAR_0271,Sportage Nightfall Edition
+CAR_0272,Civic Type R
+CAR_0273,Civic Type R
+CAR_0274,Civic Type R
+CAR_0275,Sportage Phev
+CAR_0276,Sportage Phev
+CAR_0277,Sportage Phev
+CAR_0278,Sportage 2024(Base Model)
+CAR_0279,Sportage 2024(Top Trim)
+CAR_0280,Sportage 2024(Top Trim)
+CAR_0281,Sportage 2024(Top Trim)
+CAR_0282,Sportage 2024(Base Awd)
+CAR_0283,Sportage 2024(Base Awd)
+CAR_0284,Sportage 2024(Base Awd)
+CAR_0285,Sportage X-Line
+CAR_0286,Sportage 2024(S Trim)
+CAR_0287,Accord
+CAR_0288,Accord
+CAR_0289,Accord
+CAR_0290,Sportage 2024(Hybrid Awd)
+CAR_0291,Sportage 2024(Plug-In Hybrid Awd)
+CAR_0292,Sportage 2024(Plug-In Hybrid Awd)
+CAR_0293,Sportage 2024(Plug-In Hybrid Awd)
+CAR_0294,Sportage 2024(X-Pro)
+CAR_0295,Sportage 2024(X-Pro)
+CAR_0296,Sportage 2024(X-Pro)
+CAR_0297,Sportage 2024(X-Pro Prestige)
+CAR_0298,Sportage 2024(X-Pro Prestige)
+CAR_0299,Sportage 2024(X-Pro Prestige)
+CAR_0300,Sportage 2024(Sx Turbo Awd)
+CAR_0301,Sportage 2024(Base Fwd)
+CAR_0302,Cr-V
+CAR_0303,Cr-V
+CAR_0304,Cr-V
+CAR_0305,Pilot
+CAR_0306,Pilot
+CAR_0307,Pilot
+CAR_0308,Civic Hatchback
+CAR_0309,Camry
+CAR_0310,Corolla
+CAR_0311,Prius
+CAR_0312,Rav4
+CAR_0313,Highlander
+CAR_0314,4Runner
+CAR_0315,Tacoma
+CAR_0316,Tundra
+CAR_0317,Avalon
+CAR_0318,Avalon
+CAR_0319,Avalon
+CAR_0320,Mirai
+CAR_0321,Sienna
+CAR_0322,Venza
+CAR_0323,Highlander Hybrid
+CAR_0324,Land Cruiser Prado
+CAR_0325,Tundra Hybrid
+CAR_0326,Yaris
+CAR_0327,C-Hr
+CAR_0328,Bz4X
+CAR_0329,Crown
+CAR_0330,Mr2
+CAR_0331,Celica
+CAR_0332,City
+CAR_0333,Civic
+CAR_0334,Civic
+CAR_0335,Civic
+CAR_0336,I10
+CAR_0337,I20
+CAR_0338,Elantra
+CAR_0339,Xuv500
+CAR_0340,Scorpio
+CAR_0341,Thar
+CAR_0342,Thar
+CAR_0343,Thar
+CAR_0344,Swift
+CAR_0345,Swift
+CAR_0346,Swift
+CAR_0347,Dzire
+CAR_0348,Brezza
+CAR_0349,Brezza
+CAR_0350,Brezza
+CAR_0351,Prius Prime
+CAR_0352,Gr Corolla
+CAR_0353,Land Cruiser 300
+CAR_0354,Tundra I-Force Max
+CAR_0355,Corolla Hatchback Xse
+CAR_0356,Mirai
+CAR_0357,Hilux Gr Sport
+CAR_0358,Alphard Executive Lounge
+CAR_0359,Fortuner Gr Sport
+CAR_0360,Innova Hycross
+CAR_0361,Coaster
+CAR_0362,Urban Cruiser Taisor
+CAR_0363,Aygo X
+CAR_0364,Hilux Revo Rocco
+CAR_0365,Proace Verso Electric
+CAR_0366,Century Suv
+CAR_0367,Century Suv
+CAR_0368,Century Suv
+CAR_0369,Corolla Sedan Hybrid
+CAR_0370,Corolla Sedan Hybrid
+CAR_0371,Corolla Sedan Hybrid
+CAR_0372,Bz3
+CAR_0373,Gr Yaris
+CAR_0374,Santa Fe
+CAR_0375,Ioniq 5
+CAR_0376,Santa Cruz
+CAR_0377,Santa Cruz
+CAR_0378,Santa Cruz
+CAR_0379,Kona
+CAR_0380,Elantra
+CAR_0381,Urvan
+CAR_0382,Ioniq 6
+CAR_0383,Tucson
+CAR_0384,Palisade
+CAR_0385,Sonata
+CAR_0386,Sonata
+CAR_0387,Sonata
+CAR_0388,Accent
+CAR_0389,Accent
+CAR_0390,Accent
+CAR_0391,Venue
+CAR_0392,Kona Electric
+CAR_0393,Kona Electric
+CAR_0394,Kona Electric
+CAR_0395,Veloster
+CAR_0396,Nexo
+CAR_0397,Ioniq
+CAR_0398,Ioniq
+CAR_0399,Ioniq
+CAR_0400,Genesis
+CAR_0401,Genesis
+CAR_0402,Genesis
+CAR_0403,Azera
+CAR_0404,Equus
+CAR_0405,Tiburon
+CAR_0406,Elantra Gt
+CAR_0407,Golf
+CAR_0408,Passat
+CAR_0409,Passat
+CAR_0410,Passat
+CAR_0411,Tiguan
+CAR_0412,Tiguan
+CAR_0413,Tiguan
+CAR_0414,Jetta
+CAR_0415,Polo
+CAR_0416,Arteon
+CAR_0417,Arteon
+CAR_0418,Arteon
+CAR_0419,Id.4
+CAR_0420,Up!
+CAR_0421,Touareg
+CAR_0422,Scirocco
+CAR_0423,Beetle
+CAR_0424,Amarok
+CAR_0425,Amarok
+CAR_0426,Amarok
+CAR_0427,T-Roc
+CAR_0428,Sharan
+CAR_0429,Sharan
+CAR_0430,Sharan
+CAR_0431,Caddy
+CAR_0432,Nv1500
+CAR_0433,Taigo
+CAR_0434,Taigo
+CAR_0435,Taigo
+CAR_0436,California
+CAR_0437,Id.3
+CAR_0438,Id. Buzz
+CAR_0439,Id. Buzz
+CAR_0440,Id. Buzz
+CAR_0441,Golf Gti
+CAR_0442,Golf Gti
+CAR_0443,Golf Gti
+CAR_0444,Golf R
+CAR_0445,Golf R
+CAR_0446,Golf R
+CAR_0447,Passat Alltrack
+CAR_0448,Polo Gti
+CAR_0449,Up! Gti
+CAR_0450,T-Cross
+CAR_0451,T-Cross
+CAR_0452,T-Cross
+CAR_0453,Id.5
+CAR_0454,Id. Buzz Cargo
+CAR_0455,Id. Buzz Cargo
+CAR_0456,Id. Buzz Cargo
+CAR_0457,Touareg R
+CAR_0458,Multivan
+CAR_0459,Polo Bluemotion
+CAR_0460,Golf Sportsvan
+CAR_0461,Golf Alltrack
+CAR_0462,Golf Alltrack
+CAR_0463,Golf Alltrack
+CAR_0464,Scirocco R
+CAR_0465,Tiguan Allspace
+CAR_0466,Tiguan Allspace
+CAR_0467,Tiguan Allspace
+CAR_0468,Arteon 4Motion
+CAR_0469,Id.4 Gtx
+CAR_0470,Id.3 Pro
+CAR_0471,Id.3 Pro
+CAR_0472,Id.3 Pro
+CAR_0473,Golf Variant
+CAR_0474,Crafter
+CAR_0475,Lupo
+CAR_0476,Corrado
+CAR_0477,Phaeton
+CAR_0478,Phaeton
+CAR_0479,Phaeton
+CAR_0480,Golf Cabriolet
+CAR_0481,Santana
+CAR_0482,Polo Vivo
+CAR_0483,Karmann Ghia
+CAR_0484,Karmann Ghia
+CAR_0485,Karmann Ghia
+CAR_0486,Fox
+CAR_0487,Vento
+CAR_0488,Golf Electric
+CAR_0489,Bora
+CAR_0490,Teramont
+CAR_0491,Taos
+CAR_0492,Up! Cabriolet
+CAR_0493,T-Roc Cabriolet
+CAR_0494,T-Roc Cabriolet
+CAR_0495,T-Roc Cabriolet
+CAR_0496,Passat Cc
+CAR_0497,Transporter
+CAR_0498,Amarok V6
+CAR_0499,Id.2
+CAR_0500,Polo Tdi
+CAR_0501,Golf Gte
+CAR_0502,Touareg V8
+CAR_0503,Beetle Dune
+CAR_0504,Passat B8
+CAR_0505,Id.4 Pro S
+CAR_0506,Golf Country
+CAR_0507,Jetta Gli
+CAR_0508,Arteon Shooting Brake
+CAR_0509,T-Cross R-Line
+CAR_0510,Golf R32
+CAR_0511,Golf R32
+CAR_0512,Golf R32
+CAR_0513,Passat B7
+CAR_0514,Passat B7
+CAR_0515,Passat B7
+CAR_0516,Scirocco 16V
+CAR_0517,Polo Bluemotion
+CAR_0518,Golf Variant Gtd
+CAR_0519,Golf Variant Gtd
+CAR_0520,Golf Variant Gtd
+CAR_0521,Polo Gti R5
+CAR_0522,Polo Gti R5
+CAR_0523,Polo Gti R5
+CAR_0524,Id. Buzz Pro
+CAR_0525,Jetta Hybrid
+CAR_0526,Golf Variant Alltrack
+CAR_0527,Volkswagen Xl1
+CAR_0528,Golf Tdi
+CAR_0529,Passat Variant
+CAR_0530,Passat Variant
+CAR_0531,Passat Variant
+CAR_0532,Polo Gti Clubsport
+CAR_0533,Id.3 Gtx
+CAR_0534,Arteon R-Line
+CAR_0535,Golf Tgi
+CAR_0536,Golf Tgi
+CAR_0537,Golf Tgi
+CAR_0538,Scirocco Gts
+CAR_0539,Scirocco Gts
+CAR_0540,Scirocco Gts
+CAR_0541,Caddy Maxi
+CAR_0542,Volkswagen Lupo 3L
+CAR_0543,Polo Beats
+CAR_0544,Polo Beats
+CAR_0545,Polo Beats
+CAR_0546,Passat Hybrid
+CAR_0547,Passat Hybrid
+CAR_0548,Passat Hybrid
+CAR_0549,Golf Tcr
+CAR_0550,Tiguan R-Line
+CAR_0551,Sharan Business
+CAR_0552,Id. Buzz Cargo Pro
+CAR_0553,Arteon 280 Tsi
+CAR_0554,Jetta Gli 35Th
+CAR_0555,Beetle Final Edition
+CAR_0556,Golf Variant Tdi
+CAR_0557,Golf 4Motion
+CAR_0558,Jetta Sportwagen
+CAR_0559,Polo Gti Plus
+CAR_0560,Touareg V6
+CAR_0561,Tiguan Ehybrid
+CAR_0562,Up! E-Up!
+CAR_0563,Amarok V8
+CAR_0564,Golf R Cabriolet
+CAR_0565,Passat Alltrack Tdi
+CAR_0566,Id. Buzz Cargo Ev
+CAR_0567,Versa
+CAR_0568,Micra
+CAR_0569,Micra
+CAR_0570,Micra
+CAR_0571,Patrol Platinum
+CAR_0572,Qashqai
+CAR_0573,Murano
+CAR_0574,Maxima Platinum
+CAR_0575,Armada
+CAR_0576,Armada
+CAR_0577,Armada
+CAR_0578,Kicks
+CAR_0579,X-Trail
+CAR_0580,Z (Fairlady Z)
+CAR_0581,Almera
+CAR_0582,Sylphy
+CAR_0583,Note
+CAR_0584,Sunny
+CAR_0585,Cube
+CAR_0586,Cube
+CAR_0587,Cube
+CAR_0588,Juke
+CAR_0589,Juke
+CAR_0590,Juke
+CAR_0591,Terrano
+CAR_0592,Magnite
+CAR_0593,Xterra
+CAR_0594,Patrol
+CAR_0595,Gt-R Nismo
+CAR_0596,370Z Roadster
+CAR_0597,Ariya
+CAR_0598,Patrol Royale
+CAR_0599,Infiniti Qx80*
+CAR_0600,Infiniti Qx80*
+CAR_0601,Infiniti Qx80*
+CAR_0602,Tiida
+CAR_0603,Pulsar
+CAR_0604,Latio
+CAR_0605,Bluebird Sylphy
+CAR_0606,March
+CAR_0607,Rogue Sport
+CAR_0608,X-Trail Hybrid
+CAR_0609,Pathfinder Rock Creek
+CAR_0610,Armada Platinum
+CAR_0611,Terrano Xl
+CAR_0612,Gt-R50 By Italdesign
+CAR_0613,Gt-R50 By Italdesign
+CAR_0614,Gt-R50 By Italdesign
+CAR_0615,370Z Nismo
+CAR_0616,Ariya E-4Orce
+CAR_0617,Ariya E-4Orce
+CAR_0618,Ariya E-4Orce
+CAR_0619,Patrol Nismo
+CAR_0620,Infiniti Q60*
+CAR_0621,Primera
+CAR_0622,Skyline
+CAR_0623,Skyline
+CAR_0624,Skyline
+CAR_0625,Cedric
+CAR_0626,Gloria
+CAR_0627,Stanza
+CAR_0628,Patrol Super Safari
+CAR_0629,Pathfinder Hybrid
+CAR_0630,X-Terra Pro-4X
+CAR_0631,X-Terra Pro-4X
+CAR_0632,X-Terra Pro-4X
+CAR_0633,Rogue Platinum
+CAR_0634,Qashqai Tekna
+CAR_0635,Qashqai Tekna
+CAR_0636,Qashqai Tekna
+CAR_0637,Gt-R V-Spec
+CAR_0638,Skyline Nismo
+CAR_0639,Ariya Lounge Edition
+CAR_0640,Patrol Titanium
+CAR_0641,Infiniti Fx50*
+CAR_0642,Avenir
+CAR_0643,Wingroad
+CAR_0644,Presea
+CAR_0645,Presea
+CAR_0646,Presea
+CAR_0647,Leopard
+CAR_0648,Sunny Nismo Edition
+CAR_0649,Sunny Nismo Edition
+CAR_0650,Sunny Nismo Edition
+CAR_0651,Paladin
+CAR_0652,Hardbody Suv
+CAR_0653,Hardbody Suv
+CAR_0654,Hardbody Suv
+CAR_0655,Patrol Desert Edition
+CAR_0656,Patrol Desert Edition
+CAR_0657,Patrol Desert Edition
+CAR_0658,Pathfinder Armada
+CAR_0659,Rogue Midnight Edition
+CAR_0660,Gt-R Black Edition
+CAR_0661,Fairlady Z Heritage
+CAR_0662,Skyline Gt-R R34
+CAR_0663,Ariya Premiere
+CAR_0664,Ariya Premiere
+CAR_0665,Ariya Premiere
+CAR_0666,Infiniti Qx55*
+CAR_0667,Infiniti Qx55*
+CAR_0668,Infiniti Qx55*
+CAR_0669,Nv350 Caravan
+CAR_0670,Nv350 Caravan
+CAR_0671,Nv350 Caravan
+CAR_0672,Navara
+CAR_0673,Titan Xd
+CAR_0674,Evalia
+CAR_0675,Cabstar
+CAR_0676,Cabstar
+CAR_0677,Cabstar
+CAR_0678,Cherry
+CAR_0679,Laurel
+CAR_0680,Laurel
+CAR_0681,Laurel
+CAR_0682,Silvia
+CAR_0683,Silvia
+CAR_0684,Silvia
+CAR_0685,Nx Coupe
+CAR_0686,Ad Wagon
+CAR_0687,Patrol Super Safari Y61
+CAR_0688,Pathfinder Rock Creek Edition
+CAR_0689,Terrano Ii
+CAR_0690,Murano Crosscabriolet
+CAR_0691,X-Trail Tekna
+CAR_0692,Gt-R Lm Nismo
+CAR_0693,Gt-R Lm Nismo
+CAR_0694,Gt-R Lm Nismo
+CAR_0695,Skyline 400R
+CAR_0696,Infiniti G37*
+CAR_0697,Patrol Black Edition
+CAR_0698,Ariya Empower+
+CAR_0699,Datsun 510 (Classic)
+CAR_0700,200Sx
+CAR_0701,300Zx
+CAR_0702,300Zx
+CAR_0703,300Zx
+CAR_0704,R390 Gt1 Road Car
+CAR_0705,Figaro
+CAR_0706,Hardbody Truck
+CAR_0707,Atlas
+CAR_0708,Atlas
+CAR_0709,Atlas
+CAR_0710,Clipper
+CAR_0711,Clipper
+CAR_0712,Clipper
+CAR_0713,Nv200
+CAR_0714,Violet
+CAR_0715,Bluebird Z
+CAR_0716,Bluebird Z
+CAR_0717,Bluebird Z
+CAR_0718,Stanza Wagon
+CAR_0719,180Sx
+CAR_0720,Sunny California
+CAR_0721,Patrol Warrior
+CAR_0722,Pathfinder Armada Platinum
+CAR_0723,Rogue Sport Sl
+CAR_0724,X-Trail Platinum Edition
+CAR_0725,Qashqai E-Power
+CAR_0726,Gt-R Egoist
+CAR_0727,Gt-R Egoist
+CAR_0728,Gt-R Egoist
+CAR_0729,Infiniti M45*
+CAR_0730,Skyline 50Th Anniversary
+CAR_0731,Ariya Dual Motor Awd
+CAR_0732,Patrol Legend Edition
+CAR_0733,Datsun 240Z (Classic)
+CAR_0734,100Nx
+CAR_0735,Cedric Special Edition
+CAR_0736,300Zx Turbo
+CAR_0737,Silvia S15 Spec-R
+CAR_0738,Nv400
+CAR_0739,Titan Warrior
+CAR_0740,Caravan Coach
+CAR_0741,Caravan Coach
+CAR_0742,Caravan Coach
+CAR_0743,Serena E-Power
+CAR_0744,Serena E-Power
+CAR_0745,Serena E-Power
+CAR_0746,Elgrand
+CAR_0747,Elgrand
+CAR_0748,Elgrand
+CAR_0749,Datsun 510
+CAR_0750,Datsun 510
+CAR_0751,Datsun 510
+CAR_0752,Prairie
+CAR_0753,Prairie
+CAR_0754,Prairie
+CAR_0755,Pulsar Gti-R
+CAR_0756,Almera Tino
+CAR_0757,Almera Tino
+CAR_0758,Almera Tino
+CAR_0759,Lucino
+CAR_0760,Rasheen
+CAR_0761,Mistral
+CAR_0762,Patrol Y60
+CAR_0763,X-Trail Gt
+CAR_0764,Terrano Regulus
+CAR_0765,President
+CAR_0766,President
+CAR_0767,President
+CAR_0768,Cima
+CAR_0769,Leopard J. Ferie
+CAR_0770,Leopard J. Ferie
+CAR_0771,Leopard J. Ferie
+CAR_0772,Gloria Gran Turismo
+CAR_0773,Infiniti Q45*
+CAR_0774,Datsun 240Z
+CAR_0775,280Zx
+CAR_0776,280Zx
+CAR_0777,280Zx
+CAR_0778,Silvia S13
+CAR_0779,200Sx
+CAR_0780,Nx Coupe
+CAR_0781,Nv2500
+CAR_0782,Nv3500
+CAR_0783,Nt400 Cabstar
+CAR_0784,Panamera
+CAR_0785,Panamera
+CAR_0786,Panamera
+CAR_0787,Panamera 4
+CAR_0788,Panamera 4S
+CAR_0789,Panamera 4S
+CAR_0790,Panamera 4S
+CAR_0791,Panamera Turbo S
+CAR_0792,Panamera Turbo S
+CAR_0793,Panamera Turbo S
+CAR_0794,Panamera Gts
+CAR_0795,Panamera Platinum Edition
+CAR_0796,Panamera E-Hybrid
+CAR_0797,Panamera 4 E-Hybrid Sport Turismo
+CAR_0798,Panamera Turbo S E-Hybrid
+CAR_0799,Panamera 4 Executive
+CAR_0800,Panamera 4 Executive
+CAR_0801,Panamera 4 Executive
+CAR_0802,Cayenne
+CAR_0803,Cayenne Coupe
+CAR_0804,Cayenne S
+CAR_0805,Cayenne Turbo
+CAR_0806,Cayenne Gts
+CAR_0807,Cayenne Gts
+CAR_0808,Cayenne Gts
+CAR_0809,Cayenne Turbo S E-Hybrid
+CAR_0810,Macan
+CAR_0811,Macan
+CAR_0812,Macan
+CAR_0813,Macan S
+CAR_0814,Macan Gts
+CAR_0815,Macan T
+CAR_0816,911 Carrera
+CAR_0817,911 Carrera S
+CAR_0818,911 Carrera S
+CAR_0819,911 Carrera S
+CAR_0820,911 Carrera 4
+CAR_0821,911 Carrera 4
+CAR_0822,911 Carrera 4
+CAR_0823,911 Carrera 4S
+CAR_0824,911 Targa 4
+CAR_0825,911 Targa 4
+CAR_0826,911 Targa 4
+CAR_0827,911 Turbo
+CAR_0828,911 Turbo S
+CAR_0829,911 Gt3
+CAR_0830,911 Gt3 Rs
+CAR_0831,911 Dakar
+CAR_0832,911 Dakar
+CAR_0833,911 Dakar
+CAR_0834,Taycan
+CAR_0835,Taycan 4S
+CAR_0836,Taycan Turbo
+CAR_0837,Taycan Turbo S
+CAR_0838,Taycan Gts
+CAR_0839,Taycan Cross Turismo
+CAR_0840,Taycan Sport Turismo
+CAR_0841,718 Cayman
+CAR_0842,718 Cayman
+CAR_0843,718 Cayman
+CAR_0844,718 Cayman S
+CAR_0845,718 Cayman S
+CAR_0846,718 Cayman S
+CAR_0847,718 Cayman Gt4
+CAR_0848,718 Cayman Gt4 Rs
+CAR_0849,718 Cayman Gt4 Rs
+CAR_0850,718 Cayman Gt4 Rs
+CAR_0851,718 Boxster
+CAR_0852,718 Boxster T
+CAR_0853,718 Boxster Gts
+CAR_0854,718 Boxster Gts
+CAR_0855,718 Boxster Gts
+CAR_0856,718 Spyder
+CAR_0857,Panamera Base
+CAR_0858,Panamera 4 E-Hybrid
+CAR_0859,Panamera 4 Sport Turismo
+CAR_0860,Panamera Turbo S E-Hybrid Sport Turismo
+CAR_0861,Panamera 4S E-Hybrid Executive
+CAR_0862,Panamera 4S E-Hybrid Executive
+CAR_0863,Panamera 4S E-Hybrid Executive
+CAR_0864,Panamera Platinum Edition
+CAR_0865,Panamera Gts Sport Turismo
+CAR_0866,Panamera Gts Sport Turismo
+CAR_0867,Panamera Gts Sport Turismo
+CAR_0868,Panamera Turbo Executive
+CAR_0869,Panamera Turbo S Exclusive Series
+CAR_0870,Panamera 4S
+CAR_0871,Macan Base
+CAR_0872,Macan T
+CAR_0873,Macan S
+CAR_0874,Macan Gts
+CAR_0875,Macan Ev
+CAR_0876,Cayenne Base
+CAR_0877,Cayenne E-Hybrid
+CAR_0878,Cayenne E-Hybrid
+CAR_0879,Cayenne E-Hybrid
+CAR_0880,Cayenne S Coupe
+CAR_0881,Cayenne Turbo Gt
+CAR_0882,Cayenne Platinum Edition
+CAR_0883,Cayenne Turbo S E-Hybrid Coupe
+CAR_0884,Cayenne Gts Coupe
+CAR_0885,Cayenne Diesel (Regional Markets)
+CAR_0886,Cayenne S Hybrid
+CAR_0887,Cayenne S Hybrid
+CAR_0888,Cayenne S Hybrid
+CAR_0889,Cayenne Coupe Turbo E-Hybrid
+CAR_0890,Taycan Base
+CAR_0891,Ct4
+CAR_0892,Ct4-V
+CAR_0893,Ct5
+CAR_0894,Ct5-V
+CAR_0895,Taycan Cross Turismo 4
+CAR_0896,Taycan Cross Turismo Gts
+CAR_0897,Taycan Sport Turismo Base
+CAR_0898,Taycan Sport Turismo Gts
+CAR_0899,Taycan Turbo S Cross Turismo
+CAR_0900,Taycan Turbo S Cross Turismo
+CAR_0901,Taycan Turbo S Cross Turismo
+CAR_0902,911 Carrera Base
+CAR_0903,911 Carrera S Cabriolet
+CAR_0904,911 Carrera 4
+CAR_0905,911 Carrera 4
+CAR_0906,911 Carrera 4
+CAR_0907,911 Carrera 4 Gts
+CAR_0908,911 Targa 4 Gts
+CAR_0909,911 Turbo Cabriolet
+CAR_0910,911 Turbo S Coupe
+CAR_0911,911 Gt3 Touring
+CAR_0912,911 Gt3 Rs Clubsport
+CAR_0913,911 Dakar Limited Edition
+CAR_0914,911 Carrera Gts Lightweight
+CAR_0915,911 Targa 4 Lightweight
+CAR_0916,911 Targa 4 Lightweight
+CAR_0917,911 Targa 4 Lightweight
+CAR_0918,911 Turbo Exclusive Series
+CAR_0919,911 Gt2 Rs
+CAR_0920,911 Gt3 Cup
+CAR_0921,911 Gt4 Rs
+CAR_0922,911 Rsr (Motorsport Edition)
+CAR_0923,911 Sport Turismo
+CAR_0924,911 Turbo Cabriolet Lightweight
+CAR_0925,911 Dakar Sport
+CAR_0926,Tiago
+CAR_0927,Tiago Ev
+CAR_0928,Tiago Ev
+CAR_0929,Tiago Ev
+CAR_0930,Altroz
+CAR_0931,Altroz Dca
+CAR_0932,Altroz Dca
+CAR_0933,Altroz Dca
+CAR_0934,Altroz Iturbo
+CAR_0935,Altroz Cng
+CAR_0936,Tiago Nrg
+CAR_0937,Tiago Nrg
+CAR_0938,Tiago Nrg
+CAR_0939,Nano Genx
+CAR_0940,Indica Ev2
+CAR_0941,Indica V2 Xeta
+CAR_0942,Tigor
+CAR_0943,Tigor
+CAR_0944,Tigor
+CAR_0945,Tigor Ev
+CAR_0946,Tigor Ev
+CAR_0947,Tigor Ev
+CAR_0948,Zest
+CAR_0949,Indigo Ecs
+CAR_0950,Indigo Ecs
+CAR_0951,Indigo Ecs
+CAR_0952,Escalade
+CAR_0953,Indigo Marina
+CAR_0954,Manza
+CAR_0955,Manza
+CAR_0956,Manza
+CAR_0957,Indigo Lx
+CAR_0958,Indigo Glx
+CAR_0959,Escalade Esv
+CAR_0960,Escalade Esv
+CAR_0961,Escalade Esv
+CAR_0962,Nexon
+CAR_0963,Nexon Ev Max
+CAR_0964,Harrier
+CAR_0965,Safari
+CAR_0966,Punch
+CAR_0967,Hexa
+CAR_0968,Aria
+CAR_0969,Sumo Gold
+CAR_0970,Sumo Gold
+CAR_0971,Sumo Gold
+CAR_0972,Sumo Grande
+CAR_0973,Nexon Ev Prime
+CAR_0974,Model S
+CAR_0975,Model S Plaid
+CAR_0976,Model 3
+CAR_0977,Model 3 Performance
+CAR_0978,Model X
+CAR_0979,Model X Plaid
+CAR_0980,Model Y
+CAR_0981,Model Y Long Range
+CAR_0982,Cybertruck
+CAR_0983,Roadster 2
+CAR_0984,Wrangler
+CAR_0985,Wrangler
+CAR_0986,Wrangler
+CAR_0987,Wrangler Rubicon
+CAR_0988,Grand Cherokee
+CAR_0989,Grand Cherokee L
+CAR_0990,Cherokee
+CAR_0991,Compass
+CAR_0992,Renegade
+CAR_0993,Renegade
+CAR_0994,Renegade
+CAR_0995,Gladiator
+CAR_0996,Wagoneer
+CAR_0997,Grand Wagoneer
+CAR_0998,Grand Wagoneer
+CAR_0999,Grand Wagoneer
+CAR_1000,Grand Cherokee 4Xe
+CAR_1001,Grand Cherokee 4Xe
+CAR_1002,Grand Cherokee 4Xe
+CAR_1003,Wrangler 4Xe
+CAR_1004,Compass 4Xe
+CAR_1005,Renegade 4Xe
+CAR_1006,Renegade 4Xe
+CAR_1007,Renegade 4Xe
+CAR_1008,Mazda2
+CAR_1009,Mazda2
+CAR_1010,Mazda2
+CAR_1011,Wagoneer S (Electric)
+CAR_1012,Gladiator Mojave Edition
+CAR_1013,Grand Cherokee Summit Reserve
+CAR_1014,Jeep Cherokee X Edition
+CAR_1015,Wrangler 392
+CAR_1016,Xt4
+CAR_1017,Xt5
+CAR_1018,Xt5
+CAR_1019,Xt5
+CAR_1020,Xt6
+CAR_1021,Lyriq Ev
+CAR_1022,Escalade V
+CAR_1023,Escalade Platinum
+CAR_1024,Ct5-V Blackwing
+CAR_1025,Ct4-V Blackwing
+CAR_1026,Ct4-V Blackwing
+CAR_1027,Ct4-V Blackwing
+CAR_1028,Xt4 Sport
+CAR_1029,Xt5 Sport
+CAR_1030,Xt6 Sport
+CAR_1031,Xt6 Sport
+CAR_1032,Xt6 Sport
+CAR_1033,Lyriq Launch Edition
+CAR_1034,Lyriq Ev Premium
+CAR_1035,Ct5 Premium Luxury
+CAR_1036,Ct5 Premium Luxury
+CAR_1037,Ct5 Premium Luxury
+CAR_1038,Spark
+CAR_1039,Spark
+CAR_1040,Spark
+CAR_1041,Sonic
+CAR_1042,Sonic
+CAR_1043,Sonic
+CAR_1044,Malibu
+CAR_1045,Malibu
+CAR_1046,Malibu
+CAR_1047,Camaro
+CAR_1048,Corvette
+CAR_1049,Traverse
+CAR_1050,Equinox
+CAR_1051,Blazer
+CAR_1052,Tahoe
+CAR_1053,Suburban
+CAR_1054,Colorado
+CAR_1055,Silverado 1500
+CAR_1056,Silverado 2500Hd
+CAR_1057,Silverado 2500Hd
+CAR_1058,Silverado 2500Hd
+CAR_1059,Silverado 3500Hd
+CAR_1060,Bolt Ev
+CAR_1061,Bolt Euv
+CAR_1062,Trailblazer
+CAR_1063,Malibu Premier
+CAR_1064,Camaro Zl1
+CAR_1065,Corvette Stingray
+CAR_1066,Silverado 1500 High Country
+CAR_1067,Silverado 1500 Trail Boss
+CAR_1068,Silverado 1500 Rst
+CAR_1069,Colorado Zr2
+CAR_1070,Colorado Zr2
+CAR_1071,Colorado Zr2
+CAR_1072,Traverse Premier
+CAR_1073,Equinox Premier
+CAR_1074,Blazer Rs
+CAR_1075,Bolt Ev 2Lt
+CAR_1076,Bolt Ev 2Lt
+CAR_1077,Bolt Ev 2Lt
+CAR_1078,Camaro Ss
+CAR_1079,Corvette Grand Sport
+CAR_1080,Traverse Rs
+CAR_1081,Blazer Premier
+CAR_1082,Malibu Lt
+CAR_1083,Spark Activ
+CAR_1084,Spark Activ
+CAR_1085,Spark Activ
+CAR_1086,Trax Lt
+CAR_1087,Trax Lt
+CAR_1088,Trax Lt
+CAR_1089,Equinox Lt
+CAR_1090,Silverado 3500Hd High Country
+CAR_1091,Colorado Wt
+CAR_1092,Suburban High Country
+CAR_1093,Silverado Custom
+CAR_1094,Spark Ls
+CAR_1095,Spark Ls
+CAR_1096,Spark Ls
+CAR_1097,Traverse Lt
+CAR_1098,Blazer Lt
+CAR_1099,Malibu Premier
+CAR_1100,Equinox Rs
+CAR_1101,Silverado 1500 Custom
+CAR_1102,Silverado 2500Hd Ltz
+CAR_1103,Tahoe Rst
+CAR_1104,Suburban Lt
+CAR_1105,Bolt Ev Premier
+CAR_1106,Tahoe Ls
+CAR_1107,Tahoe Lt
+CAR_1108,Tahoe Z71
+CAR_1109,Tahoe Z71
+CAR_1110,Tahoe Z71
+CAR_1111,Tahoe Premier
+CAR_1112,Tahoe High Country
+CAR_1113,Tahoe Midnight Edition
+CAR_1114,Tahoe Sport Edition
+CAR_1115,Terrain
+CAR_1116,Acadia
+CAR_1117,Yukon
+CAR_1118,Yukon Xl
+CAR_1119,Canyon
+CAR_1120,Sierra 1500
+CAR_1121,Sierra 2500Hd
+CAR_1122,Sierra 3500Hd
+CAR_1123,Hummer Ev Pickup
+CAR_1124,Hummer Ev Pickup
+CAR_1125,Hummer Ev Pickup
+CAR_1126,Hummer Ev Suv
+CAR_1127,Yukon Denali
+CAR_1128,Yukon Denali
+CAR_1129,Yukon Denali
+CAR_1130,Sierra Denali
+CAR_1131,Terrain At4
+CAR_1132,Acadia At4
+CAR_1133,Sierra 1500 At4
+CAR_1134,Sierra 2500Hd Denali
+CAR_1135,Sierra Elevation
+CAR_1136,Canyon At4
+CAR_1137,Canyon At4
+CAR_1138,Canyon At4
+CAR_1139,Canyon Denali
+CAR_1140,Yukon Xl Denali Ultimate
+CAR_1141,Terrain Denali
+CAR_1142,Acadia Denali
+CAR_1143,Yukon At4
+CAR_1144,Yukon Xl At4
+CAR_1145,Sierra 1500 Elevation
+CAR_1146,Sierra 1500 Slt
+CAR_1147,Sierra 2500Hd At4
+CAR_1148,Sierra 3500Hd At4
+CAR_1149,Canyon Elevation
+CAR_1150,Canyon Elevation
+CAR_1151,Canyon Elevation
+CAR_1152,Canyon Denali Black Edition
+CAR_1153,Sierra 1500 Denali Ultimate
+CAR_1154,Sierra 1500 Denali Ultimate
+CAR_1155,Sierra 1500 Denali Ultimate
+CAR_1156,Yukon Xl Denali Reserve
+CAR_1157,Terrain Elevation Edition
+CAR_1158,Acadia Black Edition
+CAR_1159,Hummer Ev Suv Edition 1
+CAR_1160,Hummer Ev Pickup Edition 1
+CAR_1161,Sierra Denali Carbonpro
+CAR_1162,Yukon Denali Performance
+CAR_1163,Sierra 2500Hd Denali Black Edition
+CAR_1164,Canyon At4X
+CAR_1165,Canyon At4X
+CAR_1166,Canyon At4X
+CAR_1167,Yukon Xl Slt
+CAR_1168,Sierra 1500 Pro
+CAR_1169,Sierra 2500Hd Pro
+CAR_1170,Sierra 3500Hd Pro
+CAR_1171,Terrain Slt
+CAR_1172,Acadia Sle
+CAR_1173,Canyon Slt
+CAR_1174,Yukon Xl Elevation
+CAR_1175,Sierra 1500 At4X
+CAR_1176,Hummer Ev Suv Extreme Off-Road
+CAR_1177,Hummer Ev Suv Extreme Off-Road
+CAR_1178,Hummer Ev Suv Extreme Off-Road
+CAR_1179,Sierra Ev Denali
+CAR_1180,Hummer Ev Omega Edition
+CAR_1181,Canyon At4X Edition 1
+CAR_1182,Yukon Denali Ultimate Black
+CAR_1183,Sierra Hd Denali Reserve
+CAR_1184,Sierra Hd Denali Reserve
+CAR_1185,Sierra Hd Denali Reserve
+CAR_1186,Acadia Denali Ultimate
+CAR_1187,Terrain All-Terrain Edition
+CAR_1188,Yukon Trailering Edition
+CAR_1189,Hummer Ev Adventure Series
+CAR_1190,Rio
+CAR_1191,Rio 5-Door
+CAR_1192,Seltos Nightfall Edition
+CAR_1193,508 Pse (Peugeot Sport Engineered)
+CAR_1194,Sorento X-Line
+CAR_1195,Sorento X-Line
+CAR_1196,Sorento X-Line
+CAR_1197,Telluride Sx
+CAR_1198,Forte Lxs
+CAR_1199,K5 Ex
+CAR_1200,Niro Plug-In Hybrid
+CAR_1201,Ev6 Wind
+CAR_1202,Soul Turbo
+CAR_1203,Soul Turbo
+CAR_1204,Soul Turbo
+CAR_1205,Seltos Sx
+CAR_1206,Stinger Scorpion Edition
+CAR_1207,Sorento Hybrid Sx Prestige
+CAR_1208,Carnival Ex
+CAR_1209,Telluride Nightfall Edition
+CAR_1210,508 Plug-In Hybrid
+CAR_1211,Ev6 First Edition
+CAR_1212,Niro Touring
+CAR_1213,Niro Touring
+CAR_1214,Niro Touring
+CAR_1215,Forte Gt-Line
+CAR_1216,Seltos Ex
+CAR_1217,3008 Plug-In Hybrid
+CAR_1218,3008 Plug-In Hybrid
+CAR_1219,3008 Plug-In Hybrid
+CAR_1220,Sorento Lx
+CAR_1221,Telluride Ex
+CAR_1222,Soul Ex
+CAR_1223,Forte Fe
+CAR_1224,K5 Gt-Line
+CAR_1225,K5 Gt-Line
+CAR_1226,K5 Gt-Line
+CAR_1227,Carnival Lxs
+CAR_1228,Ev6 Light
+CAR_1229,Niro Ex
+CAR_1230,Stinger Gt
+CAR_1231,Sorento Sx Prestige
+CAR_1232,Telluride Sx Prestige
+CAR_1233,508 Hybrid4
+CAR_1234,Ev6 Gt Performance
+CAR_1235,Niro Sx Touring
+CAR_1236,Carnival Sx Prestige
+CAR_1237,Seltos Sx Turbo
+CAR_1238,Seltos Sx Turbo
+CAR_1239,Seltos Sx Turbo
+CAR_1240,Forte Ex Premium
+CAR_1241,Soul Ex Designer Edition
+CAR_1242,Rio S
+CAR_1243,Rio 5-Door S
+CAR_1244,Soul S
+CAR_1245,Soul S
+CAR_1246,Soul S
+CAR_1247,Seltos Lx
+CAR_1248,Seltos Lx
+CAR_1249,Seltos Lx
+CAR_1250,3008 Hybrid4
+CAR_1251,Sorento Hybrid Ex
+CAR_1252,Telluride Lx
+CAR_1253,Carnival Mpv Ex
+CAR_1254,Ev6 Awd Gt-Line
+CAR_1255,Forte Gt Turbo
+CAR_1256,Forte Gt Turbo
+CAR_1257,Forte Gt Turbo
+CAR_1258,Soul Gt Designer Edition
+CAR_1259,Soul Gt Designer Edition
+CAR_1260,Soul Gt Designer Edition
+CAR_1261,Seltos X-Line Turbo
+CAR_1262,Seltos X-Line Turbo
+CAR_1263,Seltos X-Line Turbo
+CAR_1264,E-2008 Gt
+CAR_1265,E-2008 Gt
+CAR_1266,E-2008 Gt
+CAR_1267,Telluride Limited Edition
+CAR_1268,Telluride Limited Edition
+CAR_1269,Telluride Limited Edition
+CAR_1270,Stinger Gt-Line
+CAR_1271,Carnival Special Edition
+CAR_1272,Niro Sx Hybrid
+CAR_1273,Ev6 First Edition Awd
+CAR_1274,Sorento X-Pro Hybrid
+CAR_1275,Sorento X-Pro Hybrid
+CAR_1276,Sorento X-Pro Hybrid
+CAR_1277,Forte Limited Edition
+CAR_1278,Chiron
+CAR_1279,Chiron Pur Sport
+CAR_1280,Chiron Super Sport
+CAR_1281,Chiron Sport
+CAR_1282,Chiron Noire
+CAR_1283,Divo
+CAR_1284,Centodieci
+CAR_1285,Centodieci
+CAR_1286,Centodieci
+CAR_1287,La Voiture Noire
+CAR_1288,Bolide
+CAR_1289,Mistral
+CAR_1290,Volvo Fh
+CAR_1291,Volvo Fh16
+CAR_1292,Volvo Fm
+CAR_1293,Volvo Fmx
+CAR_1294,Volvo Fmx
+CAR_1295,Volvo Fmx
+CAR_1296,Volvo Vnl
+CAR_1297,Volvo Vnl
+CAR_1298,Volvo Vnl
+CAR_1299,Volvo Vnr
+CAR_1300,Volvo Vhd
+CAR_1301,Volvo Fe
+CAR_1302,Volvo Fl
+CAR_1303,Jaguar F-Type
+CAR_1304,Jaguar Xe
+CAR_1305,Jaguar Xf
+CAR_1306,Jaguar Xj
+CAR_1307,Jaguar Xj
+CAR_1308,Jaguar Xj
+CAR_1309,Jaguar E-Pace
+CAR_1310,Jaguar I-Pace
+CAR_1311,Jaguar F-Pace
+CAR_1312,Jaguar X-Type
+CAR_1313,Jaguar F-Pace R-Dynamic
+CAR_1314,Jaguar Xe R-Dynamic
+CAR_1315,Jaguar Xe R-Dynamic
+CAR_1316,Jaguar Xe R-Dynamic
+CAR_1317,Jaguar F-Type Svr
+CAR_1318,Jaguar I-Pace Electric Performance
+CAR_1319,Jaguar F-Pace Svr
+CAR_1320,Jaguar F-Pace Svr
+CAR_1321,Jaguar F-Pace Svr
+CAR_1322,Jaguar Xe S
+CAR_1323,Jaguar Xf R-Dynamic
+CAR_1324,Jaguar Xj Lwb (Long Wheelbase)
+CAR_1325,Jaguar Xj Lwb (Long Wheelbase)
+CAR_1326,Jaguar Xj Lwb (Long Wheelbase)
+CAR_1327,Jaguar F-Type Heritage Edition
+CAR_1328,Jaguar E-Pace S
+CAR_1329,Jaguar I-Pace Hse
+CAR_1330,Jaguar F-Type V8 R
+CAR_1331,Jaguar F-Type V8 R
+CAR_1332,Jaguar F-Type V8 R
+CAR_1333,Jaguar F-Type R-Dynamic
+CAR_1334,Jaguar F-Type R-Dynamic
+CAR_1335,Jaguar F-Type R-Dynamic
+CAR_1336,Jaguar Xe P300 R-Dynamic
+CAR_1337,Jaguar Xf Sportbrake
+CAR_1338,Jaguar Xf Sportbrake
+CAR_1339,Jaguar Xf Sportbrake
+CAR_1340,Jaguar I-Pace Ev400 Hse
+CAR_1341,Jaguar F-Pace S 30T Awd
+CAR_1342,Jaguar E-Pace R-Dynamic
+CAR_1343,Jaguar Xj50
+CAR_1344,Jaguar F-Type 75Th Anniversary Edition
+CAR_1345,Jaguar F-Pace S Awd
+CAR_1346,Jaguar F-Pace S Awd
+CAR_1347,Jaguar F-Pace S Awd
+CAR_1348,Jaguar Xe Se
+CAR_1349,Jaguar F-Type V6 S Convertible
+CAR_1350,Jaguar F-Type V6 S Convertible
+CAR_1351,Jaguar F-Type V6 S Convertible
+CAR_1352,Jaguar Xe R-Sport Awd
+CAR_1353,Jaguar Xf Portfolio Awd
+CAR_1354,Jaguar F-Type Coupe R
+CAR_1355,Jaguar I-Pace First Edition
+CAR_1356,Jaguar F-Pace Prestige Awd
+CAR_1357,Jaguar Xj Supercharged
+CAR_1358,Jaguar Xj Supercharged
+CAR_1359,Jaguar Xj Supercharged
+CAR_1360,Jaguar F-Type P450 Awd
+CAR_1361,Jaguar F-Pace P400E Plug-In Hybrid
+CAR_1362,Jaguar F-Type P300 Coupe
+CAR_1363,Nsx Type S
+CAR_1364,Tlx Pmc Edition
+CAR_1365,Mdx Advance
+CAR_1366,Rdx Technology
+CAR_1367,Ilx Premium
+CAR_1368,Tlx A-Spec
+CAR_1369,Rdx Sh-Awd
+CAR_1370,Mdx Sh-Awd
+CAR_1371,Mdx Sh-Awd
+CAR_1372,Mdx Sh-Awd
+CAR_1373,Rdx Platinum Elite
+CAR_1374,Tlx A-Spec Sedan
+CAR_1375,Tlx A-Spec Sedan
+CAR_1376,Tlx A-Spec Sedan
+CAR_1377,Tlx 2.4L
+CAR_1378,Mdx Hybrid
+CAR_1379,Mdx Hybrid
+CAR_1380,Mdx Hybrid
+CAR_1381,Rdx Hybrid
+CAR_1382,Ilx Technology Package
+CAR_1383,Nsx Gt3 (Track Version)
+CAR_1384,Rdx Turbo Awd
+CAR_1385,Tlx 3.5L V6
+CAR_1386,Ilx Special Edition
+CAR_1387,Mdx Sh-Awd W/Technology Package
+CAR_1388,Nsx 3.5L Hybrid Coupe
+CAR_1389,Mdx Elite
+CAR_1390,Tlx V6 Advance
+CAR_1391,Tlx V6 Advance
+CAR_1392,Tlx V6 Advance
+CAR_1393,Nsx Carbon Edition
+CAR_1394,Rdx Turbo Sh-Awd
+CAR_1395,Ilx Technology Plus
+CAR_1396,Tlx Type S Pmc Edition
+CAR_1397,Mdx Sport Hybrid
+CAR_1398,208
+CAR_1399,2008
+CAR_1400,301
+CAR_1401,301
+CAR_1402,301
+CAR_1403,308
+CAR_1404,3008
+CAR_1405,3008
+CAR_1406,3008
+CAR_1407,5008
+CAR_1408,5008
+CAR_1409,5008
+CAR_1410,508
+CAR_1411,508
+CAR_1412,508
+CAR_1413,Partner
+CAR_1414,Expert
+CAR_1415,Boxer
+CAR_1416,Boxer
+CAR_1417,Boxer
+CAR_1418,E-208
+CAR_1419,E-2008
+CAR_1420,208 Gti
+CAR_1421,308 Gti
+CAR_1422,508 Pse (Peugeot Sport Engineered)
+CAR_1423,308 Allure
+CAR_1424,2008 Allure
+CAR_1425,3008 Allure
+CAR_1426,5008 Allure
+CAR_1427,508 Allure
+CAR_1428,3008 Gt
+CAR_1429,508 Gt
+CAR_1430,3008 Gt Hybrid
+CAR_1431,3008 Gt Hybrid
+CAR_1432,3008 Gt Hybrid
+CAR_1433,5008 Gt Hybrid
+CAR_1434,208 Allure Premium
+CAR_1435,Partner Tepee
+CAR_1436,Partner Tepee
+CAR_1437,Partner Tepee
+CAR_1438,Expert L2H1
+CAR_1439,Boxer L2H2
+CAR_1440,Partner Electric
+CAR_1441,Partner Electric
+CAR_1442,Partner Electric
+CAR_1443,Expert Electric
+CAR_1444,208 Pse (Peugeot Sport Engineered)
+CAR_1445,308 Pse
+CAR_1446,508 Pse
+CAR_1447,508 Pse
+CAR_1448,508 Pse
+CAR_1449,3008 Pse
+CAR_1450,2008 Active
+CAR_1451,3008 Active
+CAR_1452,3008 Active
+CAR_1453,3008 Active
+CAR_1454,5008 Active
+CAR_1455,3008 Allure Premium
+CAR_1456,5008 Allure Premium
+CAR_1457,5008 Allure Premium
+CAR_1458,5008 Allure Premium
+CAR_1459,3008 Gt Line
+CAR_1460,3008 Gt Line
+CAR_1461,3008 Gt Line
+CAR_1462,5008 Gt Line
+CAR_1463,2008 Gt
+CAR_1464,5008 Gt
+CAR_1465,508 Sw (Station Wagon)
+CAR_1466,508 Saloon
+CAR_1467,308 Saloon
+CAR_1468,308 Saloon
+CAR_1469,308 Saloon
+CAR_1470,301 Sedan
+CAR_1471,208 Sedan
+CAR_1472,208 Sedan
+CAR_1473,208 Sedan
+CAR_1474,Fusion (Mondeo)
+CAR_1475,Taurus
+CAR_1476,Taurus
+CAR_1477,Taurus
+CAR_1478,Fiesta
+CAR_1479,Fiesta
+CAR_1480,Fiesta
+CAR_1481,Focus
+CAR_1482,Ka+
+CAR_1483,Ecosport
+CAR_1484,Escape (Kuga)
+CAR_1485,Edge
+CAR_1486,Explorer
+CAR_1487,Expedition
+CAR_1488,Bronco
+CAR_1489,Bronco Sport
+CAR_1490,Bronco Sport
+CAR_1491,Bronco Sport
+CAR_1492,F-150
+CAR_1493,F-250 Super Duty
+CAR_1494,F-250 Super Duty
+CAR_1495,F-250 Super Duty
+CAR_1496,F-350 Super Duty
+CAR_1497,Maverick
+CAR_1498,Ranger
+CAR_1499,Mustang Mach-E
+CAR_1500,F-150 Lightning
+CAR_1501,Escape Hybrid
+CAR_1502,Explorer Hybrid
+CAR_1503,Explorer Hybrid
+CAR_1504,Explorer Hybrid
+CAR_1505,Mustang
+CAR_1506,Gt
+CAR_1507,Gt
+CAR_1508,Gt
+CAR_1509,Focus St
+CAR_1510,Fiesta St
+CAR_1511,Bronco Raptor
+CAR_1512,Ranger Raptor
+CAR_1513,F-150 Raptor
+CAR_1514,Puma
+CAR_1515,Territory
+CAR_1516,Everest
+CAR_1517,Everest
+CAR_1518,Everest
+CAR_1519,Flex
+CAR_1520,Transit
+CAR_1521,Transit Connect
+CAR_1522,F-450 Super Duty
+CAR_1523,F-450 Super Duty
+CAR_1524,F-450 Super Duty
+CAR_1525,F-550 Super Duty
+CAR_1526,Mustang Shelby Gt500
+CAR_1527,Mustang Shelby Gt350
+CAR_1528,F-150 Platinum
+CAR_1529,F-150 Limited
+CAR_1530,Explorer Platinum
+CAR_1531,Expedition King Ranch
+CAR_1532,Transit Custom
+CAR_1533,E-Series Cutaway
+CAR_1534,Transit Chassis Cab
+CAR_1535,Transit Electric (E-Transit)
+CAR_1536,Explorer Plug-In Hybrid
+CAR_1537,Maverick Hybrid
+CAR_1538,Maverick Hybrid
+CAR_1539,Maverick Hybrid
+CAR_1540,Mustang (2024)
+CAR_1541,Mustang (2024)
+CAR_1542,Mustang (2024)
+CAR_1543,Ranger (2024)
+CAR_1544,Escape Plug-In Hybrid (2024)
+CAR_1545,Escape Plug-In Hybrid (2024)
+CAR_1546,Escape Plug-In Hybrid (2024)
+CAR_1547,Bronco (2024)
+CAR_1548,Explorer (2024)
+CAR_1549,Mirage
+CAR_1550,Mirage G4
+CAR_1551,Outlander
+CAR_1552,Outlander
+CAR_1553,Outlander
+CAR_1554,Outlander Phev
+CAR_1555,Eclipse Cross
+CAR_1556,Asx (Outlander Sport)
+CAR_1557,Pajero
+CAR_1558,Pajero Sport
+CAR_1559,Triton (L200)
+CAR_1560,Triton (L200)
+CAR_1561,Triton (L200)
+CAR_1562,Lancer Evolution X
+CAR_1563,I-Miev (Electric)
+CAR_1564,Xpander
+CAR_1565,Xpander
+CAR_1566,Xpander
+CAR_1567,Delica D:5
+CAR_1568,Delica D:5
+CAR_1569,Delica D:5
+CAR_1570,Colt
+CAR_1571,Grandis
+CAR_1572,Outlander Black Edition
+CAR_1573,Outlander Sel
+CAR_1574,Outlander Se
+CAR_1575,Eclipse Cross Black Edition
+CAR_1576,Asx Exceed
+CAR_1577,Triton Athlete
+CAR_1578,Pajero Final Edition
+CAR_1579,L200 Barbarian X
+CAR_1580,Space Star
+CAR_1581,Lancer Ex
+CAR_1582,Montero Sport
+CAR_1583,Attrage
+CAR_1584,Rvr Se
+CAR_1585,Delica Van
+CAR_1586,Canter (Truck)
+CAR_1587,Lancer Glx
+CAR_1588,Pajero Gls
+CAR_1589,Xpander Cross
+CAR_1590,Xpander Cross
+CAR_1591,Xpander Cross
+CAR_1592,Eclipse Cross Phev
+CAR_1593,Outlander Es
+CAR_1594,Montero Glx
+CAR_1595,Triton Glx-R
+CAR_1596,Asx Dynamic
+CAR_1597,Mirage Es
+CAR_1598,Mirage Es
+CAR_1599,Mirage Es
+CAR_1600,Outlander Le
+CAR_1601,Fuso Fighter (Truck)
+CAR_1602,Fuso Canter Eco Hybrid
+CAR_1603,Space Runner
+CAR_1604,Toppo Bj
+CAR_1605,Chariot
+CAR_1606,Lancer Se Limited
+CAR_1607,Pajero Swb (Short Wheel Base)
+CAR_1608,Pajero Swb (Short Wheel Base)
+CAR_1609,Pajero Swb (Short Wheel Base)
+CAR_1610,Delica Space Gear
+CAR_1611,I (Kei Car)
+CAR_1612,I (Kei Car)
+CAR_1613,I (Kei Car)
+CAR_1614,Dion
+CAR_1615,Airtrek
+CAR_1616,Airtrek
+CAR_1617,Airtrek
+CAR_1618,Ek Space
+CAR_1619,Ek X
+CAR_1620,Colt Czc Convertible
+CAR_1621,Galant Fortis
+CAR_1622,Endeavor
+CAR_1623,Grand Lancer
+CAR_1624,Grand Lancer
+CAR_1625,Grand Lancer
+CAR_1626,Sigma
+CAR_1627,Town Box
+CAR_1628,Minicab Miev
+CAR_1629,Minicab Miev
+CAR_1630,Minicab Miev
+CAR_1631,Mazda3
+CAR_1632,Mazda3 Hatchback
+CAR_1633,Mazda6
+CAR_1634,Cx-3
+CAR_1635,Cx-3
+CAR_1636,Cx-3
+CAR_1637,Cx-30
+CAR_1638,Cx-30
+CAR_1639,Cx-30
+CAR_1640,Cx-5
+CAR_1641,Cx-50
+CAR_1642,Cx-8
+CAR_1643,Cx-9
+CAR_1644,Cx-90
+CAR_1645,Cx-90
+CAR_1646,Cx-90
+CAR_1647,Mx-5 Miata
+CAR_1648,Mx-5 Miata Rf
+CAR_1649,Mx-30 Electric
+CAR_1650,Cx-4
+CAR_1651,Cx-7
+CAR_1652,Tribute
+CAR_1653,B-Series Pickup
+CAR_1654,Bt-50
+CAR_1655,Bt-50
+CAR_1656,Bt-50
+CAR_1657,Rx-7
+CAR_1658,Rx-3
+CAR_1659,Rx-3
+CAR_1660,Rx-3
+CAR_1661,Rx-Vision Concept
+CAR_1662,323F
+CAR_1663,Familia Sedan
+CAR_1664,Familia Sedan
+CAR_1665,Familia Sedan
+CAR_1666,Premacy
+CAR_1667,Demio
+CAR_1668,Millenia
+CAR_1669,Eunos Cosmo
+CAR_1670,Atenza
+CAR_1671,Roadpacer Ap
+CAR_1672,626
+CAR_1673,929
+CAR_1674,Luce
+CAR_1675,Luce
+CAR_1676,Luce
+CAR_1677,Capella
+CAR_1678,Carol
+CAR_1679,Carol
+CAR_1680,Carol
+CAR_1681,Autozam Az-1
+CAR_1682,Autozam Az-1
+CAR_1683,Autozam Az-1
+CAR_1684,Spiano
+CAR_1685,Verisa
+CAR_1686,Mx-6
+CAR_1687,Mpv
+CAR_1688,Proceed Marvie
+CAR_1689,Sentia
+CAR_1690,Sentia
+CAR_1691,Sentia
+CAR_1692,Cronos
+CAR_1693,Cronos
+CAR_1694,Cronos
+CAR_1695,Scrum
+CAR_1696,Parkway
+CAR_1697,Titan (Truck)
+CAR_1698,Cx-60
+CAR_1699,Cx-60
+CAR_1700,Cx-60
+CAR_1701,Cx-80
+CAR_1702,T1500
+CAR_1703,Bongo Van
+CAR_1704,Bongo Friendee
+CAR_1705,Bongo Friendee
+CAR_1706,Bongo Friendee
+CAR_1707,Revue
+CAR_1708,Protegé
+CAR_1709,Xedos 6
+CAR_1710,Xedos 9
+CAR_1711,121
+CAR_1712,1200
+CAR_1713,1500
+CAR_1714,Rx-2
+CAR_1715,Rx-5
+CAR_1716,Rx-7 Spirit R
+CAR_1717,Rx-7 Spirit R
+CAR_1718,Rx-7 Spirit R
+CAR_1719,Cosmo Sport (110S)
+CAR_1720,Eunos 500
+CAR_1721,Eunos Roadster
+CAR_1722,Familia Astina
+CAR_1723,Familia Astina
+CAR_1724,Familia Astina
+CAR_1725,Savanna Rx-7
+CAR_1726,Capella Cargo
+CAR_1727,Capella Cargo
+CAR_1728,Capella Cargo
+CAR_1729,818
+CAR_1730,Sentia Hardtop Coupe
+CAR_1731,Sentia Hardtop Coupe
+CAR_1732,Sentia Hardtop Coupe
+CAR_1733,Biante
+CAR_1734,Biante
+CAR_1735,Biante
+CAR_1736,Premacy Hydrogen Re Hybrid
+CAR_1737,Carol P360
+CAR_1738,Carol P360
+CAR_1739,Carol P360
+CAR_1740,T2000
+CAR_1741,Az-Offroad
+CAR_1742,Scrum Wagon
+CAR_1743,Persona
+CAR_1744,Astina
+CAR_1745,Etude
+CAR_1746,Porter
+CAR_1747,Mx-3
+CAR_1748,Mx-5 Superlight Concept
+CAR_1749,Premacy Hydrogen Re
+CAR_1750,Bongo Truck
+CAR_1751,Rotary Pickup
+CAR_1752,Luce Rotary Coupe
+CAR_1753,Luce Rotary Coupe
+CAR_1754,Luce Rotary Coupe
+CAR_1755,Millenia S
+CAR_1756,787B (Race Car)
+CAR_1757,787B (Race Car)
+CAR_1758,787B (Race Car)
+CAR_1759,Crown Signia
+CAR_1760,Crown Signia
+CAR_1761,Crown Signia
+CAR_1762,4Runner (6Th Gen)
+CAR_1763,Corolla Cross
+CAR_1764,C-Hr+
+CAR_1765,C-Hr+
+CAR_1766,C-Hr+
+CAR_1767,Rav4 (6Th Gen)

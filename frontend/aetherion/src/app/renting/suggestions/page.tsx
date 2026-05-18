@@ -32,6 +32,7 @@ export default function RentingSuggestion() {
   const [endPos, setEndPos] = useState("");
   const [matchProgress, setMatchProgress] = useState(0);
   const [statusIndex, setStatusIndex] = useState(0);
+  const [specificVehicles, setSpecificVehicles] = useState<{cars: any[], bikes: any[]} | null>(null);
 
   const statusMessages =
     language === "vi"
@@ -52,11 +53,17 @@ export default function RentingSuggestion() {
           "FINALIZING RECOMMENDATIONS...",
         ];
 
-  const [userId] = useState(() =>
-    typeof window !== "undefined"
-      ? `user_${Math.random().toString(36).substring(7)}`
-      : "",
-  );
+  const [userId] = useState(() => {
+    if (typeof window !== "undefined") {
+      let id = localStorage.getItem("renting_userId");
+      if (!id) {
+        id = `user_${Math.random().toString(36).substring(7)}`;
+        localStorage.setItem("renting_userId", id);
+      }
+      return id;
+    }
+    return "";
+  });
 
   useEffect(() => {
     if (!userId) return;
@@ -74,19 +81,31 @@ export default function RentingSuggestion() {
           const data = JSON.parse(event.data);
           console.log("WebSocket Received:", data);
           if (data.result) {
-            let parsed = [];
+            let parsed: any = null;
             try {
               parsed = JSON.parse(data.result);
             } catch (pe) {
-              console.error("Could not parse result json from LLM", pe);
+              console.warn("Received non-JSON result, might be an error or raw text:", data.result);
+              // Handle plain text errors from recommendation system or RAG
+              if (data.status === "error" || data.result.startsWith("Error:")) {
+                alert(data.result); // Simple alert for now, can be improved to a toast
+                setLoading(false);
+                return;
+              }
             }
-            if (Array.isArray(parsed)) {
-              parsed.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-              setResult(parsed);
-            } else {
-              setResult([]);
+            if (parsed) {
+              if (Array.isArray(parsed)) {
+                parsed.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+                setResult(parsed);
+                setLoading(false);
+              } else if (parsed.cars || parsed.bikes) {
+                // This handles the new vehicle recommendation payload
+                setSpecificVehicles(parsed);
+              } else {
+                setResult([]);
+                setLoading(false);
+              }
             }
-            setLoading(false);
           }
         } catch (e) {
           console.error("Error parsing WS message:", e);
@@ -128,12 +147,101 @@ export default function RentingSuggestion() {
       size: Math.floor(Math.random() * 24) + 14,
     }));
     setFloatingIcons(generatedIcons);
+
+    // Restore cached inputs and results if present
+    const cachedJourney = localStorage.getItem("renting_journey");
+    const cachedStartPos = localStorage.getItem("renting_startPos");
+    const cachedEndPos = localStorage.getItem("renting_endPos");
+    const cachedResult = localStorage.getItem("renting_result");
+    const cachedSpecificVehicles = localStorage.getItem("renting_specificVehicles");
+
+    if (cachedJourney) setJourney(cachedJourney);
+    if (cachedStartPos) setStartPos(cachedStartPos);
+    if (cachedEndPos) setEndPos(cachedEndPos);
+    if (cachedResult) {
+      try {
+        setResult(JSON.parse(cachedResult));
+      } catch (e) {
+        console.error("Error parsing cached result:", e);
+      }
+    }
+    if (cachedSpecificVehicles) {
+      try {
+        setSpecificVehicles(JSON.parse(cachedSpecificVehicles));
+      } catch (e) {
+        console.error("Error parsing cached specific vehicles:", e);
+      }
+    }
   }, []);
+
+  useEffect(() => {
+    if (mounted) {
+      localStorage.setItem("renting_journey", journey);
+    }
+  }, [journey, mounted]);
+
+  useEffect(() => {
+    if (mounted) {
+      localStorage.setItem("renting_startPos", startPos);
+    }
+  }, [startPos, mounted]);
+
+  useEffect(() => {
+    if (mounted) {
+      localStorage.setItem("renting_endPos", endPos);
+    }
+  }, [endPos, mounted]);
+
+  useEffect(() => {
+    if (mounted) {
+      if (result) {
+        localStorage.setItem("renting_result", JSON.stringify(result));
+      } else {
+        localStorage.removeItem("renting_result");
+      }
+    }
+  }, [result, mounted]);
+
+  useEffect(() => {
+    if (mounted) {
+      if (specificVehicles) {
+        localStorage.setItem("renting_specificVehicles", JSON.stringify(specificVehicles));
+      } else {
+        localStorage.removeItem("renting_specificVehicles");
+      }
+    }
+  }, [specificVehicles, mounted]);
+
+  // AUTOMATIC VEHICLE FETCH TRIGGER AFTER RAG SUCCESS
+  useEffect(() => {
+    if (result && result.length > 0 && !specificVehicles) {
+      const fetchSpecificVehicles = async () => {
+        try {
+          const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || "http://localhost";
+          // Dispatch the async vehicle recommendation job
+          await fetch(`${nginxUrl}/api/v1/jobs/recommend`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              origin: startPos || "Current Location",
+              destination: endPos || "Destination",
+              date: 5, // Mock date constraint
+              userId: userId,
+            }),
+          });
+        } catch (e) {
+          console.error("Failed to fire vehicle recommendation job:", e);
+        }
+      };
+      fetchSpecificVehicles();
+    }
+  }, [result, startPos, endPos, userId, specificVehicles]);
 
   const handleSearch = async () => {
     if (!journey.trim()) return;
     setLoading(true);
     setResult(null);
+    setSpecificVehicles(null);
     setMatchProgress(0);
 
     const progressInterval = setInterval(() => {
@@ -214,6 +322,37 @@ export default function RentingSuggestion() {
       setLoading(false);
       clearInterval(progressInterval);
       clearInterval(statusInterval);
+    }
+  };
+
+  const handleVehicleClick = (type: string) => {
+    const normalizedType = type?.toLowerCase();
+    const isVehicle = ['car', 'motorbike', 'bike', 'ô tô', 'xe máy'].includes(normalizedType);
+    
+    if (isVehicle) {
+      const routeType = (normalizedType === 'car' || normalizedType === 'ô tô') ? 'car' : 'motorbike';
+      
+      // If we already have results, persist them in localStorage
+      if (specificVehicles) {
+        localStorage.setItem('last_recommendations', JSON.stringify(specificVehicles));
+      } else {
+        // Fire manual recommendation trigger in the background (fire-and-forget)
+        console.log("Triggering background vehicle recommendation job:", type);
+        const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || "http://localhost";
+        fetch(`${nginxUrl}/api/v1/jobs/recommend`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            origin: startPos || "Current Location",
+            destination: endPos || "Destination",
+            date: 5,
+            userId: userId,
+          }),
+        }).catch(e => console.error("Failed background vehicle job trigger:", e));
+      }
+      
+      // REDIRECT IMMEDIATELY - DO NOT WAIT!
+      window.location.href = `/renting/vehicles?type=${routeType}`;
     }
   };
 
@@ -643,17 +782,57 @@ export default function RentingSuggestion() {
 
         {/* RESULT SECTION */}
         {result && !loading && (
-          <div
-            className="reveal-text"
-            style={{
-              marginTop: "4rem",
-              animationDelay: "0s",
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-              gap: "2.5rem",
-            }}
-          >
-            {result.map((item, idx) => (
+          <div className="reveal-text" style={{ marginTop: "4rem" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem" }}>
+              <h2 style={{ fontSize: "1.8rem", fontWeight: "800", color: "var(--cyber-yellow)", textTransform: "uppercase", letterSpacing: "1px" }}>
+                AI Recommendations
+              </h2>
+              <button
+                onClick={() => {
+                  setResult(null);
+                  setSpecificVehicles(null);
+                  setJourney("");
+                  setStartPos("");
+                  setEndPos("");
+                  localStorage.removeItem("renting_journey");
+                  localStorage.removeItem("renting_startPos");
+                  localStorage.removeItem("renting_endPos");
+                  localStorage.removeItem("renting_result");
+                  localStorage.removeItem("renting_specificVehicles");
+                  localStorage.removeItem("last_recommendations");
+                }}
+                style={{
+                  background: "rgba(239, 68, 68, 0.1)",
+                  border: "1px solid rgba(239, 68, 68, 0.3)",
+                  color: "#ef4444",
+                  padding: "8px 16px",
+                  borderRadius: "8px",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.85rem",
+                  transition: "all 0.2s ease"
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.background = "rgba(239, 68, 68, 0.2)";
+                  e.currentTarget.style.borderColor = "#ef4444";
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.background = "rgba(239, 68, 68, 0.1)";
+                  e.currentTarget.style.borderColor = "rgba(239, 68, 68, 0.3)";
+                }}
+              >
+                RESET SEARCH
+              </button>
+            </div>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+                gap: "2.5rem",
+              }}
+            >
+              {result.map((item, idx) => (
               <div
                 key={idx}
                 className="edgerunner-card"
@@ -667,6 +846,7 @@ export default function RentingSuggestion() {
                   position: "relative",
                   borderTop: "3px solid var(--cyber-blue)",
                 }}
+                onClick={() => handleVehicleClick(item.type)}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = "translateY(-10px)";
                   e.currentTarget.style.boxShadow =
@@ -794,16 +974,54 @@ export default function RentingSuggestion() {
                         color: "#cbd5e1",
                         lineHeight: "1.6",
                         fontSize: "0.95rem",
+                        marginBottom: "1.5rem"
                       }}
                     >
                       {item.explanation}
                     </p>
+
+                    {/* NEW SPECIFIC VEHICLES BOX */}
+                    <div style={{ paddingTop: "1rem", borderTop: "1px dashed var(--cyber-border)" }}>
+                      <h4 style={{ color: "var(--cyber-yellow)", fontSize: "0.85rem", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "8px" }}>
+                        <Database size={14} /> RECOMMENDED MODELS
+                      </h4>
+                      
+                      {!specificVehicles ? (
+                        <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "var(--text-muted)", fontSize: "0.85rem" }}>
+                          <Loader2 size={14} className="animate-spin-custom" />
+                          Fetching database constraints...
+                        </div>
+                      ) : (
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                          {(item.type?.toLowerCase() === 'car' || item.type?.toLowerCase() === 'ô tô') ? (
+                            specificVehicles.cars?.length > 0 ? (
+                              specificVehicles.cars.slice(0, 5).map((car: any, i: number) => (
+                                <span key={i} style={{ padding: "6px 12px", background: "rgba(52, 229, 235, 0.1)", border: "1px solid var(--cyber-blue)", borderRadius: "4px", fontSize: "0.85rem", color: "var(--cyber-blue)", fontWeight: "bold" }}>
+                                  {car.model || car.veh_id}
+                                </span>
+                              ))
+                            ) : <span style={{fontSize: '0.8rem', color: 'var(--text-muted)'}}>No cars available</span>
+                          ) : (item.type?.toLowerCase() === 'motorbike' || item.type?.toLowerCase() === 'xe máy') ? (
+                            specificVehicles.bikes?.length > 0 ? (
+                              specificVehicles.bikes.slice(0, 5).map((bike: any, i: number) => (
+                                <span key={i} style={{ padding: "6px 12px", background: "rgba(251, 191, 36, 0.1)", border: "1px solid var(--cyber-yellow)", borderRadius: "4px", fontSize: "0.85rem", color: "var(--cyber-yellow)", fontWeight: "bold" }}>
+                                  {bike.model || bike.veh_id}
+                                </span>
+                              ))
+                            ) : <span style={{fontSize: '0.8rem', color: 'var(--text-muted)'}}>No motorbikes available</span>
+                          ) : (
+                            <span style={{fontSize: '0.8rem', color: 'var(--text-muted)'}}>No specific models for this mode</span>
+                          )}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
-        )}
+        </div>
+      )}
       </div>
     </>
   );
