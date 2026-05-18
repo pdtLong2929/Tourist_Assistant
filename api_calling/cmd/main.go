@@ -93,6 +93,7 @@ func main() {
 	enrichTopic := psClient.Topic("task-enrich")
 	resultsTopic := psClient.Topic("ai-results")
 	recommendEnrichTopic := psClient.Topic("recommend-enrich")
+	transitEnrichTopic := psClient.Topic("transit-enrich")
 
 	// 2. Khởi tạo các Clients
 	mClient := client.NewMapClient(cfg.Location_API_Key)
@@ -298,6 +299,98 @@ func main() {
 			resultsTopic.Publish(ctx, &pubsub.Message{Data: errBytes})
 		} else {
 			log.Printf("Successfully published enriched job %s to recommend-enrich", job.JobID)
+		}
+
+		c.Status(http.StatusOK)
+	})
+
+	// Added Pub/Sub Push Endpoint for Transit Routing Jobs
+	r.POST("/pubsub/transit-push", func(c *gin.Context) {
+		var msg PubSubMessage
+		if err := c.ShouldBindJSON(&msg); err != nil {
+			log.Println("Invalid transit push payload:", err)
+			c.Status(http.StatusBadRequest)
+			return
+		}
+
+		var job RecommendJobPayload
+		if err := json.Unmarshal(msg.Message.Data, &job); err != nil {
+			log.Println("Error unmarshaling transit job data:", err)
+			c.Status(http.StatusOK)
+			return
+		}
+
+		log.Printf("Processing transit job %s for user %s", job.JobID, job.UserID)
+
+		// Get Origin coordinates
+		var originLat, originLon float64
+		originData, err := mClient.GetLocation(job.Origin)
+		if err == nil && originData != nil && len(originData.Results) > 0 {
+			originLat = originData.Results[0].Geometry.Location.Lat
+			originLon = originData.Results[0].Geometry.Location.Lng
+			log.Printf("Resolved Transit Origin '%s' to [%f, %f]", job.Origin, originLat, originLon)
+		} else {
+			log.Printf("Failed to get transit origin coordinates for %s: %v", job.Origin, err)
+		}
+
+		// Get Destination coordinates
+		var destLat, destLon float64
+		destData, err := mClient.GetLocation(job.Destination)
+		if err == nil && destData != nil && len(destData.Results) > 0 {
+			destLat = destData.Results[0].Geometry.Location.Lat
+			destLon = destData.Results[0].Geometry.Location.Lng
+			log.Printf("Resolved Transit Destination '%s' to [%f, %f]", job.Destination, destLat, destLon)
+		} else {
+			log.Printf("Failed to get transit destination coordinates for %s: %v", job.Destination, err)
+		}
+
+		if originLat == 0 || originLon == 0 || destLat == 0 || destLon == 0 {
+			log.Printf("Aborting transit job: Invalid coordinates for '%s' -> '%s'", job.Origin, job.Destination)
+			c.JSON(http.StatusOK, gin.H{"status": "error", "message": "Could not resolve locations to coordinates"})
+			return
+		}
+
+		// Determine the city code based on latitude (HN: ~21.0, HCMC: ~10.8)
+		cityCode := "hcmc"
+		if originLat > 16.0 {
+			cityCode = "hn"
+		}
+
+		// Compile the payload matching the transit_db's TransitRequest schema
+		transitPayload := map[string]interface{}{
+			"job_id":  job.JobID,
+			"user_id": job.UserID,
+			"action":  "transit_routing",
+			"payload": map[string]interface{}{
+				"city": cityCode,
+				"locations": []map[string]interface{}{
+					{"lat": originLat, "lon": originLon},
+					{"lat": destLat, "lon": destLon},
+				},
+				"top_k":           3,
+				"max_walk_meters": 1000.0,
+				"combine_routes":  true,
+			},
+		}
+
+		enrichedBytes, _ := json.Marshal(transitPayload)
+		publishRes := transitEnrichTopic.Publish(ctx, &pubsub.Message{
+			Data: enrichedBytes,
+		})
+
+		_, err = publishRes.Get(ctx)
+		if err != nil {
+			log.Printf("Failed to publish to transit-enrich: %v", err)
+			errPayload := map[string]interface{}{
+				"jobId":  job.JobID,
+				"userId": job.UserID,
+				"status": "error",
+				"result": "Failed to dispatch transit suggestions.",
+			}
+			errBytes, _ := json.Marshal(errPayload)
+			resultsTopic.Publish(ctx, &pubsub.Message{Data: errBytes})
+		} else {
+			log.Printf("Successfully published enriched job %s to transit-enrich", job.JobID)
 		}
 
 		c.Status(http.StatusOK)

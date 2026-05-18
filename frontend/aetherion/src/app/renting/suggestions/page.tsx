@@ -95,6 +95,7 @@ export default function RentingSuggestion() {
             }
             if (parsed) {
               if (Array.isArray(parsed)) {
+                // Keep all separate vehicle cards fetched from Gemini RAG
                 parsed.sort((a, b) => (b.rating || 0) - (a.rating || 0));
                 setResult(parsed);
                 setLoading(false);
@@ -211,6 +212,7 @@ export default function RentingSuggestion() {
       }
     }
   }, [specificVehicles, mounted]);
+
 
   // AUTOMATIC VEHICLE FETCH TRIGGER AFTER RAG SUCCESS
   useEffect(() => {
@@ -353,6 +355,9 @@ export default function RentingSuggestion() {
       
       // REDIRECT IMMEDIATELY - DO NOT WAIT!
       window.location.href = `/renting/vehicles?type=${routeType}`;
+    } else if (["transit", "bus", "metro", "public transit", "tàu điện", "xe buýt"].includes(normalizedType)) {
+      // Redirect to the new transit route to view all possible transit choices!
+      window.location.href = `/renting/transit?origin=${encodeURIComponent(startPos || 'Current Location')}&destination=${encodeURIComponent(endPos || 'Destination')}`;
     }
   };
 
@@ -1022,6 +1027,8 @@ export default function RentingSuggestion() {
           </div>
         </div>
       )}
+
+
       </div>
     </>
   );

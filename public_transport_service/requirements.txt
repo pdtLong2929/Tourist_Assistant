@@ -1,4 +1,0 @@
-# Web Framework & Validation
-fastapi>=0.103.0
-uvicorn[standard]>=0.23.0
-pydantic>=2.4.0

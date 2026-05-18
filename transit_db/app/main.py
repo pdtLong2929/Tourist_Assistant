@@ -12,6 +12,12 @@ async def lifespan(app: FastAPI):
     # Startup: .env is already loaded, so DATABASE_URL is available
     init_pool()
     init_services()
+    
+    # Start pubsub pull subscriber for async processing
+    from app import handler
+    if handler.should_start_pull_subscriber():
+        handler.start_pull_subscriber()
+        
     yield
     # Shutdown
     close_pool()

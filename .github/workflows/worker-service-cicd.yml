@@ -2,7 +2,7 @@ name: Worker Service CI/CD to GCP
 
 on:
   push:
-    branches: [ "main", "async" ]
+    branches: [ "main", "ai" ]
     paths:
       - 'worker_service/**'
       - '.github/workflows/worker-service-cicd.yml'

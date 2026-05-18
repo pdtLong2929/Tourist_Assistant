@@ -144,8 +144,8 @@ services:
       POSTGRES_URL: postgresql://${POSTGRES_USER:-tourist}:${POSTGRES_PASSWORD:-tourist_secret}@postgres:5432/${POSTGRES_DB:-tourist_assistant}
       DATASET_PATH: /app/dataset.csv
       PYTHONUNBUFFERED: "1"
-      MOCK_EMBEDDING: ${MOCK_EMBEDDING:-false}
       REDIS_ADDR: redis:6379
+      MOCK_EMBEDDING: ${MOCK_EMBEDDING:-true}
     depends_on:
       postgres:
         condition: service_healthy
@@ -253,6 +253,28 @@ services:
     networks:
       - ta_network
 
+  # ─── Python Transit Routing System ────────────────────────────────────
+  transit_db:
+    build:
+      context: ./transit_db
+      dockerfile: Dockerfile
+    container_name: ta_transit_db
+    restart: unless-stopped
+    ports:
+      - "8004:8000"
+    environment:
+      PUBSUB_EMULATOR_HOST: pubsub:8085
+      GOOGLE_CLOUD_PROJECT: test-project
+      PUBSUB_ENABLE_PULL_SUBSCRIBER: 1
+      PUBSUB_SUBSCRIPTION_ID: transit-worker-sub
+      PUBSUB_OUTPUT_TOPIC_ID: ai-results
+      DATABASE_URL: postgresql://${POSTGRES_USER:-tourist}:${POSTGRES_PASSWORD:-tourist_secret}@postgres:5432/${POSTGRES_DB:-tourist_assistant}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - ta_network
+
   # ─── API Calling Service ──────────────────────────────────────────────
   api_calling:
     build:
@@ -303,11 +325,15 @@ services:
         curl -s -X PUT http://pubsub:8085/v1/projects/test-project/topics/ai-results;
         curl -s -X PUT http://pubsub:8085/v1/projects/test-project/topics/recommend-job;
         curl -s -X PUT http://pubsub:8085/v1/projects/test-project/topics/recommend-enrich;
+        curl -s -X PUT http://pubsub:8085/v1/projects/test-project/topics/transit-job;
+        curl -s -X PUT http://pubsub:8085/v1/projects/test-project/topics/transit-enrich;
         curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/api-calling-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/ai-jobs\",\"pushConfig\":{\"pushEndpoint\":\"http://api_calling:8080/pubsub/push\"}}';
         curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/worker-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/task-enrich\",\"pushConfig\":{\"pushEndpoint\":\"http://worker_service:8001/pubsub/push\"}}';
         curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/notification-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/ai-results\",\"pushConfig\":{\"pushEndpoint\":\"http://notification:8080/pubsub/results\"}}';
         curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/api-calling-rec-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/recommend-job\",\"pushConfig\":{\"pushEndpoint\":\"http://api_calling:8080/pubsub/recommend-push\"}}';
         curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/recommend-worker-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/recommend-enrich\"}';
+        curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/api-calling-transit-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/transit-job\",\"pushConfig\":{\"pushEndpoint\":\"http://api_calling:8080/pubsub/transit-push\"}}';
+        curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/transit-worker-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/transit-enrich\"}';
         echo 'Pub/Sub Initialized!';
       "
 

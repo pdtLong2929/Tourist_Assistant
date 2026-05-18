@@ -1,0 +1,19 @@
+# Exclude local environmental secrets
+.env
+.env.*
+
+# Exclude python development cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Exclude IDE and workspace files
+.git/
+.github/
+.vscode/
+.idea/
+*.md
+docker-compose.yml
