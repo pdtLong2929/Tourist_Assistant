@@ -144,6 +144,6 @@ jobs:
               FIREBASE_STORAGE_BUCKET=FIREBASE_STORAGE_BUCKET:latest,\
               REDIS_ADDR=REDIS_ADDR:latest,\
               REDIS_PASSWORD=REDIS_PASSWORD:latest" \
-            --set-env-vars="PUBSUB_ENABLE_PULL_SUBSCRIBER=false,PUBSUB_OUTPUT_TOPIC_ID=ai-results,PUBSUB_ERROR_TOPIC_ID=ai-results,PYTHONUNBUFFERED=1" \
+            --set-env-vars="GOOGLE_CLOUD_PROJECT=${{ env.PROJECT_ID }},GCP_PROJECT_ID=${{ env.PROJECT_ID }},PUBSUB_ENABLE_PULL_SUBSCRIBER=false,PUBSUB_OUTPUT_TOPIC_ID=ai-results,PUBSUB_ERROR_TOPIC_ID=ai-results,PYTHONUNBUFFERED=1" \
             --timeout=3600
 

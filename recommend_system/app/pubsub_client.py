@@ -30,7 +30,15 @@ Callback = Callable[[Any], None]
 def _get_project_id() -> str:
     project_id = os.getenv("GOOGLE_CLOUD_PROJECT") or os.getenv("GCP_PROJECT_ID")
     if not project_id:
-        raise EnvironmentError("Missing environment variable: GOOGLE_CLOUD_PROJECT or GCP_PROJECT_ID")
+        try:
+            import google.auth
+            _, credentials_project = google.auth.default()
+            if credentials_project:
+                return credentials_project
+        except Exception:
+            pass
+        # Graceful fallback to match Go backend services during local development/testing
+        return "test-project"
     return project_id
 
 
@@ -41,15 +49,13 @@ def _configure_credentials() -> None:
 
     credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
     if not credentials_path:
-        # In GCP environments like Cloud Run, we use Application Default Credentials (ADC) automatically
-        if os.getenv("K_SERVICE"):
-            return
-        raise EnvironmentError(
-            "Missing environment variable: GOOGLE_APPLICATION_CREDENTIALS"
-        )
+        # In GCP environments (Cloud Run/GCE) or authenticated local shells, Google SDK handles ADC automatically.
+        # We don't crash the server at startup, matching Go's robust approach.
+        return
 
     if not os.path.isfile(credentials_path):
-        raise FileNotFoundError(f"Service account file not found: {credentials_path}")
+        logger.warning(f"GOOGLE_APPLICATION_CREDENTIALS path specified but file not found: {credentials_path}")
+        return
 
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_path
 
