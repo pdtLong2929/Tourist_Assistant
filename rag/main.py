@@ -322,7 +322,7 @@ def suggest_transport(req: SuggestRequest):
 [QUERY]
 {query_text}"""
             
-            sys_inst = "Expert SE Asia transport planner. Modes: bike, motorbike, car, walk, bus, metro. Rate all 6 for current query. Return ONLY a JSON array: [{'type': '...', 'rating': '0-100', 'explanation': 'concise sentence'}]."
+            sys_inst = "Expert SE Asia transport planner. Modes: bike, motorbike, car, walk, transit. Rate all 5 for current query. Return ONLY a JSON array: [{'type': '...', 'rating': '0-100', 'explanation': 'concise sentence'}]."
         else:
             context_lines = [
                 f"{r[0]}: {r[1]}|Good:{r[2]}|Bad:{r[3]}|Const:{r[4]}|WSen:{r[5]}|TSen:{r[6]}"
@@ -332,11 +332,11 @@ def suggest_transport(req: SuggestRequest):
             
             prompt = f"""[MODES]
 {context_str}
-
+ 
 [QUERY]
 {query_text}"""
             
-            sys_inst = "Practical travel assistant. Modes: bike, motorbike, car, walk, bus, metro. Rate all 6 for current conditions. Return ONLY JSON array: [{'type': '...', 'rating': '0-100', 'explanation': 'concise sentence'}]."
+            sys_inst = "Practical travel assistant. Modes: bike, motorbike, car, walk, transit. Rate all 5 for current conditions. Return ONLY JSON array: [{'type': '...', 'rating': '0-100', 'explanation': 'concise sentence'}]."
 
         if is_mock():
             # Parse query_text to dynamically adjust mock ratings to look very realistic
@@ -348,8 +348,7 @@ def suggest_transport(req: SuggestRequest):
                 "motorbike": 80,
                 "car": 75,
                 "walk": 50,
-                "bus": 70,
-                "metro": 90
+                "transit": 80
             }
             
             explanations = {
@@ -357,8 +356,7 @@ def suggest_transport(req: SuggestRequest):
                 "motorbike": "[MOCK] Motorbike is extremely agile in city streets.",
                 "car": "[MOCK] Car provides premium air-conditioned comfort.",
                 "walk": "[MOCK] Walking is best for short active micro-trips.",
-                "bus": "[MOCK] Bus is affordable and covers major arteries.",
-                "metro": "[MOCK] Metro is highly efficient and traffic-free."
+                "transit": "[MOCK] Public transit is highly efficient, affordable, and traffic-free."
             }
             
             # Adjust based on weather
@@ -367,21 +365,21 @@ def suggest_transport(req: SuggestRequest):
                 ratings["walk"] -= 30
                 ratings["motorbike"] -= 25
                 ratings["car"] += 15
+                ratings["transit"] += 10
                 explanations["bike"] = "[MOCK] Riding a bike is highly unsafe during active rain/storm."
                 explanations["walk"] = "[MOCK] Walking is uncomfortable due to heavy rain."
                 explanations["motorbike"] = "[MOCK] Motorbike lacks shelter; caution advised in rain."
                 explanations["car"] = "[MOCK] Car provides excellent shelter and safety in rain."
+                explanations["transit"] = "[MOCK] Public transit offers a safe, covered, and stress-free journey in wet weather."
             
             # Adjust based on traffic
             if "heavy" in q_lower or "jam" in q_lower or "congest" in q_lower or "rush hour" in q_lower:
                 ratings["car"] -= 35
-                ratings["bus"] -= 20
+                ratings["transit"] += 15
                 ratings["motorbike"] += 10
-                ratings["metro"] += 10
                 explanations["car"] = "[MOCK] Car is severely delayed by heavy gridlock/traffic."
-                explanations["bus"] = "[MOCK] Bus is moderately slowed down in congested road lanes."
+                explanations["transit"] = "[MOCK] Public transit bypasses ground-level road congestion entirely."
                 explanations["motorbike"] = "[MOCK] Motorbike easily filters through heavy traffic jams."
-                explanations["metro"] = "[MOCK] Metro completely bypasses all ground-level gridlock."
                 
             # Adjust based on distance
             if "km" in q_lower:
@@ -392,22 +390,22 @@ def suggest_transport(req: SuggestRequest):
                     if dist > 10:
                         ratings["walk"] = max(5, ratings["walk"] - 45)
                         ratings["bike"] = max(10, ratings["bike"] - 30)
-                        ratings["metro"] += 5
+                        ratings["transit"] += 10
                         explanations["walk"] = f"[MOCK] Walk is impractical for a long distance of {dist} km."
                         explanations["bike"] = f"[MOCK] Biking is very tiring for a {dist} km journey."
+                        explanations["transit"] = f"[MOCK] Public transit is the most efficient and reliable choice for a {dist} km journey."
                     elif dist < 2:
                         ratings["walk"] += 35
                         ratings["bike"] += 20
                         ratings["car"] -= 30
-                        ratings["bus"] -= 20
-                        ratings["metro"] -= 30
+                        ratings["transit"] -= 20
                         explanations["walk"] = f"[MOCK] Walking is highly recommended for this short {dist} km micro-trip."
                         explanations["car"] = f"[MOCK] Car is inefficient for a very short trip of {dist} km."
-                        explanations["metro"] = f"[MOCK] Metro is overkill and inconvenient for just {dist} km."
+                        explanations["transit"] = f"[MOCK] Public transit is overkill and inconvenient for just {dist} km."
 
             # Ensure all ratings stay within 0-100 range
             mock_list = []
-            for mode in ["bike", "motorbike", "car", "walk", "bus", "metro"]:
+            for mode in ["bike", "motorbike", "car", "walk", "transit"]:
                 score = max(0, min(100, ratings[mode]))
                 mock_list.append({
                     "type": mode,
