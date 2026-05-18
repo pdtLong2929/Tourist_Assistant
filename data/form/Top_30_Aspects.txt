@@ -1,0 +1,31 @@
+Danh sách TOP 30 mục gợi ý cho Form đầu vào (Sắp xếp theo độ phổ biến):
+ 1. Market
+ 2. Food
+ 3. Price
+ 4. Guide
+ 5. Service
+ 6. Staff
+ 7. Park
+ 8. Space
+ 9. View
+10. Quality
+11. Temple
+12. Air
+13. Trees
+14. Church
+15. Shop
+16. Mall
+17. Floor
+18. Atmosphere
+19. City
+20. Attitude
+21. Culture
+22. Location
+23. Markets
+24. Life
+25. Clothes
+26. Store
+27. Scenery
+28. Goods
+29. Tea
+30. Fun
