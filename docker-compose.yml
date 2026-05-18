@@ -333,7 +333,7 @@ services:
         curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/api-calling-rec-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/recommend-job\",\"pushConfig\":{\"pushEndpoint\":\"http://api_calling:8080/pubsub/recommend-push\"}}';
         curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/recommend-worker-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/recommend-enrich\"}';
         curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/api-calling-transit-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/transit-job\",\"pushConfig\":{\"pushEndpoint\":\"http://api_calling:8080/pubsub/transit-push\"}}';
-        curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/transit-worker-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/transit-enrich\"}';
+        curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/transit-worker-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/transit-enrich\",\"pushConfig\":{\"pushEndpoint\":\"http://transit_db:8004/pubsub/push\"}}';
         echo 'Pub/Sub Initialized!';
       "
 
