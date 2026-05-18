@@ -2,7 +2,7 @@ name: Recommend System CI/CD to GCP
 
 on:
   push:
-    branches: [ "main", "async" ]
+    branches: [ "main", "ai" ]
     paths:
       - 'recommend_system/**'
       - '.github/workflows/recommend-system-cicd.yml'

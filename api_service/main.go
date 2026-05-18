@@ -44,6 +44,7 @@ func main() {
 
 	topic := client.Topic("ai-jobs")
 	recommendTopic := client.Topic("recommend-job")
+	transitTopic := client.Topic("transit-job")
 
 	// Endpoint to receive requests from Frontend
 	r.POST("/api/v1/jobs/submit", func(c *gin.Context) {
@@ -116,6 +117,43 @@ func main() {
 
 		c.JSON(http.StatusAccepted, gin.H{
 			"message": "Recommendation job queued successfully",
+			"jobId":   jobID,
+		})
+	})
+
+	// New Endpoint for Transit Recommendation
+	r.POST("/api/v1/jobs/transit", func(c *gin.Context) {
+		var req RecommendRequest
+		if err := c.ShouldBindJSON(&req); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		jobID := fmt.Sprintf("transit-job-%s", req.UserID)
+
+		jobPayload := map[string]interface{}{
+			"jobId":       jobID,
+			"userId":      req.UserID,
+			"origin":      req.Origin,
+			"destination": req.Destination,
+			"date":        req.Date,
+		}
+
+		payloadBytes, _ := json.Marshal(jobPayload)
+
+		result := transitTopic.Publish(ctx, &pubsub.Message{
+			Data: payloadBytes,
+		})
+
+		_, err := result.Get(ctx)
+		if err != nil {
+			log.Println("Error publishing to transit-job:", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to queue transit job"})
+			return
+		}
+
+		c.JSON(http.StatusAccepted, gin.H{
+			"message": "Transit recommendation job queued successfully",
 			"jobId":   jobID,
 		})
 	})

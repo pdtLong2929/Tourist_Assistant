@@ -2,7 +2,7 @@ name: Nginx API Gateway CI/CD to GCP
 
 on:
   push:
-    branches: [ "main", "async" ]
+    branches: [ "main", "ai" ]
     paths:
       - 'nginx/**'
       - '.github/workflows/nginx-cicd.yml'

@@ -2,7 +2,7 @@ name: Frontend CI/CD to GCP
 
 on:
   push:
-    branches: [ "main", "async" ]
+    branches: [ "main", "ai" ]
     paths:
       - 'frontend/**'
       - '.github/workflows/frontend-cicd.yml'
