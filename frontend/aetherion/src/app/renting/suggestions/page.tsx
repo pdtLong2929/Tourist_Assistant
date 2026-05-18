@@ -986,33 +986,13 @@ export default function RentingSuggestion() {
                     </p>
 
                     {/* DETAILED INFORMATION LINK */}
-                    <div style={{ paddingTop: "1rem", borderTop: "1px dashed var(--cyber-border)" }}>
-                      <h4 style={{ color: "var(--cyber-yellow)", fontSize: "0.85rem", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "8px" }}>
-                        <Zap size={14} className="animate-pulse" /> Click here for detailed information
-                      </h4>
-                      
-                      {specificVehicles && (
-                        <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                          {(item.type?.toLowerCase() === 'car' || item.type?.toLowerCase() === 'ô tô') ? (
-                            specificVehicles.cars?.length > 0 && (
-                              specificVehicles.cars.slice(0, 5).map((car: any, i: number) => (
-                                <span key={i} style={{ padding: "6px 12px", background: "rgba(52, 229, 235, 0.1)", border: "1px solid var(--cyber-blue)", borderRadius: "4px", fontSize: "0.85rem", color: "var(--cyber-blue)", fontWeight: "bold" }}>
-                                  {car.model || car.veh_id}
-                                </span>
-                              ))
-                            )
-                          ) : (item.type?.toLowerCase() === 'motorbike' || item.type?.toLowerCase() === 'xe máy') ? (
-                            specificVehicles.bikes?.length > 0 && (
-                              specificVehicles.bikes.slice(0, 5).map((bike: any, i: number) => (
-                                <span key={i} style={{ padding: "6px 12px", background: "rgba(251, 191, 36, 0.1)", border: "1px solid var(--cyber-yellow)", borderRadius: "4px", fontSize: "0.85rem", color: "var(--cyber-yellow)", fontWeight: "bold" }}>
-                                  {bike.model || bike.veh_id}
-                                </span>
-                              ))
-                            )
-                          ) : null}
-                        </div>
-                      )}
-                    </div>
+                    {!["bike", "walk", "xe đạp", "đi bộ"].includes(item.type?.toLowerCase()) && (
+                      <div style={{ paddingTop: "1rem", borderTop: "1px dashed var(--cyber-border)" }}>
+                        <h4 style={{ color: "var(--cyber-yellow)", fontSize: "0.85rem", marginBottom: "0.2rem", display: "flex", alignItems: "center", gap: "8px" }}>
+                          <Zap size={14} className="animate-pulse" /> Click here for detailed information
+                        </h4>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
