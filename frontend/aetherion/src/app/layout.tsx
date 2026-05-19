@@ -8,6 +8,9 @@ import { ThemeProvider } from "@/context/ThemeContext";
 export const metadata = {
   title: "Tourist AI - Smart Travel Assistant",
   description: "AI-powered travel planning and navigation platform.",
+  icons: {
+    icon: "/images/logo.png",
+  },
 };
 
 export default function RootLayout({
