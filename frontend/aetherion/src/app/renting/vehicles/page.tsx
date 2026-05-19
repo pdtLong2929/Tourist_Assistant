@@ -25,6 +25,15 @@ export default function VehicleListPage() {
   const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loadingStep, setLoadingStep] = useState(0);
+  const [expandedVehId, setExpandedVehId] = useState<string | null>(null);
+
+  const handleSelect = (e: React.MouseEvent, v: any) => {
+    e.stopPropagation();
+    localStorage.setItem("selected_vehicle", JSON.stringify(v));
+    const startPos = localStorage.getItem("renting_start") || "Current Location";
+    const endPos = localStorage.getItem("renting_end") || "Destination";
+    window.location.href = `/booking?origin=${encodeURIComponent(startPos)}&destination=${encodeURIComponent(endPos)}&vehicleId=${v.veh_id}`;
+  };
 
   const loadingSteps = [
     "ESTABLISHING SECURE CONNECTION TO COGNITIVE CORE...",
@@ -270,212 +279,293 @@ export default function VehicleListPage() {
           </div>
         ) : vehicles.length > 0 ? (
           <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "1.5rem" }}>
-            {vehicles.map((v, idx) => (
-              <div
-                key={v.veh_id}
-                style={{
-                  background: "rgba(15, 23, 42, 0.6)",
-                  border: "1px solid rgba(255,255,255,0.05)",
-                  borderRadius: "16px",
-                  padding: "2rem",
-                  display: "grid",
-                  gridTemplateColumns: "1fr 2fr 1fr",
-                  gap: "2rem",
-                  alignItems: "center",
-                  transition: "all 0.3s ease",
-                  cursor: "pointer",
-                  backdropFilter: "blur(10px)",
-                  position: "relative",
-                  overflow: "hidden"
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.borderColor = isCar ? "rgba(52,229,235,0.3)" : "rgba(251,191,36,0.3)";
-                  e.currentTarget.style.background = "rgba(30, 41, 59, 0.6)";
-                  e.currentTarget.style.transform = "scale(1.01)";
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.05)";
-                  e.currentTarget.style.background = "rgba(15, 23, 42, 0.6)";
-                  e.currentTarget.style.transform = "scale(1)";
-                }}
-              >
-                {/* Ranking Badge */}
-                <div style={{
-                  position: "absolute",
-                  top: "0",
-                  left: "0",
-                  padding: "4px 12px",
-                  background: isCar ? "var(--cyber-blue)" : "var(--cyber-yellow)",
-                  color: "#000",
-                  fontSize: "0.75rem",
-                  fontWeight: "bold",
-                  fontFamily: "var(--font-mono)",
-                  borderBottomRightRadius: "8px"
-                }}>
-                  RANK #{idx + 1}
-                </div>
-
-                {/* Left Column: Image/Visual */}
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem" }}>
-                   <div style={{ 
-                      width: "100%", 
-                      height: "140px", 
-                      background: "#000", 
-                      borderRadius: "12px",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      position: "relative"
-                   }}>
-                      <img 
-                        src={`/transports/${type}.png`} 
-                        alt={v.model} 
-                        style={{ maxHeight: "100px", objectFit: "contain", filter: `drop-shadow(0 0 15px ${isCar ? 'rgba(52,229,235,0.4)' : 'rgba(251,191,36,0.4)'})` }} 
-                        onError={e => e.currentTarget.src = "https://via.placeholder.com/150/0f172a/34e5eb?text=VEHICLE"}
-                      />
-                   </div>
-                   <div style={{ display: "flex", gap: "10px", width: "100%" }}>
-                      <div style={{ flex: 1, background: "rgba(255,255,255,0.03)", padding: "8px", borderRadius: "8px", textAlign: "center" }}>
-                        <span style={{ fontSize: "0.7rem", color: "var(--text-muted)", display: "block", textTransform: "uppercase" }}>Color</span>
-                        <span style={{ fontWeight: "bold" }}>{v.color || "Default"}</span>
-                      </div>
-                      <div style={{ flex: 1, background: "rgba(255,255,255,0.03)", padding: "8px", borderRadius: "8px", textAlign: "center" }}>
-                        <span style={{ fontSize: "0.7rem", color: "var(--text-muted)", display: "block", textTransform: "uppercase" }}>Price</span>
-                        <span style={{ fontWeight: "bold", color: "var(--cyber-green)" }}>${v.price || "0"}/day</span>
-                      </div>
-                   </div>
-                </div>
-
-                {/* Middle Column: Details */}
-                <div>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "2px", marginBottom: "1rem" }}>
-                    {v.company_name && (
-                      <span style={{ 
-                        fontSize: "0.8rem", 
-                        color: isCar ? "var(--cyber-blue)" : "var(--cyber-yellow)", 
-                        textTransform: "uppercase", 
-                        letterSpacing: "2px", 
-                        fontWeight: "bold" 
-                      }}>
-                        {v.company_name}
-                      </span>
-                    )}
-                    <h2 style={{ fontSize: "1.75rem", fontWeight: "800", color: "#fff", textTransform: "capitalize" }}>
-                      {v.car_name || v.make_model || v.model || "Advanced Transit Module"}
-                    </h2>
-                  </div>
-
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                      <ShieldCheck size={16} color="var(--cyber-blue)" />
-                      <span style={{ fontSize: "0.9rem" }}>Reliability: <b style={{color: "var(--cyber-blue)"}}>{Math.round(v.rating * 10) / 10}/10</b></span>
-                    </div>
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                      <TrendingUp size={16} color="var(--cyber-yellow)" />
-                      <span style={{ fontSize: "0.9rem" }}>Performance: <b style={{color: "var(--cyber-yellow)"}}>{Math.round(v.final_score * 100)}%</b></span>
-                    </div>
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                      <Star size={16} color="var(--cyber-green)" />
-                      <span style={{ fontSize: "0.9rem" }}>Match: <b style={{color: "var(--cyber-green)"}}>{Math.round(v.compatibility * 100)}%</b></span>
-                    </div>
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                      <Zap size={16} color="#ec4899" />
-                      <span style={{ fontSize: "0.9rem" }}>ID: <b style={{color: "#ec4899"}}>{v.veh_id}</b></span>
-                    </div>
-                  </div>
-
-                  {/* Technical Specifications Badges */}
-                  <div style={{ 
-                    marginTop: "1.2rem", 
-                    display: "flex", 
-                    flexWrap: "wrap", 
-                    gap: "8px" 
-                  }}>
-                    {isCar ? (
-                      <>
-                        {v.engine && (
-                          <div style={{ fontSize: "0.75rem", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", padding: "4px 8px", borderRadius: "6px", color: "#cbd5e1" }}>
-                            Engine: <b>{v.engine}</b>
-                          </div>
-                        )}
-                        {v.horsepower && (
-                          <div style={{ fontSize: "0.75rem", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", padding: "4px 8px", borderRadius: "6px", color: "#cbd5e1" }}>
-                            HP: <b>{v.horsepower}</b>
-                          </div>
-                        )}
-                        {v.seats && (
-                          <div style={{ fontSize: "0.75rem", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", padding: "4px 8px", borderRadius: "6px", color: "#cbd5e1" }}>
-                            Seats: <b>{v.seats}</b>
-                          </div>
-                        )}
-                        {v.fuel_type && (
-                          <div style={{ fontSize: "0.75rem", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", padding: "4px 8px", borderRadius: "6px", color: "#cbd5e1" }}>
-                            Fuel: <b>{v.fuel_type}</b>
-                          </div>
-                        )}
-                        {v.torque && (
-                          <div style={{ fontSize: "0.75rem", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", padding: "4px 8px", borderRadius: "6px", color: "#cbd5e1" }}>
-                            Torque: <b>{v.torque}</b>
-                          </div>
-                        )}
-                        {v.battery_capacity && (
-                          <div style={{ fontSize: "0.75rem", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", padding: "4px 8px", borderRadius: "6px", color: "#cbd5e1" }}>
-                            Capacity: <b>{v.battery_capacity}</b>
-                          </div>
-                        )}
-                      </>
-                    ) : (
-                      <>
-                        {v.power && (
-                          <div style={{ fontSize: "0.75rem", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", padding: "4px 8px", borderRadius: "6px", color: "#cbd5e1" }}>
-                            Power: <b>{v.power}</b>
-                          </div>
-                        )}
-                        {v.fuel_type && (
-                          <div style={{ fontSize: "0.75rem", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", padding: "4px 8px", borderRadius: "6px", color: "#cbd5e1" }}>
-                            Fuel: <b>{v.fuel_type}</b>
-                          </div>
-                        )}
-                      </>
-                    )}
-                  </div>
-                  
-                  <p style={{ marginTop: "1.5rem", fontSize: "0.85rem", color: "var(--text-muted)", fontStyle: "italic", lineHeight: "1.6" }}>
-                    {isCar 
-                      ? `This premium ${v.company_name || ""} vehicle features a robust ${v.engine || "high-efficiency"} engine delivering ${v.horsepower || "impressive"} horsepower. Designed for safety and control with ${v.torque || "outstanding"} torque, ${v.performance ? `sprinting 0-100 km/h in ${v.performance}` : ""} and running on ${v.fuel_type || "clean fuel"}.`
-                      : `A high-performance ${v.company_name || ""} model powered by a ${v.power || "highly responsive"} engine. Perfect for dynamic maneuvers, running efficiently on ${v.fuel_type || "standard fuel"}.`}
-                  </p>
-                </div>
-
-                {/* Right Column: CTA */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-                  <div style={{ textAlign: "right", marginBottom: "1rem" }}>
-                    <span style={{ fontSize: "0.8rem", color: "var(--text-muted)", display: "block" }}>Total Score</span>
-                    <span style={{ fontSize: "2rem", fontWeight: "900", color: isCar ? "var(--cyber-blue)" : "var(--cyber-yellow)" }}>
-                      {Math.round(v.final_score * 100)}
-                    </span>
-                  </div>
-                  <button style={{
-                    padding: "12px",
+            {vehicles.map((v, idx) => {
+              const isExpanded = expandedVehId === v.veh_id;
+              return (
+                <div
+                  key={v.veh_id}
+                  onClick={() => setExpandedVehId(isExpanded ? null : v.veh_id)}
+                  style={{
+                    background: "rgba(15, 23, 42, 0.6)",
+                    border: isExpanded 
+                      ? `1px solid ${isCar ? "var(--cyber-blue)" : "var(--cyber-yellow)"}` 
+                      : "1px solid rgba(255,255,255,0.05)",
+                    borderRadius: "16px",
+                    padding: "2rem",
+                    display: "grid",
+                    gridTemplateColumns: "1fr 2fr 1fr",
+                    gap: "2rem",
+                    alignItems: "center",
+                    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                    cursor: "pointer",
+                    backdropFilter: "blur(10px)",
+                    position: "relative",
+                    overflow: "hidden",
+                    boxShadow: isExpanded 
+                      ? `0 0 25px ${isCar ? "rgba(52,229,235,0.15)" : "rgba(251,191,36,0.15)"}` 
+                      : "none"
+                  }}
+                  onMouseEnter={e => {
+                    if (!isExpanded) {
+                      e.currentTarget.style.borderColor = isCar ? "rgba(52,229,235,0.3)" : "rgba(251,191,36,0.3)";
+                      e.currentTarget.style.background = "rgba(30, 41, 59, 0.6)";
+                      e.currentTarget.style.transform = "scale(1.01)";
+                    }
+                  }}
+                  onMouseLeave={e => {
+                    if (!isExpanded) {
+                      e.currentTarget.style.borderColor = "rgba(255,255,255,0.05)";
+                      e.currentTarget.style.background = "rgba(15, 23, 42, 0.6)";
+                      e.currentTarget.style.transform = "scale(1)";
+                    }
+                  }}
+                >
+                  {/* Ranking Badge */}
+                  <div style={{
+                    position: "absolute",
+                    top: "0",
+                    left: "0",
+                    padding: "4px 12px",
                     background: isCar ? "var(--cyber-blue)" : "var(--cyber-yellow)",
                     color: "#000",
-                    border: "none",
-                    borderRadius: "8px",
+                    fontSize: "0.75rem",
                     fontWeight: "bold",
-                    textTransform: "uppercase",
-                    letterSpacing: "1px",
-                    cursor: "pointer",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "8px",
-                    boxShadow: `0 0 15px ${isCar ? 'rgba(52,229,235,0.3)' : 'rgba(251,191,36,0.3)'}`
+                    fontFamily: "var(--font-mono)",
+                    borderBottomRightRadius: "8px"
                   }}>
-                    Select Vehicle
-                  </button>
+                    RANK #{idx + 1}
+                  </div>
+
+                  {/* Left Column: Image/Visual */}
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem" }}>
+                     <div style={{ 
+                        width: "100%", 
+                        height: "140px", 
+                        background: "#000", 
+                        borderRadius: "12px",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        position: "relative"
+                     }}>
+                        <img 
+                          src={`/transports/${type}.png`} 
+                          alt={v.model} 
+                          style={{ maxHeight: "100px", objectFit: "contain", filter: `drop-shadow(0 0 15px ${isCar ? 'rgba(52,229,235,0.4)' : 'rgba(251,191,36,0.4)'})` }} 
+                          onError={e => e.currentTarget.src = "https://via.placeholder.com/150/0f172a/34e5eb?text=VEHICLE"}
+                        />
+                     </div>
+                     <div style={{ display: "flex", gap: "10px", width: "100%" }}>
+                        <div style={{ flex: 1, background: "rgba(255,255,255,0.03)", padding: "8px", borderRadius: "8px", textAlign: "center" }}>
+                          <span style={{ fontSize: "0.7rem", color: "var(--text-muted)", display: "block", textTransform: "uppercase" }}>Color</span>
+                          <span style={{ fontWeight: "bold" }}>{v.color || "Default"}</span>
+                        </div>
+                        <div style={{ flex: 1, background: "rgba(255,255,255,0.03)", padding: "8px", borderRadius: "8px", textAlign: "center" }}>
+                          <span style={{ fontSize: "0.7rem", color: "var(--text-muted)", display: "block", textTransform: "uppercase" }}>Price</span>
+                          <span style={{ fontWeight: "bold", color: "var(--cyber-green)" }}>${v.price || "0"}/day</span>
+                        </div>
+                     </div>
+                  </div>
+
+                  {/* Middle Column: Details */}
+                  <div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "2px", marginBottom: "1rem" }}>
+                      {v.company_name && (
+                        <span style={{ 
+                          fontSize: "0.8rem", 
+                          color: isCar ? "var(--cyber-blue)" : "var(--cyber-yellow)", 
+                          textTransform: "uppercase", 
+                          letterSpacing: "2px", 
+                          fontWeight: "bold" 
+                        }}>
+                          {v.company_name}
+                        </span>
+                      )}
+                      <h2 style={{ fontSize: "1.75rem", fontWeight: "800", color: "#fff", textTransform: "capitalize" }}>
+                        {v.car_name || v.make_model || v.model || "Advanced Transit Module"}
+                      </h2>
+                    </div>
+
+                    {/* Stats Stacked Vertically with Visual Progress Indicators */}
+                    <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", margin: "1rem 0" }}>
+                      {/* Reliability */}
+                      <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.85rem" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "rgba(255,255,255,0.7)" }}>
+                            <ShieldCheck size={16} color="var(--cyber-blue)" />
+                            <span>Reliability</span>
+                          </div>
+                          <b style={{ color: "var(--cyber-blue)", fontFamily: "var(--font-mono)" }}>
+                            {Math.round((v.rating || 0) * 10) / 10}/10
+                          </b>
+                        </div>
+                        <div style={{ width: "100%", height: "4px", background: "rgba(255,255,255,0.05)", borderRadius: "2px", overflow: "hidden" }}>
+                          <div style={{ width: `${((v.rating || 0) / 10) * 100}%`, height: "100%", background: "var(--cyber-blue)", transition: "width 0.5s ease" }} />
+                        </div>
+                      </div>
+
+                      {/* Performance */}
+                      <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.85rem" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "rgba(255,255,255,0.7)" }}>
+                            <TrendingUp size={16} color="var(--cyber-yellow)" />
+                            <span>Performance</span>
+                          </div>
+                          <b style={{ color: "var(--cyber-yellow)", fontFamily: "var(--font-mono)" }}>
+                            {Math.round((v.final_score || 0) * 100)}%
+                          </b>
+                        </div>
+                        <div style={{ width: "100%", height: "4px", background: "rgba(255,255,255,0.05)", borderRadius: "2px", overflow: "hidden" }}>
+                          <div style={{ width: `${Math.round((v.final_score || 0) * 100)}%`, height: "100%", background: "var(--cyber-yellow)", transition: "width 0.5s ease" }} />
+                        </div>
+                      </div>
+
+                      {/* Match Compatibility */}
+                      <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.85rem" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "rgba(255,255,255,0.7)" }}>
+                            <Star size={16} color="var(--cyber-green)" />
+                            <span>Compatibility</span>
+                          </div>
+                          <b style={{ color: "var(--cyber-green)", fontFamily: "var(--font-mono)" }}>
+                            {Math.round((v.compatibility || 0) * 100)}%
+                          </b>
+                        </div>
+                        <div style={{ width: "100%", height: "4px", background: "rgba(255,255,255,0.05)", borderRadius: "2px", overflow: "hidden" }}>
+                          <div style={{ width: `${Math.round((v.compatibility || 0) * 100)}%`, height: "100%", background: "var(--cyber-green)", transition: "width 0.5s ease" }} />
+                        </div>
+                      </div>
+
+                      {/* ID */}
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.85rem" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "rgba(255,255,255,0.7)" }}>
+                          <Zap size={16} color="#ec4899" />
+                          <span>Module ID</span>
+                        </div>
+                        <b style={{ color: "#ec4899", fontFamily: "var(--font-mono)" }}>{v.veh_id}</b>
+                      </div>
+                    </div>
+
+                    {/* Explanation and Tech Badges (Toggled on box click) */}
+                    {!isExpanded ? (
+                      <div style={{ 
+                        fontSize: "0.8rem", 
+                        color: isCar ? "var(--cyber-blue)" : "var(--cyber-yellow)", 
+                        marginTop: "1rem",
+                        opacity: 0.8,
+                        fontFamily: "var(--font-mono)",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "6px"
+                      }}>
+                        <span className="animate-pulse">▶</span> CLICK CARD TO EXPAND DETAILS &amp; TECH SPECIFICATIONS
+                      </div>
+                    ) : (
+                      <div style={{ 
+                        marginTop: "1rem", 
+                        borderTop: "1px dashed rgba(255,255,255,0.1)", 
+                        paddingTop: "1rem",
+                        animation: "fadeIn 0.3s ease" 
+                      }}>
+                        {/* Technical Specifications Badges */}
+                        <div style={{ 
+                          display: "flex", 
+                          flexWrap: "wrap", 
+                          gap: "8px",
+                          marginBottom: "1rem"
+                        }}>
+                          {isCar ? (
+                            <>
+                              {v.engine && (
+                                <div style={{ fontSize: "0.75rem", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", padding: "4px 8px", borderRadius: "6px", color: "#cbd5e1" }}>
+                                  Engine: <b>{v.engine}</b>
+                                </div>
+                              )}
+                              {v.horsepower && (
+                                <div style={{ fontSize: "0.75rem", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", padding: "4px 8px", borderRadius: "6px", color: "#cbd5e1" }}>
+                                  HP: <b>{v.horsepower}</b>
+                                </div>
+                              )}
+                              {v.seats && (
+                                <div style={{ fontSize: "0.75rem", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", padding: "4px 8px", borderRadius: "6px", color: "#cbd5e1" }}>
+                                  Seats: <b>{v.seats}</b>
+                                </div>
+                              )}
+                              {v.fuel_type && (
+                                <div style={{ fontSize: "0.75rem", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", padding: "4px 8px", borderRadius: "6px", color: "#cbd5e1" }}>
+                                  Fuel: <b>{v.fuel_type}</b>
+                                </div>
+                              )}
+                              {v.torque && (
+                                <div style={{ fontSize: "0.75rem", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", padding: "4px 8px", borderRadius: "6px", color: "#cbd5e1" }}>
+                                  Torque: <b>{v.torque}</b>
+                                </div>
+                              )}
+                              {v.battery_capacity && (
+                                <div style={{ fontSize: "0.75rem", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", padding: "4px 8px", borderRadius: "6px", color: "#cbd5e1" }}>
+                                  Capacity: <b>{v.battery_capacity}</b>
+                                </div>
+                              )}
+                            </>
+                          ) : (
+                            <>
+                              {v.power && (
+                                <div style={{ fontSize: "0.75rem", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", padding: "4px 8px", borderRadius: "6px", color: "#cbd5e1" }}>
+                                  Power: <b>{v.power}</b>
+                                </div>
+                              )}
+                              {v.fuel_type && (
+                                <div style={{ fontSize: "0.75rem", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", padding: "4px 8px", borderRadius: "6px", color: "#cbd5e1" }}>
+                                  Fuel: <b>{v.fuel_type}</b>
+                                </div>
+                              )}
+                            </>
+                          )}
+                        </div>
+                        
+                        {/* Explanation */}
+                        <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", fontStyle: "italic", lineHeight: "1.6", margin: 0 }}>
+                          {isCar 
+                            ? `This premium ${v.company_name || ""} vehicle features a robust ${v.engine || "high-efficiency"} engine delivering ${v.horsepower || "impressive"} horsepower. Designed for safety and control with ${v.torque || "outstanding"} torque, ${v.performance ? `sprinting 0-100 km/h in ${v.performance}` : ""} and running on ${v.fuel_type || "clean fuel"}.`
+                            : `A high-performance ${v.company_name || ""} model powered by a ${v.power || "highly responsive"} engine. Perfect for dynamic maneuvers, running efficiently on ${v.fuel_type || "standard fuel"}.`}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Right Column: CTA */}
+                  <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                    <div style={{ textAlign: "right", marginBottom: "1rem" }}>
+                      <span style={{ fontSize: "0.8rem", color: "var(--text-muted)", display: "block" }}>Total Score</span>
+                      <span style={{ fontSize: "2rem", fontWeight: "900", color: isCar ? "var(--cyber-blue)" : "var(--cyber-yellow)" }}>
+                        {Math.round(v.final_score * 100)}
+                      </span>
+                    </div>
+                    <button 
+                      onClick={(e) => handleSelect(e, v)}
+                      style={{
+                        padding: "12px",
+                        background: isCar ? "var(--cyber-blue)" : "var(--cyber-yellow)",
+                        color: "#000",
+                        border: "none",
+                        borderRadius: "8px",
+                        fontWeight: "bold",
+                        textTransform: "uppercase",
+                        letterSpacing: "1px",
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "8px",
+                        boxShadow: `0 0 15px ${isCar ? 'rgba(52,229,235,0.3)' : 'rgba(251,191,36,0.3)'}`
+                      }}
+                    >
+                      Select Vehicle
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         ) : (
           <div style={{ 
