@@ -46,6 +46,19 @@ function TransitSuggestionsContent() {
   useEffect(() => {
     if (!mounted || !origin || !destination || !userId) return;
 
+    const cacheKey = `transit_cache_${origin}_${destination}`;
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached);
+        setTransitRecommendations(parsed);
+        setLoading(false);
+        return;
+      } catch (e) {
+        console.error("Transit Page: Error parsing cached transit suggestions:", e);
+      }
+    }
+
     setLoading(true);
     setStatusMessage("CONNECTING TO PUBLIC TRANSPORT DATABASE...");
     
@@ -69,6 +82,11 @@ function TransitSuggestionsContent() {
           }
           if (parsed && parsed.recommendations) {
             setTransitRecommendations(parsed.recommendations);
+            try {
+              localStorage.setItem(cacheKey, JSON.stringify(parsed.recommendations));
+            } catch (se) {
+              console.error("Transit Page: Failed to cache transit data:", se);
+            }
             setLoading(false);
             ws.close(); // Clean close once loaded
           }
