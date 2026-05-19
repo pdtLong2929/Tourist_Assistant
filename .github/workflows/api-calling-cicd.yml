@@ -145,7 +145,7 @@ jobs:
             --image $DOCKER_TAG \
             --region ${{ env.REGION }} \
             --allow-unauthenticated \
-            --set-env-vars="GOOGLE_CLOUD_PROJECT=${{ env.PROJECT_ID }}" \
+            --set-env-vars="GOOGLE_CLOUD_PROJECT=${{ env.PROJECT_ID }},RIDE_HAILING_SERVICE_URL=https://tourism-ride-hailing-service-367022044809.asia-southeast1.run.app" \
             --set-secrets="\
           REDIS_ADDR=REDIS_ADDR:latest,\
           REDIS_PASSWORD=REDIS_PASSWORD:latest,\
