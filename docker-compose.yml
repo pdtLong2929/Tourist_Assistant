@@ -275,6 +275,20 @@ services:
     networks:
       - ta_network
 
+  # ─── Ride Hailing Microservice ────────────────────────────────────────
+  ride-hailing-service:
+    build:
+      context: ./ride_hailing_service
+      dockerfile: Dockerfile
+    container_name: ta_ride_hailing_service
+    restart: unless-stopped
+    ports:
+      - "8003:8003"
+    environment:
+      PORT: 8003
+    networks:
+      - ta_network
+
   # ─── API Calling Service ──────────────────────────────────────────────
   api_calling:
     build:
@@ -289,12 +303,15 @@ services:
       REDIS_ADDR: ${REDIS_ADDR:-redis:6379}
       PUBSUB_EMULATOR_HOST: pubsub:8085
       GOOGLE_CLOUD_PROJECT: test-project
+      RIDE_HAILING_SERVICE_URL: http://ride-hailing-service:8003
     env_file:
       - path: ./api_calling/.env
         required: false
     depends_on:
       redis:
         condition: service_healthy
+      ride-hailing-service:
+        condition: service_started
     networks:
       - ta_network
 
@@ -327,6 +344,8 @@ services:
         curl -s -X PUT http://pubsub:8085/v1/projects/test-project/topics/recommend-enrich;
         curl -s -X PUT http://pubsub:8085/v1/projects/test-project/topics/transit-job;
         curl -s -X PUT http://pubsub:8085/v1/projects/test-project/topics/transit-enrich;
+        curl -s -X PUT http://pubsub:8085/v1/projects/test-project/topics/ride-hailing-job;
+        curl -s -X PUT http://pubsub:8085/v1/projects/test-project/topics/ride-hailing-enrich;
         curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/api-calling-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/ai-jobs\",\"pushConfig\":{\"pushEndpoint\":\"http://api_calling:8080/pubsub/push\"}}';
         curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/worker-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/task-enrich\",\"pushConfig\":{\"pushEndpoint\":\"http://worker_service:8001/pubsub/push\"}}';
         curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/notification-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/ai-results\",\"pushConfig\":{\"pushEndpoint\":\"http://notification:8080/pubsub/results\"}}';
@@ -334,6 +353,8 @@ services:
         curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/recommend-worker-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/recommend-enrich\"}';
         curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/api-calling-transit-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/transit-job\",\"pushConfig\":{\"pushEndpoint\":\"http://api_calling:8080/pubsub/transit-push\"}}';
         curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/transit-worker-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/transit-enrich\",\"pushConfig\":{\"pushEndpoint\":\"http://transit_db:8004/pubsub/push\"}}';
+        curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/api-calling-ride-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/ride-hailing-job\",\"pushConfig\":{\"pushEndpoint\":\"http://api_calling:8080/pubsub/ride-hailing-push\"}}';
+        curl -s -X PUT http://pubsub:8085/v1/projects/test-project/subscriptions/ride-hailing-worker-sub -H 'Content-Type: application/json' -d '{\"topic\":\"projects/test-project/topics/ride-hailing-enrich\"}';
         echo 'Pub/Sub Initialized!';
       "
 

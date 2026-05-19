@@ -656,3 +656,32 @@ body.theme-light .status-active {
 body.theme-light .ready-label {
   font-weight: 800;
 }
+
+/* =========================================
+   SLEEK CUSTOM CYBERPUNK SCROLLBARS
+   ========================================= */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--cyber-yellow-dim) rgba(15, 23, 42, 0.4);
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.4);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--cyber-yellow-dim);
+  border: 1px solid var(--cyber-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--cyber-yellow);
+  box-shadow: 0 0 10px var(--cyber-yellow-glow);
+}

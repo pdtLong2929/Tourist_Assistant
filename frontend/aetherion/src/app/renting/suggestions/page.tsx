@@ -358,6 +358,8 @@ export default function RentingSuggestion() {
     } else if (["transit", "bus", "metro", "public transit", "tàu điện", "xe buýt"].includes(normalizedType)) {
       // Redirect to the new transit route to view all possible transit choices!
       window.location.href = `/renting/transit?origin=${encodeURIComponent(startPos || 'Current Location')}&destination=${encodeURIComponent(endPos || 'Destination')}`;
+    } else if (["ride-hailing", "ride hailing", "grab", "be", "taxi", "xe ôm", "xe ôm công nghệ", "xe máy công nghệ"].includes(normalizedType)) {
+      window.location.href = `/booking?origin=${encodeURIComponent(startPos || 'Current Location')}&destination=${encodeURIComponent(endPos || 'Destination')}`;
     }
   };
 
