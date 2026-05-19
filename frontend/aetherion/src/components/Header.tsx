@@ -118,24 +118,17 @@ export default function Header() {
               textDecoration: "none",
             }}
           >
-            <div
+            <img
+              src="/images/logo.png"
+              alt="Tourist AI Logo"
               style={{
                 width: "32px",
                 height: "32px",
-                background: "linear-gradient(135deg, var(--cyber-yellow) 0%, var(--cyber-blue) 100%)",
                 borderRadius: "6px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontFamily: "var(--font-header)",
-                fontWeight: "800",
-                fontSize: "1rem",
-                color: "var(--cyber-black)",
+                objectFit: "cover",
                 boxShadow: "0 0 10px var(--cyber-yellow-dim)",
               }}
-            >
-              T
-            </div>
+            />
             <div style={{ lineHeight: 1.1 }} className="hidden sm:block">
               <div
                 style={{
