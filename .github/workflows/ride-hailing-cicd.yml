@@ -2,7 +2,7 @@ name: Ride Hailing Service CI/CD to GCP
 
 on:
   push:
-    branches: [ "main", "ai" ]
+    branches: [ "main" ]
     paths:
       - 'ride_hailing_service/**'
       - '.github/workflows/ride-hailing-cicd.yml'
