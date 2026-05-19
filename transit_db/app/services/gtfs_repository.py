@@ -8,6 +8,7 @@ Tables:
 
 """
 
+from functools import lru_cache
 import math
 from typing import Dict, List, Optional
 
@@ -34,6 +35,131 @@ def _haversine(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
 
 def _deg_offset(meters: float) -> float:
     return meters / 111_000
+
+
+@lru_cache(maxsize=5000)
+def _get_stop_by_id_full_cached(feed_id: tuple, stop_id: str) -> Optional[dict]:
+    conn = get_conn()
+    try:
+        with conn.cursor() as cur:
+            cur.execute("SET search_path TO trip_db, public")
+            cur.execute(
+                """
+                SELECT distinct stop_id,
+                       stop_name,
+                       stop_lat AS lat,
+                       stop_lon AS lon
+                FROM   trip_db.gtfs_stops
+                WHERE  feed_id IN %s AND stop_id = %s
+                """,
+                (feed_id, stop_id),
+            )
+            if cur.description is None:
+                return None
+            cols = [d[0] for d in cur.description]
+            rows = [dict(zip(cols, row)) for row in cur.fetchall()]
+            if not rows:
+                return None
+            stop = rows[0]
+            
+            # Now fetch route type
+            cur.execute(
+                """
+                SELECT DISTINCT r.route_type
+                FROM   trip_db.gtfs_stop_times st
+                JOIN   trip_db.gtfs_trips      tr ON tr.trip_id = st.trip_id
+                                         AND tr.feed_id = st.feed_id
+                JOIN   trip_db.gtfs_routes     r  ON r.route_id = tr.route_id
+                                         AND r.feed_id  = tr.feed_id
+                WHERE  st.feed_id IN %s
+                  AND  st.stop_id = %s
+                """,
+                (feed_id, stop_id),
+            )
+            priority = {"metro": 3, "train": 3, "tram": 2, "bus": 1, "ferry": 1}
+            stop_type = "bus"
+            for r in cur.fetchall():
+                t = GTFS_ROUTE_TYPES.get(str(r[0]), "bus")
+                if priority.get(t, 0) > priority.get(stop_type, 0):
+                    stop_type = t
+            stop["type"] = stop_type
+            return stop
+    finally:
+        release_conn(conn)
+
+
+@lru_cache(maxsize=1000)
+def _get_route_by_id_cached(feed_id: tuple, route_id: str) -> Optional[dict]:
+    conn = get_conn()
+    try:
+        with conn.cursor() as cur:
+            cur.execute("SET search_path TO trip_db, public")
+            cur.execute(
+                """
+                SELECT route_id,
+                       route_short_name,
+                       route_long_name,
+                       route_type
+                FROM   trip_db.gtfs_routes
+                WHERE  feed_id IN %s AND route_id = %s
+                """,
+                (feed_id, route_id),
+            )
+            if cur.description is None:
+                return None
+            cols = [d[0] for d in cur.description]
+            rows = [dict(zip(cols, row)) for row in cur.fetchall()]
+            if not rows:
+                return None
+            row = rows[0]
+            return {
+                "route_id":         row["route_id"],
+                "route_short_name": row.get("route_short_name", ""),
+                "route_long_name":  row.get("route_long_name", ""),
+                "type": GTFS_ROUTE_TYPES.get(str(row.get("route_type", "3")), "bus"),
+            }
+    finally:
+        release_conn(conn)
+
+
+@lru_cache(maxsize=20000)
+def _get_valid_path_cached(feed_id: tuple, route_id: str, stop_id_1: str, stop_id_2: str) -> Optional[tuple]:
+    conn = get_conn()
+    try:
+        with conn.cursor() as cur:
+            cur.execute("SET search_path TO trip_db, public")
+            cur.execute(
+                """
+                WITH trip_candidate AS (
+                    SELECT st1.trip_id,
+                           st1.stop_sequence AS seq1,
+                           st2.stop_sequence AS seq2
+                    FROM   trip_db.gtfs_stop_times st1
+                    JOIN   trip_db.gtfs_stop_times st2 ON st2.trip_id      = st1.trip_id
+                                                       AND st2.feed_id     = st1.feed_id
+                                                       AND st2.stop_id     = %s
+                    JOIN   trip_db.gtfs_trips      tr  ON tr.trip_id       = st1.trip_id
+                                                       AND tr.feed_id      = st1.feed_id
+                    WHERE  st1.feed_id       IN %s
+                      AND  st1.stop_id       = %s
+                      AND  tr.route_id       = %s
+                      AND  st1.stop_sequence < st2.stop_sequence
+                    ORDER  BY (st2.stop_sequence - st1.stop_sequence)
+                    LIMIT  1
+                )
+                SELECT st.stop_id
+                FROM   trip_db.gtfs_stop_times st
+                JOIN   trip_candidate  tc ON tc.trip_id = st.trip_id
+                WHERE  st.feed_id       IN %s
+                  AND  st.stop_sequence BETWEEN tc.seq1 AND tc.seq2
+                ORDER  BY st.stop_sequence
+                """,
+                (stop_id_2, feed_id, stop_id_1, route_id, feed_id),
+            )
+            res = [row[0] for row in cur.fetchall()]
+            return tuple(res) if res else None
+    finally:
+        release_conn(conn)
 
 
 class GTFSRepository:
@@ -88,20 +214,10 @@ class GTFSRepository:
         return self._attach_stop_type(rows)
 
     def get_stop_by_id(self, stop_id: str) -> Optional[Dict]:
-        row = self._exec_one(
-            """
-            SELECT distinct stop_id,
-                   stop_name,
-                   stop_lat AS lat,
-                   stop_lon AS lon
-            FROM   trip_db.gtfs_stops
-            WHERE  feed_id IN %s AND stop_id = %s
-            """,
-            (self.feed_id, stop_id),
-        )
-        if not row:
+        res = _get_stop_by_id_full_cached(self.feed_id, stop_id)
+        if not res:
             return None
-        return self._attach_stop_type([row])[0]
+        return dict(res)
 
     def nearest_stops(
         self, lat: float, lon: float, max_meters: float, top_n: int = 15
@@ -153,33 +269,9 @@ class GTFSRepository:
         if not stops:
             return stops
 
-        stop_ids = [s["stop_id"] for s in stops]
-        placeholders = ",".join(["%s"] * len(stop_ids))
-
-        rows = self._exec(
-            f"""
-            SELECT DISTINCT st.stop_id, r.route_type
-            FROM   trip_db.gtfs_stop_times st
-            JOIN   trip_db.gtfs_trips      tr ON tr.trip_id = st.trip_id
-                                     AND tr.feed_id = st.feed_id
-            JOIN   trip_db.gtfs_routes     r  ON r.route_id = tr.route_id
-                                     AND r.feed_id  = tr.feed_id
-            WHERE  st.feed_id IN %s
-              AND  st.stop_id IN ({placeholders})
-            """,
-            (self.feed_id, *stop_ids),
-        )
-
-        priority = {"metro": 3, "train": 3, "tram": 2, "bus": 1, "ferry": 1}
-        type_map: Dict[str, str] = {}
-        for r in rows:
-            t = GTFS_ROUTE_TYPES.get(str(r["route_type"]), "bus")
-            existing = type_map.get(r["stop_id"], "bus")
-            if priority.get(t, 0) > priority.get(existing, 0):
-                type_map[r["stop_id"]] = t
-
         for s in stops:
-            s["type"] = type_map.get(s["stop_id"], "bus")
+            cached = _get_stop_by_id_full_cached(self.feed_id, s["stop_id"])
+            s["type"] = cached["type"] if cached else "bus"
 
         return stops
 
@@ -202,18 +294,10 @@ class GTFSRepository:
         return [self._format_route(r) for r in rows]
 
     def get_route_by_id(self, route_id: str) -> Optional[Dict]:
-        row = self._exec_one(
-            """
-            SELECT route_id,
-                   route_short_name,
-                   route_long_name,
-                   route_type
-            FROM   trip_db.gtfs_routes
-            WHERE  feed_id IN %s AND route_id = %s
-            """,
-            (self.feed_id, route_id),
-        )
-        return self._format_route(row) if row else None
+        res = _get_route_by_id_cached(self.feed_id, route_id)
+        if not res:
+            return None
+        return dict(res)
 
     def _format_route(self, row: Dict) -> Dict:
         return {
@@ -314,38 +398,8 @@ class GTFSRepository:
         Tìm trip của route_id đi qua stop_id_1 TRƯỚC stop_id_2.
         Trả về danh sách stop_id theo thứ tự từ s1 đến s2.
         """
-        rows = self._exec(
-            """
-            WITH trip_candidate AS (
-                SELECT st1.trip_id,
-                       st1.stop_sequence AS seq1,
-                       st2.stop_sequence AS seq2
-                FROM   trip_db.gtfs_stop_times st1
-                JOIN   trip_db.gtfs_stop_times st2 ON st2.trip_id      = st1.trip_id
-                                                   AND st2.feed_id     = st1.feed_id
-                                                   AND st2.stop_id     = %s
-                JOIN   trip_db.gtfs_trips      tr  ON tr.trip_id       = st1.trip_id
-                                                   AND tr.feed_id      = st1.feed_id
-                WHERE  st1.feed_id       IN %s
-                  AND  st1.stop_id       = %s
-                  AND  tr.route_id       = %s
-                  AND  st1.stop_sequence < st2.stop_sequence
-                ORDER  BY (st2.stop_sequence - st1.stop_sequence)
-                LIMIT  1
-            )
-            SELECT st.stop_id
-            FROM   trip_db.gtfs_stop_times st
-            JOIN   trip_candidate  tc ON tc.trip_id = st.trip_id
-            WHERE  st.feed_id       IN %s
-              AND  st.stop_sequence BETWEEN tc.seq1 AND tc.seq2
-            ORDER  BY st.stop_sequence
-            """,
-            (stop_id_2, self.feed_id, stop_id_1, route_id, self.feed_id),
-        )
-
-        if not rows:
-            return None
-        return [r["stop_id"] for r in rows]
+        res = _get_valid_path_cached(self.feed_id, route_id, stop_id_1, stop_id_2)
+        return list(res) if res is not None else None
 
     def calculate_distance(self, stop_ids: List[str]) -> float:
         """
