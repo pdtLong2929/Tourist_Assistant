@@ -54,10 +54,17 @@ def _get_stop_by_id_full_cached(feed_id: tuple, stop_id: str) -> Optional[dict]:
                 """,
                 (feed_id, stop_id),
             )
+            import decimal
             if cur.description is None:
                 return None
             cols = [d[0] for d in cur.description]
-            rows = [dict(zip(cols, row)) for row in cur.fetchall()]
+            rows = []
+            for row in cur.fetchall():
+                d = dict(zip(cols, row))
+                for k, v in d.items():
+                    if isinstance(v, decimal.Decimal):
+                        d[k] = float(v)
+                rows.append(d)
             if not rows:
                 return None
             stop = rows[0]
@@ -84,6 +91,28 @@ def _get_stop_by_id_full_cached(feed_id: tuple, stop_id: str) -> Optional[dict]:
                     stop_type = t
             stop["type"] = stop_type
             return stop
+    finally:
+        release_conn(conn)
+
+
+@lru_cache(maxsize=10000)
+def _get_stop_coordinates_cached(feed_id: tuple, stop_id: str) -> Optional[tuple]:
+    conn = get_conn()
+    try:
+        with conn.cursor() as cur:
+            cur.execute("SET search_path TO trip_db, public")
+            cur.execute(
+                """
+                SELECT stop_lat AS lat, stop_lon AS lon
+                FROM   trip_db.gtfs_stops
+                WHERE  feed_id IN %s AND stop_id = %s
+                """,
+                (feed_id, stop_id),
+            )
+            row = cur.fetchone()
+            if row:
+                return (float(row[0]), float(row[1]))
+            return None
     finally:
         release_conn(conn)
 
@@ -187,7 +216,16 @@ class GTFSRepository:
                 if cur.description is None:
                     return []
                 cols = [d[0] for d in cur.description]
-                return [dict(zip(cols, row)) for row in cur.fetchall()]
+                
+                import decimal
+                results = []
+                for row in cur.fetchall():
+                    d = dict(zip(cols, row))
+                    for k, v in d.items():
+                        if isinstance(v, decimal.Decimal):
+                            d[k] = float(v)
+                    results.append(d)
+                return results
         finally:
             release_conn(conn)
 
@@ -408,19 +446,11 @@ class GTFSRepository:
         if len(stop_ids) < 2:
             return 0.0
 
-        placeholders = ",".join(["%s"] * len(stop_ids))
-        rows = self._exec(
-            f"""
-            SELECT stop_id,
-                   stop_lat AS lat,
-                   stop_lon AS lon
-            FROM   trip_db.gtfs_stops
-            WHERE  feed_id IN %s AND stop_id IN ({placeholders})
-            """,
-            (self.feed_id, *stop_ids),
-        )
-
-        coord_map = {r["stop_id"]: (r["lat"], r["lon"]) for r in rows}
+        coord_map = {}
+        for sid in stop_ids:
+            coords = _get_stop_coordinates_cached(self.feed_id, sid)
+            if coords:
+                coord_map[sid] = coords
 
         total = 0.0
         for i in range(len(stop_ids) - 1):
