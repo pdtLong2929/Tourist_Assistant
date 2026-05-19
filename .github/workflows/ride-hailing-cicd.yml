@@ -139,5 +139,5 @@ jobs:
             --allow-unauthenticated \
             --cpu=0.5 \
             --memory=256Mi \
-            --set-env-vars="GOOGLE_CLOUD_PROJECT=${{ env.PROJECT_ID }},GCP_PROJECT_ID=${{ env.PROJECT_ID }},PORT=8003,PYTHONUNBUFFERED=1" \
+            --set-env-vars="GOOGLE_CLOUD_PROJECT=${{ env.PROJECT_ID }},GCP_PROJECT_ID=${{ env.PROJECT_ID }},PYTHONUNBUFFERED=1" \
             --timeout=1800
