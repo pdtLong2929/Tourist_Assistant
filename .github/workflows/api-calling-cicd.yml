@@ -2,13 +2,13 @@ name: API Calling Service CI/CD to GCP
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "ux/ui" ]
     paths:
       - 'api_calling/**'
       - '.github/workflows/api-calling-cicd.yml'
       - 'docker-compose.yml'
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "ux/ui" ]
     paths:
       - 'api_calling/**'
       - '.github/workflows/api-calling-cicd.yml'

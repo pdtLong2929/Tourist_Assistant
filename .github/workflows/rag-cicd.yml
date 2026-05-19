@@ -2,13 +2,13 @@ name: RAG Service CI/CD to GCP
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "ux/ui" ]
     paths:
       - 'rag/**'
       - '.github/workflows/rag-cicd.yml'
       - 'docker-compose.yml'
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "ux/ui" ]
     paths:
       - 'rag/**'
       - '.github/workflows/rag-cicd.yml'
