@@ -25,6 +25,14 @@ type RecommendRequest struct {
 	Date        int    `json:"date" binding:"required"`
 }
 
+type RideJobRequest struct {
+	UserID          string  `json:"userId" binding:"required"`
+	Origin          string  `json:"origin" binding:"required"`
+	Destination     string  `json:"destination" binding:"required"`
+	VehicleCategory *string `json:"vehicleCategory,omitempty"`
+	PromoCode       *string `json:"promoCode,omitempty"`
+}
+
 
 func main() {
 	r := gin.Default()
@@ -45,6 +53,7 @@ func main() {
 	topic := client.Topic("ai-jobs")
 	recommendTopic := client.Topic("recommend-job")
 	transitTopic := client.Topic("transit-job")
+	rideHailingTopic := client.Topic("ride-hailing-job")
 
 	// Endpoint to receive requests from Frontend
 	r.POST("/api/v1/jobs/submit", func(c *gin.Context) {
@@ -154,6 +163,44 @@ func main() {
 
 		c.JSON(http.StatusAccepted, gin.H{
 			"message": "Transit recommendation job queued successfully",
+			"jobId":   jobID,
+		})
+	})
+
+	// New Endpoint for Ride Hailing
+	r.POST("/api/v1/jobs/ride-hailing", func(c *gin.Context) {
+		var req RideJobRequest
+		if err := c.ShouldBindJSON(&req); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		jobID := fmt.Sprintf("ride-job-%s", req.UserID)
+
+		jobPayload := map[string]interface{}{
+			"jobId":           jobID,
+			"userId":          req.UserID,
+			"origin":          req.Origin,
+			"destination":     req.Destination,
+			"vehicleCategory": req.VehicleCategory,
+			"promoCode":       req.PromoCode,
+		}
+
+		payloadBytes, _ := json.Marshal(jobPayload)
+
+		result := rideHailingTopic.Publish(ctx, &pubsub.Message{
+			Data: payloadBytes,
+		})
+
+		_, err := result.Get(ctx)
+		if err != nil {
+			log.Println("Error publishing to ride-hailing-job:", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to queue ride hailing job"})
+			return
+		}
+
+		c.JSON(http.StatusAccepted, gin.H{
+			"message": "Ride hailing job queued successfully",
 			"jobId":   jobID,
 		})
 	})

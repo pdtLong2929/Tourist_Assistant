@@ -1,0 +1,112 @@
+[
+  {
+    "driver_id": "drv_hcm_001",
+    "name": "Nguyễn Văn Hùng",
+    "city": "HCMC",
+    "vehicle_category": "car",
+    "lat": 10.8152,
+    "lon": 106.6656,
+    "rating": 4.9,
+    "phone": "+84 901 234 567",
+    "plate_number": "51A-987.65"
+  },
+  {
+    "driver_id": "drv_hcm_002",
+    "name": "Trần Thanh Sơn",
+    "city": "HCMC",
+    "vehicle_category": "car",
+    "lat": 10.7769,
+    "lon": 106.7009,
+    "rating": 4.8,
+    "phone": "+84 912 345 678",
+    "plate_number": "51F-123.45"
+  },
+  {
+    "driver_id": "drv_hcm_003",
+    "name": "Lê Hoàng Nam",
+    "city": "HCMC",
+    "vehicle_category": "bike",
+    "lat": 10.8220,
+    "lon": 106.6257,
+    "rating": 4.7,
+    "phone": "+84 923 456 789",
+    "plate_number": "59P1-543.21"
+  },
+  {
+    "driver_id": "drv_hcm_004",
+    "name": "Phạm Minh Đức",
+    "city": "HCMC",
+    "vehicle_category": "bike",
+    "lat": 10.7626,
+    "lon": 106.6812,
+    "rating": 4.95,
+    "phone": "+84 934 567 890",
+    "plate_number": "59K2-888.88"
+  },
+  {
+    "driver_id": "drv_hcm_005",
+    "name": "Vũ Anh Tuấn",
+    "city": "HCMC",
+    "vehicle_category": "bike",
+    "lat": 10.7825,
+    "lon": 106.6925,
+    "rating": 4.6,
+    "phone": "+84 945 678 901",
+    "plate_number": "59S3-246.80"
+  },
+  {
+    "driver_id": "drv_han_001",
+    "name": "Lê Văn Chiến",
+    "city": "HANOI",
+    "vehicle_category": "car",
+    "lat": 21.2187,
+    "lon": 105.8042,
+    "rating": 4.9,
+    "phone": "+84 956 789 012",
+    "plate_number": "30A-111.22"
+  },
+  {
+    "driver_id": "drv_han_002",
+    "name": "Phùng Minh Quang",
+    "city": "HANOI",
+    "vehicle_category": "car",
+    "lat": 21.0285,
+    "lon": 105.8542,
+    "rating": 4.85,
+    "phone": "+84 967 890 123",
+    "plate_number": "30E-333.44"
+  },
+  {
+    "driver_id": "drv_han_003",
+    "name": "Đỗ Xuân Trường",
+    "city": "HANOI",
+    "vehicle_category": "bike",
+    "lat": 21.0362,
+    "lon": 105.7828,
+    "rating": 4.8,
+    "phone": "+84 978 901 234",
+    "plate_number": "29D1-999.99"
+  },
+  {
+    "driver_id": "drv_han_004",
+    "name": "Nguyễn Tiến Đạt",
+    "city": "HANOI",
+    "vehicle_category": "bike",
+    "lat": 21.0065,
+    "lon": 105.8427,
+    "rating": 4.92,
+    "phone": "+84 989 012 345",
+    "plate_number": "29H1-777.77"
+  },
+  {
+    "driver_id": "drv_han_005",
+    "name": "Hoàng Quốc Việt",
+    "city": "HANOI",
+    "vehicle_category": "bike",
+    "lat": 21.0223,
+    "lon": 105.8156,
+    "rating": 4.75,
+    "phone": "+84 990 123 456",
+    "plate_number": "29E2-555.55"
+  }
+]
