@@ -32,6 +32,10 @@ Thumbs.db
 tsc_output.txt
 tsc.txt
 
+# Python cache
+__pycache__/
+*.py[cod]
+
 # Agents
 /.agents
 .env

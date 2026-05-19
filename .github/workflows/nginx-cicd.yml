@@ -1,6 +1,5 @@
 name: Nginx API Gateway CI/CD to GCP
 
-#test
 on:
   push:
     branches: [ "main" ]
