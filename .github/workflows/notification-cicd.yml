@@ -2,13 +2,13 @@ name: Notification Service CI/CD to GCP
 
 on:
   push:
-    branches: [ "main", "ux/ui" ]
+    branches: [ "main" ]
     paths:
       - 'notification/**'
       - '.github/workflows/notification-cicd.yml'
       - 'docker-compose.yml'
   pull_request:
-    branches: [ "main", "ux/ui" ]
+    branches: [ "main" ]
     paths:
       - 'notification/**'
       - '.github/workflows/notification-cicd.yml'

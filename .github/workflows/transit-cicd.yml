@@ -2,13 +2,13 @@ name: Transit DB Service CI/CD to GCP
 
 on:
   push:
-    branches: [ "main", "ux/ui" ]
+    branches: [ "main" ]
     paths:
       - 'transit_db/**'
       - '.github/workflows/transit-cicd.yml'
       - 'docker-compose.yml'
   pull_request:
-    branches: [ "main", "ux/ui" ]
+    branches: [ "main" ]
     paths:
       - 'transit_db/**'
       - '.github/workflows/transit-cicd.yml'

@@ -2,13 +2,13 @@ name: Recommend System CI/CD to GCP
 
 on:
   push:
-    branches: [ "main", "ux/ui" ]
+    branches: [ "main" ]
     paths:
       - 'recommend_system/**'
       - '.github/workflows/recommend-system-cicd.yml'
       - 'docker-compose.yml'
   pull_request:
-    branches: [ "main", "ux/ui" ]
+    branches: [ "main" ]
     paths:
       - 'recommend_system/**'
       - '.github/workflows/recommend-system-cicd.yml'

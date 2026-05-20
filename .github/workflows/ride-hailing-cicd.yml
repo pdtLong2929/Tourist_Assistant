@@ -2,13 +2,13 @@ name: Ride Hailing Service CI/CD to GCP
 
 on:
   push:
-    branches: [ "main", "ux/ui" ]
+    branches: [ "main" ]
     paths:
       - 'ride_hailing_service/**'
       - '.github/workflows/ride-hailing-cicd.yml'
       - 'docker-compose.yml'
   pull_request:
-    branches: [ "main", "ux/ui" ]
+    branches: [ "main" ]
     paths:
       - 'ride_hailing_service/**'
       - '.github/workflows/ride-hailing-cicd.yml'
