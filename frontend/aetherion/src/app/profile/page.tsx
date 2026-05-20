@@ -207,44 +207,45 @@ export default function ProfilePage() {
               90% { opacity: 1; }
               100% { top: 110%; opacity: 0; }
             }
-
             .info-row {
               display: flex;
               align-items: center;
               gap: 1rem;
-              padding: 1rem;
-              background: rgba(255, 255, 255, 0.03);
-              border: 1px solid rgba(255, 255, 255, 0.05);
-              border-radius: 8px;
-              margin-bottom: 1rem;
-              transition: all 0.3s ease;
+              padding: 1.2rem;
+              background: var(--cyber-surface-glass-light);
+              border: 1px solid var(--cyber-border);
+              border-radius: 12px;
+              margin-bottom: 1.2rem;
+              transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             }
-
+            
             .info-row:hover {
-              border-color: rgba(52, 229, 235, 0.3);
-              background: rgba(52, 229, 235, 0.05);
-              transform: translateX(5px);
+              border-color: var(--cyber-blue);
+              background: var(--ai-badge-bg);
+              transform: translateX(8px);
+              box-shadow: 0 4px 20px var(--cyber-blue-dim);
             }
 
             .pref-tag {
               display: flex;
               align-items: center;
               gap: 8px;
-              padding: 8px 16px;
+              padding: 10px 18px;
               border-radius: 50px;
-              background: rgba(255, 255, 255, 0.04);
-              border: 1px solid rgba(255, 255, 255, 0.08);
+              background: var(--cyber-surface-glass-light);
+              border: 1px solid var(--cyber-border);
               color: var(--text-main);
               font-size: 0.9rem;
               font-family: var(--font-mono);
               transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+              font-weight: 600;
             }
-
+ 
             .pref-tag:hover {
-              transform: translateY(-3px);
-              background: rgba(52, 229, 235, 0.08);
+              transform: translateY(-4px) scale(1.05);
+              background: var(--ai-badge-bg);
               border-color: var(--cyber-blue);
-              box-shadow: 0 4px 12px rgba(52, 229, 235, 0.2);
+              box-shadow: 0 6px 15px var(--cyber-blue-dim);
             }
 
             .logout-btn {
@@ -295,11 +296,17 @@ export default function ProfilePage() {
             }
 
             .pref-section {
-              background: rgba(0, 0, 0, 0.2);
-              border: 1px solid rgba(255, 255, 255, 0.05);
-              border-radius: 12px;
-              padding: 1.5rem;
+              background: var(--cyber-surface-glass-light);
+              border: 1px solid var(--cyber-border);
+              border-radius: 16px;
+              padding: 1.8rem;
               margin-bottom: 1.5rem;
+              transition: all 0.3s ease;
+            }
+            
+            .pref-section:hover {
+              border-color: var(--cyber-blue-dim);
+              box-shadow: 0 8px 25px rgba(0,0,0,0.1);
             }
 
             .section-title {
@@ -322,7 +329,7 @@ export default function ProfilePage() {
           style={{
             position: "absolute",
             inset: 0,
-            background: "linear-gradient(180deg, #070b13 0%, #111827 100%)",
+            background: "var(--bg-gradient)",
             opacity: 0.95,
           }}
         />
@@ -332,10 +339,10 @@ export default function ProfilePage() {
             position: "absolute",
             left: 0,
             right: 0,
-            height: "4px",
+            height: "2px",
             background: "var(--cyber-blue)",
-            boxShadow: "0 0 25px 6px var(--cyber-blue-glow)",
-            animation: "scanning-laser 9s linear infinite",
+            boxShadow: "0 0 15px 2px var(--cyber-blue-glow)",
+            animation: "scanning-laser 12s linear infinite",
             zIndex: 5,
             pointerEvents: "none",
           }}
@@ -346,9 +353,9 @@ export default function ProfilePage() {
             position: "absolute",
             inset: "-50%",
             backgroundImage:
-              "linear-gradient(rgba(52, 229, 235, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(52, 229, 235, 0.03) 1px, transparent 1px)",
+              "linear-gradient(var(--cyber-grid) 1px, transparent 1px), linear-gradient(90deg, var(--cyber-grid) 1px, transparent 1px)",
             backgroundSize: "80px 80px",
-            animation: "grid-pan 7s linear infinite",
+            animation: "grid-pan 12s linear infinite",
             transform: "perspective(1000px) rotateX(65deg) scale(1.2)",
             transformOrigin: "center top",
             zIndex: 1,
@@ -365,7 +372,7 @@ export default function ProfilePage() {
             width: "35vw",
             height: "35vw",
             borderRadius: "50%",
-            opacity: 0.1,
+            opacity: 0.05,
             filter: "blur(100px)",
             background: "radial-gradient(circle, var(--cyber-blue) 0%, transparent 70%)",
           }}
@@ -378,7 +385,7 @@ export default function ProfilePage() {
             width: "35vw",
             height: "35vw",
             borderRadius: "50%",
-            opacity: 0.1,
+            opacity: 0.05,
             filter: "blur(100px)",
             background: "radial-gradient(circle, var(--cyber-purple) 0%, transparent 70%)",
           }}
@@ -541,7 +548,7 @@ export default function ProfilePage() {
         </div>
 
         {/* --- RIGHT COLUMN: USER PREFERENCES --- */}
-        <div style={{ display: "flex", flexDirection: "column", borderLeft: "1px solid rgba(255,255,255,0.05)", paddingLeft: "1rem" }}>
+        <div style={{ display: "flex", flexDirection: "column", borderLeft: "1px solid var(--cyber-border)", paddingLeft: "1rem" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
             <h2
               style={{
@@ -642,9 +649,9 @@ export default function ProfilePage() {
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                background: "rgba(255, 255, 255, 0.02)",
-                border: "1px dashed rgba(255,255,255,0.1)",
-                borderRadius: "12px",
+                background: "var(--cyber-surface-glass-light)",
+                border: "1px dashed var(--cyber-border)",
+                borderRadius: "16px",
                 padding: "2rem",
                 textAlign: "center"
               }}

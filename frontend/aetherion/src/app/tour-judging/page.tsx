@@ -121,82 +121,30 @@ export default function TourJudging() {
             position: "absolute",
             left: 0,
             right: 0,
-            height: "4px",
+            height: "2px",
             background: "var(--cyber-blue)",
-            boxShadow: "0 0 20px 5px var(--cyber-blue-glow)",
-            animation: "scanning-laser 6s linear infinite",
+            boxShadow: "0 0 15px 2px var(--cyber-blue-glow)",
+            animation: "scanning-laser 12s linear infinite",
             zIndex: 5,
             pointerEvents: "none",
           }}
         />
-
+        
+        {/* Animated 3D Grid */}
         <div
           style={{
             position: "absolute",
             inset: "-50%",
-            background:
+            backgroundImage:
               "linear-gradient(var(--cyber-grid) 1px, transparent 1px), linear-gradient(90deg, var(--cyber-grid) 1px, transparent 1px)",
             backgroundSize: "80px 80px",
-            animation: "grid-pan 4s linear infinite",
+            animation: "grid-pan 12s linear infinite",
             transform: "perspective(1000px) rotateX(65deg) scale(1.2)",
             transformOrigin: "center top",
             zIndex: 1,
             pointerEvents: "none",
           }}
         />
-
-        <div
-          style={{
-            position: "absolute",
-            top: "25%",
-            left: "-5rem",
-            width: "30rem",
-            height: "30rem",
-            borderRadius: "50%",
-            opacity: 0.2,
-            filter: "blur(80px)",
-            background:
-              "radial-gradient(circle, var(--cyber-blue) 0%, transparent 70%)",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            bottom: "10%",
-            right: "-5rem",
-            width: "30rem",
-            height: "30rem",
-            borderRadius: "50%",
-            opacity: 0.2,
-            filter: "blur(80px)",
-            background:
-              "radial-gradient(circle, var(--cyber-purple) 0%, transparent 70%)",
-          }}
-        />
-      </div>
-
-      <div
-        className="falling-leaves-container map-fade-in"
-        style={{
-          position: "absolute",
-          inset: 0,
-          zIndex: 8,
-          pointerEvents: "none",
-        }}
-      >
-        {leaves.map((leaf) => (
-          <div
-            key={leaf.id}
-            className="cyber-leaf"
-            style={{
-              left: leaf.left,
-              width: leaf.size,
-              height: leaf.size,
-              animationDuration: `${leaf.durationFall}, ${leaf.durationSway}`,
-              animationDelay: `${leaf.delay}, ${leaf.delay}`,
-            }}
-          />
-        ))}
       </div>
 
       <div

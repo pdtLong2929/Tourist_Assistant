@@ -15,321 +15,326 @@ import { useLanguage } from "@/context/LanguageContext";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 
 export default function LoginPageWrapper() {
+  const { language } = useLanguage();
   const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "";
 
+  console.log("Current Google Auth Language:", language);
+
   return (
-    <GoogleOAuthProvider clientId={googleClientId}>
+    <GoogleOAuthProvider key={language} clientId={googleClientId} locale={language}>
       <LoginPage />
     </GoogleOAuthProvider>
   );
 }
 
 function LoginPage() {
-    const { t } = useLanguage();
-    const [mounted, setMounted] = useState(false);
-    const [isSignUp, setIsSignUp] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const router = useRouter();
+  const { t } = useLanguage();
+  const [mounted, setMounted] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
-    // 1. Thêm State để lưu dữ liệu nhập từ bàn phím
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
+  // 1. Thêm State để lưu dữ liệu nhập từ bàn phím
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
-    // States cho Forgot Password Modal
-    const [showForgotModal, setShowForgotModal] = useState(false);
-    const [forgotEmail, setForgotEmail] = useState("");
-    const [forgotMessage, setForgotMessage] = useState("");
-    const [forgotLoading, setForgotLoading] = useState(false);
+  // States cho Forgot Password Modal
+  const [showForgotModal, setShowForgotModal] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotMessage, setForgotMessage] = useState("");
+  const [forgotLoading, setForgotLoading] = useState(false);
 
-    // States cho hiệu ứng Shake
-    const [shakeFields, setShakeFields] = useState<string[]>([]);
+  // States cho hiệu ứng Shake
+  const [shakeFields, setShakeFields] = useState<string[]>([]);
 
-    // Kích hoạt hiệu ứng boot-up
-    useEffect(() => {
-      setMounted(true);
-    }, []);
+  // Kích hoạt hiệu ứng boot-up
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-    const validateEmail = (emailStr: string) => {
-      return String(emailStr)
-        .toLowerCase()
-        .match(
-          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-        );
-    };
+  const validateEmail = (emailStr: string) => {
+    return String(emailStr)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      );
+  };
 
-    // 2. Hàm xử lý Đăng nhập / Đăng ký thực tế
-    const handleLogin = async (e: React.FormEvent) => {
-      e.preventDefault();
-      setErrorMessage("");
-      setSuccessMessage("");
+  // 2. Hàm xử lý Đăng nhập / Đăng ký thực tế
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMessage("");
+    setSuccessMessage("");
 
-      // Kiểm tra tính hợp lệ và thêm hiệu ứng rung
-      const newShakeFields: string[] = [];
-      let errorMsg = "";
+    // Kiểm tra tính hợp lệ và thêm hiệu ứng rung
+    const newShakeFields: string[] = [];
+    let errorMsg = "";
 
-      if (isSignUp && !name.trim()) {
-        newShakeFields.push("register-name");
-        if (!errorMsg)
-          errorMsg =
-            t("login.pleaseEnterName" as any) || "Vui lòng nhập tên của bạn";
-      }
+    if (isSignUp && !name.trim()) {
+      newShakeFields.push("register-name");
+      if (!errorMsg)
+        errorMsg =
+          t("login.pleaseEnterName" as any) || "Vui lòng nhập tên của bạn";
+    }
 
-      if (!email.trim()) {
-        newShakeFields.push(isSignUp ? "register-email" : "login-email");
-        if (!errorMsg) errorMsg = "Vui lòng nhập email / Please enter email";
-      } else if (!validateEmail(email)) {
-        newShakeFields.push(isSignUp ? "register-email" : "login-email");
-        if (!errorMsg) errorMsg = "Email không hợp lệ / Invalid email format";
-      }
+    if (!email.trim()) {
+      newShakeFields.push(isSignUp ? "register-email" : "login-email");
+      if (!errorMsg) errorMsg = "Vui lòng nhập email / Please enter email";
+    } else if (!validateEmail(email)) {
+      newShakeFields.push(isSignUp ? "register-email" : "login-email");
+      if (!errorMsg) errorMsg = "Email không hợp lệ / Invalid email format";
+    }
 
-      if (!password.trim()) {
-        newShakeFields.push(isSignUp ? "register-password" : "login-password");
-        if (!errorMsg)
-          errorMsg = "Vui lòng nhập mật khẩu / Please enter password";
-      }
+    if (!password.trim()) {
+      newShakeFields.push(isSignUp ? "register-password" : "login-password");
+      if (!errorMsg)
+        errorMsg = "Vui lòng nhập mật khẩu / Please enter password";
+    }
 
-      if (newShakeFields.length > 0) {
-        setShakeFields(newShakeFields);
-        setTimeout(() => setShakeFields([]), 500);
-        setErrorMessage(errorMsg);
-        return;
-      }
+    if (newShakeFields.length > 0) {
+      setShakeFields(newShakeFields);
+      setTimeout(() => setShakeFields([]), 500);
+      setErrorMessage(errorMsg);
+      return;
+    }
 
-      setIsLoading(true);
+    setIsLoading(true);
 
-      const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || "http://localhost";
-      try {
-        const endpoint = isSignUp
-          ? `${nginxUrl}/register`
-          : `${nginxUrl}/login`;
-        const payload = isSignUp
-          ? { name, email, password }
-          : { email, password };
+    const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || "http://localhost";
+    try {
+      const endpoint = isSignUp ? `${nginxUrl}/register` : `${nginxUrl}/login`;
+      const payload = isSignUp
+        ? { name, email, password }
+        : { email, password };
 
-        const response = await fetch(endpoint, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        });
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
-        const data = await response.json();
-        if (response.ok) {
-          localStorage.setItem("accessToken", data.accessToken);
-          if (data.user) {
-            localStorage.setItem("cyber_user", JSON.stringify(data.user));
-          } else if (isSignUp) {
-            // Nếu đăng ký thành công mà server không trả về user, ta tự tạo object từ form
-            localStorage.setItem(
-              "cyber_user",
-              JSON.stringify({
-                name: name,
-                email: email,
-                id: "temp_" + Date.now(), // ID tạm thời nếu cần
-              }),
-            );
-          }
-
-          // Luôn xóa thông tin cũ để bắt đầu phiên mới
-          localStorage.removeItem("cyber_user_nickname");
-          localStorage.removeItem("cyber_user_age");
-
-          //Phát tín hiệu báo đã đăng nhập thành công
-          window.dispatchEvent(new Event("userAuthChanged"));
-
-          setSuccessMessage(
-            isSignUp
-              ? "Registration successful. Welcome!"
-              : "Login successful. Redirecting...",
+      const data = await response.json();
+      if (response.ok) {
+        localStorage.setItem("accessToken", data.accessToken);
+        if (data.user) {
+          localStorage.setItem("cyber_user", JSON.stringify(data.user));
+        } else if (isSignUp) {
+          // Nếu đăng ký thành công mà server không trả về user, ta tự tạo object từ form
+          localStorage.setItem(
+            "cyber_user",
+            JSON.stringify({
+              name: name,
+              email: email,
+              id: "temp_" + Date.now(), // ID tạm thời nếu cần
+            }),
           );
-
-          setTimeout(() => {
-            if (data.user?.hidePreferencesForm) {
-              router.push("/");
-            } else {
-              router.push("/preferences");
-            }
-          }, 800);
-        } else {
-          setErrorMessage(data.message || "Authentication Failed!");
-          setTimeout(() => setErrorMessage(""), 3000);
         }
-      } catch (error) {
-        setErrorMessage("SYSTEM OFFLINE: CHECK GATEWAY CONNECTION");
-      } finally {
-        setIsLoading(false);
-      }
-    };
 
-    const triggerForgotPassword = () => {
-      setShowForgotModal(true);
-      setForgotMessage("");
-      setForgotEmail(email); // Tự động điền email nếu đã nhập ở màn hình login
-    };
+        // Luôn xóa thông tin cũ để bắt đầu phiên mới
+        localStorage.removeItem("cyber_user_nickname");
+        localStorage.removeItem("cyber_user_age");
 
-    const submitForgotPassword = async (e: React.FormEvent) => {
-      e.preventDefault();
-      if (!forgotEmail.trim()) {
-        setShakeFields(["forgot-email"]);
-        setTimeout(() => setShakeFields([]), 500);
-        setForgotMessage("Vui lòng nhập email / Please enter email");
-        return;
-      }
-      if (!validateEmail(forgotEmail)) {
-        setShakeFields(["forgot-email"]);
-        setTimeout(() => setShakeFields([]), 500);
-        setForgotMessage("Email không hợp lệ / Invalid email format");
-        return;
-      }
+        //Phát tín hiệu báo đã đăng nhập thành công
+        window.dispatchEvent(new Event("userAuthChanged"));
 
-      setForgotLoading(true);
-      setForgotMessage("");
-      const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || "http://localhost";
-      try {
-        const res = await fetch(`${nginxUrl}/forgot-password`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: forgotEmail }),
-        });
-        const data = await res.json();
-        setForgotMessage(data.message || "Đã gửi yêu cầu khôi phục mật khẩu!");
-        if (res.ok) {
-          setTimeout(() => setShowForgotModal(false), 3000);
-        }
-      } catch (err) {
-        setForgotMessage("Lỗi khi kết nối với máy chủ.");
-      } finally {
-        setForgotLoading(false);
-      }
-    };
+        setSuccessMessage(
+          isSignUp
+            ? "Registration successful. Welcome!"
+            : "Login successful. Redirecting...",
+        );
 
-    const handleGoogleLoginSuccess = async (credentialResponse: any) => {
-      const tokenId = credentialResponse.credential;
-      if (!tokenId) {
-        setErrorMessage("Invalid Google response");
-        return;
-      }
-
-      setIsLoading(true);
-      setErrorMessage("");
-      setSuccessMessage("");
-
-      const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || "http://localhost";
-      try {
-        const response = await fetch(`${nginxUrl}/google`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ tokenId }),
-        });
-
-        const data = await response.json();
-        if (response.ok) {
-          localStorage.setItem("accessToken", data.accessToken);
-          if (data.user) {
-            localStorage.setItem("cyber_user", JSON.stringify(data.user));
+        setTimeout(() => {
+          if (data.user?.hidePreferencesForm) {
+            router.push("/");
+          } else {
+            router.push("/preferences");
           }
-
-          localStorage.removeItem("cyber_user_nickname");
-          localStorage.removeItem("cyber_user_age");
-
-          window.dispatchEvent(new Event("userAuthChanged"));
-
-          setSuccessMessage("Google Authentication Successful. Welcome!");
-
-          setTimeout(() => {
-            if (data.user?.hidePreferencesForm) {
-              router.push("/");
-            } else {
-              router.push("/preferences");
-            }
-          }, 800);
-        } else {
-          setErrorMessage(data.message || "Google Authentication Failed!");
-          setTimeout(() => setErrorMessage(""), 3000);
-        }
-      } catch (error) {
-        setErrorMessage("SYSTEM OFFLINE: CHECK GATEWAY CONNECTION");
-      } finally {
-        setIsLoading(false);
+        }, 800);
+      } else {
+        setErrorMessage(data.message || "Authentication Failed!");
+        setTimeout(() => setErrorMessage(""), 3000);
       }
-    };
+    } catch (error) {
+      setErrorMessage("SYSTEM OFFLINE: CHECK GATEWAY CONNECTION");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    const SocialButtons = () => (
-      <div style={{ marginTop: "2rem", width: "100%" }}>
+  const triggerForgotPassword = () => {
+    setShowForgotModal(true);
+    setForgotMessage("");
+    setForgotEmail(email); // Tự động điền email nếu đã nhập ở màn hình login
+  };
+
+  const submitForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!forgotEmail.trim()) {
+      setShakeFields(["forgot-email"]);
+      setTimeout(() => setShakeFields([]), 500);
+      setForgotMessage("Vui lòng nhập email / Please enter email");
+      return;
+    }
+    if (!validateEmail(forgotEmail)) {
+      setShakeFields(["forgot-email"]);
+      setTimeout(() => setShakeFields([]), 500);
+      setForgotMessage("Email không hợp lệ / Invalid email format");
+      return;
+    }
+
+    setForgotLoading(true);
+    setForgotMessage("");
+    const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || "http://localhost";
+    try {
+      const res = await fetch(`${nginxUrl}/forgot-password`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: forgotEmail }),
+      });
+      const data = await res.json();
+      setForgotMessage(data.message || "Đã gửi yêu cầu khôi phục mật khẩu!");
+      if (res.ok) {
+        setTimeout(() => setShowForgotModal(false), 3000);
+      }
+    } catch (err) {
+      setForgotMessage("Lỗi khi kết nối với máy chủ.");
+    } finally {
+      setForgotLoading(false);
+    }
+  };
+
+  const handleGoogleLoginSuccess = async (credentialResponse: any) => {
+    const tokenId = credentialResponse.credential;
+    if (!tokenId) {
+      setErrorMessage("Invalid Google response");
+      return;
+    }
+
+    setIsLoading(true);
+    setErrorMessage("");
+    setSuccessMessage("");
+
+    const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || "http://localhost";
+    try {
+      const response = await fetch(`${nginxUrl}/google`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ tokenId }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        localStorage.setItem("accessToken", data.accessToken);
+        if (data.user) {
+          localStorage.setItem("cyber_user", JSON.stringify(data.user));
+        }
+
+        localStorage.removeItem("cyber_user_nickname");
+        localStorage.removeItem("cyber_user_age");
+
+        window.dispatchEvent(new Event("userAuthChanged"));
+
+        setSuccessMessage("Google Authentication Successful. Welcome!");
+
+        setTimeout(() => {
+          if (data.user?.hidePreferencesForm) {
+            router.push("/");
+          } else {
+            router.push("/preferences");
+          }
+        }, 800);
+      } else {
+        setErrorMessage(data.message || "Google Authentication Failed!");
+        setTimeout(() => setErrorMessage(""), 3000);
+      }
+    } catch (error) {
+      setErrorMessage("SYSTEM OFFLINE: CHECK GATEWAY CONNECTION");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const SocialButtons = () => (
+    <div className="auth-social" style={{ marginTop: "2rem", width: "100%" }}>
+      <div
+        style={{
+          position: "relative",
+          marginBottom: "1.5rem",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
         <div
           style={{
-            position: "relative",
-            marginBottom: "1.5rem",
-            display: "flex",
-            alignItems: "center",
+            flex: 1,
+            borderTop: "1px solid var(--cyber-border)",
+            opacity: 0.5,
           }}
-        >
-          <div
-            style={{
-              flex: 1,
-              borderTop: "1px solid var(--cyber-border)",
-              opacity: 0.5,
-            }}
-          ></div>
-          <span
-            style={{
-              padding: "0 1.5rem",
-              fontSize: "0.85rem",
-              color: "var(--text-muted)",
-              fontFamily: "var(--font-mono)",
-              background: "transparent",
-            }}
-          >
-            {t("login.orContinueWith" as any)}
-          </span>
-          <div
-            style={{
-              flex: 1,
-              borderTop: "1px solid var(--cyber-border)",
-              opacity: 0.5,
-            }}
-          ></div>
-        </div>
-        <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
-          <GoogleLogin
-            onSuccess={handleGoogleLoginSuccess}
-            onError={() => {
-              setErrorMessage("Google Login Failed");
-            }}
-            theme="filled_black"
-            shape="pill"
-            size="large"
-            width="340"
-          />
-        </div>
-      </div>
-    );
-
-    if (!mounted) return null;
-
-        return (
-        <main
-          className="boot-sequence"
+        ></div>
+        <span
+          className="auth-divider-text"
           style={{
-            minHeight: "100vh",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "1rem",
-            position: "relative",
-            overflow: "hidden",
-            background: "var(--cyber-black)",
+            padding: "0 1.5rem",
+            fontSize: "0.85rem",
+            color: "var(--text-muted)",
+            fontFamily: "var(--font-mono)",
+            background: "transparent",
           }}
         >
-          <style
-            dangerouslySetInnerHTML={{
-              __html: `
+          {t("login.orContinueWith" as any)}
+        </span>
+        <div
+          style={{
+            flex: 1,
+            borderTop: "1px solid var(--cyber-border)",
+            opacity: 0.5,
+          }}
+        ></div>
+      </div>
+      <div
+        className="auth-google-wrap"
+        style={{ display: "flex", justifyContent: "center", width: "100%" }}
+      >
+        <GoogleLogin
+          onSuccess={handleGoogleLoginSuccess}
+          onError={() => {
+            setErrorMessage("Google Login Failed");
+          }}
+          theme="filled_black"
+          shape="pill"
+          size="large"
+          width="340"
+        />
+      </div>
+    </div>
+  );
+
+  if (!mounted) return null;
+
+  return (
+    <main
+      className="boot-sequence auth-page"
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "1rem",
+        position: "relative",
+        overflow: "hidden",
+        background: "var(--cyber-black)",
+      }}
+    >
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
             /* BOOT SEQUENCE ANIMATIONS */
             .map-fade-in {
               animation: map-reveal 1.5s ease-out forwards;
@@ -356,6 +361,11 @@ function LoginPage() {
               10% { opacity: 1; }
               90% { opacity: 1; }
               100% { top: 110%; opacity: 0; }
+            }
+
+            @keyframes grid-pan {
+              from { background-position: 0 0; }
+              to { background-position: 0 80px; }
             }
 
             /* COMPONENT STYLES */
@@ -465,675 +475,818 @@ function LoginPage() {
               transition: all 0.5s ease;
               background-image: url("/images/bg4.jpg");
             }
+
+            @media (max-width: 720px) and (orientation: portrait), (max-width: 520px) {
+              .auth-page {
+                min-height: calc(100dvh - 64px) !important;
+                align-items: flex-start !important;
+                padding: 1rem 0.75rem 1.5rem !important;
+                overflow-x: hidden !important;
+                overflow-y: auto !important;
+              }
+
+              .auth-card {
+                max-width: 430px !important;
+                height: auto !important;
+                min-height: 0 !important;
+                display: block !important;
+                overflow: hidden !important;
+                border-radius: 14px !important;
+              }
+
+              .auth-form-panel {
+                position: relative !important;
+                inset: auto !important;
+                width: 100% !important;
+                height: auto !important;
+                min-height: 0 !important;
+                padding: 2rem 1.15rem 1.25rem !important;
+                transform: none !important;
+                transition: opacity 0.25s ease !important;
+              }
+
+              .auth-form-panel.is-hidden {
+                display: none !important;
+              }
+
+              .auth-form-panel.is-active {
+                display: flex !important;
+                opacity: 1 !important;
+                z-index: 10 !important;
+                pointer-events: auto !important;
+              }
+
+              .auth-title-row {
+                gap: 0.7rem !important;
+                margin-bottom: 1.2rem !important;
+              }
+
+              .auth-title-row svg {
+                width: 34px !important;
+                height: 34px !important;
+              }
+
+              .auth-form-title {
+                font-size: clamp(2rem, 11vw, 2.45rem) !important;
+              }
+
+              .cyber-input {
+                padding: 1rem 1.1rem !important;
+                font-size: 1rem !important;
+              }
+
+              .auth-social {
+                margin-top: 1.35rem !important;
+              }
+
+              .auth-divider-text {
+                padding: 0 0.75rem !important;
+                font-size: 0.72rem !important;
+                white-space: nowrap !important;
+              }
+
+              .auth-google-wrap,
+              .auth-google-wrap > div,
+              .auth-google-wrap iframe {
+                max-width: 100% !important;
+              }
+
+              .auth-google-wrap iframe {
+                width: min(340px, calc(100vw - 3.5rem)) !important;
+              }
+
+              .auth-slider {
+                position: relative !important;
+                top: auto !important;
+                left: auto !important;
+                width: 100% !important;
+                height: auto !important;
+                min-height: 190px !important;
+                transform: none !important;
+                border-left: 0 !important;
+                border-right: 0 !important;
+                border-top: 1px solid var(--cyber-blue) !important;
+              }
+
+              .auth-overlay-panel {
+                position: relative !important;
+                width: 100% !important;
+                height: auto !important;
+                min-height: 190px !important;
+                padding: 1.4rem 1.1rem 1.6rem !important;
+                transform: none !important;
+              }
+
+              .auth-overlay-panel.is-hidden {
+                display: none !important;
+              }
+
+              .auth-overlay-panel.is-active {
+                display: flex !important;
+                opacity: 1 !important;
+                pointer-events: auto !important;
+              }
+
+              .auth-overlay-title {
+                font-size: clamp(1.85rem, 10vw, 2.45rem) !important;
+                margin-bottom: 0.55rem !important;
+              }
+
+              .auth-overlay-copy {
+                font-size: 0.98rem !important;
+                line-height: 1.45 !important;
+                margin-bottom: 1.15rem !important;
+              }
+
+              .auth-switch-button {
+                width: 100% !important;
+                max-width: 250px !important;
+                padding: 0.9rem 1.2rem !important;
+                font-size: 0.85rem !important;
+                letter-spacing: 1.5px !important;
+              }
+            }
           `,
+        }}
+      />
+
+      {/* =========================================
+          BACKGROUND 3D GRID & SCANNER
+          ========================================= */}
+      <div
+        className="map-fade-in"
+        style={{ position: "absolute", inset: 0, zIndex: 0 }}
+      >
+        {/* Sky / deep gradient */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "var(--bg-gradient)",
+            opacity: 0.95,
+          }}
+        />
+
+        {/* Global Laser Scan Line */}
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            height: "2px",
+            background: "var(--cyber-blue)",
+            boxShadow: "0 0 15px 2px var(--cyber-blue-glow)",
+            animation: "scanning-laser 12s linear infinite",
+            zIndex: 5,
+            pointerEvents: "none",
+          }}
+        />
+
+        {/* Animated 3D Grid */}
+        <div
+          style={{
+            position: "absolute",
+            inset: "-50%",
+            backgroundImage:
+              "linear-gradient(rgba(52, 229, 235, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(52, 229, 235, 0.03) 1px, transparent 1px)",
+            backgroundSize: "80px 80px",
+            animation: "grid-pan 12s linear infinite",
+            transform: "perspective(1000px) rotateX(65deg) scale(1.2)",
+            transformOrigin: "center top",
+            zIndex: 1,
+            pointerEvents: "none",
+          }}
+        />
+
+        {/* Ambient Glows */}
+        <div
+          style={{
+            position: "absolute",
+            top: "25%",
+            left: "-5rem",
+            width: "30rem",
+            height: "30rem",
+            borderRadius: "50%",
+            opacity: 0.2,
+            filter: "blur(80px)",
+            background:
+              "radial-gradient(circle, var(--cyber-blue) 0%, transparent 70%)",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            bottom: "10%",
+            right: "-5rem",
+            width: "30rem",
+            height: "30rem",
+            borderRadius: "50%",
+            opacity: 0.2,
+            filter: "blur(80px)",
+            background:
+              "radial-gradient(circle, var(--cyber-purple) 0%, transparent 70%)",
+          }}
+        />
+      </div>
+
+      {/* =========================================
+          AUTHENTICATION CARD SUITE
+          ========================================= */}
+      <div
+        className="card-drop-in auth-card"
+        style={{
+          position: "relative",
+          zIndex: 10,
+          width: "100%",
+          maxWidth: "1050px",
+          height: "750px", // Reduced height for smoother fit, original was 850px
+          borderRadius: "1rem",
+          overflow: "hidden",
+          background: "var(--cyber-surface-glass)",
+          backdropFilter: "blur(24px)",
+          border: "1px solid rgba(52, 229, 235, 0.3)",
+          boxShadow: "0 0 60px rgba(0, 0, 0, 0.8)",
+          display: "flex",
+        }}
+      >
+        {/* Top Edge Highlight Line */}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            height: "3px",
+            zIndex: 30,
+            background:
+              "linear-gradient(90deg, var(--cyber-blue), var(--cyber-yellow), var(--cyber-purple))",
+          }}
+        />
+
+        {/* --- FORM 1 : REGISTRATION --- */}
+        <div
+          className={`auth-form-panel auth-form-register ${isSignUp ? "is-active" : "is-hidden"}`}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "50%",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: "0 3.5rem",
+            transition: "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
+            opacity: isSignUp ? 1 : 0,
+            transform: isSignUp ? "translateY(0)" : "translateY(20px)",
+            zIndex: isSignUp ? 10 : -1,
+            pointerEvents: isSignUp ? "auto" : "none",
+          }}
+        >
+          <div
+            className="auth-title-row"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "15px",
+              marginBottom: "2rem",
+            }}
+          >
+            <Fingerprint size={45} color="var(--cyber-purple)" />
+            <h2
+              className="glitch-yellow auth-form-title"
+              style={{
+                fontSize: "2.8rem",
+                margin: 0,
+                color: "var(--cyber-purple)",
+                textShadow: "0 0 20px rgba(167, 139, 250, 0.5)",
+              }}
+            >
+              {t("login.registerTitle") as any}
+            </h2>
+          </div>
+          <div style={{ width: "100%" }}>
+            {errorMessage && (
+              <div className="message-box message-error">
+                <ShieldAlert
+                  size={20}
+                  color="var(--cyber-red)"
+                  style={{ flexShrink: 0 }}
+                />
+                <span>{errorMessage}</span>
+              </div>
+            )}
+            {successMessage && (
+              <div className="message-box message-success">
+                <CheckCircle
+                  size={20}
+                  color="var(--cyber-blue)"
+                  style={{ flexShrink: 0 }}
+                />
+                <span>{successMessage}</span>
+              </div>
+            )}
+          </div>
+          <form
+            style={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              gap: "1.2rem",
+            }}
+            onSubmit={handleLogin}
+          >
+            <input
+              type="text"
+              placeholder={t("login.usernamePlaceholder") as any}
+              className={`cyber-input ${shakeFields.includes("register-name") ? "shake-animation" : ""}`}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Email"
+              className={`cyber-input ${shakeFields.includes("register-email") ? "shake-animation" : ""}`}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+              type="password"
+              placeholder={t("login.passwordPlaceholder") as any}
+              className={`cyber-input ${shakeFields.includes("register-password") ? "shake-animation" : ""}`}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+
+            <button
+              type="submit"
+              className="cyber-button"
+              disabled={isLoading}
+              style={{
+                marginTop: "0.5rem",
+                padding: "1.25rem",
+                background: "var(--cyber-purple)",
+                color: "var(--cyber-surface)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "10px",
+                boxShadow: "0 0 20px rgba(167, 139, 250, 0.3)",
+              }}
+            >
+              {isLoading ? <Scan className="animate-spin" /> : <UserPlus />}
+              {isLoading ? (
+                (t("login.creatingAcc") as any)
+              ) : (
+                <span style={{ fontWeight: 700 }}>
+                  {t("login.createAccountBtn") as any}
+                </span>
+              )}
+            </button>
+          </form>
+          <SocialButtons />
+        </div>
+
+        {/* --- FORM 2 : LOGIN --- */}
+        <div
+          className={`auth-form-panel auth-form-login ${isSignUp ? "is-hidden" : "is-active"}`}
+          style={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            width: "50%",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: "0 3.5rem",
+            transition: "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
+            opacity: isSignUp ? 0 : 1,
+            transform: isSignUp ? "translateY(20px)" : "translateY(0)",
+            zIndex: isSignUp ? -1 : 10,
+            pointerEvents: isSignUp ? "none" : "auto",
+          }}
+        >
+          <div
+            className="auth-title-row"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "15px",
+              marginBottom: "2rem",
+            }}
+          >
+            <ShieldCheck size={45} color="var(--cyber-blue)" />
+            <h2
+              className="glitch-yellow auth-form-title"
+              style={{
+                fontSize: "2.8rem",
+                margin: 0,
+                color: "var(--cyber-blue)",
+                textShadow: "0 0 20px rgba(52, 229, 235, 0.5)",
+              }}
+            >
+              {t("login.loginTitle") as any}
+            </h2>
+          </div>
+
+          <div style={{ width: "100%" }}>
+            {errorMessage && (
+              <div className="message-box message-error">
+                <ShieldAlert
+                  size={20}
+                  color="var(--cyber-red)"
+                  style={{ flexShrink: 0 }}
+                />
+                <span>{errorMessage}</span>
+              </div>
+            )}
+            {successMessage && (
+              <div className="message-box message-success">
+                <CheckCircle
+                  size={20}
+                  color="var(--cyber-blue)"
+                  style={{ flexShrink: 0 }}
+                />
+                <span>{successMessage}</span>
+              </div>
+            )}
+          </div>
+
+          <form
+            style={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              gap: "1.2rem",
+            }}
+            onSubmit={handleLogin}
+          >
+            <input
+              type="text"
+              placeholder="Email"
+              className={`cyber-input ${shakeFields.includes("login-email") ? "shake-animation" : ""}`}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)} // Cập nhật state
+            />
+            <input
+              type="password"
+              placeholder={t("login.passwordPlaceholder") as any}
+              className={`cyber-input ${shakeFields.includes("login-password") ? "shake-animation" : ""}`}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)} // Cập nhật state
+            />
+            <div style={{ textAlign: "right", marginTop: "-0.5rem" }}>
+              <button
+                type="button"
+                onClick={triggerForgotPassword}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "var(--cyber-blue)",
+                  fontSize: "0.85rem",
+                  cursor: "pointer",
+                  fontFamily: "var(--font-mono)",
+                  textDecoration: "underline",
+                }}
+              >
+                Forgot password?
+              </button>
+            </div>
+
+            <button
+              type="submit"
+              className="cyber-button"
+              disabled={isLoading}
+              style={{
+                marginTop: "0.5rem",
+                padding: "1.25rem",
+                background: "var(--cyber-blue)",
+                color: "var(--cyber-black)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "10px",
+                boxShadow: "0 0 20px rgba(52, 229, 235, 0.4)",
+              }}
+            >
+              {isLoading ? <Scan className="animate-spin" /> : <LogIn />}
+              {isLoading
+                ? (t("login.signingIn") as any)
+                : (t("login.signInBtn") as any)}
+            </button>
+          </form>
+          <SocialButtons />
+        </div>
+
+        {/* --- DYNAMIC OVERLAY SLIDER --- */}
+        <div
+          className="slider-gradient auth-slider"
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "50%",
+            height: "100%",
+            zIndex: 20,
+            transition: "all 0.8s cubic-bezier(0.25, 1, 0.35, 1)", // Premium liding ease
+            transform: isSignUp ? "translateX(100%)" : "translateX(0)",
+          }}
+        >
+          {/* Noise / Pattern overlay inside slider */}
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              background:
+                "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.05%22/%3E%3C/svg%3E')",
+              pointerEvents: "none",
             }}
           />
 
-          {/* =========================================
-          BACKGROUND 3D GRID & SCANNER
-          ========================================= */}
+          {/* Welcome Back (Shown when Login is hidden / Slider is on Right) */}
           <div
-            className="map-fade-in"
-            style={{ position: "absolute", inset: 0, zIndex: 0 }}
-          >
-            {/* Sky / deep gradient */}
-            <div
-              style={{
-                position: "absolute",
-                inset: 0,
-                background: "var(--bg-gradient)",
-                opacity: 0.95,
-              }}
-            />
-
-            {/* Global Laser Scan Line */}
-            <div
-              style={{
-                position: "absolute",
-                left: 0,
-                right: 0,
-                height: "4px",
-                background: "var(--cyber-blue)",
-                boxShadow: "0 0 20px 5px var(--cyber-blue-glow)",
-                animation: "scanning-laser 6s linear infinite",
-                zIndex: 5,
-                pointerEvents: "none",
-              }}
-            />
-
-            {/* Animated 3D Grid */}
-            <div
-              style={{
-                position: "absolute",
-                inset: "-50%",
-                backgroundImage:
-                  "linear-gradient(rgba(52, 229, 235, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(52, 229, 235, 0.1) 1px, transparent 1px)",
-                backgroundSize: "80px 80px",
-                animation: "grid-pan 4s linear infinite",
-                transform: "perspective(1000px) rotateX(65deg) scale(1.2)",
-                transformOrigin: "center top",
-                zIndex: 1,
-                pointerEvents: "none",
-              }}
-            />
-
-            {/* Ambient Glows */}
-            <div
-              style={{
-                position: "absolute",
-                top: "25%",
-                left: "-5rem",
-                width: "30rem",
-                height: "30rem",
-                borderRadius: "50%",
-                opacity: 0.2,
-                filter: "blur(80px)",
-                background:
-                  "radial-gradient(circle, var(--cyber-blue) 0%, transparent 70%)",
-              }}
-            />
-            <div
-              style={{
-                position: "absolute",
-                bottom: "10%",
-                right: "-5rem",
-                width: "30rem",
-                height: "30rem",
-                borderRadius: "50%",
-                opacity: 0.2,
-                filter: "blur(80px)",
-                background:
-                  "radial-gradient(circle, var(--cyber-purple) 0%, transparent 70%)",
-              }}
-            />
-          </div>
-
-          {/* =========================================
-          AUTHENTICATION CARD SUITE
-          ========================================= */}
-          <div
-            className="card-drop-in"
+            className={`overlay-panel overlay-left auth-overlay-panel ${isSignUp ? "is-active" : "is-hidden"}`}
             style={{
-              position: "relative",
-              zIndex: 10,
+              position: "absolute",
               width: "100%",
-              maxWidth: "1050px",
-              height: "750px", // Reduced height for smoother fit, original was 850px
-              borderRadius: "1rem",
-              overflow: "hidden",
-              background: "var(--cyber-surface-glass)",
-              backdropFilter: "blur(24px)",
-              border: "1px solid rgba(52, 229, 235, 0.3)",
-              boxShadow: "0 0 60px rgba(0, 0, 0, 0.8)",
+              height: "100%",
               display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "3rem",
+              textAlign: "center",
+              transition:
+                "opacity 0.5s ease-in-out, transform 0.5s ease-in-out",
+              opacity: isSignUp ? 1 : 0,
+              transform: isSignUp ? "scale(1)" : "scale(0.95)",
+              pointerEvents: isSignUp ? "auto" : "none",
             }}
           >
-            {/* Top Edge Highlight Line */}
-            <div
+            <div className="panel-image-bg" />
+            <h2
+              className="glitch-yellow auth-overlay-title"
               style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                height: "3px",
-                zIndex: 30,
-                background:
-                  "linear-gradient(90deg, var(--cyber-blue), var(--cyber-yellow), var(--cyber-purple))",
-              }}
-            />
-
-            {/* --- FORM 1 : REGISTRATION --- */}
-            <div
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "50%",
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                padding: "0 3.5rem",
-                transition: "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
-                opacity: isSignUp ? 1 : 0,
-                transform: isSignUp ? "translateY(0)" : "translateY(20px)",
-                zIndex: isSignUp ? 10 : -1,
-                pointerEvents: isSignUp ? "auto" : "none",
+                fontSize: "3.2rem",
+                color: "var(--text-main)",
+                marginBottom: "1rem",
               }}
             >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "15px",
-                  marginBottom: "2rem",
-                }}
-              >
-                <Fingerprint size={45} color="var(--cyber-purple)" />
-                <h2
-                  className="glitch-yellow"
-                  style={{
-                    fontSize: "2.8rem",
-                    margin: 0,
-                    color: "var(--cyber-purple)",
-                    textShadow: "0 0 20px rgba(167, 139, 250, 0.5)",
-                  }}
-                >
-                  {t("login.registerTitle") as any}
-                </h2>
-              </div>
-              <div style={{ width: "100%" }}>
-                {errorMessage && (
-                  <div className="message-box message-error">
-                    <ShieldAlert
-                      size={20}
-                      color="var(--cyber-red)"
-                      style={{ flexShrink: 0 }}
-                    />
-                    <span>{errorMessage}</span>
-                  </div>
-                )}
-                {successMessage && (
-                  <div className="message-box message-success">
-                    <CheckCircle
-                      size={20}
-                      color="var(--cyber-blue)"
-                      style={{ flexShrink: 0 }}
-                    />
-                    <span>{successMessage}</span>
-                  </div>
-                )}
-              </div>
-              <form
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "1.2rem",
-                }}
-                onSubmit={handleLogin}
-              >
-                <input
-                  type="text"
-                  placeholder={t("login.usernamePlaceholder") as any}
-                  className={`cyber-input ${shakeFields.includes("register-name") ? "shake-animation" : ""}`}
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-                <input
-                  type="text"
-                  placeholder="Email"
-                  className={`cyber-input ${shakeFields.includes("register-email") ? "shake-animation" : ""}`}
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                <input
-                  type="password"
-                  placeholder={t("login.passwordPlaceholder") as any}
-                  className={`cyber-input ${shakeFields.includes("register-password") ? "shake-animation" : ""}`}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-
-                <button
-                  type="submit"
-                  className="cyber-button"
-                  disabled={isLoading}
-                  style={{
-                    marginTop: "0.5rem",
-                    padding: "1.25rem",
-                    background: "var(--cyber-purple)",
-                    color: "var(--cyber-surface)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "10px",
-                    boxShadow: "0 0 20px rgba(167, 139, 250, 0.3)",
-                  }}
-                >
-                  {isLoading ? <Scan className="animate-spin" /> : <UserPlus />}
-                  {isLoading
-                    ? (t("login.creatingAcc") as any)
-                    : (t("login.createAccountBtn") as any)}
-                </button>
-              </form>
-              <SocialButtons />
-            </div>
-
-            {/* --- FORM 2 : LOGIN --- */}
-            <div
+              {t("login.welcomeBack") as any}
+            </h2>
+            <p
+              className="auth-overlay-copy"
               style={{
-                position: "absolute",
-                top: 0,
-                right: 0,
-                width: "50%",
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                padding: "0 3.5rem",
-                transition: "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
-                opacity: isSignUp ? 0 : 1,
-                transform: isSignUp ? "translateY(20px)" : "translateY(0)",
-                zIndex: isSignUp ? -1 : 10,
-                pointerEvents: isSignUp ? "none" : "auto",
+                color: "var(--text-secondary)",
+                marginBottom: "2.5rem",
+                fontSize: "1.3rem",
+                fontWeight: "500",
+                lineHeight: 1.6,
+                whiteSpace: "pre-line",
               }}
             >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "15px",
-                  marginBottom: "2rem",
-                }}
-              >
-                <ShieldCheck size={45} color="var(--cyber-blue)" />
-                <h2
-                  className="glitch-yellow"
-                  style={{
-                    fontSize: "2.8rem",
-                    margin: 0,
-                    color: "var(--cyber-blue)",
-                    textShadow: "0 0 20px rgba(52, 229, 235, 0.5)",
-                  }}
-                >
-                  {t("login.loginTitle") as any}
-                </h2>
-              </div>
-
-              <div style={{ width: "100%" }}>
-                {errorMessage && (
-                  <div className="message-box message-error">
-                    <ShieldAlert
-                      size={20}
-                      color="var(--cyber-red)"
-                      style={{ flexShrink: 0 }}
-                    />
-                    <span>{errorMessage}</span>
-                  </div>
-                )}
-                {successMessage && (
-                  <div className="message-box message-success">
-                    <CheckCircle
-                      size={20}
-                      color="var(--cyber-blue)"
-                      style={{ flexShrink: 0 }}
-                    />
-                    <span>{successMessage}</span>
-                  </div>
-                )}
-              </div>
-
-              <form
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "1.2rem",
-                }}
-                onSubmit={handleLogin}
-              >
-                <input
-                  type="text"
-                  placeholder="Email"
-                  className={`cyber-input ${shakeFields.includes("login-email") ? "shake-animation" : ""}`}
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)} // Cập nhật state
-                />
-                <input
-                  type="password"
-                  placeholder={t("login.passwordPlaceholder") as any}
-                  className={`cyber-input ${shakeFields.includes("login-password") ? "shake-animation" : ""}`}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)} // Cập nhật state
-                />
-                <div style={{ textAlign: "right", marginTop: "-0.5rem" }}>
-                  <button
-                    type="button"
-                    onClick={triggerForgotPassword}
-                    style={{
-                      background: "none",
-                      border: "none",
-                      color: "var(--cyber-blue)",
-                      fontSize: "0.85rem",
-                      cursor: "pointer",
-                      fontFamily: "var(--font-mono)",
-                      textDecoration: "underline",
-                    }}
-                  >
-                    Forgot password?
-                  </button>
-                </div>
-
-                <button
-                  type="submit"
-                  className="cyber-button"
-                  disabled={isLoading}
-                  style={{
-                    marginTop: "0.5rem",
-                    padding: "1.25rem",
-                    background: "var(--cyber-blue)",
-                    color: "var(--cyber-black)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "10px",
-                    boxShadow: "0 0 20px rgba(52, 229, 235, 0.4)",
-                  }}
-                >
-                  {isLoading ? <Scan className="animate-spin" /> : <LogIn />}
-                  {isLoading
-                    ? (t("login.signingIn") as any)
-                    : (t("login.signInBtn") as any)}
-                </button>
-              </form>
-              <SocialButtons />
-            </div>
-
-            {/* --- DYNAMIC OVERLAY SLIDER --- */}
-            <div
-              className="slider-gradient"
+              {t("login.welcomeDesc")}
+            </p>
+            <button
+              className="auth-switch-button"
+              onClick={() => setIsSignUp(false)}
               style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "50%",
-                height: "100%",
-                zIndex: 20,
-                transition: "all 0.8s cubic-bezier(0.25, 1, 0.35, 1)", // Premium liding ease
-                transform: isSignUp ? "translateX(100%)" : "translateX(0)",
+                padding: "1.2rem 4rem",
+                fontSize: "1.05rem",
+                borderRadius: "50px",
+                border: "2px solid var(--cyber-blue)",
+                background: "rgba(52, 229, 235, 0.1)",
+                color: "var(--text-main)",
+                fontWeight: "bold",
+                cursor: "pointer",
+                transition: "all 0.3s ease",
+                letterSpacing: "2px",
+                boxShadow: "0 0 20px rgba(52, 229, 235, 0.2)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "var(--cyber-blue)";
+                e.currentTarget.style.color = "var(--cyber-surface)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "rgba(52, 229, 235, 0.1)";
+                e.currentTarget.style.color = "var(--text-main)";
               }}
             >
-              {/* Noise / Pattern overlay inside slider */}
-              <div
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  background:
-                    "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.05%22/%3E%3C/svg%3E')",
-                  pointerEvents: "none",
-                }}
-              />
-
-              {/* Welcome Back (Shown when Login is hidden / Slider is on Right) */}
-              <div
-                className="overlay-panel overlay-left"
-                style={{
-                  position: "absolute",
-                  width: "100%",
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  padding: "3rem",
-                  textAlign: "center",
-                  transition:
-                    "opacity 0.5s ease-in-out, transform 0.5s ease-in-out",
-                  opacity: isSignUp ? 1 : 0,
-                  transform: isSignUp ? "scale(1)" : "scale(0.95)",
-                  pointerEvents: isSignUp ? "auto" : "none",
-                }}
-              >
-                <div className="panel-image-bg" />
-                <h2
-                  className="glitch-yellow"
-                  style={{
-                    fontSize: "3.2rem",
-                    color: "var(--text-main)",
-                    marginBottom: "1rem",
-                  }}
-                >
-                  {t("login.welcomeBack") as any}
-                </h2>
-                <p
-                  style={{
-                    color: "var(--text-secondary)",
-                    marginBottom: "2.5rem",
-                    fontSize: "1.3rem",
-                    fontWeight: "500",
-                    lineHeight: 1.6,
-                    whiteSpace: "pre-line",
-                  }}
-                >
-                  {t("login.welcomeDesc")}
-                </p>
-                <button
-                  onClick={() => setIsSignUp(false)}
-                  style={{
-                    padding: "1.2rem 4rem",
-                    fontSize: "1.05rem",
-                    borderRadius: "50px",
-                    border: "2px solid var(--cyber-blue)",
-                    background: "rgba(52, 229, 235, 0.1)",
-                    color: "var(--text-main)",
-                    fontWeight: "bold",
-                    cursor: "pointer",
-                    transition: "all 0.3s ease",
-                    letterSpacing: "2px",
-                    boxShadow: "0 0 20px rgba(52, 229, 235, 0.2)",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = "var(--cyber-blue)";
-                    e.currentTarget.style.color = "var(--cyber-surface)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = "rgba(52, 229, 235, 0.1)";
-                    e.currentTarget.style.color = "var(--text-main)";
-                  }}
-                >
-                  {t("login.switchToLogin") as any}
-                </button>
-              </div>
-
-              {/* Join Us (Shown when Register is hidden / Slider is on Left) */}
-              <div
-                className="overlay-panel overlay-right"
-                style={{
-                  position: "absolute",
-                  width: "100%",
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  padding: "3rem",
-                  textAlign: "center",
-                  transition:
-                    "opacity 0.5s ease-in-out, transform 0.5s ease-in-out",
-                  opacity: isSignUp ? 0 : 1,
-                  transform: isSignUp ? "scale(0.95)" : "scale(1)",
-                  pointerEvents: isSignUp ? "none" : "auto",
-                }}
-              >
-                <div className="panel-image-bg" />
-                <h2
-                  className="glitch-yellow"
-                  style={{
-                    fontSize: "3.2rem",
-                    color: "var(--text-main)",
-                    marginBottom: "1rem",
-                  }}
-                >
-                  {t("login.helloTraveler") as any}
-                </h2>
-                <p
-                  style={{
-                    color: "var(--text-secondary)",
-                    marginBottom: "2.5rem",
-                    fontSize: "1.3rem",
-                    fontWeight: "500",
-                    lineHeight: 1.6,
-                    whiteSpace: "pre-line",
-                  }}
-                >
-                  {t("login.helloDesc") as any}
-                </p>
-                <button
-                  onClick={() => setIsSignUp(true)}
-                  style={{
-                    padding: "1.2rem 4rem",
-                    fontSize: "1.05rem",
-                    borderRadius: "50px",
-                    border: "2px solid var(--cyber-purple)",
-                    background: "rgba(167, 139, 250, 0.1)",
-                    color: "var(--text-main)",
-                    fontWeight: "bold",
-                    cursor: "pointer",
-                    transition: "all 0.3s ease",
-                    letterSpacing: "2px",
-                    boxShadow: "0 0 20px rgba(167, 139, 250, 0.2)",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = "var(--cyber-purple)";
-                    e.currentTarget.style.color = "var(--cyber-surface)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = "rgba(167, 139, 250, 0.1)";
-                    e.currentTarget.style.color = "var(--text-main)";
-                  }}
-                >
-                  {t("login.switchToRegister") as any}
-                </button>
-              </div>
-            </div>
+              {t("login.switchToLogin") as any}
+            </button>
           </div>
 
-          {/* =========================================
-          FORGOT PASSWORD MODAL
-          ========================================= */}
-          {showForgotModal && (
-            <div
+          {/* Join Us (Shown when Register is hidden / Slider is on Left) */}
+          <div
+            className={`overlay-panel overlay-right auth-overlay-panel ${isSignUp ? "is-hidden" : "is-active"}`}
+            style={{
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "3rem",
+              textAlign: "center",
+              transition:
+                "opacity 0.5s ease-in-out, transform 0.5s ease-in-out",
+              opacity: isSignUp ? 0 : 1,
+              transform: isSignUp ? "scale(0.95)" : "scale(1)",
+              pointerEvents: isSignUp ? "none" : "auto",
+            }}
+          >
+            <div className="panel-image-bg" />
+            <h2
+              className="glitch-yellow auth-overlay-title"
               style={{
-                position: "absolute",
-                inset: 0,
-                zIndex: 100,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                background: "var(--cyber-surface-glass)",
-                backdropFilter: "blur(5px)",
-                animation: "map-reveal 0.3s ease-out",
+                fontSize: "3.2rem",
+                color: "var(--text-main)",
+                marginBottom: "1rem",
               }}
             >
-              <div
+              {t("login.helloTraveler") as any}
+            </h2>
+            <p
+              className="auth-overlay-copy"
+              style={{
+                color: "var(--text-secondary)",
+                marginBottom: "2.5rem",
+                fontSize: "1.3rem",
+                fontWeight: "500",
+                lineHeight: 1.6,
+                whiteSpace: "pre-line",
+              }}
+            >
+              {t("login.helloDesc") as any}
+            </p>
+            <button
+              className="auth-switch-button"
+              onClick={() => setIsSignUp(true)}
+              style={{
+                padding: "1.2rem 4rem",
+                fontSize: "1.05rem",
+                borderRadius: "50px",
+                border: "2px solid var(--cyber-purple)",
+                background: "rgba(167, 139, 250, 0.1)",
+                color: "var(--text-main)",
+                fontWeight: "bold",
+                cursor: "pointer",
+                transition: "all 0.3s ease",
+                letterSpacing: "2px",
+                boxShadow: "0 0 20px rgba(167, 139, 250, 0.2)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "var(--cyber-purple)";
+                e.currentTarget.style.color = "var(--cyber-surface)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "rgba(167, 139, 250, 0.1)";
+                e.currentTarget.style.color = "var(--text-main)";
+              }}
+            >
+              {t("login.switchToRegister") as any}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* =========================================
+          FORGOT PASSWORD MODAL
+          ========================================= */}
+      {showForgotModal && (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 100,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "var(--cyber-surface-glass)",
+            backdropFilter: "blur(5px)",
+            animation: "map-reveal 0.3s ease-out",
+          }}
+        >
+          <div
+            style={{
+              width: "100%",
+              maxWidth: "450px",
+              padding: "2.5rem",
+              borderRadius: "16px",
+              background: "var(--cyber-surface-glass)",
+              border: "1px solid rgba(52, 229, 235, 0.4)",
+              boxShadow:
+                "0 0 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(52, 229, 235, 0.1)",
+              display: "flex",
+              flexDirection: "column",
+              gap: "1.5rem",
+              position: "relative",
+            }}
+          >
+            <button
+              onClick={() => setShowForgotModal(false)}
+              style={{
+                position: "absolute",
+                top: "1rem",
+                right: "1rem",
+                background: "transparent",
+                border: "none",
+                color: "var(--text-muted)",
+                cursor: "pointer",
+                fontSize: "1.5rem",
+                transition: "color 0.2s",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.color = "var(--cyber-red)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.color = "var(--text-muted)")
+              }
+            >
+              ✕
+            </button>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <ShieldAlert size={30} color="var(--cyber-yellow)" />
+              <h3
                 style={{
-                  width: "100%",
-                  maxWidth: "450px",
-                  padding: "2.5rem",
-                  borderRadius: "16px",
-                  background: "var(--cyber-surface-glass)",
-                  border: "1px solid rgba(52, 229, 235, 0.4)",
-                  boxShadow:
-                    "0 0 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(52, 229, 235, 0.1)",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "1.5rem",
-                  position: "relative",
+                  margin: 0,
+                  fontSize: "1.8rem",
+                  color: "var(--cyber-yellow)",
+                  textShadow: "0 0 10px rgba(251, 191, 36, 0.4)",
                 }}
               >
-                <button
-                  onClick={() => setShowForgotModal(false)}
-                  style={{
-                    position: "absolute",
-                    top: "1rem",
-                    right: "1rem",
-                    background: "transparent",
-                    border: "none",
-                    color: "var(--text-muted)",
-                    cursor: "pointer",
-                    fontSize: "1.5rem",
-                    transition: "color 0.2s",
-                  }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.color = "var(--cyber-red)")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.color = "var(--text-muted)")
-                  }
-                >
-                  ✕
-                </button>
-                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                  <ShieldAlert size={30} color="var(--cyber-yellow)" />
-                  <h3
-                    style={{
-                      margin: 0,
-                      fontSize: "1.8rem",
-                      color: "var(--cyber-yellow)",
-                      textShadow: "0 0 10px rgba(251, 191, 36, 0.4)",
-                    }}
-                  >
-                    Reset Password
-                  </h3>
-                </div>
-
-                <p
-                  style={{
-                    color: "var(--text-secondary)",
-                    fontSize: "0.95rem",
-                    lineHeight: 1.5,
-                  }}
-                >
-                  Nhập email của bạn để nhận liên kết khôi phục mật khẩu.
-                </p>
-
-                {forgotMessage && (
-                  <div
-                    className={`message-box ${forgotMessage.includes("Lỗi") || forgotMessage.includes("không hợp lệ") || forgotMessage.includes("invalid") ? "message-error" : "message-success"}`}
-                    style={{ marginBottom: "0.5rem" }}
-                  >
-                    <span>{forgotMessage}</span>
-                  </div>
-                )}
-
-                <form
-                  onSubmit={submitForgotPassword}
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "1.2rem",
-                  }}
-                >
-                  <input
-                    type="text"
-                    placeholder="Nhập email của bạn"
-                    className={`cyber-input ${shakeFields.includes("forgot-email") ? "shake-animation" : ""}`}
-                    value={forgotEmail}
-                    onChange={(e) => setForgotEmail(e.target.value)}
-                  />
-                  <button
-                    type="submit"
-                    className="cyber-button"
-                    disabled={forgotLoading}
-                    style={{
-                      padding: "1.25rem",
-                      background: "var(--cyber-yellow)",
-                      color: "var(--cyber-black)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: "10px",
-                      fontWeight: "bold",
-                      fontSize: "1.05rem",
-                      boxShadow: "0 0 20px rgba(251, 191, 36, 0.4)",
-                      border: "none",
-                      borderRadius: "8px",
-                      cursor: forgotLoading ? "not-allowed" : "pointer",
-                    }}
-                  >
-                    {forgotLoading ? (
-                      <Scan className="animate-spin" />
-                    ) : (
-                      "Gửi liên kết khôi phục"
-                    )}
-                  </button>
-                </form>
-              </div>
+                Reset Password
+              </h3>
             </div>
-          )}
-        </main>
-        );
+
+            <p
+              style={{
+                color: "var(--text-secondary)",
+                fontSize: "0.95rem",
+                lineHeight: 1.5,
+              }}
+            >
+              Nhập email của bạn để nhận liên kết khôi phục mật khẩu.
+            </p>
+
+            {forgotMessage && (
+              <div
+                className={`message-box ${forgotMessage.includes("Lỗi") || forgotMessage.includes("không hợp lệ") || forgotMessage.includes("invalid") ? "message-error" : "message-success"}`}
+                style={{ marginBottom: "0.5rem" }}
+              >
+                <span>{forgotMessage}</span>
+              </div>
+            )}
+
+            <form
+              onSubmit={submitForgotPassword}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "1.2rem",
+              }}
+            >
+              <input
+                type="text"
+                placeholder="Nhập email của bạn"
+                className={`cyber-input ${shakeFields.includes("forgot-email") ? "shake-animation" : ""}`}
+                value={forgotEmail}
+                onChange={(e) => setForgotEmail(e.target.value)}
+              />
+              <button
+                type="submit"
+                className="cyber-button"
+                disabled={forgotLoading}
+                style={{
+                  padding: "1.25rem",
+                  background: "var(--cyber-yellow)",
+                  color: "var(--cyber-black)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "10px",
+                  fontWeight: "bold",
+                  fontSize: "1.05rem",
+                  boxShadow: "0 0 20px rgba(251, 191, 36, 0.4)",
+                  border: "none",
+                  borderRadius: "8px",
+                  cursor: forgotLoading ? "not-allowed" : "pointer",
+                }}
+              >
+                {forgotLoading ? (
+                  <Scan className="animate-spin" />
+                ) : (
+                  "Gửi liên kết khôi phục"
+                )}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+    </main>
+  );
 }

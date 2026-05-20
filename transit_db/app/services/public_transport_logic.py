@@ -121,10 +121,10 @@ class TransitService:
         max_walk: float,
         combine_routes: bool,
     ) -> List[Dict]:
-        options: List[Dict] = []
-
         stops1 = self.repo.nearest_stops(loc1["lat"], loc1["lon"], max_walk, top_n=15)
         stops2 = self.repo.nearest_stops(loc2["lat"], loc2["lon"], max_walk, top_n=15)
+
+        best_direct: Dict[str, Dict] = {}
 
         # ----------------------------------------------------------------
         # 1. DIRECT ROUTES
@@ -135,8 +135,6 @@ class TransitService:
 
             routes_for_1 = self.repo.routes_for_stops(all_stop_ids_1)
             routes_for_2 = self.repo.routes_for_stops(all_stop_ids_2)
-
-            best_direct: Dict[str, Dict] = {}
 
             for s1 in stops1:
                 r1_set = routes_for_1.get(s1["stop_id"], set())
@@ -155,15 +153,22 @@ class TransitService:
                         score = -(transit_time_min + walk_time_min * 2)
 
                         if rid not in best_direct or score > best_direct[rid]["score"]:
-                            seg = self._build_segment(rid, s1, s2, len(path) - 1, [idx1, idx2], dist)
-                            best_direct[rid] = {"segments": [seg], "score": score}
-
-            options.extend(best_direct.values())
+                            best_direct[rid] = {
+                                "type": "direct",
+                                "route_id": rid,
+                                "board": s1,
+                                "alight": s2,
+                                "stops_on_route": len(path) - 1,
+                                "covered_location_indices": [idx1, idx2],
+                                "estimated_distance_km": dist,
+                                "score": score
+                            }
 
         # ----------------------------------------------------------------
         # 2. TRANSFER ROUTES
         # ----------------------------------------------------------------
-        if combine_routes and len(options) < 5 and stops1 and stops2:
+        transfer_options: List[Dict] = []
+        if combine_routes and len(best_direct) < 5 and stops1 and stops2:
             all_stop_ids_1 = [s["stop_id"] for s in stops1]
             all_stop_ids_2 = [s["stop_id"] for s in stops2]
 
@@ -205,11 +210,6 @@ class TransitService:
                         if not (path1 and path2):
                             continue
 
-                        t_stop_data = self.repo.get_stop_by_id(t_id)
-                        if not t_stop_data:
-                            continue
-                        t_stop = {**t_stop_data, "distance_m": 0.0}
-
                         dist1 = self.repo.calculate_distance(path1)
                         dist2 = self.repo.calculate_distance(path2)
                         score = -(
@@ -218,14 +218,31 @@ class TransitService:
                             + (dist1 + dist2) * 8
                             + 1000
                         )
-                        seg1 = self._build_segment(r1, s_board, t_stop, len(path1) - 1, [idx1], dist1)
-                        seg2 = self._build_segment(r2, t_stop, s_alight, len(path2) - 1, [idx2], dist2)
-                        options.append({"segments": [seg1, seg2], "score": score})
+                        transfer_options.append({
+                            "type": "transfer",
+                            "score": score,
+                            "leg1": {
+                                "route_id": r1,
+                                "board": s_board,
+                                "t_id": t_id,
+                                "stops_on_route": len(path1) - 1,
+                                "covered_location_indices": [idx1],
+                                "estimated_distance_km": dist1,
+                            },
+                            "leg2": {
+                                "route_id": r2,
+                                "t_id": t_id,
+                                "alight": s_alight,
+                                "stops_on_route": len(path2) - 1,
+                                "covered_location_indices": [idx2],
+                                "estimated_distance_km": dist2,
+                            }
+                        })
 
         # ----------------------------------------------------------------
         # 3. PURE WALKING FALLBACK
         # ----------------------------------------------------------------
-        if not options:
+        if not best_direct and not transfer_options:
             direct_dist = _haversine(loc1["lat"], loc1["lon"], loc2["lat"], loc2["lon"])
             if direct_dist <= max_walk:
                 return [{
@@ -236,18 +253,53 @@ class TransitService:
                 }]
             return []
 
-        options.sort(key=lambda x: x["score"], reverse=True)
+        all_options = list(best_direct.values()) + transfer_options
+        all_options.sort(key=lambda x: x["score"], reverse=True)
 
         # ----------------------------------------------------------------
         # 4. FORMAT FINAL LEGS
         # ----------------------------------------------------------------
         final_options: List[Dict] = []
-        for opt in options[:10]:
-            last_stop = opt["segments"][-1]["alight_stop"]
+        for opt in all_options[:10]:
+            if opt["type"] == "direct":
+                seg = self._build_segment(
+                    opt["route_id"],
+                    opt["board"],
+                    opt["alight"],
+                    opt["stops_on_route"],
+                    opt["covered_location_indices"],
+                    opt["estimated_distance_km"]
+                )
+                segments = [seg]
+            else:
+                t_stop_data = self.repo.get_stop_by_id(opt["leg1"]["t_id"])
+                if not t_stop_data:
+                    continue
+                t_stop = {**t_stop_data, "distance_m": 0.0}
+
+                seg1 = self._build_segment(
+                    opt["leg1"]["route_id"],
+                    opt["leg1"]["board"],
+                    t_stop,
+                    opt["leg1"]["stops_on_route"],
+                    opt["leg1"]["covered_location_indices"],
+                    opt["leg1"]["estimated_distance_km"]
+                )
+                seg2 = self._build_segment(
+                    opt["leg2"]["route_id"],
+                    t_stop,
+                    opt["leg2"]["alight"],
+                    opt["leg2"]["stops_on_route"],
+                    opt["leg2"]["covered_location_indices"],
+                    opt["leg2"]["estimated_distance_km"]
+                )
+                segments = [seg1, seg2]
+
+            last_stop = segments[-1]["alight_stop"]
             final_options.append({
                 "from_index": idx1,
                 "to_index": idx2,
-                "segments": opt["segments"],
+                "segments": segments,
                 "walk_to_target_m": last_stop["distance_m"],
                 "instruction": (
                     f"Alight at {last_stop['stop_name']}, "

@@ -370,16 +370,21 @@ export default function RentingSuggestion() {
       <style
         dangerouslySetInnerHTML={{
           __html: `
-        @keyframes cascade-icons { 0% { top: -10%; transform: rotate(0deg); opacity: 0.08; } 100% { top: 110%; transform: rotate(360deg); opacity: 0; } }
-        @keyframes scan-line { 0% { top: 0%; opacity: 0; } 50% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        
-        .floating-ai-icons-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; overflow: hidden; z-index: 0; pointer-events: none; }
-        .cyber-floating-icon { position: absolute; color: var(--cyber-blue); animation: cascade-icons linear infinite; }
-        
         .reveal-text { opacity: 0; animation: reveal-up 1s forwards; }
         @keyframes reveal-up { to { opacity: 1; transform: translateY(0); filter: blur(0); } }
         
+        .scanning-laser-line {
+          position: fixed;
+          left: 0;
+          right: 0;
+          height: 2px;
+          background: var(--cyber-blue);
+          box-shadow: 0 0 15px 2px var(--cyber-blue-glow);
+          animation: scan-line 12s linear infinite;
+          z-index: 5;
+          pointer-events: none;
+        }
+
         .scanning-card::after { content: ""; position: absolute; left: 0; width: 100%; height: 3px; background: var(--cyber-blue); box-shadow: 0 0 20px var(--cyber-blue); animation: scan-line 2s linear infinite; z-index: 5; }
         
         @keyframes cyber-pulse {
@@ -414,22 +419,8 @@ export default function RentingSuggestion() {
         }}
       />
 
-      <div className="floating-ai-icons-container">
-        {floatingIcons.map((item) => (
-          <div
-            key={item.id}
-            className="cyber-floating-icon"
-            style={{
-              left: item.left,
-              animationDuration: item.durationFall,
-              animationDelay: item.delay,
-            }}
-          >
-            <item.Icon size={item.size} />
-          </div>
-        ))}
-      </div>
 
+      <div className="scanning-laser-line" />
       <div
         style={{
           padding: "4rem 2rem",

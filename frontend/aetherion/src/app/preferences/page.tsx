@@ -138,15 +138,47 @@ export default function PreferencesPage() {
 
   useEffect(() => {
     setMounted(true);
-    try {
-      const userStr = localStorage.getItem("cyber_user");
-      if (userStr) {
-        const user = JSON.parse(userStr);
-        if (user.name) setNickname(user.name);
+    const loadSavedPreferences = async () => {
+      try {
+        const userStr = localStorage.getItem("cyber_user");
+        if (userStr) {
+          const user = JSON.parse(userStr);
+          if (user.name) setNickname(user.name);
+          if (user.phone) setPhone(user.phone);
+        }
+
+        const token = localStorage.getItem("accessToken");
+        if (!token) return;
+
+        const nginxUrl = process.env.NEXT_PUBLIC_NGINX_URL || "http://localhost";
+        const response = await fetch(`${nginxUrl}/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) return;
+
+        const user = await response.json();
+        const savedPreferences = user.preferencesData;
+
+        if (savedPreferences?.nickname) setNickname(savedPreferences.nickname);
+        if (savedPreferences?.phone) setPhone(savedPreferences.phone);
+        if (Array.isArray(savedPreferences?.locations)) {
+          setSelectedLocations(savedPreferences.locations);
+        }
+        if (Array.isArray(savedPreferences?.cars)) {
+          setSelectedCars(savedPreferences.cars);
+        }
+        if (Array.isArray(savedPreferences?.motorbikes)) {
+          setSelectedMotorbikes(savedPreferences.motorbikes);
+        }
+      } catch (e) {
+        console.error("Failed to load saved preferences", e);
       }
-    } catch (e) {
-      console.error(e);
-    }
+    };
+
+    loadSavedPreferences();
   }, []);
 
   useEffect(() => {
@@ -282,52 +314,27 @@ export default function PreferencesPage() {
         <style
           dangerouslySetInnerHTML={{
             __html: `
-          @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-          }
-          @keyframes floatOrb1 {
-            0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(20px, -30px) scale(1.05); }
-            100% { transform: translate(0, 0) scale(1); }
-          }
-          @keyframes floatOrb2 {
-            0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(-20px, 30px) scale(1.1); }
-            100% { transform: translate(0, 0) scale(1); }
+          @keyframes scanning-laser {
+            0% { top: -10%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 110%; opacity: 0; }
           }
         `,
           }}
         />
+        {/* Subtle Scanning Laser */}
         <div
-          className="ambient-orb"
           style={{
             position: "absolute",
-            top: "10%",
-            left: "5%",
-            width: "40vw",
-            height: "40vw",
-            borderRadius: "50%",
-            opacity: 0.1,
-            filter: "blur(90px)",
+            left: 0,
+            right: 0,
+            height: "2px",
             background: "var(--cyber-blue)",
-            animation: "floatOrb1 15s ease-in-out infinite",
-          }}
-        />
-        <div
-          className="ambient-orb"
-          style={{
-            position: "absolute",
-            bottom: "10%",
-            right: "5%",
-            width: "35vw",
-            height: "35vw",
-            borderRadius: "50%",
-            opacity: 0.1,
-            filter: "blur(100px)",
-            background: "var(--cyber-purple)",
-            animation: "floatOrb2 18s ease-in-out infinite",
+            boxShadow: "0 0 15px 2px var(--cyber-blue-glow)",
+            animation: "scanning-laser 12s linear infinite",
+            zIndex: 5,
+            pointerEvents: "none",
           }}
         />
       </div>
@@ -338,11 +345,12 @@ export default function PreferencesPage() {
           position: "fixed",
           inset: 0,
           zIndex: 1,
-          transition: "opacity 1s ease-in-out",
-          opacity: bgInfo.showA ? 0.3 : 0,
+          transition: "opacity 1.5s ease-in-out",
+          opacity: bgInfo.showA ? 0.25 : 0,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundImage: `url('${bgInfo.imageA}')`,
+          filter: "grayscale(20%) brightness(0.8)",
         }}
       />
       <div
@@ -350,11 +358,12 @@ export default function PreferencesPage() {
           position: "fixed",
           inset: 0,
           zIndex: 1,
-          transition: "opacity 1s ease-in-out",
-          opacity: !bgInfo.showA ? 0.3 : 0,
+          transition: "opacity 1.5s ease-in-out",
+          opacity: !bgInfo.showA ? 0.25 : 0,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundImage: `url('${bgInfo.imageB}')`,
+          filter: "grayscale(20%) brightness(0.8)",
         }}
       />
 
@@ -366,21 +375,7 @@ export default function PreferencesPage() {
           zIndex: 2,
           background:
             "radial-gradient(circle at center, transparent 0%, var(--cyber-black) 100%)",
-          opacity: hoveredBrand ? 0.8 : 0,
-          transition: "opacity 1s ease-in-out",
-          pointerEvents: "none",
-        }}
-      />
-
-      {/* Vignette Layer */}
-      <div
-        style={{
-          position: "fixed",
-          inset: 0,
-          zIndex: 2,
-          background:
-            "radial-gradient(circle at center, transparent 0%, var(--cyber-black) 100%)",
-          opacity: activeVisual ? 0.4 : 0,
+          opacity: (hoveredBrand || activeVisual) ? 0.6 : 0.2,
           transition: "opacity 1s ease-in-out",
           pointerEvents: "none",
         }}

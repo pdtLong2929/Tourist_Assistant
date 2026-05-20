@@ -426,6 +426,7 @@ export default function BookingPage() {
 
   return (
     <div
+      className="responsive-container"
       style={{
         display: "flex",
         height: "calc(100vh - 72px)",
@@ -534,6 +535,60 @@ export default function BookingPage() {
               background: conic-gradient(from 0deg, rgba(52, 229, 235, 0.15) 0deg, rgba(52, 229, 235, 0) 180deg);
               animation: radar-spin 4s linear infinite;
             }
+
+            @media (max-width: 767px) {
+              .responsive-container {
+                flex-direction: column !important;
+                overflow-y: auto !important;
+              }
+              .mobile-hud-panel {
+                width: 100% !important;
+                min-width: 100% !important;
+                border-right: none !important;
+                border-bottom: 1px solid rgba(52, 229, 235, 0.2) !important;
+                padding: 1rem !important;
+                border-radius: 0 !important;
+              }
+              .mobile-driver-hud {
+                height: 65vh !important;
+                min-height: 400px !important;
+                overflow-y: auto !important;
+              }
+              .mobile-coupon-hud {
+                height: auto !important;
+                overflow-y: visible !important;
+              }
+              .mobile-visualizer-panel {
+                width: 100% !important;
+                display: flex !important;
+                flex-direction: column !important;
+                border-radius: 0 !important;
+              }
+              .mobile-driver-map {
+                height: 35vh !important;
+                min-height: 250px !important;
+                order: -1 !important;
+              }
+              .mobile-coupon-timeline {
+                height: auto !important;
+                min-height: 400px !important;
+              }
+              .desktop-only {
+                display: none !important;
+              }
+              .responsive-marker-scale {
+                transform: translate(-50%, -50%) scale(0.7) !important;
+              }
+              .responsive-target-size {
+                width: 44px !important;
+                height: 44px !important;
+                left: -16px !important;
+                top: -16px !important;
+              }
+              .responsive-driver-scale {
+                transform: translate(-50%, -50%) scale(0.8) !important;
+              }
+            }
           `,
         }}
       />
@@ -542,7 +597,7 @@ export default function BookingPage() {
           LEFT SIDE HUD PANEL (DOCKED)
           ========================================= */}
       <aside
-        className="hud-glass-panel hud-slide-in"
+        className={`hud-glass-panel hud-slide-in mobile-hud-panel \${activeTab === "drivers" ? "mobile-driver-hud" : "mobile-coupon-hud"}`}
         style={{
           width: "450px",
           minWidth: "450px",
@@ -1409,7 +1464,7 @@ export default function BookingPage() {
 
         {/* RIGHT COLUMN: INTERACTIVE VISUALIZER PANEL */}
         <div
-          className="hud-glass-panel"
+          className={`hud-glass-panel mobile-visualizer-panel \${activeTab === "drivers" ? "mobile-driver-map" : "mobile-coupon-timeline"}`}
           style={{
             flex: 1,
             position: "relative",
@@ -1477,7 +1532,7 @@ export default function BookingPage() {
 
                 {/* You are Here Marker */}
                 <div
-                  className="marker-drop"
+                  className="marker-drop responsive-marker-scale"
                   style={{
                     position: "absolute",
                     left: "65%",
@@ -1488,6 +1543,7 @@ export default function BookingPage() {
                   }}
                 >
                   <div
+                    className="responsive-target-size"
                     style={{
                       position: "absolute",
                       width: "40px",
@@ -1535,6 +1591,7 @@ export default function BookingPage() {
                   <div
                     key={driver.id}
                     onClick={() => setSelectedDriver(driver.id)}
+                    className="responsive-driver-scale"
                     style={{
                       position: "absolute",
                       left: `${driver.x}%`,

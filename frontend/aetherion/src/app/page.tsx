@@ -1,11 +1,31 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import CountUp from "@/components/CountUp";
 import RevealOnScroll from "@/components/RevealOnScroll";
 import { useLanguage } from "@/context/LanguageContext";
+import AuthModal from "@/components/AuthModal";
 
 export default function LandingPage() {
   const { t } = useLanguage();
+  const router = useRouter();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
+  useEffect(() => {
+    const user = localStorage.getItem("cyber_user");
+    setIsLoggedIn(!!user);
+  }, []);
+
+  const handleProtectedAction = (target: string) => {
+    if (!isLoggedIn) {
+      setIsAuthModalOpen(true);
+    } else {
+      router.push(target);
+    }
+  };
+
   return (
     <main
       style={{
@@ -41,18 +61,19 @@ export default function LandingPage() {
 
             @keyframes scanning-laser {
               0% { top: -10%; opacity: 0; }
-              10% { opacity: 1; }
-              90% { opacity: 1; }
+              10% { opacity: 0.8; }
+              90% { opacity: 0.8; }
               100% { top: 110%; opacity: 0; }
             }
 
             .hud-glass-panel {
               background: var(--cyber-surface-glass-light);
-              backdrop-filter: blur(24px);
-              -webkit-backdrop-filter: blur(24px);
+              backdrop-filter: blur(12px); /* Reduced from 24px */
+              -webkit-backdrop-filter: blur(12px);
               border: 1px solid rgba(52, 229, 235, 0.3);
               box-shadow: 0 0 50px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(52, 229, 235, 0.1);
               border-radius: 16px;
+              will-change: transform, opacity; /* Added */
             }
           `,
         }}
@@ -91,11 +112,17 @@ export default function LandingPage() {
             background-position: center;
             opacity: 0;
             transition: opacity 2s ease-in-out;
-            mix-blend-mode: overlay;
+            mix-blend-mode: screen; /* Changed from overlay to screen for dark mode visibility */
           }
           .bg-slide-1 { background-image: url('/images/bg1.jpg'); animation: fadeSlide1 24s infinite; }
           .bg-slide-2 { background-image: url('/images/bg2.jpg'); animation: fadeSlide2 24s infinite; }
           .bg-slide-3 { background-image: url('/images/bg3.jpg'); animation: fadeSlide3 24s infinite; }
+          
+          /* Add a theme-specific override if needed */
+          .theme-light .bg-slide {
+            mix-blend-mode: overlay; /* Keep overlay for light mode */
+            opacity: 0.4;
+          }
           
           @keyframes gradientBG {
             0% { background-position: 0% 50%; }
@@ -139,14 +166,29 @@ export default function LandingPage() {
         <div
           style={{
             position: "absolute",
-            inset: "-50%",
+            inset: 0,
             background:
               "linear-gradient(var(--cyber-grid) 1px, transparent 1px), linear-gradient(90deg, var(--cyber-grid) 1px, transparent 1px)",
-            backgroundSize: "80px 80px",
-            animation: "grid-pan 4s linear infinite",
-            transform: "perspective(1000px) rotateX(65deg) scale(1.2)",
+            backgroundSize: "120px 120px",
+            animation: "grid-pan 12s linear infinite", /* Slower for elegance */
+            willChange: "transform, background-position",
+            transform: "perspective(1000px) rotateX(65deg) scale(1.1)",
             transformOrigin: "center top",
             zIndex: 3,
+            opacity: 0.4, /* Subtler */
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            height: "2px", /* Thinner laser */
+            background: "var(--cyber-blue)",
+            boxShadow: "0 0 15px 2px var(--cyber-blue-glow)",
+            animation: "scanning-laser 8s linear infinite",
+            zIndex: 5,
+            pointerEvents: "none",
           }}
         />
       </div>
@@ -156,7 +198,7 @@ export default function LandingPage() {
         style={{
           position: "relative",
           zIndex: 10,
-          padding: "4rem 2rem",
+          padding: "clamp(2rem, 5vw, 4rem) clamp(1rem, 3vw, 2rem)",
           maxWidth: "1400px",
           margin: "0 auto",
         }}
@@ -169,8 +211,8 @@ export default function LandingPage() {
             flexDirection: "column",
             alignItems: "center",
             textAlign: "center",
-            marginBottom: "6rem",
-            padding: "3rem 2rem",
+            marginBottom: "clamp(3rem, 10vw, 6rem)",
+            padding: "clamp(1.5rem, 5vw, 3rem) clamp(1rem, 4vw, 2rem)",
             marginTop: "1rem",
           }}
         >
@@ -214,7 +256,7 @@ export default function LandingPage() {
           >
             <button
               className="cyber-button"
-              onClick={() => (window.location.href = "/renting/suggestions")}
+              onClick={() => handleProtectedAction("/renting/suggestions")}
             >
               {t("landing.tryAi" as any)}
             </button>
@@ -231,7 +273,7 @@ export default function LandingPage() {
                 cursor: "pointer",
                 transition: "all 0.3s ease",
               }}
-              onClick={() => (window.location.href = "/tour-judging")}
+              onClick={() => handleProtectedAction("/tour-judging")}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = "var(--cyber-yellow)";
                 e.currentTarget.style.color = "var(--cyber-yellow)";
@@ -249,8 +291,8 @@ export default function LandingPage() {
           <div
             style={{
               display: "flex",
-              gap: "3rem",
-              marginTop: "3rem",
+              gap: "clamp(1.5rem, 4vw, 3rem)",
+              marginTop: "clamp(2rem, 5vw, 3rem)",
               flexWrap: "wrap",
               justifyContent: "center",
             }}
@@ -356,8 +398,8 @@ export default function LandingPage() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
-              gap: "2rem",
+              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 300px), 1fr))",
+              gap: "1.5rem",
             }}
           >
             {/* Feature Card 1 */}
@@ -508,8 +550,8 @@ export default function LandingPage() {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-                gap: "3rem",
+                gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 250px), 1fr))",
+                gap: "clamp(1.5rem, 5vw, 3rem)",
                 maxWidth: "1000px",
                 margin: "0 auto",
               }}
@@ -612,7 +654,7 @@ export default function LandingPage() {
             </p>
             <button
               className="cyber-button"
-              onClick={() => (window.location.href = "/renting/suggestions")}
+              onClick={() => handleProtectedAction("/renting/suggestions")}
               style={{ fontSize: "1.1rem", padding: "1.25rem 2.5rem" }}
             >
               {t("landing.startJourney" as any)}
@@ -620,6 +662,7 @@ export default function LandingPage() {
           </section>
         </RevealOnScroll>
       </div>
+      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
     </main>
   );
 }

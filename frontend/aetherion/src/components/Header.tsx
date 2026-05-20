@@ -5,9 +5,11 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
-import { Settings, Moon, Sun } from "lucide-react";
+import { Settings, Moon, Sun, Menu, X } from "lucide-react";
+import AuthModal from "./AuthModal";
 
 export default function Header() {
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [user, setUser] = useState<{
     name: string;
     email?: string;
@@ -15,6 +17,7 @@ export default function Header() {
   } | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const router = useRouter();
   const { t, language, setLanguage } = useLanguage();
   const { theme, toggleTheme } = useTheme();
@@ -43,18 +46,11 @@ export default function Header() {
       }
     };
 
-    // Chạy lần đầu khi load trang
     checkLoginStatus();
-
-    // Lắng nghe tín hiệu từ trang Login
     window.addEventListener("userAuthChanged", checkLoginStatus);
-
-    // Dọn dẹp sự kiện khi component bị hủy
-    return () =>
-      window.removeEventListener("userAuthChanged", checkLoginStatus);
+    return () => window.removeEventListener("userAuthChanged", checkLoginStatus);
   }, []);
 
-  // Hàm Đăng xuất
   const handleLogout = () => {
     localStorage.removeItem("cyber_user");
     localStorage.removeItem("accessToken");
@@ -64,6 +60,12 @@ export default function Header() {
     setIsDropdownOpen(false);
     window.location.reload();
   };
+
+  const navLinks = [
+    { name: t("header.explore" as any), href: "/tour-judging" },
+    { name: t("header.askAi" as any), href: "/renting/suggestions" },
+    { name: t("header.bookRide" as any), href: "/booking" },
+  ];
 
   return (
     <header
@@ -78,108 +80,146 @@ export default function Header() {
       }}
     >
       <div
+        className="header-container"
         style={{
-          padding: "0.75rem 2rem",
-          display: "grid",
-          gridTemplateColumns: "1fr auto 1fr",
+          padding: "0.75rem 1rem",
+          display: "flex",
+          justifyContent: "space-between",
           alignItems: "center",
           maxWidth: "1400px",
           margin: "0 auto",
         }}
       >
-        {/* Logo */}
-        <a
-          href="/"
+        {/* Left: Mobile Menu Button & Logo */}
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <button
+            className="mobile-menu-btn md:hidden"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            style={{
+              background: "transparent",
+              border: "none",
+              color: "var(--text-main)",
+              cursor: "pointer",
+              padding: "0.5rem",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+
+          <a
+            href="/"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.75rem",
+              textDecoration: "none",
+            }}
+          >
+            <img
+              src="/images/logo.png"
+              alt="Tourist AI Logo"
+              style={{
+                width: "32px",
+                height: "32px",
+                borderRadius: "6px",
+                objectFit: "cover",
+                boxShadow: "0 0 10px var(--cyber-yellow-dim)",
+              }}
+            />
+            <div style={{ lineHeight: 1.1 }} className="hidden sm:block">
+              <div
+                style={{
+                  fontFamily: "var(--font-header)",
+                  fontSize: "1rem",
+                  fontWeight: "700",
+                  color: "var(--text-main)",
+                  letterSpacing: "-0.02em",
+                }}
+              >
+                Tourist <span style={{ color: "var(--cyber-yellow)" }}>AI</span>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        {/* Center: Desktop Navigation */}
+        <nav 
+          className="nav-container"
+          style={{ 
+            display: typeof window !== 'undefined' && window.innerWidth >= 768 ? 'flex' : 'none',
+            alignItems: 'center'
+          }}
+        >
+          {navLinks.map((link) => (
+            <button 
+              key={link.name} 
+              onClick={() => {
+                if (!user) {
+                  setIsAuthModalOpen(true);
+                } else {
+                  router.push(link.href);
+                }
+              }} 
+              className="nav-link"
+              style={{
+                background: "transparent",
+                border: "none",
+                cursor: "pointer",
+                outline: "none"
+              }}
+            >
+              {link.name}
+            </button>
+          ))}
+          <style jsx global>{`
+            @media (min-width: 768px) {
+              .nav-container { display: flex !important; }
+            }
+            @media (max-width: 767px) {
+              .nav-container { display: none !important; }
+            }
+          `}</style>
+        </nav>
+
+        {/* Right Section: Settings & User */}
+        <div
           style={{
             display: "flex",
             alignItems: "center",
             gap: "0.75rem",
-            textDecoration: "none",
-            width: "fit-content",
           }}
         >
-          <div
-            style={{
-              width: "36px",
-              height: "36px",
-              background:
-                "linear-gradient(135deg, var(--cyber-yellow) 0%, var(--cyber-blue) 100%)",
-              borderRadius: "8px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontFamily: "var(--font-header)",
-              fontWeight: "800",
-              fontSize: "1.1rem",
-              color: "var(--cyber-black)",
-              boxShadow: "0 0 15px var(--cyber-yellow-dim)",
-            }}
-          >
-            T
-          </div>
-          <div style={{ lineHeight: 1.1 }}>
-            <div
-              style={{
-                fontFamily: "var(--font-header)",
-                fontSize: "1.1rem",
-                fontWeight: "700",
-                color: "var(--text-main)",
-                letterSpacing: "-0.02em",
-              }}
-            >
-              Tourist <span style={{ color: "var(--cyber-yellow)" }}>AI</span>
-            </div>
-          </div>
-        </a>
-
-        {/* Navigation */}
-        <nav className="nav-container">
-          {[
-            { name: t("header.explore" as any), href: "/tour-judging" },
-            { name: t("header.askAi" as any), href: "/renting/suggestions" },
-            { name: t("header.bookRide" as any), href: "/booking" },
-          ].map((link) => (
-            <a key={link.name} href={link.href} className="nav-link">
-              {link.name}
-            </a>
-          ))}
-        </nav>
-
-        {/* Right Section: Language & User */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
-            gap: "1.5rem",
-          }}
-        >
-          {/* Settings Menu */}
+          {/* Settings */}
           <div style={{ position: "relative" }}>
-            <div
+            <button
               className="user-badge"
               onClick={() => {
                 setIsSettingsOpen(!isSettingsOpen);
                 setIsDropdownOpen(false);
+                setIsMobileMenuOpen(false);
               }}
               style={{
                 cursor: "pointer",
                 border: "1px solid var(--cyber-yellow)",
                 background: "rgba(251, 191, 36, 0.1)",
+                width: "38px",
+                height: "38px",
+                borderRadius: "8px",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                width: "42px",
-                height: "42px",
-                borderRadius: "8px",
                 padding: 0,
               }}
             >
-              <Settings size={20} color="var(--cyber-yellow)" style={{ transition: "transform 0.3s", transform: isSettingsOpen ? "rotate(90deg)" : "rotate(0deg)" }} />
-            </div>
+              <Settings size={18} color="var(--cyber-yellow)" style={{ transition: "transform 0.3s", transform: isSettingsOpen ? "rotate(90deg)" : "rotate(0deg)" }} />
+            </button>
 
             {isSettingsOpen && (
               <div
+                className="hud-glass-panel"
                 style={{
                   position: "absolute",
                   top: "130%",
@@ -187,73 +227,68 @@ export default function Header() {
                   background: "var(--cyber-black)",
                   border: "1px solid var(--cyber-border)",
                   borderRadius: "12px",
-                  overflow: "hidden",
+                  minWidth: "200px",
+                  padding: "1rem",
                   display: "flex",
                   flexDirection: "column",
-                  minWidth: "220px",
-                  padding: "16px",
-                  gap: "16px",
+                  gap: "1rem",
                   boxShadow: "0 10px 25px rgba(0, 0, 0, 0.5)",
                   zIndex: 200,
                 }}
               >
-                {/* Language Toggle */}
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span style={{ color: "var(--text-main)", fontSize: "0.95rem", fontWeight: "600" }}>{t("header.language" as any) || "Language"}</span>
+                  <span style={{ color: "var(--text-main)", fontSize: "0.9rem", fontWeight: "700" }}>{t("header.language" as any) || "Language"}</span>
                   <div 
                     onClick={() => setLanguage(language === "en" ? "vi" : "en")}
                     style={{
-                      width: "64px",
-                      height: "32px",
-                      background: "rgba(0,0,0,0.3)",
-                      borderRadius: "16px",
+                      width: "60px",
+                      height: "30px",
+                      background: "rgba(0,0,0,0.4)",
+                      borderRadius: "15px",
                       position: "relative",
                       cursor: "pointer",
                       display: "flex",
                       alignItems: "center",
                       border: "1px solid var(--cyber-border)",
-                      transition: "all 0.3s ease",
                     }}
                   >
                     <div style={{
                       position: "absolute",
-                      left: language === "en" ? "4px" : "34px",
-                      width: "24px",
-                      height: "24px",
+                      left: language === "en" ? "2px" : "32px",
+                      width: "26px",
+                      height: "26px",
                       background: "var(--cyber-yellow)",
                       borderRadius: "50%",
                       transition: "left 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                       boxShadow: "0 0 10px var(--cyber-yellow-glow)",
                       zIndex: 1,
                     }} />
-                    <span style={{ position: "absolute", left: "8px", fontSize: "0.65rem", fontWeight: "bold", color: "var(--text-muted)", zIndex: 0 }}>EN</span>
-                    <span style={{ position: "absolute", right: "8px", fontSize: "0.65rem", fontWeight: "bold", color: "var(--text-muted)", zIndex: 0 }}>VI</span>
+                    <span style={{ position: "absolute", left: "8px", fontSize: "0.7rem", fontWeight: "800", color: "var(--text-main)", zIndex: 0 }}>EN</span>
+                    <span style={{ position: "absolute", right: "8px", fontSize: "0.7rem", fontWeight: "800", color: "var(--text-main)", zIndex: 0 }}>VI</span>
                   </div>
                 </div>
 
-                {/* Theme Toggle */}
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span style={{ color: "var(--text-main)", fontSize: "0.95rem", fontWeight: "600" }}>{t("header.theme" as any) || "Theme"}</span>
+                  <span style={{ color: "var(--text-main)", fontSize: "0.9rem", fontWeight: "700" }}>{t("header.theme" as any) || "Theme"}</span>
                   <div 
                     onClick={toggleTheme}
                     style={{
-                      width: "64px",
-                      height: "32px",
-                      background: "rgba(0,0,0,0.3)",
-                      borderRadius: "16px",
+                      width: "60px",
+                      height: "30px",
+                      background: "rgba(0,0,0,0.4)",
+                      borderRadius: "15px",
                       position: "relative",
                       cursor: "pointer",
                       display: "flex",
                       alignItems: "center",
                       border: "1px solid var(--cyber-border)",
-                      transition: "all 0.3s ease",
                     }}
                   >
                     <div style={{
                       position: "absolute",
-                      left: theme === "light" ? "34px" : "4px",
-                      width: "24px",
-                      height: "24px",
+                      left: theme === "light" ? "32px" : "2px",
+                      width: "26px",
+                      height: "26px",
                       background: theme === "light" ? "var(--cyber-blue)" : "var(--cyber-purple)",
                       borderRadius: "50%",
                       transition: "left 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
@@ -261,10 +296,10 @@ export default function Header() {
                       zIndex: 1,
                     }} />
                     <span style={{ position: "absolute", left: "8px", display: "flex", alignItems: "center", zIndex: 0 }}>
-                      <Moon size={14} color="var(--text-muted)" />
+                      <Moon size={14} color="var(--text-main)" />
                     </span>
                     <span style={{ position: "absolute", right: "8px", display: "flex", alignItems: "center", zIndex: 0 }}>
-                      <Sun size={14} color="var(--text-muted)" />
+                      <Sun size={14} color="var(--text-main)" />
                     </span>
                   </div>
                 </div>
@@ -272,28 +307,31 @@ export default function Header() {
             )}
           </div>
 
+          {/* User */}
           {user ? (
-            /* ĐÃ ĐĂNG NHẬP */
             <div style={{ position: "relative" }}>
-              <div
+              <button
                 className="user-badge"
                 onClick={() => {
                   setIsDropdownOpen(!isDropdownOpen);
                   setIsSettingsOpen(false);
+                  setIsMobileMenuOpen(false);
                 }}
                 style={{
                   cursor: "pointer",
                   border: "1px solid var(--cyber-blue)",
                   background: "rgba(52, 229, 235, 0.1)",
+                  padding: "0.4rem 0.6rem",
+                  gap: "0.5rem",
+                  borderRadius: "8px",
                   display: "flex",
                   alignItems: "center",
-                  gap: "10px",
                 }}
               >
                 <div
                   style={{
-                    width: "28px",
-                    height: "28px",
+                    width: "24px",
+                    height: "24px",
                     borderRadius: "50%",
                     background: "var(--cyber-blue)",
                     display: "flex",
@@ -301,91 +339,68 @@ export default function Header() {
                     justifyContent: "center",
                     color: "var(--cyber-black)",
                     fontWeight: "bold",
-                    fontFamily: "var(--font-header)",
+                    fontSize: "0.75rem",
                   }}
                 >
                   {(user?.name || user?.email || "U").charAt(0).toUpperCase()}
                 </div>
-                <div style={{ textAlign: "right" }}>
-                  <div
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "0.95rem",
-                      color: "var(--cyber-blue)",
-                      fontWeight: "700",
-                      letterSpacing: "0.05em",
-                    }}
-                  >
-                    {user?.name || user?.email?.split("@")[0] || "Traveler"} ▼
-                  </div>
-                </div>
-              </div>
+                <span className="hidden sm:block" style={{ fontSize: "0.85rem", color: "var(--cyber-blue)", fontWeight: "700" }}>
+                  {user?.name || "User"}
+                </span>
+              </button>
 
-              {/* Menu thả xuống */}
               {isDropdownOpen && (
                 <div
+                  className="hud-glass-panel"
                   style={{
                     position: "absolute",
                     top: "130%",
                     right: 0,
-                    background: "#0f172a",
-                    border: "1px solid rgba(52, 229, 235, 0.3)",
+                    background: "var(--cyber-black)",
+                    border: "1px solid var(--cyber-border)",
                     borderRadius: "12px",
+                    minWidth: "180px",
                     overflow: "hidden",
-                    display: "flex",
-                    flexDirection: "column",
-                    minWidth: "220px",
                     boxShadow: "0 10px 25px rgba(0, 0, 0, 0.5)",
                     zIndex: 200,
                   }}
                 >
                   <button
-                    onClick={() => {
-                      setIsDropdownOpen(false);
-                      router.push("/profile");
-                    }}
+                    onClick={() => { router.push("/profile"); setIsDropdownOpen(false); }}
                     style={{
-                      padding: "16px 20px",
-                      fontSize: "1.05rem",
+                      width: "100%",
+                      padding: "1rem",
                       textAlign: "left",
                       background: "transparent",
-                      color: "white",
+                      color: "var(--text-main)",
                       border: "none",
-                      borderBottom: "1px solid rgba(255,255,255,0.05)",
+                      borderBottom: "1px solid var(--cyber-border)",
                       cursor: "pointer",
-                      fontFamily: "system-ui, sans-serif",
+                      fontWeight: "700",
+                      fontSize: "0.95rem",
                       transition: "all 0.2s ease",
                     }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.background =
-                        "rgba(255,255,255,0.05)")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.background = "transparent")
-                    }
+                    onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}
+                    onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
                   >
                     {t("header.profile" as any)}
                   </button>
                   <button
                     onClick={handleLogout}
                     style={{
-                      padding: "16px 20px",
-                      fontSize: "1.05rem",
+                      width: "100%",
+                      padding: "1rem",
                       textAlign: "left",
                       background: "transparent",
                       color: "#ef4444",
                       border: "none",
                       cursor: "pointer",
-                      fontFamily: "system-ui, sans-serif",
+                      fontWeight: "700",
+                      fontSize: "0.95rem",
                       transition: "all 0.2s ease",
                     }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.background =
-                        "rgba(239, 68, 68, 0.1)")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.background = "transparent")
-                    }
+                    onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(239, 68, 68, 0.1)")}
+                    onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
                   >
                     {t("header.logout" as any)}
                   </button>
@@ -393,30 +408,66 @@ export default function Header() {
               )}
             </div>
           ) : (
-            /* CHƯA ĐĂNG NHẬP */
             <a href="/login" style={{ textDecoration: "none" }}>
-              <div
-                className="user-badge cursor-hover"
-                style={{ cursor: "pointer", transition: "all 0.3s" }}
-              >
-                <div style={{ textAlign: "right" }}>
-                  <div
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "1rem",
-                      color: "var(--cyber-yellow)",
-                      fontWeight: "900",
-                      letterSpacing: "0.05em",
-                    }}
-                  >
-                    {t("header.guestMode" as any)}
-                  </div>
-                </div>
+              <div className="user-badge" style={{ padding: "0.4rem 0.8rem", color: "var(--cyber-yellow)", fontWeight: "bold", fontSize: "0.85rem" }}>
+                {t("header.guestMode" as any)}
               </div>
             </a>
           )}
         </div>
       </div>
+
+      {/* Mobile Navigation Drawer */}
+      {isMobileMenuOpen && (
+        <div
+          className="md:hidden"
+          style={{
+            position: "absolute",
+            top: "100%",
+            left: 0,
+            right: 0,
+            background: "var(--cyber-black)",
+            borderBottom: "1px solid var(--cyber-border)",
+            padding: "1rem",
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.5rem",
+            zIndex: 90,
+            boxShadow: "0 20px 40px rgba(0,0,0,0.8)",
+          }}
+        >
+          {navLinks.map((link) => (
+            <button
+              key={link.name}
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                if (!user) {
+                  setIsAuthModalOpen(true);
+                } else {
+                  router.push(link.href);
+                }
+              }}
+              style={{
+                padding: "1rem",
+                borderRadius: "8px",
+                color: "var(--text-secondary)",
+                fontFamily: "var(--font-header)",
+                fontSize: "0.9rem",
+                fontWeight: "600",
+                textTransform: "uppercase",
+                background: "rgba(255,255,255,0.03)",
+                border: "none",
+                textAlign: "left",
+                cursor: "pointer",
+                width: "100%"
+              }}
+            >
+              {link.name}
+            </button>
+          ))}
+        </div>
+      )}
+      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
     </header>
   );
 }
